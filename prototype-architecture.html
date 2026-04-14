@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>家装平台小程序原型 - 项目架构</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .page-content {
+            height: calc(100% - 44px);
+            background-color: var(--bg-secondary);
+            overflow-y: auto;
+        }
+
+        .architecture-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            padding: 16px;
+            color: #FFFFFF;
+        }
+
+        .project-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .project-desc {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat-item {
+            background-color: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-item .num {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .stat-item .label {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 12px 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .create-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border-radius: 18px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .architecture-tree {
+            padding: 16px;
+        }
+
+        .tree-node {
+            margin-bottom: 8px;
+        }
+
+        .node-header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .node-header:hover {
+            background-color: #E6F7FF;
+        }
+
+        .node-header.level-0 {
+            background: linear-gradient(135deg, #1890FF 0%, #40A9FF 100%);
+            color: #FFFFFF;
+        }
+
+        .node-header.level-1 {
+            background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);
+            color: #FFFFFF;
+        }
+
+        .node-header.level-2 {
+            background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
+            color: #FFFFFF;
+        }
+
+        .node-header.level-3 {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .node-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        .node-header.level-3 .node-icon {
+            background-color: var(--bg-secondary);
+        }
+
+        .node-info {
+            flex: 1;
+        }
+
+        .node-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .node-meta {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .node-header.level-3 .node-meta {
+            color: var(--text-tertiary);
+        }
+
+        .node-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .node-action {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .node-header.level-3 .node-action {
+            background-color: var(--bg-secondary);
+        }
+
+        .node-expand {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        .node-expand.expanded {
+            transform: rotate(180deg);
+        }
+
+        .node-children {
+            margin-left: 24px;
+            padding-left: 12px;
+            border-left: 2px solid var(--border-color);
+            display: none;
+        }
+
+        .node-children.show {
+            display: block;
+        }
+
+        .add-node-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px;
+            background-color: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--text-tertiary);
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+
+        .add-node-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: #E6F7FF;
+        }
+
+        .create-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .create-modal.show { display: flex; }
+
+        .create-modal .modal-content {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border-radius: 16px 16px 0 0;
+            padding: 16px;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: var(--error-color);
+            margin-right: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .form-select {
+            width: 100%;
+            height: 44px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            background-color: var(--bg-primary);
+            cursor: pointer;
+            box-sizing: border-box;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-color);
+        }
+
+        .member-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            min-height: 44px;
+        }
+
+        .member-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .member-tag .avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .member-tag .remove {
+            cursor: pointer;
+            color: var(--text-tertiary);
+        }
+
+        .add-member-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background-color: var(--status-primary-bg);
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-btn.cancel {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: none;
+        }
+
+        .modal-btn.confirm {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+
+        .level-badge.level-0 {
+            background-color: rgba(24, 144, 255, 0.2);
+            color: #1890FF;
+        }
+
+        .level-badge.level-1 {
+            background-color: rgba(82, 196, 26, 0.2);
+            color: #52C41A;
+        }
+
+        .level-badge.level-2 {
+            background-color: rgba(114, 46, 209, 0.2);
+            color: #722ED1;
+        }
+
+        .level-badge.level-3 {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--text-tertiary);
+        }
+
+        .permission-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background-color: #FFF7E6;
+            border-radius: 8px;
+            margin: 12px 16px;
+            font-size: 12px;
+            color: #FA8C16;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state .text {
+            font-size: 14px;
+        }
+
+        .empty-state .hint {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="icons">📶 🔋</div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="back" onclick="location.href='prototype-project-detail.html'">← 返回</div>
+            <div class="title centered">项目架构</div>
+            <div class="actions">
+                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+            </div>
+        </div>
+        
+        <div class="page-content">
+            <div class="architecture-header">
+                <div class="project-name">XX小区整体装修</div>
+                <div class="project-desc">创建时间：2024-01-15 · 项目经理：张三</div>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="num">5</div>
+                        <div class="label">工作组</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">8</div>
+                        <div class="label">施工组</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">24</div>
+                        <div class="label">成员</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-bar" id="actionBar">
+                <div class="create-btn" onclick="showCreateModal('level1')">
+                    <span>+</span>
+                    <span>创建工作组</span>
+                </div>
+            </div>
+            
+            <div class="permission-notice" id="permissionNotice" style="display: none;">
+                <span>⚠️</span>
+                <span>您没有创建架构的权限，如需创建请联系项目经理</span>
+            </div>
+            
+            <div class="architecture-tree">
+                <div class="tree-node">
+                    <div class="node-header level-0" onclick="toggleNode(this)">
+                        <div class="node-icon">🏢</div>
+                        <div class="node-info">
+                            <div class="node-name">项目部</div>
+                            <div class="node-meta">张三（项目经理）· 5个工作组</div>
+                        </div>
+                        <div class="node-expand expanded">▼</div>
+                    </div>
+                    <div class="node-children show">
+                        <div class="tree-node">
+                            <div class="node-header level-1" onclick="toggleNode(this)">
+                                <div class="node-icon">👷</div>
+                                <div class="node-info">
+                                    <div class="node-name">水电工作组</div>
+                                    <div class="node-meta">李四（组长）· 3个施工组 · 2份合同</div>
+                                </div>
+                                <div class="node-actions">
+                                    <div class="node-action" onclick="event.stopPropagation(); showCreateModal('level2', '水电工作组')">+</div>
+                                </div>
+                                <div class="node-expand expanded">▼</div>
+                            </div>
+                            <div class="node-children show">
+                                <div class="tree-node">
+                                    <div class="node-header level-2" onclick="toggleNode(this)">
+                                        <div class="node-icon">⚡</div>
+                                        <div class="node-info">
+                                            <div class="node-name">强电施工组</div>
+                                            <div class="node-meta">王五（组长）· 4人 · 1份合同</div>
+                                        </div>
+                                        <div class="node-actions">
+                                            <div class="node-action" onclick="event.stopPropagation(); showCreateModal('level3', '强电施工组')">+</div>
+                                        </div>
+                                        <div class="node-expand expanded">▼</div>
+                                    </div>
+                                    <div class="node-children show">
+                                        <div class="tree-node">
+                                            <div class="node-header level-3">
+                                                <div class="node-icon">👤</div>
+                                                <div class="node-info">
+                                                    <div class="node-name">赵六</div>
+                                                    <div class="node-meta">电工 · 已签约</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="node-header level-3">
+                                                <div class="node-icon">👤</div>
+                                                <div class="node-info">
+                                                    <div class="node-name">钱七</div>
+                                                    <div class="node-meta">电工 · 已签约</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="add-node-btn" onclick="showCreateModal('member', '强电施工组')">
+                                            <span>+</span>
+                                            <span>添加成员</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="node-header level-2" onclick="toggleNode(this)">
+                                        <div class="node-icon">📡</div>
+                                        <div class="node-info">
+                                            <div class="node-name">弱电施工组</div>
+                                            <div class="node-meta">孙八（组长）· 3人 · 1份合同</div>
+                                        </div>
+                                        <div class="node-expand">▼</div>
+                                    </div>
+                                    <div class="node-children"></div>
+                                </div>
+                                <div class="add-node-btn" onclick="showCreateModal('level2', '水电工作组')">
+                                    <span>+</span>
+                                    <span>添加施工组</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tree-node">
+                            <div class="node-header level-1" onclick="toggleNode(this)">
+                                <div class="node-icon">🧱</div>
+                                <div class="node-info">
+                                    <div class="node-name">泥瓦工作组</div>
+                                    <div class="node-meta">周九（组长）· 2个施工组 · 1份合同</div>
+                                </div>
+                                <div class="node-expand">▼</div>
+                            </div>
+                            <div class="node-children"></div>
+                        </div>
+                        
+                        <div class="tree-node">
+                            <div class="node-header level-1" onclick="toggleNode(this)">
+                                <div class="node-icon">🪵</div>
+                                <div class="node-info">
+                                    <div class="node-name">木工工作组</div>
+                                    <div class="node-meta">吴十（组长）· 2个施工组 · 1份合同</div>
+                                </div>
+                                <div class="node-expand">▼</div>
+                            </div>
+                            <div class="node-children"></div>
+                        </div>
+                        
+                        <div class="tree-node">
+                            <div class="node-header level-1" onclick="toggleNode(this)">
+                                <div class="node-icon">🎨</div>
+                                <div class="node-info">
+                                    <div class="node-name">油漆工作组</div>
+                                    <div class="node-meta">郑十一（组长）· 1个施工组 · 1份合同</div>
+                                </div>
+                                <div class="node-expand">▼</div>
+                            </div>
+                            <div class="node-children"></div>
+                        </div>
+                        
+                        <div class="add-node-btn" onclick="showCreateModal('level1')">
+                            <span>+</span>
+                            <span>添加工作组</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="create-modal" id="createModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="modalTitle">创建工作组</div>
+                    <div class="modal-close" onclick="closeCreateModal()">✕</div>
+                </div>
+                
+                <div id="level1Form">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>工作组名称</span>
+                        </label>
+                        <input type="text" class="form-input" id="level1Name" placeholder="请输入工作组名称">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>组长</span>
+                        </label>
+                        <div class="member-select" onclick="showMemberSelect()">
+                            <div class="add-member-btn">
+                                <span>+</span>
+                                <span>选择组长</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">备注</label>
+                        <input type="text" class="form-input" placeholder="请输入备注（选填）">
+                    </div>
+                </div>
+                
+                <div id="level2Form" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>施工组名称</span>
+                        </label>
+                        <input type="text" class="form-input" id="level2Name" placeholder="请输入施工组名称">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>组长</span>
+                        </label>
+                        <div class="member-select" onclick="showMemberSelect()">
+                            <div class="add-member-btn">
+                                <span>+</span>
+                                <span>选择组长</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">所属工作组</label>
+                        <select class="form-select" id="level2Parent">
+                            <option value="水电工作组">水电工作组</option>
+                            <option value="泥瓦工作组">泥瓦工作组</option>
+                            <option value="木工工作组">木工工作组</option>
+                            <option value="油漆工作组">油漆工作组</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="memberForm" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>成员姓名</span>
+                        </label>
+                        <input type="text" class="form-input" id="memberName" placeholder="请输入成员姓名">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>角色</span>
+                        </label>
+                        <select class="form-select" id="memberRole">
+                            <option value="">请选择角色</option>
+                            <option value="电工">电工</option>
+                            <option value="泥瓦工">泥瓦工</option>
+                            <option value="木工">木工</option>
+                            <option value="油漆工">油漆工</option>
+                            <option value="监理">监理</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">所属施工组</label>
+                        <select class="form-select" id="memberParent">
+                            <option value="强电施工组">强电施工组</option>
+                            <option value="弱电施工组">弱电施工组</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <div class="modal-btn cancel" onclick="closeCreateModal()">取消</div>
+                    <div class="modal-btn confirm" onclick="createNode()">确认创建</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-nav">
+        <div class="page-nav-title">原型导航</div>
+        <a href="prototype-home.html" class="page-nav-item">首页</a>
+        <a href="prototype-project-list.html" class="page-nav-item">项目列表</a>
+        <a href="prototype-project-detail.html" class="page-nav-item">项目详情</a>
+        <a href="prototype-project-info.html" class="page-nav-item">项目信息</a>
+        <a href="prototype-architecture.html" class="page-nav-item active">项目架构</a>
+        <a href="prototype-task-list.html" class="page-nav-item">任务列表</a>
+        <a href="prototype-contract-detail.html" class="page-nav-item">合同详情</a>
+    </div>
+    
+    <script>
+        let currentCreateType = 'level1';
+        let hasCreatePermission = true;
+        
+        function toggleNode(header) {
+            const children = header.nextElementSibling;
+            const expand = header.querySelector('.node-expand');
+            
+            if (children && children.classList.contains('node-children')) {
+                children.classList.toggle('show');
+                if (expand) {
+                    expand.classList.toggle('expanded');
+                }
+            }
+        }
+        
+        function showCreateModal(type, parentName) {
+            if (!hasCreatePermission) {
+                alert('您没有创建架构的权限');
+                return;
+            }
+            
+            currentCreateType = type;
+            
+            document.getElementById('level1Form').style.display = 'none';
+            document.getElementById('level2Form').style.display = 'none';
+            document.getElementById('memberForm').style.display = 'none';
+            
+            const modalTitle = document.getElementById('modalTitle');
+            
+            if (type === 'level1') {
+                modalTitle.textContent = '创建工作组';
+                document.getElementById('level1Form').style.display = 'block';
+            } else if (type === 'level2') {
+                modalTitle.textContent = '创建施工组';
+                document.getElementById('level2Form').style.display = 'block';
+                if (parentName) {
+                    document.getElementById('level2Parent').value = parentName;
+                }
+            } else if (type === 'member') {
+                modalTitle.textContent = '添加成员';
+                document.getElementById('memberForm').style.display = 'block';
+                if (parentName) {
+                    document.getElementById('memberParent').value = parentName;
+                }
+            }
+            
+            document.getElementById('createModal').classList.add('show');
+        }
+        
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+        
+        function showMemberSelect() {
+            alert('打开成员选择器');
+        }
+        
+        function createNode() {
+            let name = '';
+            
+            if (currentCreateType === 'level1') {
+                name = document.getElementById('level1Name').value;
+            } else if (currentCreateType === 'level2') {
+                name = document.getElementById('level2Name').value;
+            } else if (currentCreateType === 'member') {
+                name = document.getElementById('memberName').value;
+            }
+            
+            if (!name.trim()) {
+                alert('请填写名称');
+                return;
+            }
+            
+            alert('创建成功！');
+            closeCreateModal();
+        }
+        
+        document.getElementById('createModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCreateModal();
+            }
+        });
+        
+        function setPermission(hasPermission) {
+            hasCreatePermission = hasPermission;
+            const actionBar = document.getElementById('actionBar');
+            const notice = document.getElementById('permissionNotice');
+            
+            if (hasPermission) {
+                actionBar.style.display = 'flex';
+                notice.style.display = 'none';
+            } else {
+                actionBar.style.display = 'none';
+                notice.style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>家装平台小程序原型 - 任务列表</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .page-content {
+            height: calc(100% - 44px - 44px);
+        }
+
+        .search-filter-bar {
+            background-color: var(--bg-primary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .search-filter-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input-wrap {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 36px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .search-input:focus {
+            background-color: #E6F7FF;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: var(--bg-secondary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .filter-btn:hover {
+            background-color: #E6F7FF;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .filter-tag {
+            display: flex;
+            align-items: center;
+            padding: 4px 10px;
+            background-color: var(--status-primary-bg);
+            border-radius: 14px;
+            font-size: 12px;
+            color: var(--primary-color);
+        }
+
+        .filter-tag .remove {
+            margin-left: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-primary);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .filter-dropdown.show {
+            display: block;
+        }
+
+        .filter-dropdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .filter-dropdown-close {
+            font-size: 18px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .filter-section {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-section:last-child {
+            border-bottom: none;
+        }
+
+        .filter-section-title {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-option {
+            padding: 6px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-option:hover {
+            background-color: #E6F7FF;
+        }
+
+        .filter-option.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .stats-summary {
+            display: flex;
+            background-color: var(--bg-primary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-item {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .stats-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background-color: var(--border-color);
+        }
+
+        .stats-item .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stats-item .value.highlight {
+            color: var(--primary-color);
+        }
+
+        .stats-item .label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .contract-section {
+            background-color: var(--bg-primary);
+            margin-bottom: 8px;
+        }
+
+        .contract-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: var(--bg-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contract-header:hover {
+            background-color: #E6F7FF;
+        }
+
+        .contract-header .contract-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+
+        .contract-header .contract-info {
+            flex: 1;
+        }
+
+        .contract-header .contract-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .contract-header .contract-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .contract-header .contract-stats {
+            display: flex;
+            gap: 12px;
+            margin-right: 12px;
+        }
+
+        .contract-header .stat-badge {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .contract-header .stat-badge.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .contract-header .stat-badge.confirming {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .contract-header .arrow {
+            color: var(--text-tertiary);
+            transition: transform 0.3s;
+        }
+
+        .contract-header .arrow.expanded {
+            transform: rotate(180deg);
+        }
+
+        .stage-group {
+            display: none;
+        }
+
+        .stage-group.show {
+            display: block;
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px 10px 44px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .stage-header:hover {
+            background-color: #F5F5F5;
+        }
+
+        .stage-header .stage-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+        .stage-header .stage-dot.completed {
+            background-color: var(--success-color);
+        }
+
+        .stage-header .stage-dot.confirming {
+            background-color: var(--warning-color);
+        }
+
+        .stage-header .stage-name {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stage-header .stage-count {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .stage-header .arrow {
+            margin-left: 8px;
+            color: var(--text-tertiary);
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .stage-header .arrow.expanded {
+            transform: rotate(180deg);
+        }
+
+        .task-list {
+            display: none;
+        }
+
+        .task-list.show {
+            display: block;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px 12px 60px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover {
+            background-color: #E6F7FF;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item .task-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .task-item .task-status.completed {
+            background-color: var(--success-color);
+            color: #FFFFFF;
+        }
+
+        .task-item .task-status.confirming {
+            background-color: var(--warning-color);
+            color: #FFFFFF;
+        }
+
+        .task-item .task-status.pending {
+            background-color: var(--bg-tertiary);
+            color: var(--text-tertiary);
+        }
+
+        .task-item .task-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-item .task-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .task-item .task-tag {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .task-item .task-tag.contract {
+            background-color: #E6F7FF;
+            color: #1890FF;
+        }
+
+        .task-item .task-tag.temp {
+            background-color: #F9F0FF;
+            color: #722ED1;
+        }
+
+        .task-item .task-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .task-item .task-status-text {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .task-item .task-status-text.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .task-item .task-status-text.confirming {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .task-item .task-status-text.completed {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 16px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        .empty-state .text {
+            font-size: 14px;
+        }
+
+        .result-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .expand-all-btn {
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="icons">📶 🔋</div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="back" onclick="location.href='prototype-project-detail.html'">← 返回</div>
+            <div class="title centered">全部任务</div>
+            <div class="actions">
+                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+            </div>
+        </div>
+        
+        <div class="page-content">
+            <div class="search-filter-bar" id="searchFilterBar">
+                <div class="search-filter-row">
+                    <div class="search-input-wrap">
+                        <input type="text" class="search-input" placeholder="搜索任务名称..." id="searchInput" oninput="filterTasks()">
+                    </div>
+                    <div class="filter-btn" id="filterBtn" onclick="toggleFilterDropdown()">
+                        <span>🔍</span>
+                    </div>
+                </div>
+                <div class="filter-tags" id="filterTags" style="display: none;">
+                </div>
+                
+                <div class="filter-dropdown" id="filterDropdown">
+                    <div class="filter-dropdown-header">
+                        <span>筛选条件</span>
+                        <span class="filter-dropdown-close" onclick="closeFilterDropdown()">✕</span>
+                    </div>
+                    <div class="filter-section">
+                        <div class="filter-section-title">合同</div>
+                        <div class="filter-options" id="contractOptions">
+                            <div class="filter-option active" data-value="all" onclick="selectContract(this, 'all', '全部合同')">全部合同</div>
+                            <div class="filter-option" data-value="contract-1" onclick="selectContract(this, 'contract-1', '水电分包合同')">水电分包合同</div>
+                            <div class="filter-option" data-value="contract-2" onclick="selectContract(this, 'contract-2', '泥瓦分包合同')">泥瓦分包合同</div>
+                            <div class="filter-option" data-value="contract-3" onclick="selectContract(this, 'contract-3', '木工分包合同')">木工分包合同</div>
+                            <div class="filter-option" data-value="contract-4" onclick="selectContract(this, 'contract-4', '油漆分包合同')">油漆分包合同</div>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <div class="filter-section-title">任务类型</div>
+                        <div class="filter-options" id="typeOptions">
+                            <div class="filter-option active" data-value="all" onclick="selectType(this, 'all', '全部类型')">全部类型</div>
+                            <div class="filter-option" data-value="contract" onclick="selectType(this, 'contract', '合约任务')">合约任务</div>
+                            <div class="filter-option" data-value="temp" onclick="selectType(this, 'temp', '临时任务')">临时任务</div>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <div class="filter-section-title">状态</div>
+                        <div class="filter-options" id="statusOptions">
+                            <div class="filter-option active" data-value="all" onclick="selectStatus(this, 'all', '全部状态')">全部状态</div>
+                            <div class="filter-option" data-value="pending" onclick="selectStatus(this, 'pending', '待开始')">待开始</div>
+                            <div class="filter-option" data-value="confirming" onclick="selectStatus(this, 'confirming', '确认中')">确认中</div>
+                            <div class="filter-option" data-value="completed" onclick="selectStatus(this, 'completed', '已完成')">已完成</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-summary">
+                <div class="stats-item">
+                    <div class="value highlight" id="totalCount">24</div>
+                    <div class="label">全部任务</div>
+                </div>
+                <div class="stats-item">
+                    <div class="value" id="pendingCount">8</div>
+                    <div class="label">待开始</div>
+                </div>
+                <div class="stats-item">
+                    <div class="value" id="confirmingCount">4</div>
+                    <div class="label">确认中</div>
+                </div>
+                <div class="stats-item">
+                    <div class="value" id="completedCount">12</div>
+                    <div class="label">已完成</div>
+                </div>
+            </div>
+            
+            <div class="result-bar">
+                <span id="resultCount">共 24 个任务</span>
+                <span class="expand-all-btn" onclick="expandAllContracts()">展开全部</span>
+            </div>
+            
+            <div id="taskContainer">
+                <div class="contract-section" data-contract="contract-1">
+                    <div class="contract-header" onclick="toggleContract(this)">
+                        <div class="contract-icon">📄</div>
+                        <div class="contract-info">
+                            <div class="contract-name">水电分包合同</div>
+                            <div class="contract-meta">水电工作组 · 4个阶段 · 12个任务</div>
+                        </div>
+                        <div class="contract-stats">
+                            <span class="stat-badge pending">待开始 3</span>
+                            <span class="stat-badge confirming">确认中 1</span>
+                        </div>
+                        <div class="arrow expanded">▼</div>
+                    </div>
+                    <div class="stage-group show">
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot completed"></div>
+                                <div class="stage-name">材料进场阶段</div>
+                                <div class="stage-count">3/3 已完成</div>
+                                <div class="arrow expanded">▼</div>
+                            </div>
+                            <div class="task-list show">
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">材料采购 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：张三 · 确认人：李四、王五</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">材料运输 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：张三 · 确认人：李四</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">材料确认 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：张三 · 确认人：李四、王五、赵六</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot confirming"></div>
+                                <div class="stage-name">布管布线阶段</div>
+                                <div class="stage-count">2/4 进行中</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">开槽 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">布管 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="confirming" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status confirming">⋯</div>
+                                    <div class="task-info">
+                                        <div class="task-name">穿线 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认中：1/3</div>
+                                    </div>
+                                    <div class="task-status-text confirming">确认中</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">阶段确认 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot"></div>
+                                <div class="stage-name">安装阶段</div>
+                                <div class="stage-count">0/3 待开始</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">开关插座安装 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">灯具安装 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                                <div class="task-item" data-type="temp" data-status="confirming" onclick="location.href='prototype-temp-task-detail.html?status=confirming'">
+                                    <div class="task-status confirming">⋯</div>
+                                    <div class="task-info">
+                                        <div class="task-name">更换损坏插座 <span class="task-tag temp">临时</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认中：2/3</div>
+                                    </div>
+                                    <div class="task-status-text confirming">确认中</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot"></div>
+                                <div class="stage-name">收尾阶段</div>
+                                <div class="stage-count">0/2 待开始</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">清理现场 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">最终确认 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：李四 · 确认人：张三、王五、赵六、钱七、孙八</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contract-section" data-contract="contract-2">
+                    <div class="contract-header" onclick="toggleContract(this)">
+                        <div class="contract-icon" style="background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);">📄</div>
+                        <div class="contract-info">
+                            <div class="contract-name">泥瓦分包合同</div>
+                            <div class="contract-meta">泥瓦工作组 · 3个阶段 · 8个任务</div>
+                        </div>
+                        <div class="contract-stats">
+                            <span class="stat-badge pending">待开始 2</span>
+                            <span class="stat-badge confirming">确认中 1</span>
+                        </div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="stage-group">
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot completed"></div>
+                                <div class="stage-name">防水阶段</div>
+                                <div class="stage-count">2/2 已完成</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">防水施工 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status completed">✓</div>
+                                    <div class="task-info">
+                                        <div class="task-name">防水确认 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text completed">已完成</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot confirming"></div>
+                                <div class="stage-name">贴砖阶段</div>
+                                <div class="stage-count">1/3 进行中</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="confirming" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status confirming">⋯</div>
+                                    <div class="task-info">
+                                        <div class="task-name">墙面贴砖 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：王五 · 确认中：2/3</div>
+                                    </div>
+                                    <div class="task-status-text confirming">确认中</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">地面铺砖 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                                <div class="task-item" data-type="temp" data-status="pending" onclick="location.href='prototype-temp-task-detail.html?status=pending'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">紧急修补墙面裂缝 <span class="task-tag temp">临时</span></div>
+                                        <div class="task-meta">执行人：待接收 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待接收</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contract-section" data-contract="contract-3">
+                    <div class="contract-header" onclick="toggleContract(this)">
+                        <div class="contract-icon" style="background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);">📄</div>
+                        <div class="contract-info">
+                            <div class="contract-name">木工分包合同</div>
+                            <div class="contract-meta">木工工作组 · 2个阶段 · 4个任务</div>
+                        </div>
+                        <div class="contract-stats">
+                            <span class="stat-badge pending">待开始 4</span>
+                        </div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="stage-group">
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot"></div>
+                                <div class="stage-name">吊顶阶段</div>
+                                <div class="stage-count">0/2 待开始</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">吊顶施工 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：赵六 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">吊顶确认 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：赵六 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contract-section" data-contract="contract-4">
+                    <div class="contract-header" onclick="toggleContract(this)">
+                        <div class="contract-icon" style="background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);">📄</div>
+                        <div class="contract-info">
+                            <div class="contract-name">油漆分包合同</div>
+                            <div class="contract-meta">油漆工作组 · 2个阶段 · 4个任务</div>
+                        </div>
+                        <div class="contract-stats">
+                            <span class="stat-badge pending">待开始 4</span>
+                        </div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="stage-group">
+                        <div class="stage-item">
+                            <div class="stage-header" onclick="toggleStage(this)">
+                                <div class="stage-dot"></div>
+                                <div class="stage-name">批刮阶段</div>
+                                <div class="stage-count">0/2 待开始</div>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="task-list">
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">墙面批刮 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：钱七 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                    <div class="task-status pending">○</div>
+                                    <div class="task-info">
+                                        <div class="task-name">批刮确认 <span class="task-tag contract">合约</span></div>
+                                        <div class="task-meta">执行人：钱七 · 确认人：张三、李四</div>
+                                    </div>
+                                    <div class="task-status-text pending">待开始</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="icon">📋</div>
+                <div class="text">暂无符合条件的任务</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-nav">
+        <div class="page-nav-title">原型导航</div>
+        <a href="prototype-home.html" class="page-nav-item">首页</a>
+        <a href="prototype-project-list.html" class="page-nav-item">项目列表</a>
+        <a href="prototype-project-detail.html" class="page-nav-item">项目详情</a>
+        <a href="prototype-task-list.html" class="page-nav-item active">任务列表</a>
+        <a href="prototype-contract-detail.html" class="page-nav-item">合同详情</a>
+        <a href="prototype-task-detail.html" class="page-nav-item">任务详情</a>
+        <a href="prototype-temp-task-detail.html" class="page-nav-item">临时任务详情</a>
+        <a href="prototype-task-acceptance.html" class="page-nav-item">接任务</a>
+    </div>
+    
+    <script>
+        let currentFilters = {
+            contract: 'all',
+            contractText: '全部合同',
+            type: 'all',
+            typeText: '全部类型',
+            status: 'all',
+            statusText: '全部状态'
+        };
+        
+        let allExpanded = true;
+        
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            const filterBtn = document.getElementById('filterBtn');
+            dropdown.classList.toggle('show');
+            filterBtn.classList.toggle('active');
+        }
+        
+        function closeFilterDropdown() {
+            document.getElementById('filterDropdown').classList.remove('show');
+            document.getElementById('filterBtn').classList.remove('active');
+        }
+        
+        function selectContract(element, value, text) {
+            currentFilters.contract = value;
+            currentFilters.contractText = text;
+            updateFilterOptions('contractOptions', value);
+            updateFilterTags();
+            filterTasks();
+        }
+        
+        function selectType(element, value, text) {
+            currentFilters.type = value;
+            currentFilters.typeText = text;
+            updateFilterOptions('typeOptions', value);
+            updateFilterTags();
+            filterTasks();
+        }
+        
+        function selectStatus(element, value, text) {
+            currentFilters.status = value;
+            currentFilters.statusText = text;
+            updateFilterOptions('statusOptions', value);
+            updateFilterTags();
+            filterTasks();
+        }
+        
+        function updateFilterOptions(containerId, activeValue) {
+            const container = document.getElementById(containerId);
+            const options = container.querySelectorAll('.filter-option');
+            options.forEach(option => {
+                if (option.dataset.value === activeValue) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateFilterTags() {
+            const filterTags = document.getElementById('filterTags');
+            const tags = [];
+            
+            if (currentFilters.contract !== 'all') {
+                tags.push({ type: 'contract', text: currentFilters.contractText });
+            }
+            if (currentFilters.type !== 'all') {
+                tags.push({ type: 'type', text: currentFilters.typeText });
+            }
+            if (currentFilters.status !== 'all') {
+                tags.push({ type: 'status', text: currentFilters.statusText });
+            }
+            
+            if (tags.length > 0) {
+                filterTags.style.display = 'flex';
+                filterTags.innerHTML = tags.map(tag => `
+                    <div class="filter-tag">
+                        <span>${tag.text}</span>
+                        <span class="remove" onclick="removeFilter('${tag.type}')">×</span>
+                    </div>
+                `).join('');
+            } else {
+                filterTags.style.display = 'none';
+            }
+            
+            const filterBtn = document.getElementById('filterBtn');
+            if (tags.length > 0) {
+                filterBtn.classList.add('active');
+            } else {
+                filterBtn.classList.remove('active');
+            }
+        }
+        
+        function removeFilter(type) {
+            if (type === 'contract') {
+                currentFilters.contract = 'all';
+                currentFilters.contractText = '全部合同';
+                updateFilterOptions('contractOptions', 'all');
+            } else if (type === 'type') {
+                currentFilters.type = 'all';
+                currentFilters.typeText = '全部类型';
+                updateFilterOptions('typeOptions', 'all');
+            } else if (type === 'status') {
+                currentFilters.status = 'all';
+                currentFilters.statusText = '全部状态';
+                updateFilterOptions('statusOptions', 'all');
+            }
+            updateFilterTags();
+            filterTasks();
+        }
+        
+        function toggleContract(header) {
+            const stageGroup = header.nextElementSibling;
+            const arrow = header.querySelector('.arrow');
+            
+            if (stageGroup.classList.contains('show')) {
+                stageGroup.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                stageGroup.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+        
+        function toggleStage(header) {
+            const taskList = header.nextElementSibling;
+            const arrow = header.querySelector('.arrow');
+            
+            if (taskList.classList.contains('show')) {
+                taskList.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                taskList.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+        
+        function expandAllContracts() {
+            const btn = document.querySelector('.expand-all-btn');
+            const contractSections = document.querySelectorAll('.contract-section');
+            
+            if (allExpanded) {
+                contractSections.forEach(section => {
+                    const stageGroup = section.querySelector('.stage-group');
+                    const arrow = section.querySelector('.contract-header .arrow');
+                    stageGroup.classList.remove('show');
+                    arrow.classList.remove('expanded');
+                    
+                    section.querySelectorAll('.task-list').forEach(list => list.classList.remove('show'));
+                    section.querySelectorAll('.stage-header .arrow').forEach(a => a.classList.remove('expanded'));
+                });
+                btn.textContent = '展开全部';
+                allExpanded = false;
+            } else {
+                contractSections.forEach(section => {
+                    const stageGroup = section.querySelector('.stage-group');
+                    const arrow = section.querySelector('.contract-header .arrow');
+                    stageGroup.classList.add('show');
+                    arrow.classList.add('expanded');
+                    
+                    section.querySelectorAll('.task-list').forEach(list => list.classList.add('show'));
+                    section.querySelectorAll('.stage-header .arrow').forEach(a => a.classList.add('expanded'));
+                });
+                btn.textContent = '收起全部';
+                allExpanded = true;
+            }
+        }
+        
+        function filterTasks() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const contractSections = document.querySelectorAll('.contract-section');
+            let totalVisible = 0;
+            let pendingCount = 0;
+            let confirmingCount = 0;
+            let completedCount = 0;
+            
+            contractSections.forEach(section => {
+                const contractId = section.dataset.contract;
+                const tasks = section.querySelectorAll('.task-item');
+                let contractVisibleCount = 0;
+                
+                tasks.forEach(task => {
+                    const taskType = task.dataset.type;
+                    const taskStatus = task.dataset.status;
+                    const taskName = task.querySelector('.task-name').textContent.toLowerCase();
+                    
+                    let visible = true;
+                    
+                    if (currentFilters.contract !== 'all' && contractId !== currentFilters.contract) {
+                        visible = false;
+                    }
+                    
+                    if (currentFilters.type !== 'all' && taskType !== currentFilters.type) {
+                        visible = false;
+                    }
+                    
+                    if (currentFilters.status !== 'all' && taskStatus !== currentFilters.status) {
+                        visible = false;
+                    }
+                    
+                    if (searchText && !taskName.includes(searchText)) {
+                        visible = false;
+                    }
+                    
+                    task.style.display = visible ? 'flex' : 'none';
+                    
+                    if (visible) {
+                        contractVisibleCount++;
+                        totalVisible++;
+                        if (taskStatus === 'pending') pendingCount++;
+                        if (taskStatus === 'confirming') confirmingCount++;
+                        if (taskStatus === 'completed') completedCount++;
+                    }
+                });
+                
+                if (contractVisibleCount > 0) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('resultCount').textContent = '共 ' + totalVisible + ' 个任务';
+            document.getElementById('totalCount').textContent = totalVisible;
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('confirmingCount').textContent = confirmingCount;
+            document.getElementById('completedCount').textContent = completedCount;
+            
+            const emptyState = document.getElementById('emptyState');
+            if (totalVisible === 0) {
+                emptyState.style.display = 'flex';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-filter-bar')) {
+                document.getElementById('filterDropdown').classList.remove('show');
+                document.getElementById('filterBtn').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
