@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>家装平台小程序原型 - 项目列表</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* ── 页面内容区高度（status 44 + nav 44 + tabbar 50） */
+        .page-content {
+            height: calc(100% - 44px - 44px - 50px);
+        }
+
+        /* ── 筛选 Tab 栏 */
+        .filter-tabs {
+            display: flex;
+            background-color: var(--bg-primary);
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-tab {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-tab.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .filter-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 16px;
+            right: 16px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        /* ── 搜索栏 */
+        .search-bar {
+            padding: 12px 16px;
+            background-color: var(--bg-primary);
+        }
+
+        .search-input {
+            width: 100%;
+            height: 36px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 18px;
+            padding: 0 16px;
+            font-size: 14px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* ── 列表页项目卡片（覆盖 common 基础样式） */
+        .project-card {
+            margin: 12px 16px;
+            padding: 16px;
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        .project-card:hover {
+            border-color: var(--border-color);
+            box-shadow: 0 4px 12px var(--shadow-md);
+        }
+
+        .project-header {
+            margin-bottom: 12px;
+        }
+
+        .project-info {
+            margin-bottom: 8px;
+        }
+
+        .project-info-item {
+            display: inline-block;
+            margin-right: 16px;
+        }
+
+        /* ── 子项目标签 */
+        .sub-projects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sub-project-tag {
+            font-size: 11px;
+            padding: 4px 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+
+        /* ── 悬浮创建按钮（FAB） */
+        .create-btn {
+            position: fixed;
+            bottom: 70px;
+            right: calc(50% - 375px / 2 + 16px);
+            width: 56px;
+            height: 56px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+            transition: all 0.2s;
+        }
+
+        .create-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-nav">
+        <h3>页面导航</h3>
+        <a href="prototype-home.html">首页（工作台）</a>
+        <a href="prototype-project-list.html" class="active">项目列表</a>
+        <a href="prototype-project-detail.html">项目详情</a>
+        <a href="prototype-task-detail.html">任务详情</a>
+        <a href="prototype-acceptance.html">验收页面</a>
+    </div>
+    
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="icons">
+                <span>📶</span>
+                <span>WiFi</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="title">📋 项目列表</div>
+            <div class="actions">
+                <div class="action-btn">🔍</div>
+                <div class="action-btn">⚙️</div>
+            </div>
+        </div>
+        
+        <div class="page-content">
+            <div class="filter-tabs">
+                <div class="filter-tab active">全部</div>
+                <div class="filter-tab">进行中</div>
+                <div class="filter-tab">待启动</div>
+                <div class="filter-tab">已完工</div>
+                <div class="filter-tab">已暂停</div>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="🔍 搜索项目名称或编码">
+            </div>
+            
+            <div class="project-card" onclick="location.href='prototype-project-detail.html'">
+                <div class="project-header">
+                    <div class="project-name">XX小区整体装修</div>
+                    <div class="project-status">进行中</div>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">项目类型：家装</span>
+                    <span class="project-info-item">预算：50万元</span>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">工期：2024-01-01 ~ 2024-03-31</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 65%"></div>
+                </div>
+                <div class="progress-text">进度：65%</div>
+                <div class="sub-projects">
+                    <span class="sub-project-tag">水电工程 65%</span>
+                    <span class="sub-project-tag">泥瓦工程 30%</span>
+                    <span class="sub-project-tag">木工工程 0%</span>
+                    <span class="sub-project-tag">油漆工程 0%</span>
+                </div>
+            </div>
+            
+            <div class="project-card" onclick="location.href='prototype-project-detail.html'">
+                <div class="project-header">
+                    <div class="project-name">YY花园精装修</div>
+                    <div class="project-status">进行中</div>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">项目类型：家装</span>
+                    <span class="project-info-item">预算：35万元</span>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">工期：2024-02-01 ~ 2024-04-30</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 30%"></div>
+                </div>
+                <div class="progress-text">进度：30%</div>
+                <div class="sub-projects">
+                    <span class="sub-project-tag">水电工程 60%</span>
+                    <span class="sub-project-tag">泥瓦工程 0%</span>
+                </div>
+            </div>
+            
+            <div class="project-card" onclick="location.href='prototype-project-detail.html'">
+                <div class="project-header">
+                    <div class="project-name">ZZ办公楼装修</div>
+                    <div class="project-status pending">待启动</div>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">项目类型：工装</span>
+                    <span class="project-info-item">预算：80万元</span>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">工期：2024-03-01 ~ 2024-06-30</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">进度：0%</div>
+            </div>
+            
+            <div class="project-card" onclick="location.href='prototype-project-detail.html'">
+                <div class="project-header">
+                    <div class="project-name">AA别墅装修</div>
+                    <div class="project-status completed">已完工</div>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">项目类型：家装</span>
+                    <span class="project-info-item">预算：120万元</span>
+                </div>
+                <div class="project-info">
+                    <span class="project-info-item">工期：2023-09-01 ~ 2024-01-31</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 100%; background-color: var(--success-color);"></div>
+                </div>
+                <div class="progress-text">进度：100%</div>
+            </div>
+        </div>
+        
+        <div class="create-btn">+</div>
+        
+        <div class="tab-bar">
+            <div class="tab-item" onclick="location.href='prototype-home.html'">
+                <div class="icon">🏠</div>
+                <div class="label">首页</div>
+            </div>
+            <div class="tab-item active">
+                <div class="icon">📋</div>
+                <div class="label">项目</div>
+            </div>
+            <div class="tab-item">
+                <div class="icon">📊</div>
+                <div class="label">看板</div>
+            </div>
+            <div class="tab-item">
+                <div class="icon">💬</div>
+                <div class="label">消息</div>
+            </div>
+            <div class="tab-item">
+                <div class="icon">👤</div>
+                <div class="label">我的</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

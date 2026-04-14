@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>家装平台小程序原型 - 合同详情</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* 鈹€鈹€ 鍚堝悓璇︽儏锛氶〉闈㈠唴瀹瑰尯楂樺害锛坰tatus 44 + nav 44 + bottom-actions ~68锛?*/
+        .page-content {
+            height: calc(100% - 44px - 44px);
+            padding-bottom: 80px;
+        }
+
+        /* 鈹€鈹€ 鍚堝悓鐘舵€?Banner锛堟笎鍙樿壊闅忕姸鎬佸彉鍖栵級 */
+        .status-banner {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            margin: 0;
+            border-radius: 0;
+            padding: 16px;
+            color: #FFFFFF;
+        }
+
+        .status-banner.draft      { background: linear-gradient(135deg, #8C8C8C 0%, #BFBFBF 100%); }
+        .status-banner.confirming { background: linear-gradient(135deg, var(--orange-color) 0%, var(--orange-light) 100%); }
+        .status-banner.confirmed  { background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%); }
+        .status-banner.signed     { background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); }
+
+        .status-banner .status-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .status-banner .status-desc {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* 鈹€鈹€ 鍚堝悓椤?info-row锛坙abel 鍥哄瑕嗙洊 common 鐨?flex label锛?*/
+        .info-row {
+            padding: 10px 0;
+        }
+
+        .info-row .label {
+            width: 80px;
+            font-size: 13px;
+            flex-shrink: 0;
+            text-align: left;
+        }
+
+        .info-row .value {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text-primary);
+            text-align: left;
+        }
+
+        /* 鈹€鈹€ 绛剧害鍙屾柟鍗＄墖 */
+        .party-card {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .party-card:last-child { margin-bottom: 0; }
+
+        .party-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+
+        .party-card .avatar.party-b {
+            background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%);
+        }
+
+        .party-card .info { flex: 1; }
+
+        .party-card .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .party-card .role {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .party-card .tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        /* 鈹€鈹€ 鍚堝悓鍐呭 Section Tabs锛圫ticky锛?*/
+        .section-tabs {
+            display: flex;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .section-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .section-tab.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .section-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 2px;
+            background-color: var(--primary-color);
+            border-radius: 1px;
+        }
+
+        .section-content { display: none; }
+        .section-content.show { display: block; }
+
+        /* 鈹€鈹€ 闃舵浠诲姟 */
+        .stage-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            cursor: pointer;
+        }
+
+        .stage-header .stage-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .stage-header .stage-info { flex: 1; }
+
+        .stage-header .stage-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stage-header .stage-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .stage-header .stage-progress { text-align: right; }
+
+        .stage-header .stage-progress .percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stage-header .arrow {
+            margin-left: 8px;
+            color: var(--text-tertiary);
+            transition: transform 0.3s;
+        }
+
+        .stage-header .arrow.expanded { transform: rotate(180deg); }
+
+        .stage-tasks {
+            display: none;
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stage-tasks.show { display: block; }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .task-item:last-child { border-bottom: none; }
+
+        .task-item .task-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+
+        .task-item .task-status.completed { background-color: var(--success-color); color: #FFFFFF; }
+        .task-item .task-status.pending   { background-color: var(--bg-tertiary); color: var(--text-tertiary); }
+        .task-item .task-status.in-progress { background-color: var(--warning-color); color: #FFFFFF; }
+
+        .task-item .task-info { flex: 1; }
+
+        .task-item .task-name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .task-item .task-desc {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .task-item .task-amount {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--warning-color);
+        }
+
+        /* 鈹€鈹€ 闄勪欢鍒楄〃 */
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .attachment-item:last-child { margin-bottom: 0; }
+
+        .attachment-item .file-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background-color: var(--status-primary-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .attachment-item .file-info { flex: 1; }
+
+        .attachment-item .file-name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .attachment-item .file-meta {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .attachment-item .download-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* 鈹€鈹€ 鐗堟湰鍘嗗彶 */
+        .version-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .version-item:last-child { margin-bottom: 0; }
+
+        .version-item .version-tag {
+            padding: 4px 8px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .version-item .version-tag.current {
+            background-color: var(--success-color);
+            color: #FFFFFF;
+        }
+
+        .version-item .version-info { flex: 1; }
+
+        .version-item .version-name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .version-item .version-date {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .version-item .view-btn {
+            font-size: 13px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* 鈹€鈹€ 搴曢儴鎿嶄綔鏍忥紙鍚堝悓璇︽儏涓撶敤锛岄珮搴﹀惈 padding 绾?68px锛?*/
+        .bottom-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-primary);
+            padding: 12px 16px;
+            box-shadow: 0 -2px 10px var(--shadow-md);
+            display: flex;
+            gap: 12px;
+        }
+
+        /* 鍚堝悓璇︽儏鎸夐挳楂樺害 44px锛堟瘮 common 40px 绋嶉珮锛?*/
+        .action-btn {
+            height: 44px;
+            border-radius: 8px;
+            font-size: 15px;
+            border: none;
+        }
+
+        /* 鈹€鈹€ Modal 寮圭獥 */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            width: 300px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header .title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .modal-body { padding: 16px; }
+
+        .modal-body .message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .modal-footer {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .modal-footer .btn.cancel {
+            color: var(--text-tertiary);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .modal-footer .btn.confirm {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* 鈹€鈹€ 鍘熷瀷鐘舵€佸垏鎹㈠櫒锛堟紨绀虹敤锛?*/
+        .status-switcher {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .status-switch-item {
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-switch-item:hover { background-color: var(--bg-secondary); }
+
+        .status-switch-item.active {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* 鈹€鈹€ 鍚堝悓姝ｆ枃鍖?*/
+        .text-content {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        /* 鈹€鈹€ 鍚堝悓鐘舵€佹祦绋嬪浘 */
+        .status-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .status-flow-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .status-flow-item .dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #FFFFFF;
+        }
+
+        .status-flow-item .dot.active    { background-color: var(--primary-color); }
+        .status-flow-item .dot.completed { background-color: var(--success-color); }
+
+        .status-flow-item .label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .status-flow-item .label.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .status-flow-line {
+            width: 40px;
+            height: 2px;
+            background-color: var(--bg-tertiary);
+            margin: 0 8px;
+            margin-bottom: 20px;
+        }
+
+        .status-flow-line.completed { background-color: var(--success-color); }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <div class="time">9:41</div>
+            <div class="icons">馃摱 馃攱</div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="back" onclick="location.href='prototype-project-detail.html'">鈫?杩斿洖</div>
+            <div class="title">鍚堝悓璇︽儏</div>
+            <div class="actions">
+                <div class="action-btn" onclick="showVersionModal()">馃搵</div>
+            </div>
+        </div>
+        
+        <div class="page-content">
+            <div class="card status-banner signed" id="statusBanner">
+                <div class="status-text" id="statusText">宸茬绾?/div>
+                <div class="status-desc" id="statusDesc">鍚堝悓宸叉寮忕敓鏁堬紝鍙彂璧峰彉鏇寸敵璇?/div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span>馃搫 鍚堝悓淇℃伅</span>
+                </div>
+                <div class="info-row">
+                    <div class="label">鍚堝悓鍚嶇О</div>
+                    <div class="value">姘寸數鍒嗗寘鍚堝悓</div>
+                </div>
+                <div class="info-row">
+                    <div class="label">鍚堝悓缂栧彿</div>
+                    <div class="value">HT-2024-001</div>
+                </div>
+                <div class="info-row">
+                    <div class="label">鍚堝悓閲戦</div>
+                    <div class="value highlight">楼80,000.00</div>
+                </div>
+                <div class="info-row">
+                    <div class="label">绛捐鏃ユ湡</div>
+                    <div class="value">2024-01-10</div>
+                </div>
+                <div class="info-row">
+                    <div class="label">宸ユ湡</div>
+                    <div class="value">45澶?/div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span>馃懃 绛剧害鍙屾柟</span>
+                </div>
+                <div class="party-card">
+                    <div class="avatar">鐢?/div>
+                    <div class="info">
+                        <div class="name">XX瑁呬慨鍏徃</div>
+                        <div class="role">鍙戝寘鏂癸紙鐢叉柟锛?/div>
+                    </div>
+                    <div class="tag" id="partyATag">宸茬绾?/div>
+                </div>
+                <div class="party-card">
+                    <div class="avatar party-b">涔?/div>
+                    <div class="info">
+                        <div class="name">姘寸數鏂藉伐缁?/div>
+                        <div class="role">鎵垮寘鏂癸紙涔欐柟锛?/div>
+                    </div>
+                    <div class="tag" id="partyBTag">宸茬绾?/div>
+                </div>
+            </div>
+            
+            <div class="section-tabs">
+                <div class="section-tab active" onclick="switchSection(this, 'content')">鍚堝悓鍐呭</div>
+                <div class="section-tab" onclick="switchSection(this, 'stages')">闃舵浠诲姟</div>
+                <div class="section-tab" onclick="switchSection(this, 'attachments')">闄勪欢</div>
+                <div class="section-tab" onclick="switchSection(this, 'agreement')">琛ュ厖鍗忚</div>
+            </div>
+            
+            <div class="section-content show" id="contentSection">
+                <div class="card">
+                    <div class="card-title">
+                        <span>馃摑 鍚堝悓姝ｆ枃</span>
+                        <span class="more" onclick="alert('鏌ョ湅瀹屾暣鍚堝悓')">鏌ョ湅鍏ㄦ枃 ></span>
+                    </div>
+                    <div class="text-content">
+                        鏍规嵁銆婁腑鍗庝汉姘戝叡鍜屽浗姘戞硶鍏搞€嬪強鐩稿叧娉曞緥娉曡鐨勮瀹氾紝鐢蹭箼鍙屾柟鏈潃骞崇瓑銆佽嚜鎰裤€佸叕骞炽€佽瘹瀹炰俊鐢ㄧ殑鍘熷垯锛屽氨姘寸數宸ョ▼鍒嗗寘浜嬪疁鍗忓晢涓€鑷达紝璁㈢珛鏈悎鍚屻€?br><br>
+                        涓€銆佸伐绋嬫鍐?br>
+                        宸ョ▼鍚嶇О锛歑X灏忓尯鏁翠綋瑁呬慨姘寸數宸ョ▼<br>
+                        宸ョ▼鍦扮偣锛歑X甯俋X鍖篨X璺疿X鍙?br>
+                        宸ョ▼鍐呭锛氬己鐢点€佸急鐢点€佺粰鎺掓按绛夋按鐢靛伐绋?..
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-content" id="stagesSection">
+                <div class="card">
+                    <div class="card-title">
+                        <span>馃搵 闃舵浠诲姟 (4涓樁娈?</span>
+                    </div>
+                    
+                    <div class="stage-item">
+                        <div class="stage-header" onclick="toggleStage(this)">
+                            <div class="stage-icon">1</div>
+                            <div class="stage-info">
+                                <div class="stage-name">鏉愭枡杩涘満闃舵</div>
+                                <div class="stage-meta">3涓换鍔?路 棰勮3澶?/div>
+                            </div>
+                            <div class="stage-progress">
+                                <div class="percent">100%</div>
+                            </div>
+                            <div class="arrow expanded">鈻?/div>
+                        </div>
+                        <div class="stage-tasks show">
+                            <div class="task-item">
+                                <div class="task-status completed">鉁?/div>
+                                <div class="task-info">
+                                    <div class="task-name">鏉愭枡閲囪喘</div>
+                                    <div class="task-desc">瀹屾垚鏃堕棿锛?024-01-12</div>
+                                </div>
+                                <div class="task-amount">楼15,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status completed">鉁?/div>
+                                <div class="task-info">
+                                    <div class="task-name">鏉愭枡杩愯緭</div>
+                                    <div class="task-desc">瀹屾垚鏃堕棿锛?024-01-13</div>
+                                </div>
+                                <div class="task-amount">楼2,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status completed">鉁?/div>
+                                <div class="task-info">
+                                    <div class="task-name">鏉愭枡楠屾敹</div>
+                                    <div class="task-desc">瀹屾垚鏃堕棿锛?024-01-13</div>
+                                </div>
+                                <div class="task-amount">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-item">
+                        <div class="stage-header" onclick="toggleStage(this)">
+                            <div class="stage-icon" style="background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);">2</div>
+                            <div class="stage-info">
+                                <div class="stage-name">甯冪甯冪嚎闃舵</div>
+                                <div class="stage-meta">4涓换鍔?路 棰勮15澶?/div>
+                            </div>
+                            <div class="stage-progress">
+                                <div class="percent" style="color: #52C41A;">75%</div>
+                            </div>
+                            <div class="arrow">鈻?/div>
+                        </div>
+                        <div class="stage-tasks">
+                            <div class="task-item">
+                                <div class="task-status completed">鉁?/div>
+                                <div class="task-info">
+                                    <div class="task-name">寮€妲?/div>
+                                    <div class="task-desc">瀹屾垚鏃堕棿锛?024-01-18</div>
+                                </div>
+                                <div class="task-amount">楼5,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status completed">鉁?/div>
+                                <div class="task-info">
+                                    <div class="task-name">甯冪</div>
+                                    <div class="task-desc">瀹屾垚鏃堕棿锛?024-01-22</div>
+                                </div>
+                                <div class="task-amount">楼8,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status in-progress">鈴?/div>
+                                <div class="task-info">
+                                    <div class="task-name">绌跨嚎</div>
+                                    <div class="task-desc">杩涜涓?路 棰勮瀹屾垚锛?024-01-28</div>
+                                </div>
+                                <div class="task-amount">楼10,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status pending">鈼?/div>
+                                <div class="task-info">
+                                    <div class="task-name">楠屾敹</div>
+                                    <div class="task-desc">寰呭紑濮?/div>
+                                </div>
+                                <div class="task-amount">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-item">
+                        <div class="stage-header" onclick="toggleStage(this)">
+                            <div class="stage-icon" style="background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);">3</div>
+                            <div class="stage-info">
+                                <div class="stage-name">瀹夎闃舵</div>
+                                <div class="stage-meta">3涓换鍔?路 棰勮10澶?/div>
+                            </div>
+                            <div class="stage-progress">
+                                <div class="percent" style="color: #FA8C16;">0%</div>
+                            </div>
+                            <div class="arrow">鈻?/div>
+                        </div>
+                        <div class="stage-tasks">
+                            <div class="task-item">
+                                <div class="task-status pending">鈼?/div>
+                                <div class="task-info">
+                                    <div class="task-name">寮€鍏虫彃搴у畨瑁?/div>
+                                    <div class="task-desc">寰呭紑濮?/div>
+                                </div>
+                                <div class="task-amount">楼8,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status pending">鈼?/div>
+                                <div class="task-info">
+                                    <div class="task-name">鐏叿瀹夎</div>
+                                    <div class="task-desc">寰呭紑濮?/div>
+                                </div>
+                                <div class="task-amount">楼6,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status pending">鈼?/div>
+                                <div class="task-info">
+                                    <div class="task-name">姘寸數楠屾敹</div>
+                                    <div class="task-desc">寰呭紑濮?/div>
+                                </div>
+                                <div class="task-amount">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-item">
+                        <div class="stage-header" onclick="toggleStage(this)">
+                            <div class="stage-icon" style="background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);">4</div>
+                            <div class="stage-info">
+                                <div class="stage-name">鏀跺熬闃舵</div>
+                                <div class="stage-meta">2涓换鍔?路 棰勮2澶?/div>
+                            </div>
+                            <div class="stage-progress">
+                                <div class="percent" style="color: #722ED1;">0%</div>
+                            </div>
+                            <div class="arrow">鈻?/div>
+                        </div>
+                        <div class="stage-tasks">
+                            <div class="task-item">
+                                <div class="task-status pending">鈼?/div>
+                                <div class="task-info">
+                                    <div class="task-name">娓呯悊鐜板満</div>
+                                    <div class="task-desc">寰呭紑濮?/div>
+                                </div>
+                                <div class="task-amount">楼1,000</div>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status pending">鈼?/div>
+                                <div class="task-info">
+                                    <div class="task-name">鏈€缁堥獙鏀?/div>
+                                    <div class="task-desc">寰呭紑濮?/div>
+                                </div>
+                                <div class="task-amount">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-content" id="attachmentsSection">
+                <div class="card">
+                    <div class="card-title">
+                        <span>馃搸 鍚堝悓闄勪欢</span>
+                    </div>
+                    <div class="attachment-item">
+                        <div class="file-icon">馃搫</div>
+                        <div class="file-info">
+                            <div class="file-name">姘寸數鍒嗗寘鍚堝悓.pdf</div>
+                            <div class="file-meta">2.3MB 路 2024-01-10涓婁紶</div>
+                        </div>
+                        <div class="download-btn" onclick="alert('涓嬭浇鏂囦欢')">猬?/div>
+                    </div>
+                    <div class="attachment-item">
+                        <div class="file-icon">馃柤锔?/div>
+                        <div class="file-info">
+                            <div class="file-name">绛剧害鐓х墖.jpg</div>
+                            <div class="file-meta">1.5MB 路 2024-01-10涓婁紶</div>
+                        </div>
+                        <div class="download-btn" onclick="alert('棰勮鍥剧墖')">馃憗</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>馃搧 琛ュ厖鏂囦欢</span>
+                        <span class="more" onclick="alert('涓婁紶闄勪欢')">+ 涓婁紶</span>
+                    </div>
+                    <div class="attachment-item">
+                        <div class="file-icon">馃搳</div>
+                        <div class="file-info">
+                            <div class="file-name">鏉愭枡娓呭崟.xlsx</div>
+                            <div class="file-meta">156KB 路 2024-01-12涓婁紶</div>
+                        </div>
+                        <div class="download-btn" onclick="alert('涓嬭浇鏂囦欢')">猬?/div>
+                    </div>
+                    <div class="attachment-item">
+                        <div class="file-icon">馃搻</div>
+                        <div class="file-info">
+                            <div class="file-name">鏂藉伐鍥剧焊.dwg</div>
+                            <div class="file-meta">5.8MB 路 2024-01-12涓婁紶</div>
+                        </div>
+                        <div class="download-btn" onclick="alert('涓嬭浇鏂囦欢')">猬?/div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-content" id="agreementSection">
+                <div class="card">
+                    <div class="card-title">
+                        <span>馃摑 琛ュ厖鍗忚</span>
+                        <span class="more" onclick="alert('娣诲姞琛ュ厖鍗忚')">+ 娣诲姞</span>
+                    </div>
+                    <div class="empty-state">
+                        <div class="icon">馃搵</div>
+                        <div class="text">鏆傛棤琛ュ厖鍗忚</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>馃摐 鍙樻洿璁板綍</span>
+                    </div>
+                    <div class="version-item">
+                        <div class="version-tag current">V1</div>
+                        <div class="version-info">
+                            <div class="version-name">鍒濆鐗堟湰</div>
+                            <div class="version-date">2024-01-10 10:30 鍒涘缓</div>
+                        </div>
+                        <div class="view-btn" onclick="alert('鏌ョ湅璇︽儏')">鏌ョ湅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom-actions" id="bottomActions">
+            <div class="action-btn secondary" onclick="showStatusModal('change')">鍙戣捣鍙樻洿</div>
+            <div class="action-btn primary" onclick="alert('鏌ョ湅杩涘害')">鏌ョ湅杩涘害</div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="title" id="modalTitle">纭鎿嶄綔</div>
+            </div>
+            <div class="modal-body">
+                <div class="message" id="modalMessage">纭畾瑕佹墽琛屾鎿嶄綔鍚楋紵</div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn cancel" onclick="closeModal()">鍙栨秷</div>
+                <div class="btn confirm" onclick="confirmAction()">纭畾</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="versionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="title">鍚堝悓鐗堟湰璁板綍</div>
+            </div>
+            <div class="modal-body">
+                <div class="version-item">
+                    <div class="version-tag current">V1</div>
+                    <div class="version-info">
+                        <div class="version-name">鍒濆鐗堟湰锛堝綋鍓嶏級</div>
+                        <div class="version-date">2024-01-10 鍒涘缓</div>
+                    </div>
+                    <div class="view-btn">鏌ョ湅</div>
+                </div>
+                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+                    <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">鐘舵€佹祦杞褰?/div>
+                    <div style="font-size: 12px; color: #595959; line-height: 1.8;">
+                        <div>2024-01-05 鍒涘缓鍚堝悓锛堟嫙瀹氫腑锛?/div>
+                        <div>2024-01-06 鎻愪氦纭锛堢‘璁や腑锛?/div>
+                        <div>2024-01-08 涔欐柟纭锛堝凡纭锛?/div>
+                        <div>2024-01-10 涓婁紶绛剧害鏂囦欢锛堝凡绛剧害锛?/div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn confirm" onclick="closeVersionModal()" style="width: 100%;">鍏抽棴</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page-nav">
+        <div class="page-nav-title">鍘熷瀷瀵艰埅</div>
+        <a href="prototype-home.html" class="page-nav-item">棣栭〉</a>
+        <a href="prototype-project-list.html" class="page-nav-item">椤圭洰鍒楄〃</a>
+        <a href="prototype-project-detail.html" class="page-nav-item">椤圭洰璇︽儏</a>
+        <a href="prototype-contract-detail.html" class="page-nav-item active">鍚堝悓璇︽儏</a>
+        <a href="prototype-task-detail.html" class="page-nav-item">浠诲姟璇︽儏</a>
+        <a href="prototype-acceptance.html" class="page-nav-item">楠屾敹绠＄悊</a>
+        <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+            <div class="page-nav-title">鍚堝悓鐘舵€佸垏鎹?/div>
+            <div class="status-switcher">
+                <div class="status-switch-item" onclick="updateContractStatus('draft')">鎷熷畾涓?/div>
+                <div class="status-switch-item" onclick="updateContractStatus('confirming_sender')">纭涓?鍙戣捣鏂?</div>
+                <div class="status-switch-item" onclick="updateContractStatus('confirming_receiver')">纭涓?寰呯‘璁ゆ柟)</div>
+                <div class="status-switch-item" onclick="updateContractStatus('confirmed')">宸茬‘璁?/div>
+                <div class="status-switch-item active" onclick="updateContractStatus('signed')">宸茬绾?/div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const contractStatus = {
+            draft: {
+                text: '鎷熷畾涓?,
+                desc: '鍚堝悓姝ｅ湪缂栬緫涓紝缂栬緫瀹屾垚鍚庡彲鎻愪氦纭',
+                bannerClass: 'draft',
+                actions: [
+                    { text: '缂栬緫鍚堝悓', type: 'primary', action: 'edit' },
+                    { text: '鎻愪氦纭', type: 'success', action: 'submit' }
+                ]
+            },
+            confirming_sender: {
+                text: '寰呭鏂圭‘璁?,
+                desc: '宸插彂璧风‘璁ょ敵璇凤紝绛夊緟瀵规柟纭鍚堝悓鍐呭锛堜粎鏀寔鏌ョ湅锛?,
+                bannerClass: 'confirming',
+                readonly: true,
+                actions: [
+                    { text: '鎾ゅ洖纭', type: 'warning', action: 'withdraw' }
+                ]
+            },
+            confirming_receiver: {
+                text: '寰呮垜鏂圭‘璁?,
+                desc: '瀵规柟宸茬‘璁ゅ悎鍚屽唴瀹癸紝璇锋垜鏂硅繘琛屾渶缁堢‘璁ゆ垨椹冲洖淇敼',
+                bannerClass: 'confirming',
+                readonly: true,
+                actions: [
+                    { text: '椹冲洖淇敼', type: 'secondary', action: 'reject' },
+                    { text: '纭鍚堝悓', type: 'primary', action: 'confirm' }
+                ]
+            },
+            confirmed: {
+                text: '宸茬‘璁?,
+                desc: '鍙屾柟宸茬‘璁わ紝璇蜂笂浼犵绾﹀悗鐨勫悎鍚岄檮浠?,
+                bannerClass: 'confirmed',
+                actions: [
+                    { text: '涓婁紶绛剧害鏂囦欢', type: 'primary', action: 'upload' }
+                ]
+            },
+            signed: {
+                text: '宸茬绾?,
+                desc: '鍚堝悓宸叉寮忕敓鏁堬紝鍙彂璧峰彉鏇寸敵璇?,
+                bannerClass: 'signed',
+                actions: [
+                    { text: '鍙戣捣鍙樻洿', type: 'secondary', action: 'change' },
+                    { text: '鏌ョ湅杩涘害', type: 'primary', action: 'progress' }
+                ]
+            }
+        };
+        
+        let currentStatus = 'signed';
+        let isReadonly = false;
+        
+        function switchSection(tab, section) {
+            document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('show'));
+            document.getElementById(section + 'Section').classList.add('show');
+        }
+        
+        function toggleStage(header) {
+            const tasks = header.nextElementSibling;
+            const arrow = header.querySelector('.arrow');
+            
+            if (tasks.classList.contains('show')) {
+                tasks.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                tasks.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+        
+        function showStatusModal(action) {
+            const modal = document.getElementById('confirmModal');
+            const title = document.getElementById('modalTitle');
+            const message = document.getElementById('modalMessage');
+            
+            const actionTexts = {
+                edit: { title: '缂栬緫鍚堝悓', message: '纭畾瑕佺紪杈戝悎鍚屽唴瀹瑰悧锛? },
+                submit: { title: '鎻愪氦纭', message: '纭畾瑕佹彁浜ゅ悎鍚岃繘琛岀‘璁ゅ悧锛熸彁浜ゅ悗绛夊緟瀵规柟纭銆? },
+                withdraw: { title: '鎾ゅ洖纭', message: '纭畾瑕佹挙鍥炵‘璁ょ敵璇峰悧锛熸挙鍥炲悗鍙噸鏂扮紪杈戝悎鍚屻€? },
+                reject: { title: '椹冲洖淇敼', message: '纭畾瑕侀┏鍥炴鍚堝悓骞惰姹備慨鏀瑰悧锛熻璇存槑椹冲洖鍘熷洜銆? },
+                confirm: { title: '纭鍚堝悓', message: '纭畾瑕佺‘璁ゆ鍚堝悓鍚楋紵纭鍚庡弻鏂归渶涓婁紶绛剧害鏂囦欢銆? },
+                upload: { title: '涓婁紶绛剧害鏂囦欢', message: '璇烽€夋嫨瑕佷笂浼犵殑绛剧害鏂囦欢锛堟敮鎸丳DF銆丣PG銆丳NG鏍煎紡锛夈€? },
+                change: { title: '鍙戣捣鍙樻洿', message: '纭畾瑕佸彂璧峰悎鍚屽彉鏇村悧锛熷彉鏇村悗闇€瀵规柟纭銆? },
+                progress: { title: '鏌ョ湅杩涘害', message: '姝ｅ湪鍔犺浇鍚堝悓杩涘害...' }
+            };
+            
+            if (action === 'upload') {
+                closeModal();
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.pdf,.jpg,.jpeg,.png';
+                fileInput.onchange = function(e) {
+                    if (e.target.files.length > 0) {
+                        const file = e.target.files[0];
+                        alert('鏂囦欢"' + file.name + '"涓婁紶鎴愬姛锛?);
+                        updateContractStatus('signed');
+                    }
+                };
+                fileInput.click();
+                return;
+            }
+            
+            if (action === 'progress') {
+                closeModal();
+                alert('璺宠浆鍒板悎鍚岃繘搴﹂〉闈?);
+                return;
+            }
+            
+            if (action === 'edit') {
+                closeModal();
+                alert('杩涘叆鍚堝悓缂栬緫妯″紡');
+                return;
+            }
+            
+            title.textContent = actionTexts[action].title;
+            message.textContent = actionTexts[action].message;
+            modal.classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+        }
+        
+        function confirmAction() {
+            const title = document.getElementById('modalTitle').textContent;
+            closeModal();
+            
+            if (title === '鎻愪氦纭') {
+                alert('鎻愪氦鎴愬姛锛佺瓑寰呭鏂圭‘璁?);
+                updateContractStatus('confirming_sender');
+            } else if (title === '鎾ゅ洖纭') {
+                alert('宸叉挙鍥炵‘璁わ紝鍙噸鏂扮紪杈戝悎鍚?);
+                updateContractStatus('draft');
+            } else if (title === '椹冲洖淇敼') {
+                alert('宸查┏鍥炰慨鏀癸紝璇峰鏂归噸鏂扮紪杈?);
+                updateContractStatus('draft');
+            } else if (title === '纭鍚堝悓') {
+                alert('纭鎴愬姛锛佽涓婁紶绛剧害鏂囦欢');
+                updateContractStatus('confirmed');
+            } else if (title === '鍙戣捣鍙樻洿') {
+                alert('鍙樻洿鐢宠宸插彂璧凤紝绛夊緟瀵规柟纭');
+            } else {
+                alert('鎿嶄綔鎴愬姛锛?);
+            }
+        }
+        
+        function showVersionModal() {
+            document.getElementById('versionModal').classList.add('show');
+        }
+        
+        function closeVersionModal() {
+            document.getElementById('versionModal').classList.remove('show');
+        }
+        
+        function updateContractStatus(status) {
+            currentStatus = status;
+            const config = contractStatus[status];
+            isReadonly = config.readonly || false;
+            
+            const banner = document.getElementById('statusBanner');
+            banner.className = 'card status-banner ' + config.bannerClass;
+            document.getElementById('statusText').textContent = config.text;
+            document.getElementById('statusDesc').textContent = config.desc;
+            
+            const actionsContainer = document.getElementById('bottomActions');
+            actionsContainer.innerHTML = config.actions.map(action => 
+                `<div class="action-btn ${action.type}" onclick="showStatusModal('${action.action}')">${action.text}</div>`
+            ).join('');
+            
+            document.querySelectorAll('.status-switch-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const statusTextMap = {
+                'draft': '鎷熷畾涓?,
+                'confirming_sender': '纭涓?鍙戣捣鏂?',
+                'confirming_receiver': '纭涓?寰呯‘璁ゆ柟)',
+                'confirmed': '宸茬‘璁?,
+                'signed': '宸茬绾?
+            };
+            document.querySelectorAll('.status-switch-item').forEach(item => {
+                if (item.textContent === statusTextMap[status]) {
+                    item.classList.add('active');
+                }
+            });
+            
+            updatePartyStatus(status);
+        }
+        
+        function updatePartyStatus(status) {
+            const partyATag = document.getElementById('partyATag');
+            const partyBTag = document.getElementById('partyBTag');
+            
+            const statusMap = {
+                'draft': { a: '缂栬緫涓?, b: '寰呯‘璁? },
+                'confirming_sender': { a: '宸茬‘璁?, b: '纭涓? },
+                'confirming_receiver': { a: '宸茬‘璁?, b: '纭涓? },
+                'confirmed': { a: '宸茬‘璁?, b: '宸茬‘璁? },
+                'signed': { a: '宸茬绾?, b: '宸茬绾? }
+            };
+            
+            if (partyATag && partyBTag && statusMap[status]) {
+                partyATag.textContent = statusMap[status].a;
+                partyBTag.textContent = statusMap[status].b;
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

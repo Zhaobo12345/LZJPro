@@ -1,0 +1,1543 @@
+锘?!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>家装平台小程序原型 - 项目详情</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* 鈹€鈹€ 椤圭洰璇︽儏锛氶〉闈㈠唴瀹瑰尯楂樺害锛坰tatus 44 + nav 44锛屾棤搴曢儴鏍忥級 */
+        .page-content {
+            height: calc(100% - 44px - 44px);
+        }
+
+        /* 鈹€鈹€ 鍙充笂瑙掓皵娉℃搷浣滆彍鍗?*/
+        .action-menu {
+            position: absolute;
+            top: 44px;
+            right: 12px;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow-md);
+            z-index: 200;
+            display: none;
+            min-width: 140px;
+            overflow: hidden;
+        }
+
+        .action-menu.show { display: block; }
+
+        .action-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .action-menu-item:hover { background-color: var(--bg-secondary); }
+        .action-menu-item:active { background-color: var(--status-primary-bg); }
+
+        .action-menu-item .icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        /* 鈹€鈹€ 蹇嵎瀵艰埅锛堝彲鎶樺彔锛?*/
+        .quick-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            max-height: 120px;
+        }
+
+        .quick-nav.collapsed {
+            max-height: 0;
+            padding: 0 16px;
+            gap: 0;
+            border-bottom: none;
+        }
+
+        .quick-nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-nav-toggle.show { display: flex; }
+        .quick-nav-toggle:hover { background-color: var(--bg-secondary); }
+
+        .quick-nav-toggle .toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--primary-color);
+        }
+
+        .quick-nav-toggle .toggle-btn .arrow {
+            transition: transform 0.3s;
+        }
+
+        .quick-nav-toggle .toggle-btn .arrow.expanded {
+            transform: rotate(180deg);
+        }
+
+        .quick-nav-toggle .dots { display: flex; gap: 4px; }
+
+        .quick-nav-toggle .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+        }
+
+        .quick-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 4px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .quick-nav-item:hover { background-color: var(--bg-secondary); }
+        .quick-nav-item:active { transform: scale(0.95); background-color: var(--status-primary-bg); }
+
+        .quick-nav-item .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .quick-nav-item .icon.info      { background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); }
+        .quick-nav-item .icon.structure { background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%); }
+        .quick-nav-item .icon.member    { background: linear-gradient(135deg, var(--orange-color) 0%, var(--orange-light) 100%); }
+        .quick-nav-item .icon.file      { background: linear-gradient(135deg, var(--purple-color) 0%, var(--purple-light) 100%); }
+
+        .quick-nav-item .label { font-size: 12px; color: var(--text-secondary); }
+
+        /* 鈹€鈹€ 灞傜骇涓嬫媺閫夋嫨鍣?*/
+        .level-selector {
+            background-color: var(--bg-primary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            z-index: 50;
+            transition: box-shadow 0.3s;
+        }
+
+        .level-selector.sticky { box-shadow: 0 2px 8px var(--shadow-md); }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-primary);
+        }
+
+        .sticky-header.with-shadow { box-shadow: 0 2px 8px var(--shadow-md); }
+
+        .level-dropdown {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .level-dropdown:hover { background-color: var(--bg-tertiary); }
+
+        .level-dropdown .current { display: flex; align-items: center; }
+
+        .level-dropdown .current .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #FFFFFF;
+            font-size: 14px;
+        }
+
+        .level-dropdown .current .text { font-size: 14px; font-weight: 600; }
+        .level-dropdown .current .desc { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+        .level-dropdown .arrow {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            transition: transform 0.3s;
+        }
+
+        .level-dropdown .arrow.open { transform: rotate(180deg); }
+
+        .level-options {
+            position: absolute;
+            top: 100%;
+            left: 16px;
+            right: 16px;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px var(--shadow-md);
+            z-index: 100;
+            display: none;
+            margin-top: 4px;
+        }
+
+        .level-options.show { display: block; }
+
+        .level-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .level-option:last-child { border-bottom: none; }
+        .level-option:hover { background-color: var(--bg-secondary); }
+        .level-option.selected { background-color: var(--status-primary-bg); }
+
+        .level-option .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .level-option.selected .icon {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: #FFFFFF;
+        }
+
+        .level-option .info { flex: 1; }
+        .level-option .name { font-size: 14px; font-weight: 500; }
+        .level-option .count { font-size: 11px; color: var(--text-tertiary); }
+        .level-option .check { color: var(--primary-color); font-size: 16px; }
+
+        /* 鈹€鈹€ 浠诲姟缁熻 Tab 缁?*/
+        .task-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+        .task-stats-tabs {
+            display: flex;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+
+        .task-stats-tab {
+            flex: 1;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-stats-tab.active {
+            background-color: var(--bg-primary);
+            color: var(--primary-color);
+            font-weight: 600;
+            box-shadow: 0 1px 3px var(--shadow-md);
+        }
+
+        .task-stats-content { display: none; }
+        .task-stats-content.show { display: block; }
+
+        .task-stat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-stat-item:hover { background-color: var(--status-primary-bg); transform: translateY(-1px); }
+
+        .task-stat-item .icon-wrap {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .task-stat-item .icon-wrap.all      { background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); }
+        .task-stat-item .icon-wrap.accept   { background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%); }
+        .task-stat-item .icon-wrap.contract { background: linear-gradient(135deg, var(--orange-color) 0%, var(--orange-light) 100%); }
+        .task-stat-item .icon-wrap.temp     { background: linear-gradient(135deg, var(--purple-color) 0%, var(--purple-light) 100%); }
+
+        .task-stat-item .info { flex: 1; min-width: 0; }
+
+        .task-stat-item .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .task-stat-item .value .current   { color: var(--primary-color); }
+        .task-stat-item .value .separator { color: #BFBFBF; margin: 0 1px; }
+        .task-stat-item .value .total     { color: var(--text-tertiary); font-size: 14px; }
+
+        .task-stat-item .label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 鈹€鈹€ 鍚堝悓鎽樿妯帓 */
+        .contract-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .contract-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .contract-stat:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background-color: var(--border-color);
+        }
+
+        .contract-stat .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .contract-stat .value .current   { color: var(--primary-color); }
+        .contract-stat .value .separator { color: #BFBFBF; margin: 0 1px; }
+        .contract-stat .value .total     { color: var(--text-tertiary); font-size: 14px; }
+        .contract-stat .label            { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+
+        /* 鈹€鈹€ 杩涘害淇℃伅鍖猴紙鍚鑹茶繘搴︽潯锛?*/
+        .progress-info {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .progress-bar-container { margin-bottom: 8px; }
+
+        .progress-bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .progress-bar-label .text    { color: var(--text-tertiary); }
+        .progress-bar-label .percent { color: var(--primary-color); font-weight: 600; }
+
+        /* 澶氳壊杩涘害鏉★紙瑕嗙洊 common 涓?6px 楂樺害锛?*/
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        .progress-bar .progress.green  { background: linear-gradient(90deg, var(--success-color) 0%, var(--success-light) 100%); }
+        .progress-bar .progress.yellow { background: linear-gradient(90deg, var(--warning-color) 0%, var(--warning-light) 100%); }
+        .progress-bar .progress.red    { background: linear-gradient(90deg, var(--error-color) 0%, var(--error-light) 100%); }
+        .progress-bar .progress.blue   { background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-light) 100%); }
+
+        .progress-bar .progress.animated {
+            background-size: 30px 100%;
+            animation: progress-stripes 1s linear infinite;
+            background-image: linear-gradient(
+                45deg,
+                rgba(255,255,255,0.15) 25%, transparent 25%,
+                transparent 50%, rgba(255,255,255,0.15) 50%,
+                rgba(255,255,255,0.15) 75%, transparent 75%, transparent
+            );
+        }
+
+        @keyframes progress-stripes {
+            from { background-position: 30px 0; }
+            to   { background-position: 0 0; }
+        }
+
+        /* 鈹€鈹€ 鍚堝悓鍒楄〃锛堝彲灞曞紑锛?*/
+        .contract-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .contract-list.show { max-height: 500px; }
+
+        .contract-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contract-item:last-child { margin-bottom: 0; }
+        .contract-item:hover { background-color: var(--status-primary-bg); }
+
+        .contract-item .info { flex: 1; }
+        .contract-item .name  { font-weight: 600; margin-bottom: 4px; font-size: 13px; }
+        .contract-item .meta  { font-size: 11px; color: var(--text-tertiary); }
+
+        .contract-item .progress-wrap { width: 80px; text-align: right; }
+        .contract-item .progress-wrap .percent { font-size: 14px; font-weight: 600; color: var(--primary-color); }
+
+        .contract-item .progress-wrap .bar {
+            height: 4px;
+            background-color: var(--border-color);
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .contract-item .progress-wrap .bar .fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* 鈹€鈹€ 寰呭姙 Todo 鍖哄煙 */
+        .todo-tabs {
+            display: flex;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+
+        .todo-tab {
+            flex: 1;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .todo-tab.active {
+            background-color: var(--bg-primary);
+            color: var(--primary-color);
+            font-weight: 600;
+            box-shadow: 0 1px 3px var(--shadow-md);
+        }
+
+        .todo-tab .badge {
+            margin-left: 6px;
+            padding: 1px 6px;
+            background-color: var(--error-color);
+            color: #FFFFFF;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+
+        .todo-tab.active .badge { background-color: var(--primary-color); }
+
+        .todo-content { display: none; }
+        .todo-content.show { display: block; }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .todo-item:last-child { margin-bottom: 0; }
+        .todo-item:hover { background-color: var(--status-primary-bg); }
+
+        .todo-item .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .todo-item .icon.urgent  { background-color: var(--status-error-bg); }
+        .todo-item .icon.warning { background-color: var(--status-warning-bg); }
+        .todo-item .icon.normal  { background-color: var(--status-primary-bg); }
+
+        .todo-item .content { flex: 1; }
+        .todo-item .title   { font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+        .todo-item .desc    { font-size: 11px; color: var(--text-tertiary); }
+
+        .todo-item .status { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+        .todo-item .status.pending { background-color: var(--status-warning-bg); color: var(--warning-color); }
+        .todo-item .status.urgent  { background-color: var(--status-error-bg);   color: var(--error-color); }
+
+        /* 鈹€鈹€ 涓存椂浠诲姟 */
+        .temp-task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: #FFFBE6;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--warning-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .temp-task-item:last-child { margin-bottom: 0; }
+        .temp-task-item:hover { background-color: #FFF1B8; }
+
+        .temp-task-item .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .temp-task-item .content { flex: 1; }
+        .temp-task-item .title   { font-weight: 600; margin-bottom: 2px; font-size: 13px; }
+        .temp-task-item .desc    { font-size: 11px; color: var(--text-tertiary); }
+
+        .temp-task-item .waiting-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            background-color: var(--warning-color);
+            color: #FFFFFF;
+            border-radius: 4px;
+        }
+
+        .temp-task-item .status-badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+        .temp-task-item .status-badge.pending     { background-color: var(--status-primary-bg); color: var(--primary-color); }
+        .temp-task-item .status-badge.in-progress { background-color: var(--status-warning-bg); color: var(--warning-color); }
+        .temp-task-item .status-badge.completed   { background-color: var(--status-success-bg); color: var(--success-color); }
+
+        /* 鈹€鈹€ 鏂板缓涓存椂浠诲姟鎸夐挳 */
+        .create-temp-task {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px dashed #D9D9D9;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .create-temp-task:hover {
+            background-color: var(--status-primary-bg);
+            border-color: var(--primary-color);
+        }
+
+        .create-temp-task .icon { font-size: 18px; color: var(--primary-color); margin-right: 8px; }
+        .create-temp-task .text { font-size: 13px; color: var(--primary-color); }
+
+        /* 鈹€鈹€ 鏌ョ湅鏇村閾炬帴 */
+        .view-all-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            margin-top: 8px;
+            color: var(--primary-color);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-all-link:hover { background-color: var(--bg-secondary); border-radius: 8px; }
+        .view-all-link .arrow { margin-left: 4px; font-size: 16px; }
+
+        /* 鈹€鈹€ 绌虹姸鎬侊紙瑕嗙洊 common锛屾坊鍔?action 鎸夐挳锛?*/
+        .empty-state .action {
+            margin-top: 12px;
+            padding: 6px 16px;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .empty-state .action:hover { background-color: var(--primary-light); }
+
+        /* 鈹€鈹€ 楠ㄦ灦灞?*/
+        .skeleton {
+            background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes skeleton-loading {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-card {
+            background-color: var(--bg-primary);
+            margin: 12px 16px;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        .skeleton-title { height: 20px; width: 120px; margin-bottom: 16px; }
+        .skeleton-row   { display: flex; gap: 10px; margin-bottom: 10px; }
+        .skeleton-item  { flex: 1; height: 80px; }
+        .skeleton-text  { height: 14px; margin-bottom: 8px; }
+        .skeleton-text.short { width: 60%; }
+
+        /* 鈹€鈹€ 鍔犺浇閬僵 */
+        .loading-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.9);
+            z-index: 200;
+            display: none;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--bg-tertiary);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text { margin-top: 12px; font-size: 13px; color: var(--text-tertiary); }
+
+        /* 鈹€鈹€ 鍔ㄦ€佽褰曟椂闂磋酱 */
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 44px;
+            bottom: -12px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--border-color) 100%);
+        }
+
+        .activity-item:last-child::before { display: none; }
+
+        .activity-item::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .activity-item.secondary::after  { background-color: var(--success-color); box-shadow: 0 0 0 2px var(--success-color); }
+        .activity-item.tertiary::after   { background-color: var(--warning-color); box-shadow: 0 0 0 2px var(--warning-color); }
+        .activity-item.quaternary::after { background-color: var(--purple-color);  box-shadow: 0 0 0 2px var(--purple-color); }
+        .activity-item.hidden { display: none; }
+
+        .activity-more-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            margin-top: 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--primary-color);
+            font-size: 13px;
+        }
+
+        .activity-more-btn:hover { background-color: var(--status-primary-bg); }
+
+        .activity-more-btn .arrow { margin-left: 4px; transition: transform 0.3s; }
+        .activity-more-btn .arrow.expanded { transform: rotate(180deg); }
+
+        .activity-header { display: flex; align-items: center; margin-bottom: 8px; }
+
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .activity-info { flex: 1; }
+        .activity-user { font-size: 13px; font-weight: 600; color: var(--primary-color); }
+        .activity-time { font-size: 11px; color: var(--text-tertiary); }
+
+        .activity-content {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            padding-left: 42px;
+        }
+
+        .activity-media {
+            display: flex;
+            gap: 8px;
+            padding-left: 42px;
+            overflow-x: auto;
+        }
+
+        .activity-media::-webkit-scrollbar { display: none; }
+
+        .activity-media-item {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-media-item.video::after {
+            content: '?';
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 10px;
+        }
+
+        /* 鈹€鈹€ 瀵艰埅鏍忓叧闂寜閽?*/
+        .nav-bar .close-btn { font-size: 18px; font-weight: 300; }
+    </style>
+</head><body>
+    <div class="page-nav">
+        <h3>妞ょ敻娼扮€佃壈鍩?/h3>
+        <a href="prototype-home.html">妫ｆ牠銆夐敍鍫濅紣娴ｆ粌褰撮敍?/a>
+        <a href="prototype-project-list.html">妞ゅ湱娲伴崚妤勩€?/a>
+        <a href="prototype-project-detail.html" class="active">妞ゅ湱娲扮拠锔藉剰</a>
+        <a href="prototype-task-detail.html">娴犺濮熺拠锔藉剰</a>
+        <a href="prototype-acceptance.html">妤犲本鏁规い鐢告桨</a>
+    </div>
+    
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="icons">
+                <span>棣冩懕</span>
+                <span>WiFi</span>
+                <span>棣冩敱</span>
+            </div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="back" onclick="location.href='prototype-project-list.html'">閳?鏉╂柨娲?/div>
+            <div class="title">XX鐏忓繐灏弫缈犵秼鐟佸懍鎱?/div>
+            <div class="actions">
+                <div class="action-btn menu-btn" onclick="toggleActionMenu()">閳?/div>
+                <div class="action-btn close-btn" onclick="alert('閸忔娊妫寸亸蹇曗柤鎼?)">閴?/div>
+            </div>
+            <div class="action-menu" id="actionMenu">
+                <div class="action-menu-item" onclick="alert('閸掑棔闊╃紒娆愭箙閸?)">
+                    <span class="icon">棣冩憶</span>
+                    <span>閸掑棔闊╃紒娆愭箙閸?/span>
+                </div>
+                <div class="action-menu-item" onclick="alert('鏉烆剙褰?)">
+                    <span class="icon">閳绗?/span>
+                    <span>鏉烆剙褰?/span>
+                </div>
+                <div class="action-menu-item" onclick="alert('閺€鎯版')">
+                    <span class="icon">鐚?/span>
+                    <span>閺€鎯版</span>
+                </div>
+                <div class="action-menu-item" onclick="alert('閸掗攱鏌?)">
+                    <span class="icon">棣冩敡</span>
+                    <span>閸掗攱鏌?/span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-content" id="pageContent">
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">閸旂姾娴囨稉?..</div>
+            </div>
+            
+            <div class="sticky-header" id="stickyHeader">
+                <div class="quick-nav" id="quickNav">
+                    <div class="quick-nav-item">
+                        <div class="icon info">棣冩惖</div>
+                        <div class="label">妞ゅ湱娲版穱鈩冧紖</div>
+                    </div>
+                    <div class="quick-nav-item">
+                        <div class="icon structure">棣冨綀閿?/div>
+                        <div class="label">閺嬭埖鐎?/div>
+                    </div>
+                    <div class="quick-nav-item">
+                        <div class="icon member">棣冩噧</div>
+                        <div class="label">閹存劕鎲?/div>
+                    </div>
+                    <div class="quick-nav-item">
+                        <div class="icon file">棣冩惂</div>
+                        <div class="label">鐠у嫭鏋?/div>
+                    </div>
+                </div>
+                
+                <div class="quick-nav-toggle" id="quickNavToggle" onclick="toggleQuickNav()">
+                    <div class="toggle-btn">
+                        <div class="dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <span id="toggleText">鐏炴洖绱戣箛顐ｅ祹閸忋儱褰?/span>
+                        <span class="arrow" id="toggleArrow">閳?/span>
+                    </div>
+                </div>
+                
+                <div class="level-selector" id="levelSelector">
+                    <div class="level-dropdown" onclick="toggleLevelDropdown()">
+                        <div class="current">
+                            <div class="icon">棣冨綒</div>
+                            <div>
+                                <div class="text">妞ゅ湱娲伴柈?/div>
+                                <div class="desc">濮樺鏁稿銉ょ稊缂佸嫨?浣瑰伩閻★箑浼愭担婊呯矋缁?娑擃亜浼愭担婊呯矋</div>
+                            </div>
+                        </div>
+                        <div class="arrow" id="levelArrow">閳?/div>
+                    </div>
+                    <div class="level-options" id="levelOptions">
+                        <div class="level-option selected" onclick="selectLevel(this, '妞ゅ湱娲伴柈?)">
+                            <div class="icon">棣冨綒</div>
+                            <div class="info">
+                                <div class="name">妞ゅ湱娲伴柈?/div>
+                                <div class="count">5娑擃亜浼愭担婊呯矋 璺?8娴犺棄鎮庨崥?/div>
+                            </div>
+                            <div class="check">閴?/div>
+                        </div>
+                        <div class="level-option" onclick="selectLevel(this, '濮樺鏁稿銉ょ稊缂?)">
+                            <div class="icon">閳?/div>
+                            <div class="info">
+                                <div class="name">濮樺鏁稿銉ょ稊缂?/div>
+                                <div class="count">3娑擃亝鏌﹀銉х矋 璺?2娴犺棄鎮庨崥?/div>
+                            </div>
+                            <div class="check" style="visibility: hidden;">閴?/div>
+                        </div>
+                        <div class="level-option" onclick="selectLevel(this, '濞夈儳鎽濆銉ょ稊缂?)">
+                            <div class="icon">棣冃?/div>
+                            <div class="info">
+                                <div class="name">濞夈儳鎽濆銉ょ稊缂?/div>
+                                <div class="count">2娑擃亝鏌﹀銉х矋 璺?1娴犺棄鎮庨崥?/div>
+                            </div>
+                            <div class="check" style="visibility: hidden;">閴?/div>
+                        </div>
+                        <div class="level-option" onclick="selectLevel(this, '閺堛劌浼愬銉ょ稊缂?)">
+                            <div class="icon">棣冾€?/div>
+                            <div class="info">
+                                <div class="name">閺堛劌浼愬銉ょ稊缂?/div>
+                                <div class="count">2娑擃亝鏌﹀銉х矋 璺?1娴犺棄鎮庨崥?/div>
+                            </div>
+                            <div class="check" style="visibility: hidden;">閴?/div>
+                        </div>
+                        <div class="level-option" onclick="selectLevel(this, '濞岃绱楀銉ょ稊缂?)">
+                            <div class="icon">棣冨腹</div>
+                            <div class="info">
+                                <div class="name">濞岃绱楀銉ょ稊缂?/div>
+                                <div class="count">1娑擃亝鏌﹀銉х矋 璺?1娴犺棄鎮庨崥?/div>
+                            </div>
+                            <div class="check" style="visibility: hidden;">閴?/div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span>棣冩惈 閸氬牆鎮撳鍌濐潔</span>
+                    <span class="more" onclick="toggleContractList(this)">
+                        閺屻儳婀呴崥鍫濇倱
+                        <span class="arrow">閳?/span>
+                    </span>
+                </div>
+                <div class="contract-summary">
+                    <div class="contract-stat">
+                        <div class="value"><span class="current">6</span><span class="separator">/</span><span class="total">8</span></div>
+                        <div class="label">閸氬牆鎮撶粵鍓у</div>
+                    </div>
+                    <div class="contract-stat">
+                        <div class="value"><span class="current">58</span><span class="separator">/</span><span class="total">90</span></div>
+                        <div class="label">瀹歌尙鏁ゅ銉︽埂(婢?</div>
+                    </div>
+                    <div class="contract-stat">
+                        <div class="value" style="color: #FAAD14;">32</div>
+                        <div class="label">閸撯晙缍戝銉︽埂(婢?</div>
+                    </div>
+                    <div class="contract-stat">
+                        <div class="value"><span class="current">65</span><span class="total">%</span></div>
+                        <div class="label">閹槒绻樻惔?/div>
+                    </div>
+                </div>
+                <div class="contract-list" id="contractList">
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+                        <div class="contract-item" onclick="location.href='prototype-contract-detail.html'">
+                            <div class="info">
+                                <div class="name">濮樺鏁搁崚鍡楀瘶閸氬牆鎮?/div>
+                                <div class="meta">濮樺鏁稿銉ょ稊缂?| 闁叉垿顤傞敍?娑?/div>
+                            </div>
+                            <div class="progress-wrap">
+                                <div class="percent">65%</div>
+                                <div class="bar"><div class="fill" style="width: 65%;"></div></div>
+                            </div>
+                        </div>
+                        <div class="contract-item" onclick="location.href='prototype-contract-detail.html'">
+                            <div class="info">
+                                <div class="name">濞夈儳鎽濋崚鍡楀瘶閸氬牆鎮?/div>
+                                <div class="meta">濞夈儳鎽濆銉ょ稊缂?| 闁叉垿顤傞敍?2娑?/div>
+                            </div>
+                            <div class="progress-wrap">
+                                <div class="percent">30%</div>
+                                <div class="bar"><div class="fill" style="width: 30%;"></div></div>
+                            </div>
+                        </div>
+                        <div class="contract-item" onclick="location.href='prototype-contract-detail.html'">
+                            <div class="info">
+                                <div class="name">閺堛劌浼愰崚鍡楀瘶閸氬牆鎮?/div>
+                                <div class="meta">閺堛劌浼愬銉ょ稊缂?| 闁叉垿顤傞敍?5娑?/div>
+                            </div>
+                            <div class="progress-wrap">
+                                <div class="percent">0%</div>
+                                <div class="bar"><div class="fill" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                        <div class="contract-item" onclick="location.href='prototype-contract-detail.html'">
+                            <div class="info">
+                                <div class="name">濞岃绱楅崚鍡楀瘶閸氬牆鎮?/div>
+                                <div class="meta">濞岃绱楀銉ょ稊缂?| 闁叉垿顤傞敍?0娑?/div>
+                            </div>
+                            <div class="progress-wrap">
+                                <div class="percent">0%</div>
+                                <div class="bar"><div class="fill" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span>棣冩惓 娴犺濮熺紒鐔活吀</span>
+                    <span class="more" onclick="location.href='prototype-task-detail.html'">閺屻儳婀呴崗銊╁劥 ></span>
+                </div>
+                <div class="task-stats-tabs">
+                    <div class="task-stats-tab active" onclick="switchTaskStatsTab(this, 'overall')">閺佺繝缍嬬紒鐔活吀</div>
+                    <div class="task-stats-tab" onclick="switchTaskStatsTab(this, 'mine')">閹存垹娈戞禒璇插</div>
+                </div>
+                <div class="task-stats-content show" id="overallStats">
+                    <div class="task-stats">
+                        <div class="task-stat-item">
+                            <div class="icon-wrap all">棣冩惖</div>
+                            <div class="info">
+                                <div class="value" id="overallTotal">24</div>
+                                <div class="label">閸忋劑鍎存禒璇插</div>
+                            </div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="icon-wrap accept">閴?/div>
+                            <div class="info">
+                                <div class="value"><span class="current" id="overallAccept">3</span><span class="separator">/</span><span class="total" id="overallAcceptTotal">8</span></div>
+                                <div class="label">妤犲本鏁规禒璇插</div>
+                            </div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="icon-wrap contract">棣冩惈</div>
+                            <div class="info">
+                                <div class="value"><span class="current" id="overallContract">18</span><span class="separator">/</span><span class="total" id="overallContractTotal">20</span></div>
+                                <div class="label">閸氬牏瀹抽崘鍛崲閸?/div>
+                            </div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="icon-wrap temp">閳?/div>
+                            <div class="info">
+                                <div class="value"><span class="current" id="overallTemp">2</span><span class="separator">/</span><span class="total" id="overallTempTotal">4</span></div>
+                                <div class="label">娑撳瓨妞傛禒璇插</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-stats-content" id="mineStats">
+                    <div class="task-stats">
+                        <div class="task-stat-item">
+                            <div class="icon-wrap all">棣冩惖</div>
+                            <div class="info">
+                                <div class="value" id="mineTotal">8</div>
+                                <div class="label">閹存垹娈戝鍛</div>
+                            </div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="icon-wrap accept">閴?/div>
+                            <div class="info">
+                                <div class="value"><span class="current" id="mineAccept">2</span><span class="separator">/</span><span class="total" id="mineAcceptTotal">3</span></div>
+                                <div class="label">閹存垹娈戞灞炬暪</div>
+                            </div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="icon-wrap contract">棣冩惈</div>
+                            <div class="info">
+                                <div class="value"><span class="current" id="mineContract">4</span><span class="separator">/</span><span class="total" id="mineContractTotal">5</span></div>
+                                <div class="label">閹存垹娈戦崥鍫㈠娴犺濮?/div>
+                            </div>
+                        </div>
+                        <div class="task-stat-item">
+                            <div class="icon-wrap temp">閳?/div>
+                            <div class="info">
+                                <div class="value"><span class="current" id="mineTemp">1</span><span class="separator">/</span><span class="total" id="mineTempTotal">2</span></div>
+                                <div class="label">閹存垹娈戞稉瀛樻娴犺濮?/div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="todo-tabs">
+                    <div class="todo-tab active" onclick="switchTodoTab(this, 'todo')">
+                        瀵板懎濮欐禍瀣€?                        <span class="badge">3</span>
+                    </div>
+                    <div class="todo-tab" onclick="switchTodoTab(this, 'temp')">
+                        娑撳瓨妞傛禒璇插
+                        <span class="badge" style="background-color: #FAAD14;">2</span>
+                    </div>
+                </div>
+                
+                <div class="todo-content show" id="todoContent">
+                    <div class="todo-item" onclick="location.href='prototype-acceptance.html'">
+                        <div class="icon urgent">棣冩暥</div>
+                        <div class="content">
+                            <div class="title">瀵?濡茶棄绔风痪鍧楃崣閺€?/div>
+                            <div class="desc">瀵櫣鏁搁弬钘変紣缂?| 閺夊海娲冮悶鍡楃窡绾喛顓?/div>
+                        </div>
+                        <div class="status urgent">瀵板懘鐛欓弨?/div>
+                    </div>
+                    <div class="todo-item" onclick="location.href='prototype-task-detail.html'">
+                        <div class="icon warning">棣冪厸</div>
+                        <div class="content">
+                            <div class="title">婢ф瑩娼扮拹瀵哥埦妤犲本鏁?/div>
+                            <div class="desc">濞夈儳鎽濆銉ょ稊缂?| 閻滃娲冮悶鍡楃窡绾喛顓?/div>
+                        </div>
+                        <div class="status pending">瀵板懘鐛欓弨?/div>
+                    </div>
+                    <div class="todo-item" onclick="location.href='prototype-task-detail.html'">
+                        <div class="icon normal">棣冪厺</div>
+                        <div class="content">
+                            <div class="title">閸氬﹪銆婄€瑰顥?/div>
+                            <div class="desc">閺堛劌浼愬銉ょ稊缂?| 瀵板懏澧界悰?/div>
+                        </div>
+                        <div class="status pending">瀵板懏澧界悰?/div>
+                    </div>
+                    <div class="view-all-link" onclick="alert('閺屻儳婀呴崗銊╁劥瀵板懎濮欐禍瀣€?)">
+                        <span>閺屻儳婀呴崗銊╁劥瀵板懎濮?/span>
+                        <span class="arrow">閳?/span>
+                    </div>
+                </div>
+                
+                <div class="todo-content" id="tempContent">
+                    <div class="temp-task-item" onclick="location.href='prototype-task-detail.html'">
+                        <div class="icon">閳?/div>
+                        <div class="content">
+                            <div class="title">缁毖?銉ゆ叏鐞涖儱顣鹃棃銏ｎ棁缂?/div>
+                            <div class="desc">娑撳瓨妞傛晶鐐插 | 濞夈儳鎽濆銉ょ稊缂?/div>
+                        </div>
+                        <div class="waiting-badge">瀵板懏甯撮弨?/div>
+                    </div>
+                    <div class="temp-task-item" onclick="location.href='prototype-task-detail.html'">
+                        <div class="icon">閳?/div>
+                        <div class="content">
+                            <div class="title">閺囧瓨宕查幑鐔锋綎閹绘帒楠?/div>
+                            <div class="desc">娑撳瓨妞傛晶鐐插 | 瀵櫣鏁搁弬钘変紣缂?/div>
+                        </div>
+                        <div class="status-badge pending">瀵板懎绱戞慨?/div>
+                    </div>
+                    <div class="create-temp-task" onclick="alert('閸掓稑缂撴稉瀛樻娴犺濮?)">
+                        <div class="icon">+</div>
+                        <div class="text">閸掓稑缂撴稉瀛樻娴犺濮?/div>
+                    </div>
+                    <div class="view-all-link" onclick="alert('閺屻儳婀呴崗銊╁劥娑撳瓨妞傛禒璇插')">
+                        <span>閺屻儳婀呴崗銊╁劥娑撳瓨妞傛禒璇插</span>
+                        <span class="arrow">閳?/span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span>棣冩憫 娴犲﹥妫╅崝銊??/span>
+                    <span class="more" onclick="location.href='prototype-activity-list.html'">閺屻儳婀呴崗銊╁劥 ></span>
+                </div>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-avatar">閺?/div>
+                            <div class="activity-info">
+                                <div class="activity-user">閺夊海娲冮悶?/div>
+                                <div class="activity-time">01-15 10:30</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">鐎瑰本鍨氭禍?瀵?濡茶棄绔风痪?閻ㄥ嫰鐛欓弨?/div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">棣冩懖</div>
+                            <div class="activity-media-item">棣冩懖</div>
+                            <div class="activity-media-item video">棣冨箑</div>
+                        </div>
+                    </div>
+                    <div class="activity-item secondary">
+                        <div class="activity-header">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);">瀵?/div>
+                            <div class="activity-info">
+                                <div class="activity-user">瀵姴浼愰梹?/div>
+                                <div class="activity-time">01-15 09:15</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">閹绘劒姘︽禍?瀵?濡茶棄绔风痪?閻ㄥ嫰鐛欓弨鍓佹暤鐠?/div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">棣冩懖</div>
+                            <div class="activity-media-item">棣冩懖</div>
+                        </div>
+                    </div>
+                    <div class="activity-item tertiary">
+                        <div class="activity-header">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);">閻?/div>
+                            <div class="activity-info">
+                                <div class="activity-user">閻滃浼愰梹?/div>
+                                <div class="activity-time">01-15 08:00</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">閸掓稑缂撴禍鍡曞閺冩湹鎹㈤崝?缁毖?銉ゆ叏鐞涖儱顣鹃棃銏ｎ棁缂?/div>
+                    </div>
+                    <div class="activity-item quaternary hidden">
+                        <div class="activity-header">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);">妞?/div>
+                            <div class="activity-info">
+                                <div class="activity-user">妞ゅ湱娲伴幀?/div>
+                                <div class="activity-time">01-14 10:00</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">缁涘墽璁叉禍?濮樺鏁搁崚鍡楀瘶閸氬牆鎮?/div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">棣冩惈</div>
+                        </div>
+                    </div>
+                    <div class="activity-item hidden">
+                        <div class="activity-header">
+                            <div class="activity-avatar">鐠?/div>
+                            <div class="activity-info">
+                                <div class="activity-user">鐠ч潧浼愰梹?/div>
+                                <div class="activity-time">01-14 09:30</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">鐎瑰本鍨氭禍?濮樺顓搁柧楦款啎 娴犺濮?/div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">棣冩懖</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-more-btn" id="activityMoreBtn" onclick="toggleActivityList()">
+                    <span id="activityMoreText">鐏炴洖绱戦弴鏉戭樋</span>
+                    <span class="arrow" id="activityMoreArrow">閳?/span>
+                </div>
+            </div>
+            
+            <div style="height: 20px;"></div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleLevelDropdown() {
+            const options = document.getElementById('levelOptions');
+            const arrow = document.getElementById('levelArrow');
+            const pageContent = document.querySelector('.page-content');
+            
+            if (options.classList.contains('show')) {
+                options.classList.remove('show');
+                arrow.classList.remove('open');
+                pageContent.style.overflow = 'auto';
+            } else {
+                options.classList.add('show');
+                arrow.classList.add('open');
+                pageContent.style.overflow = 'hidden';
+            }
+        }
+        
+        const levelData = {
+            '妞ゅ湱娲伴柈?: {
+                desc: '濮樺鏁稿銉ょ稊缂佸嫨?浣瑰伩閻★箑浼愭担婊呯矋缁?娑擃亜浼愭担婊呯矋',
+                tasks: { total: 24, accept: { current: 3, total: 8 }, contract: { current: 18, total: 20 }, temp: { current: 2, total: 4 } },
+                myTasks: { total: 8, accept: { current: 2, total: 3 }, contract: { current: 4, total: 5 }, temp: { current: 1, total: 2 } },
+                contract: { signed: { current: 6, total: 8 }, days: { used: 58, total: 90 }, remain: 32, progress: 65 },
+                todo: { count: 3, tempCount: 2 }
+            },
+            '濮樺鏁稿銉ょ稊缂?: {
+                desc: '瀵櫣鏁搁弬钘変紣缂佸嫨?浣告€ラ悽鍨煢瀹搞儳绮嶇粵?娑擃亝鏌﹀銉х矋',
+                tasks: { total: 12, accept: { current: 2, total: 4 }, contract: { current: 8, total: 10 }, temp: { current: 1, total: 2 } },
+                myTasks: { total: 5, accept: { current: 1, total: 2 }, contract: { current: 3, total: 4 }, temp: { current: 1, total: 1 } },
+                contract: { signed: { current: 2, total: 2 }, days: { used: 35, total: 45 }, remain: 10, progress: 78 },
+                todo: { count: 2, tempCount: 1 }
+            },
+            '濞夈儳鎽濆銉ょ稊缂?: {
+                desc: '鐠愬鐖鹃弬钘変紣缂佸嫨?渚€妲诲瀛樻煢瀹搞儳绮嶇粵?娑擃亝鏌﹀銉х矋',
+                tasks: { total: 8, accept: { current: 1, total: 3 }, contract: { current: 6, total: 6 }, temp: { current: 1, total: 2 } },
+                myTasks: { total: 3, accept: { current: 1, total: 1 }, contract: { current: 2, total: 2 }, temp: { current: 0, total: 1 } },
+                contract: { signed: { current: 1, total: 1 }, days: { used: 20, total: 30 }, remain: 10, progress: 67 },
+                todo: { count: 1, tempCount: 1 }
+            },
+            '閺堛劌浼愬銉ょ稊缂?: {
+                desc: '閸氬﹪銆婇弬钘変紣缂佸嫨?浣圭厲娴ｆ挻鏌﹀銉х矋缁?娑擃亝鏌﹀銉х矋',
+                tasks: { total: 6, accept: { current: 0, total: 2 }, contract: { current: 4, total: 4 }, temp: { current: 0, total: 0 } },
+                myTasks: { total: 2, accept: { current: 0, total: 1 }, contract: { current: 2, total: 2 }, temp: { current: 0, total: 0 } },
+                contract: { signed: { current: 1, total: 1 }, days: { used: 5, total: 25 }, remain: 20, progress: 20 },
+                todo: { count: 1, tempCount: 0 }
+            },
+            '濞岃绱楀銉ょ稊缂?: {
+                desc: '婢ф瑩娼伴弬钘変紣缂佸嫮鐡?娑擃亝鏌﹀銉х矋',
+                tasks: { total: 4, accept: { current: 0, total: 1 }, contract: { current: 4, total: 4 }, temp: { current: 0, total: 0 } },
+                myTasks: { total: 1, accept: { current: 0, total: 0 }, contract: { current: 1, total: 1 }, temp: { current: 0, total: 0 } },
+                contract: { signed: { current: 1, total: 1 }, days: { used: 0, total: 20 }, remain: 20, progress: 0 },
+                todo: { count: 0, tempCount: 0 }
+            }
+        };
+        
+        function selectLevel(element, name) {
+            document.querySelectorAll('.level-option').forEach(opt => {
+                opt.classList.remove('selected');
+                opt.querySelector('.check').style.visibility = 'hidden';
+            });
+            element.classList.add('selected');
+            element.querySelector('.check').style.visibility = 'visible';
+            
+            document.querySelector('.level-dropdown .text').textContent = name;
+            document.querySelector('.level-dropdown .desc').textContent = levelData[name].desc;
+            
+            toggleLevelDropdown();
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.add('show');
+            
+            setTimeout(() => {
+                updatePageData(name);
+                loadingOverlay.classList.remove('show');
+            }, 300);
+        }
+        
+        function updatePageData(level) {
+            const data = levelData[level];
+            
+            document.getElementById('overallTotal').textContent = data.tasks.total;
+            document.getElementById('overallAccept').textContent = data.tasks.accept.current;
+            document.getElementById('overallAcceptTotal').textContent = data.tasks.accept.total;
+            document.getElementById('overallContract').textContent = data.tasks.contract.current;
+            document.getElementById('overallContractTotal').textContent = data.tasks.contract.total;
+            document.getElementById('overallTemp').textContent = data.tasks.temp.current;
+            document.getElementById('overallTempTotal').textContent = data.tasks.temp.total;
+            
+            document.getElementById('mineTotal').textContent = data.myTasks.total;
+            document.getElementById('mineAccept').textContent = data.myTasks.accept.current;
+            document.getElementById('mineAcceptTotal').textContent = data.myTasks.accept.total;
+            document.getElementById('mineContract').textContent = data.myTasks.contract.current;
+            document.getElementById('mineContractTotal').textContent = data.myTasks.contract.total;
+            document.getElementById('mineTemp').textContent = data.myTasks.temp.current;
+            document.getElementById('mineTempTotal').textContent = data.myTasks.temp.total;
+            
+            document.querySelector('.contract-summary').innerHTML = `
+                <div class="contract-stat">
+                    <div class="value"><span class="current">${data.contract.signed.current}</span><span class="separator">/</span><span class="total">${data.contract.signed.total}</span></div>
+                    <div class="label">閸氬牆鎮撶粵鍓у</div>
+                </div>
+                <div class="contract-stat">
+                    <div class="value"><span class="current">${data.contract.days.used}</span><span class="separator">/</span><span class="total">${data.contract.days.total}</span></div>
+                    <div class="label">瀹歌尙鏁ゅ銉︽埂(婢?</div>
+                </div>
+                <div class="contract-stat">
+                    <div class="value" style="color: ${data.contract.remain <= 10 ? '#FF4D4F' : '#FAAD14'};">${data.contract.remain}</div>
+                    <div class="label">閸撯晙缍戝銉︽埂(婢?</div>
+                </div>
+                <div class="contract-stat">
+                    <div class="value"><span class="current">${data.contract.progress}</span><span class="total">%</span></div>
+                    <div class="label">閹槒绻樻惔?/div>
+                </div>
+            `;
+            
+            document.querySelector('.todo-tab .badge').textContent = data.todo.count;
+            document.querySelectorAll('.todo-tab')[1].querySelector('.badge').textContent = data.todo.tempCount;
+            
+            const todoContent = document.getElementById('todoContent');
+            const tempContent = document.getElementById('tempContent');
+            
+            if (data.todo.count === 0) {
+                todoContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">閴?/div>
+                        <div class="text">閺嗗倹妫ゅ鍛娴滃銆?/div>
+                        <div class="action" onclick="alert('閸掓稑缂撴禒璇插')">閸掓稑缂撴禒璇插</div>
+                    </div>
+                `;
+            }
+            
+            if (data.todo.tempCount === 0) {
+                tempContent.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">閳?/div>
+                        <div class="text">閺嗗倹妫ゆ稉瀛樻娴犺濮?/div>
+                        <div class="action" onclick="alert('閸掓稑缂撴稉瀛樻娴犺濮?)">閸掓稑缂撴稉瀛樻娴犺濮?/div>
+                    </div>
+                `;
+            }
+        }
+        
+        function toggleContractList(element) {
+            const arrow = element.querySelector('.arrow');
+            const list = document.getElementById('contractList');
+            
+            if (list.classList.contains('show')) {
+                list.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                list.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+        
+        function switchTaskStatsTab(tab, type) {
+            document.querySelectorAll('.task-stats-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            if (type === 'overall') {
+                document.getElementById('overallStats').classList.add('show');
+                document.getElementById('mineStats').classList.remove('show');
+            } else {
+                document.getElementById('overallStats').classList.remove('show');
+                document.getElementById('mineStats').classList.add('show');
+            }
+        }
+        
+        function switchTodoTab(tab, type) {
+            document.querySelectorAll('.todo-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            if (type === 'todo') {
+                document.getElementById('todoContent').classList.add('show');
+                document.getElementById('tempContent').classList.remove('show');
+            } else {
+                document.getElementById('todoContent').classList.remove('show');
+                document.getElementById('tempContent').classList.add('show');
+            }
+        }
+        
+        let activityExpanded = false;
+        function toggleActivityList() {
+            const moreBtn = document.getElementById('activityMoreBtn');
+            const moreText = document.getElementById('activityMoreText');
+            const moreArrow = document.getElementById('activityMoreArrow');
+            const hiddenItems = document.querySelectorAll('.activity-item.hidden');
+            
+            if (activityExpanded) {
+                hiddenItems.forEach(item => item.classList.add('hidden'));
+                moreText.textContent = '鐏炴洖绱戦弴鏉戭樋';
+                moreArrow.classList.remove('expanded');
+                activityExpanded = false;
+            } else {
+                document.querySelectorAll('.activity-item').forEach(item => item.classList.remove('hidden'));
+                moreText.textContent = '閺€鎯版崳';
+                moreArrow.classList.add('expanded');
+                activityExpanded = true;
+            }
+        }
+        
+        let quickNavExpanded = true;
+        let userManualExpand = false;
+        
+        function toggleQuickNav() {
+            const quickNav = document.getElementById('quickNav');
+            const toggleText = document.getElementById('toggleText');
+            const toggleArrow = document.getElementById('toggleArrow');
+            
+            if (quickNavExpanded) {
+                quickNav.classList.add('collapsed');
+                toggleText.textContent = '鐏炴洖绱戣箛顐ｅ祹閸忋儱褰?;
+                toggleArrow.classList.remove('expanded');
+                quickNavExpanded = false;
+                userManualExpand = false;
+            } else {
+                quickNav.classList.remove('collapsed');
+                toggleText.textContent = '閺€鎯版崳韫囶偅宓庨崗銉ュ經';
+                toggleArrow.classList.add('expanded');
+                quickNavExpanded = true;
+                userManualExpand = true;
+            }
+        }
+        
+        const pageContent = document.getElementById('pageContent');
+        const stickyHeader = document.getElementById('stickyHeader');
+        const quickNav = document.getElementById('quickNav');
+        const quickNavToggle = document.getElementById('quickNavToggle');
+        const levelSelector = document.getElementById('levelSelector');
+        
+        let lastScrollTop = 0;
+        
+        pageContent.addEventListener('scroll', function() {
+            const scrollTop = pageContent.scrollTop;
+            
+            if (scrollTop > 50) {
+                if (quickNavExpanded && !userManualExpand) {
+                    quickNav.classList.add('collapsed');
+                    quickNavToggle.classList.add('show');
+                    quickNavExpanded = false;
+                    document.getElementById('toggleText').textContent = '鐏炴洖绱戣箛顐ｅ祹閸忋儱褰?;
+                    document.getElementById('toggleArrow').classList.remove('expanded');
+                }
+                stickyHeader.classList.add('with-shadow');
+                levelSelector.classList.add('sticky');
+            } else {
+                if (!quickNavExpanded) {
+                    quickNav.classList.remove('collapsed');
+                    quickNavToggle.classList.remove('show');
+                    quickNavExpanded = true;
+                    document.getElementById('toggleText').textContent = '閺€鎯版崳韫囶偅宓庨崗銉ュ經';
+                    document.getElementById('toggleArrow').classList.add('expanded');
+                    userManualExpand = false;
+                }
+                stickyHeader.classList.remove('with-shadow');
+                levelSelector.classList.remove('sticky');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+        
+        function toggleActionMenu() {
+            const menu = document.getElementById('actionMenu');
+            menu.classList.toggle('show');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const selector = document.querySelector('.level-selector');
+            if (selector && !selector.contains(e.target)) {
+                document.getElementById('levelOptions').classList.remove('show');
+                document.getElementById('levelArrow').classList.remove('open');
+            }
+            
+            const menuBtn = document.querySelector('.menu-btn');
+            const actionMenu = document.getElementById('actionMenu');
+            if (actionMenu && menuBtn && !menuBtn.contains(e.target) && !actionMenu.contains(e.target)) {
+                actionMenu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

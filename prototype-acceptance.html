@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>家装平台小程序原型 - 验收页面</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        /* ── 页面内容区高度（status 44 + nav 44 + tabs 44 + actions 60） */
+        .page-content {
+            height: calc(100% - 44px - 44px - 44px - 60px);
+        }
+
+        /* ── 顶部双 Tab（验收申请 / 验收执行） */
+        .tabs {
+            display: flex;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* ── 验收人选择区 */
+        .acceptor-section {
+            margin-bottom: 16px;
+        }
+
+        .section-label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .acceptor-card {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .acceptor-card:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .acceptor-card.selected {
+            background-color: var(--status-primary-bg);
+            border-color: var(--primary-color);
+        }
+
+        .acceptor-card .radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D9D9D9;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .acceptor-card.selected .radio {
+            border-color: var(--primary-color);
+        }
+
+        .acceptor-card.selected .radio::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .acceptor-card .info {
+            flex: 1;
+        }
+
+        .acceptor-card .name {
+            font-weight: 600;
+            margin-bottom: 2px;
+            font-size: 14px;
+        }
+
+        .acceptor-card .name .star {
+            color: var(--warning-color);
+            margin-right: 4px;
+        }
+
+        .acceptor-card .desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .acceptor-card .badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+            border-radius: 4px;
+        }
+
+        /* ── 照片局部提示（覆盖 common photo-grid margin） */
+        .photo-grid {
+            margin-bottom: 0;
+        }
+
+        .photo-tip {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+        }
+
+        .photo-item .delete {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--error-color);
+            border-radius: 50%;
+            color: #FFFFFF;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ── 文本域 */
+        .textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+        }
+
+        .textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .textarea-tip {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        /* ── 验收标准 Checklist */
+        .checkbox-list {
+            font-size: 13px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .checkbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox-item .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #D9D9D9;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item.checked .checkbox {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-item.checked .checkbox::after {
+            content: '✓';
+            color: #FFFFFF;
+            font-size: 12px;
+        }
+
+        .checkbox-item .text {
+            flex: 1;
+        }
+
+        /* ── 电子签名区 */
+        .signature-area {
+            width: 100%;
+            height: 120px;
+            border: 2px dashed #D9D9D9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .signature-area:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .signature-area.signed {
+            border-style: solid;
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-nav">
+        <h3>页面导航</h3>
+        <a href="prototype-home.html">首页（工作台）</a>
+        <a href="prototype-project-list.html">项目列表</a>
+        <a href="prototype-project-detail.html">项目详情</a>
+        <a href="prototype-task-detail.html">任务详情</a>
+        <a href="prototype-acceptance.html" class="active">验收页面</a>
+    </div>
+    
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="icons">
+                <span>📶</span>
+                <span>WiFi</span>
+                <span>🔋</span>
+            </div>
+        </div>
+        
+        <div class="nav-bar">
+            <div class="back" onclick="location.href='prototype-task-detail.html'">← 返回</div>
+            <div class="title centered">验收任务</div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('apply')">验收申请</div>
+            <div class="tab" onclick="showTab('execute')">验收执行</div>
+        </div>
+        
+        <div class="page-content" id="apply-tab">
+            <div class="card">
+                <div class="card-title">📋 任务信息</div>
+                <div class="info-row">
+                    <span class="label">任务名称</span>
+                    <span class="value">开槽布线</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">任务位置</span>
+                    <span class="value">XX小区 > 水电工程 > 强电工程</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">执行进度</span>
+                    <span class="value" style="color: var(--success-color);">100%</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">👤 选择验收人</div>
+                <div class="acceptor-section">
+                    <div class="section-label">推荐验收人</div>
+                    <div class="acceptor-card selected" onclick="selectAcceptor(this)">
+                        <div class="radio"></div>
+                        <div class="info">
+                            <div class="name"><span class="star">⭐</span>李监理（主合同监理）</div>
+                            <div class="desc">推荐理由：主合同指定监理 | 资质：高级监理工程师</div>
+                        </div>
+                        <div class="badge">跨合同</div>
+                    </div>
+                </div>
+                <div class="acceptor-section">
+                    <div class="section-label">其他验收人</div>
+                    <div class="acceptor-card" onclick="selectAcceptor(this)">
+                        <div class="radio"></div>
+                        <div class="info">
+                            <div class="name">王工长（本合同负责人）</div>
+                            <div class="desc">本合同指定负责人</div>
+                        </div>
+                    </div>
+                    <div class="acceptor-card" onclick="selectAcceptor(this)">
+                        <div class="radio"></div>
+                        <div class="info">
+                            <div class="name">张总（项目总负责人）</div>
+                            <div class="desc">项目总负责人</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📸 上传验收照片</div>
+                <div class="photo-grid">
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">+</div>
+                </div>
+                <div class="photo-tip">(已上传3张，最多9张)</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📝 验收说明</div>
+                <textarea class="textarea" placeholder="请输入验收说明...">开槽布线已完成，请验收。</textarea>
+                <div class="textarea-tip">最多200字</div>
+            </div>
+            
+            <div style="height: 80px;"></div>
+        </div>
+        
+        <div class="page-content" id="execute-tab" style="display: none;">
+            <div class="card">
+                <div class="card-title">📋 任务信息</div>
+                <div class="info-row">
+                    <span class="label">任务名称</span>
+                    <span class="value">开槽布线</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">执行人</span>
+                    <span class="value">张工长</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">申请时间</span>
+                    <span class="value">2024-01-15 09:00</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">✅ 验收标准</div>
+                <div class="checkbox-list">
+                    <div class="checkbox-item checked" onclick="toggleCheckbox(this)">
+                        <div class="checkbox"></div>
+                        <div class="text">槽深、槽宽符合标准</div>
+                    </div>
+                    <div class="checkbox-item checked" onclick="toggleCheckbox(this)">
+                        <div class="checkbox"></div>
+                        <div class="text">布线整齐、固定牢固</div>
+                    </div>
+                    <div class="checkbox-item checked" onclick="toggleCheckbox(this)">
+                        <div class="checkbox"></div>
+                        <div class="text">无裸露电线</div>
+                    </div>
+                    <div class="checkbox-item" onclick="toggleCheckbox(this)">
+                        <div class="checkbox"></div>
+                        <div class="text">线管连接处密封良好</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📸 执行照片</div>
+                <div class="photo-grid">
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📸 上传验收照片</div>
+                <div class="photo-grid">
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">📷</div>
+                    <div class="photo-item">+</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">📝 验收意见</div>
+                <textarea class="textarea" placeholder="请输入验收意见...">验收通过，施工质量符合标准。</textarea>
+                <div class="textarea-tip">最多200字</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title">✍️ 电子签名</div>
+                <div class="signature-area" onclick="this.classList.add('signed'); this.innerHTML = '已签名'">
+                    点击此处签名
+                </div>
+            </div>
+            
+            <div style="height: 80px;"></div>
+        </div>
+        
+        <div class="action-buttons" id="apply-buttons">
+            <button class="action-btn primary">提交验收申请</button>
+        </div>
+        
+        <div class="action-buttons" id="execute-buttons" style="display: none;">
+            <button class="action-btn success">验收通过</button>
+            <button class="action-btn danger">验收不通过</button>
+            <button class="action-btn secondary">暂缓验收</button>
+        </div>
+    </div>
+    
+    <script>
+        function selectAcceptor(card) {
+            document.querySelectorAll('.acceptor-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        }
+        
+        function toggleCheckbox(item) {
+            item.classList.toggle('checked');
+        }
+        
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'apply') {
+                document.getElementById('apply-tab').style.display = 'block';
+                document.getElementById('execute-tab').style.display = 'none';
+                document.getElementById('apply-buttons').style.display = 'flex';
+                document.getElementById('execute-buttons').style.display = 'none';
+            } else {
+                document.getElementById('apply-tab').style.display = 'none';
+                document.getElementById('execute-tab').style.display = 'block';
+                document.getElementById('apply-buttons').style.display = 'none';
+                document.getElementById('execute-buttons').style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
