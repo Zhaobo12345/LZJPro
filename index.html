@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家装平台原型 - 导航入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            color: #fff;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .nav-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .nav-section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .nav-section-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .nav-section-icon.pc {
+            background: linear-gradient(135deg, #1890FF 0%, #096DD9 100%);
+        }
+
+        .nav-section-icon.mobile {
+            background: linear-gradient(135deg, #52C41A 0%, #389E0D 100%);
+        }
+
+        .nav-section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #262626;
+        }
+
+        .nav-section-desc {
+            font-size: 14px;
+            color: #8c8c8c;
+            margin-top: 4px;
+        }
+
+        .nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-group {
+            margin-bottom: 16px;
+        }
+
+        .nav-group-title {
+            font-size: 12px;
+            color: #8c8c8c;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #262626;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #e6f7ff;
+            color: #1890ff;
+            transform: translateX(4px);
+        }
+
+        .nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item-icon {
+            font-size: 18px;
+        }
+
+        .nav-item-name {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .nav-item-arrow {
+            color: #bfbfbf;
+            font-size: 16px;
+        }
+
+        .nav-item:hover .nav-item-arrow {
+            color: #1890ff;
+        }
+
+        .priority-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .priority-tag.high {
+            background: #fff1f0;
+            color: #ff4d4f;
+        }
+
+        .priority-tag.medium {
+            background: #fff7e6;
+            color: #fa8c16;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗️ 家装管理平台原型</h1>
+            <p>点击下方链接进入对应端的原型页面</p>
+        </div>
+
+        <div class="nav-grid">
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <div class="nav-section-icon pc">💻</div>
+                    <div>
+                        <div class="nav-section-title">PC端原型</div>
+                        <div class="nav-section-desc">适用于电脑端浏览器访问，侧重管理功能</div>
+                    </div>
+                </div>
+
+                <div class="nav-list">
+                    <div class="nav-group">
+                        <div class="nav-group-title">高优先级</div>
+                        <a href="pc-contract-edit.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📋</span>
+                                <span class="nav-item-name">合同创建/编辑</span>
+                                <span class="priority-tag high">高</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                        <a href="pc-contract-template.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📄</span>
+                                <span class="nav-item-name">合同文本模板</span>
+                                <span class="priority-tag high">高</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                        <a href="pc-stage-template.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📝</span>
+                                <span class="nav-item-name">阶段任务模板</span>
+                                <span class="priority-tag high">高</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-group">
+                        <div class="nav-group-title">中优先级</div>
+                        <a href="pc-project-list.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📁</span>
+                                <span class="nav-item-name">项目列表</span>
+                                <span class="priority-tag medium">中</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                        <a href="pc-contract-detail.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📋</span>
+                                <span class="nav-item-name">合同详情</span>
+                                <span class="priority-tag medium">中</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <div class="nav-section-icon mobile">📱</div>
+                    <div>
+                        <div class="nav-section-title">小程序原型</div>
+                        <div class="nav-section-desc">适用于移动端微信小程序，侧重执行功能</div>
+                    </div>
+                </div>
+
+                <div class="nav-list">
+                    <div class="nav-group">
+                        <div class="nav-group-title">核心页面</div>
+                        <a href="prototype-home.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">🏠</span>
+                                <span class="nav-item-name">小程序首页</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                        <a href="prototype-project-detail.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📁</span>
+                                <span class="nav-item-name">项目详情</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                        <a href="prototype-task-detail.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">✅</span>
+                                <span class="nav-item-name">任务详情</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                        <a href="prototype-contract-detail.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📋</span>
+                                <span class="nav-item-name">合同详情</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-group">
+                        <div class="nav-group-title">其他页面</div>
+                        <a href="prototype-project-files.html" class="nav-item">
+                            <div class="nav-item-left">
+                                <span class="nav-item-icon">📂</span>
+                                <span class="nav-item-name">项目资料</span>
+                            </div>
+                            <span class="nav-item-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>家装管理平台原型系统 · PC端 + 小程序端</p>
+        </div>
+    </div>
+</body>
+</html>

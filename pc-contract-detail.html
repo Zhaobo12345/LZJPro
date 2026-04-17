@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家装平台PC端 - 合同详情</title>
+    <link rel="stylesheet" href="pc-common.css">
+    <style>
+        .contract-detail-container {
+            display: flex;
+            gap: 24px;
+        }
+
+        .contract-main {
+            flex: 1;
+        }
+
+        .contract-sidebar {
+            width: 320px;
+            flex-shrink: 0;
+        }
+
+        .status-banner {
+            padding: 20px 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-banner.signed {
+            background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);
+            color: #fff;
+        }
+
+        .status-banner.confirming {
+            background: linear-gradient(135deg, #1890FF 0%, #40A9FF 100%);
+            color: #fff;
+        }
+
+        .status-banner.changing {
+            background: linear-gradient(135deg, #FAAD14 0%, #FFC53D 100%);
+            color: #fff;
+        }
+
+        .status-info h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .status-info p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .status-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .status-actions .btn {
+            background-color: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .status-actions .btn:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .detail-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .detail-tab {
+            padding: 12px 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .detail-tab:hover {
+            color: var(--primary-color);
+        }
+
+        .detail-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .stage-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .stage-timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -24px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            border: 2px solid var(--bg-primary);
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background-color: var(--success-color);
+        }
+
+        .timeline-item.current .timeline-dot {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(24, 144, 255, 0.2);
+        }
+
+        .timeline-content {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-item.current .timeline-content {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .timeline-progress {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .task-list-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-mini-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .task-mini-item .name {
+            color: var(--text-primary);
+        }
+
+        .task-mini-item .status {
+            font-size: 12px;
+        }
+
+        .task-mini-item .status.completed {
+            color: var(--success-color);
+        }
+
+        .task-mini-item .status.pending {
+            color: var(--warning-color);
+        }
+
+        .task-mini-item .status.in-progress {
+            color: var(--primary-color);
+        }
+
+        .sidebar-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px var(--shadow-color);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-card-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sidebar-card-body {
+            padding: 16px;
+        }
+
+        .party-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .party-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .party-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .party-detail {
+            flex: 1;
+        }
+
+        .party-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .party-role {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .party-contact {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .attachment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .attachment-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .attachment-icon {
+            font-size: 20px;
+        }
+
+        .attachment-info {
+            flex: 1;
+        }
+
+        .attachment-name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .attachment-size {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .operation-log {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+        }
+
+        .log-content {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .log-user {
+            font-size: 12px;
+            color: var(--primary-color);
+        }
+
+        .contract-preview {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 32px;
+            min-height: 600px;
+        }
+
+        .contract-preview h3 {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .contract-preview p {
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .contract-preview h4 {
+            margin: 24px 0 12px;
+        }
+
+        .change-history {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .change-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .change-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: var(--bg-secondary);
+        }
+
+        .change-title {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .change-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .change-body {
+            padding: 16px;
+        }
+
+        .change-diff {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .change-diff .added {
+            color: var(--success-color);
+            background-color: var(--status-success-bg);
+            padding: 0 4px;
+        }
+
+        .change-diff .removed {
+            color: var(--error-color);
+            background-color: var(--status-error-bg);
+            text-decoration: line-through;
+            padding: 0 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pc-container">
+        <div class="pc-sidebar">
+            <div class="pc-sidebar-header">
+                <div class="pc-sidebar-logo">
+                    <span class="icon">🏗️</span>
+                    <span>家装管理平台</span>
+                </div>
+            </div>
+            <div class="pc-sidebar-menu">
+                <a href="pc-project-list.html" class="pc-menu-item">
+                    <span class="icon">📊</span>
+                    <span class="label">工作台</span>
+                </a>
+                <a href="pc-project-list.html" class="pc-menu-item">
+                    <span class="icon">📁</span>
+                    <span class="label">项目管理</span>
+                </a>
+                <a href="pc-contract-edit.html" class="pc-menu-item active">
+                    <span class="icon">📋</span>
+                    <span class="label">合同管理</span>
+                </a>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">模板管理</div>
+                    <a href="pc-contract-template.html" class="pc-menu-item">
+                        <span class="icon">📄</span>
+                        <span class="label">合同文本模板</span>
+                    </a>
+                    <a href="pc-stage-template.html" class="pc-menu-item">
+                        <span class="icon">📝</span>
+                        <span class="label">阶段任务模板</span>
+                    </a>
+                </div>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">系统设置</div>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">👥</span>
+                        <span class="label">成员管理</span>
+                    </a>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">⚙️</span>
+                        <span class="label">系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-main">
+            <div class="pc-header">
+                <div class="pc-header-left">
+                    <div class="pc-breadcrumb">
+                        <span class="item">项目管理</span>
+                        <span class="separator">/</span>
+                        <span class="item">绿城桃花源项目</span>
+                        <span class="separator">/</span>
+                        <span class="item current">水电分包合同</span>
+                    </div>
+                </div>
+                <div class="pc-header-right">
+                    <div class="pc-header-icon">
+                        🔔
+                        <span class="badge"></span>
+                    </div>
+                    <div class="pc-user-info">
+                        <div class="pc-user-avatar">张</div>
+                        <span class="pc-user-name">张三</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pc-content">
+                <div class="status-banner signed">
+                    <div class="status-info">
+                        <h2>✅ 合同已签约</h2>
+                        <p>签约时间：2024-01-15 10:30 | 合同编号：HT-2024-001</p>
+                    </div>
+                    <div class="status-actions">
+                        <button class="pc-btn btn" onclick="initiateChange()">发起变更</button>
+                        <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                    </div>
+                </div>
+
+                <div class="contract-detail-container">
+                    <div class="contract-main">
+                        <div class="detail-tabs">
+                            <div class="detail-tab active" onclick="switchTab('overview')">概览</div>
+                            <div class="detail-tab" onclick="switchTab('content')">合同正文</div>
+                            <div class="detail-tab" onclick="switchTab('stages')">阶段任务</div>
+                            <div class="detail-tab" onclick="switchTab('changes')">变更记录</div>
+                        </div>
+
+                        <div class="tab-content active" id="overviewTab">
+                            <div class="pc-card">
+                                <div class="pc-card-header">
+                                    <div class="pc-card-title">基本信息</div>
+                                    <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editContract()">编辑</button>
+                                </div>
+                                <div class="pc-card-body">
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <span class="info-label">合同名称</span>
+                                            <span class="info-value">水电分包合同</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">合同类型</span>
+                                            <span class="info-value">分包合同</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">关联工作组</span>
+                                            <span class="info-value">水电工作组</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">合同金额</span>
+                                            <span class="info-value" style="color: var(--error-color); font-weight: 600;">¥150,000.00</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">工期</span>
+                                            <span class="info-value">45天</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">签约日期</span>
+                                            <span class="info-value">2024-01-15</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pc-card mt-24">
+                                <div class="pc-card-header">
+                                    <div class="pc-card-title">阶段进度</div>
+                                    <span style="font-size: 13px; color: var(--text-tertiary);">总体进度：65%</span>
+                                </div>
+                                <div class="pc-card-body">
+                                    <div class="stage-timeline">
+                                        <div class="timeline-item completed">
+                                            <div class="timeline-dot"></div>
+                                            <div class="timeline-content">
+                                                <div class="timeline-header">
+                                                    <span class="timeline-title">阶段一：材料进场</span>
+                                                    <span class="timeline-progress">✅ 已完成</span>
+                                                </div>
+                                                <div class="task-list-mini">
+                                                    <div class="task-mini-item">
+                                                        <span class="name">材料验收</span>
+                                                        <span class="status completed">✓ 已完成</span>
+                                                    </div>
+                                                    <div class="task-mini-item">
+                                                        <span class="name">材料入库</span>
+                                                        <span class="status completed">✓ 已完成</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item current">
+                                            <div class="timeline-dot"></div>
+                                            <div class="timeline-content">
+                                                <div class="timeline-header">
+                                                    <span class="timeline-title">阶段二：布管布线</span>
+                                                    <span class="timeline-progress">进行中 2/4</span>
+                                                </div>
+                                                <div class="task-list-mini">
+                                                    <div class="task-mini-item">
+                                                        <span class="name">强电布管</span>
+                                                        <span class="status completed">✓ 已完成</span>
+                                                    </div>
+                                                    <div class="task-mini-item">
+                                                        <span class="name">弱电布线</span>
+                                                        <span class="status in-progress">⏳ 进行中</span>
+                                                    </div>
+                                                    <div class="task-mini-item">
+                                                        <span class="name">给水管道</span>
+                                                        <span class="status pending">待开始</span>
+                                                    </div>
+                                                    <div class="task-mini-item">
+                                                        <span class="name">排水管道</span>
+                                                        <span class="status pending">待开始</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-dot"></div>
+                                            <div class="timeline-content">
+                                                <div class="timeline-header">
+                                                    <span class="timeline-title">阶段三：验收调试</span>
+                                                    <span class="timeline-progress">待开始 0/3</span>
+                                                </div>
+                                                <div class="task-list-mini">
+                                                    <div class="task-mini-item">
+                                                        <span class="name">通电测试</span>
+                                                        <span class="status pending">待开始</span>
+                                                    </div>
+                                                    <div class="task-mini-item">
+                                                        <span class="name">通水测试</span>
+                                                        <span class="status pending">待开始</span>
+                                                    </div>
+                                                    <div class="task-mini-item">
+                                                        <span class="name">整体验收</span>
+                                                        <span class="status pending">待开始</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="contentTab">
+                            <div class="contract-preview">
+                                <h3>水电分包合同</h3>
+                                
+                                <p><strong>甲方：</strong>杭州绿城装饰工程有限公司</p>
+                                <p><strong>乙方：</strong>杭州水电安装有限公司</p>
+                                <br>
+                                
+                                <p>根据《中华人民共和国合同法》及相关法律法规，甲乙双方本着平等、自愿、公平、诚实信用的原则，就水电工程分包事宜，经协商一致，签订本合同。</p>
+                                <br>
+                                
+                                <h4>第一条 工程概况</h4>
+                                <p>1.1 工程名称：绿城桃花源项目水电工程</p>
+                                <p>1.2 工程地点：杭州市西湖区</p>
+                                <p>1.3 承包范围：强电、弱电、给排水等水电安装工程</p>
+                                <br>
+                                
+                                <h4>第二条 合同价款</h4>
+                                <p>2.1 本合同总价款为人民币壹拾伍万元整（¥150,000.00）</p>
+                                <p>2.2 合同价款为固定总价，不因市场价格波动而调整</p>
+                                <br>
+                                
+                                <h4>第三条 工期</h4>
+                                <p>3.1 工期总日历天数：45天</p>
+                                <p>3.2 开工日期：以甲方书面通知为准</p>
+                                <p>3.3 竣工日期：开工日期后45日内</p>
+                                <br>
+                                
+                                <h4>第四条 质量标准</h4>
+                                <p>4.1 工程质量应符合国家现行工程施工验收规范的标准</p>
+                                <p>4.2 材料进场需经甲方验收合格后方可使用</p>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="stagesTab">
+                            <div class="pc-card">
+                                <div class="pc-card-header">
+                                    <div class="pc-card-title">阶段任务管理</div>
+                                    <button class="pc-btn pc-btn-primary pc-btn-sm" onclick="editStages()">编辑阶段</button>
+                                </div>
+                                <div class="pc-card-body">
+                                    <p style="color: var(--text-tertiary); text-align: center; padding: 40px;">
+                                        阶段任务管理功能请参考小程序端任务详情页面
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="changesTab">
+                            <div class="change-history">
+                                <div class="change-item">
+                                    <div class="change-header">
+                                        <span class="change-title">变更记录 #1</span>
+                                        <span class="change-meta">2024-02-01 14:30 · 张三发起</span>
+                                    </div>
+                                    <div class="change-body">
+                                        <div class="change-diff">
+                                            <p><strong>变更内容：</strong></p>
+                                            <p>工期由 <span class="removed">40天</span> 变更为 <span class="added">45天</span></p>
+                                            <p>合同金额由 <span class="removed">¥140,000.00</span> 变更为 <span class="added">¥150,000.00</span></p>
+                                        </div>
+                                        <div style="margin-top: 12px; font-size: 12px; color: var(--text-tertiary);">
+                                            变更原因：因客户增加卫生间水电改造需求，工期和费用相应调整
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contract-sidebar">
+                        <div class="sidebar-card">
+                            <div class="sidebar-card-header">
+                                <span class="sidebar-card-title">签约双方</span>
+                            </div>
+                            <div class="sidebar-card-body">
+                                <div class="party-info">
+                                    <div class="party-item">
+                                        <div class="party-avatar">🏢</div>
+                                        <div class="party-detail">
+                                            <div class="party-name">杭州绿城装饰工程有限公司</div>
+                                            <div class="party-role">甲方</div>
+                                            <div class="party-contact">联系人：张三 · 138****8888</div>
+                                        </div>
+                                    </div>
+                                    <div class="party-item">
+                                        <div class="party-avatar">🏭</div>
+                                        <div class="party-detail">
+                                            <div class="party-name">杭州水电安装有限公司</div>
+                                            <div class="party-role">乙方</div>
+                                            <div class="party-contact">联系人：李四 · 139****6666</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-card-header">
+                                <span class="sidebar-card-title">附件文件</span>
+                                <span style="font-size: 12px; color: var(--text-tertiary);">3个文件</span>
+                            </div>
+                            <div class="sidebar-card-body">
+                                <div class="attachment-list">
+                                    <div class="attachment-item">
+                                        <span class="attachment-icon">📄</span>
+                                        <div class="attachment-info">
+                                            <div class="attachment-name">水电分包合同_签约文件.pdf</div>
+                                            <div class="attachment-size">2.5 MB</div>
+                                        </div>
+                                    </div>
+                                    <div class="attachment-item">
+                                        <span class="attachment-icon">📄</span>
+                                        <div class="attachment-info">
+                                            <div class="attachment-name">水电施工图纸.dwg</div>
+                                            <div class="attachment-size">8.2 MB</div>
+                                        </div>
+                                    </div>
+                                    <div class="attachment-item">
+                                        <span class="attachment-icon">🖼</span>
+                                        <div class="attachment-info">
+                                            <div class="attachment-name">现场照片.zip</div>
+                                            <div class="attachment-size">15.6 MB</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <div class="sidebar-card-header">
+                                <span class="sidebar-card-title">操作记录</span>
+                            </div>
+                            <div class="sidebar-card-body">
+                                <div class="operation-log">
+                                    <div class="log-item">
+                                        <span class="log-time">01-15 10:30</span>
+                                        <span class="log-content">合同签约成功</span>
+                                        <span class="log-user">张三</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-time">01-14 16:20</span>
+                                        <span class="log-content">确认签约文件</span>
+                                        <span class="log-user">李四</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-time">01-14 14:00</span>
+                                        <span class="log-content">上传签约文件</span>
+                                        <span class="log-user">张三</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-time">01-12 09:30</span>
+                                        <span class="log-content">确认合同内容</span>
+                                        <span class="log-user">李四</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-time">01-10 15:00</span>
+                                        <span class="log-content">创建合同</span>
+                                        <span class="log-user">张三</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-page-nav">
+        <div class="pc-page-nav-title">
+            PC端原型导航
+            <span class="badge">PC</span>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">高优先级</div>
+            <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
+            <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
+            <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">中优先级</div>
+            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+            <a href="pc-contract-detail.html" class="pc-page-nav-item active">合同详情</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">小程序原型</div>
+            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
+            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.detail-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        function initiateChange() {
+            if (confirm('确定要发起变更申请吗？\n\n发起变更后，阶段任务将暂停流转，需等待对方确认。')) {
+                window.location.href = 'pc-contract-edit.html';
+            }
+        }
+
+        function exportContract() {
+            alert('合同导出功能开发中...');
+        }
+
+        function editContract() {
+            window.location.href = 'pc-contract-edit.html';
+        }
+
+        function editStages() {
+            alert('阶段任务编辑功能开发中...');
+        }
+    </script>
+</body>
+</html>

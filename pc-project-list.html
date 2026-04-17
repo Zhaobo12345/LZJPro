@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家装平台PC端 - 项目管理</title>
+    <link rel="stylesheet" href="pc-common.css">
+    <style>
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 2px var(--shadow-color);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-card-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .stat-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .stat-card-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-card-change {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .stat-card-change.up {
+            color: var(--success-color);
+        }
+
+        .stat-card-change.down {
+            color: var(--error-color);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-item label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+
+        .project-table-container {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px var(--shadow-color);
+            overflow: hidden;
+        }
+
+        .project-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .project-table th,
+        .project-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .project-table th {
+            background-color: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 13px;
+            position: sticky;
+            top: 0;
+        }
+
+        .project-table td {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .project-table tbody tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .project-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .project-name:hover {
+            color: var(--primary-color);
+        }
+
+        .project-address {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            width: 100px;
+            height: 6px;
+            background-color: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-left: 8px;
+        }
+
+        .contract-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .contract-tag {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .contract-tag.active {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
+
+        .contract-tag.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .member-avatars {
+            display: flex;
+        }
+
+        .member-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            margin-left: -8px;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .member-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .member-avatar.more {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quick-action-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .quick-action-btn:hover {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .batch-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .create-project-modal .form-section {
+            margin-bottom: 24px;
+        }
+
+        .create-project-modal .form-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .style-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .style-option {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .style-option:hover {
+            border-color: var(--primary-color);
+        }
+
+        .style-option.selected {
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .attachment-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .attachment-upload:hover {
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .attachment-upload .icon {
+            font-size: 32px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .attachment-upload .text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .attachment-upload .hint {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .attachment-list {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .attachment-item .name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .attachment-item .remove {
+            color: var(--error-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="pc-container">
+        <div class="pc-sidebar">
+            <div class="pc-sidebar-header">
+                <div class="pc-sidebar-logo">
+                    <span class="icon">🏗️</span>
+                    <span>家装管理平台</span>
+                </div>
+            </div>
+            <div class="pc-sidebar-menu">
+                <a href="pc-project-list.html" class="pc-menu-item active">
+                    <span class="icon">📊</span>
+                    <span class="label">工作台</span>
+                </a>
+                <a href="pc-project-list.html" class="pc-menu-item active">
+                    <span class="icon">📁</span>
+                    <span class="label">项目管理</span>
+                </a>
+                <a href="pc-contract-edit.html" class="pc-menu-item">
+                    <span class="icon">📋</span>
+                    <span class="label">合同管理</span>
+                </a>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">模板管理</div>
+                    <a href="pc-contract-template.html" class="pc-menu-item">
+                        <span class="icon">📄</span>
+                        <span class="label">合同文本模板</span>
+                    </a>
+                    <a href="pc-stage-template.html" class="pc-menu-item">
+                        <span class="icon">📝</span>
+                        <span class="label">阶段任务模板</span>
+                    </a>
+                </div>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">系统设置</div>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">👥</span>
+                        <span class="label">成员管理</span>
+                    </a>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">⚙️</span>
+                        <span class="label">系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-main">
+            <div class="pc-header">
+                <div class="pc-header-left">
+                    <div class="pc-breadcrumb">
+                        <span class="item current">项目管理</span>
+                    </div>
+                </div>
+                <div class="pc-header-right">
+                    <div class="pc-header-icon">
+                        🔔
+                        <span class="badge"></span>
+                    </div>
+                    <div class="pc-user-info">
+                        <div class="pc-user-avatar">张</div>
+                        <span class="pc-user-name">张三</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pc-content">
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">进行中项目</span>
+                            <div class="stat-card-icon" style="background-color: var(--status-primary-bg); color: var(--primary-color);">📁</div>
+                        </div>
+                        <div class="stat-card-value">12</div>
+                        <div class="stat-card-change up">↑ 2 较上月</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">待处理任务</span>
+                            <div class="stat-card-icon" style="background-color: var(--status-warning-bg); color: var(--warning-color);">📋</div>
+                        </div>
+                        <div class="stat-card-value">28</div>
+                        <div class="stat-card-change down">↓ 5 较昨日</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">本月完成</span>
+                            <div class="stat-card-icon" style="background-color: var(--status-success-bg); color: var(--success-color);">✅</div>
+                        </div>
+                        <div class="stat-card-value">156</div>
+                        <div class="stat-card-change up">↑ 12% 较上月</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">待确认合同</span>
+                            <div class="stat-card-icon" style="background-color: var(--status-error-bg); color: var(--error-color);">📄</div>
+                        </div>
+                        <div class="stat-card-value">3</div>
+                        <div class="stat-card-change">需及时处理</div>
+                    </div>
+                </div>
+
+                <div class="pc-content-header">
+                    <div class="pc-page-title">项目列表</div>
+                    <div class="pc-content-actions">
+                        <button class="pc-btn pc-btn-primary" onclick="showCreateProjectModal()">
+                            + 新建项目
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-item">
+                        <label>项目状态</label>
+                        <select>
+                            <option>全部状态</option>
+                            <option>进行中</option>
+                            <option>已完成</option>
+                            <option>已暂停</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>项目区域</label>
+                        <select>
+                            <option>全部区域</option>
+                            <option>西湖区</option>
+                            <option>余杭区</option>
+                            <option>拱墅区</option>
+                            <option>滨江区</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>项目经理</label>
+                        <select>
+                            <option>全部</option>
+                            <option>张三</option>
+                            <option>李四</option>
+                            <option>王五</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>搜索</label>
+                        <input type="text" placeholder="项目名称/客户姓名">
+                    </div>
+                    <div class="filter-item" style="margin-left: auto;">
+                        <button class="pc-btn pc-btn-default">重置</button>
+                        <button class="pc-btn pc-btn-primary">查询</button>
+                    </div>
+                </div>
+
+                <div class="project-table-container">
+                    <table class="project-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>项目名称</th>
+                                <th>客户信息</th>
+                                <th>项目进度</th>
+                                <th>合同状态</th>
+                                <th>项目成员</th>
+                                <th>计划工期</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div class="project-name" onclick="goToProjectDetail(1)">绿城桃花源项目</div>
+                                    <div class="project-address">杭州市西湖区文三路xxx号</div>
+                                </td>
+                                <td>
+                                    <div>王先生</div>
+                                    <div class="project-address">138****8888</div>
+                                </td>
+                                <td>
+                                    <div class="flex" style="align-items: center;">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 65%;"></div>
+                                        </div>
+                                        <span class="progress-text">65%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contract-tags">
+                                        <span class="contract-tag active">水电</span>
+                                        <span class="contract-tag active">泥瓦</span>
+                                        <span class="contract-tag pending">木工</span>
+                                        <span class="contract-tag">油漆</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-avatars">
+                                        <div class="member-avatar">张</div>
+                                        <div class="member-avatar" style="background-color: var(--success-color);">李</div>
+                                        <div class="member-avatar" style="background-color: var(--warning-color);">王</div>
+                                        <div class="member-avatar more">+3</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>2024-01-15</div>
+                                    <div class="project-address">至 2024-04-15</div>
+                                </td>
+                                <td>
+                                    <span class="pc-tag pc-tag-primary">进行中</span>
+                                </td>
+                                <td>
+                                    <div class="quick-actions">
+                                        <div class="quick-action-btn" title="查看详情" onclick="goToProjectDetail(1)">👁</div>
+                                        <div class="quick-action-btn" title="编辑" onclick="editProject(1)">✎</div>
+                                        <div class="quick-action-btn" title="更多">⋯</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div class="project-name" onclick="goToProjectDetail(2)">万科良渚文化村</div>
+                                    <div class="project-address">杭州市余杭区良渚街道xxx号</div>
+                                </td>
+                                <td>
+                                    <div>陈女士</div>
+                                    <div class="project-address">139****6666</div>
+                                </td>
+                                <td>
+                                    <div class="flex" style="align-items: center;">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 30%;"></div>
+                                        </div>
+                                        <span class="progress-text">30%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contract-tags">
+                                        <span class="contract-tag active">水电</span>
+                                        <span class="contract-tag pending">泥瓦</span>
+                                        <span class="contract-tag">木工</span>
+                                        <span class="contract-tag">油漆</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-avatars">
+                                        <div class="member-avatar">张</div>
+                                        <div class="member-avatar" style="background-color: var(--purple-color);">赵</div>
+                                        <div class="member-avatar more">+2</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>2024-02-01</div>
+                                    <div class="project-address">至 2024-05-01</div>
+                                </td>
+                                <td>
+                                    <span class="pc-tag pc-tag-primary">进行中</span>
+                                </td>
+                                <td>
+                                    <div class="quick-actions">
+                                        <div class="quick-action-btn" title="查看详情" onclick="goToProjectDetail(2)">👁</div>
+                                        <div class="quick-action-btn" title="编辑" onclick="editProject(2)">✎</div>
+                                        <div class="quick-action-btn" title="更多">⋯</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div class="project-name" onclick="goToProjectDetail(3)">融创壹号院</div>
+                                    <div class="project-address">杭州市拱墅区登云路xxx号</div>
+                                </td>
+                                <td>
+                                    <div>刘先生</div>
+                                    <div class="project-address">137****5555</div>
+                                </td>
+                                <td>
+                                    <div class="flex" style="align-items: center;">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 100%; background-color: var(--success-color);"></div>
+                                        </div>
+                                        <span class="progress-text">100%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contract-tags">
+                                        <span class="contract-tag active">水电</span>
+                                        <span class="contract-tag active">泥瓦</span>
+                                        <span class="contract-tag active">木工</span>
+                                        <span class="contract-tag active">油漆</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-avatars">
+                                        <div class="member-avatar">李</div>
+                                        <div class="member-avatar" style="background-color: var(--success-color);">王</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>2023-10-01</div>
+                                    <div class="project-address">至 2024-01-01</div>
+                                </td>
+                                <td>
+                                    <span class="pc-tag pc-tag-success">已完成</span>
+                                </td>
+                                <td>
+                                    <div class="quick-actions">
+                                        <div class="quick-action-btn" title="查看详情" onclick="goToProjectDetail(3)">👁</div>
+                                        <div class="quick-action-btn" title="编辑" onclick="editProject(3)">✎</div>
+                                        <div class="quick-action-btn" title="更多">⋯</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>
+                                    <div class="project-name" onclick="goToProjectDetail(4)">滨江金色家园</div>
+                                    <div class="project-address">杭州市滨江区江南大道xxx号</div>
+                                </td>
+                                <td>
+                                    <div>周女士</div>
+                                    <div class="project-address">136****4444</div>
+                                </td>
+                                <td>
+                                    <div class="flex" style="align-items: center;">
+                                        <div class="progress-bar">
+                                            <div class="progress-bar-fill" style="width: 45%;"></div>
+                                        </div>
+                                        <span class="progress-text">45%</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contract-tags">
+                                        <span class="contract-tag active">水电</span>
+                                        <span class="contract-tag active">泥瓦</span>
+                                        <span class="contract-tag">木工</span>
+                                        <span class="contract-tag">油漆</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="member-avatars">
+                                        <div class="member-avatar">王</div>
+                                        <div class="member-avatar" style="background-color: var(--orange-color);">孙</div>
+                                        <div class="member-avatar more">+4</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>2024-01-20</div>
+                                    <div class="project-address">至 2024-04-20</div>
+                                </td>
+                                <td>
+                                    <span class="pc-tag pc-tag-warning">已暂停</span>
+                                </td>
+                                <td>
+                                    <div class="quick-actions">
+                                        <div class="quick-action-btn" title="查看详情" onclick="goToProjectDetail(4)">👁</div>
+                                        <div class="quick-action-btn" title="编辑" onclick="editProject(4)">✎</div>
+                                        <div class="quick-action-btn" title="更多">⋯</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="table-footer">
+                        <div class="batch-actions">
+                            <span style="color: var(--text-tertiary); font-size: 13px;">已选择 0 项</span>
+                            <button class="pc-btn pc-btn-default pc-btn-sm">批量导出</button>
+                            <button class="pc-btn pc-btn-default pc-btn-sm">批量分配</button>
+                        </div>
+                        <div class="pc-pagination">
+                            <span style="color: var(--text-tertiary); font-size: 13px;">共 36 条</span>
+                            <div class="pc-pagination-item disabled">‹</div>
+                            <div class="pc-pagination-item active">1</div>
+                            <div class="pc-pagination-item">2</div>
+                            <div class="pc-pagination-item">3</div>
+                            <div class="pc-pagination-item">4</div>
+                            <div class="pc-pagination-item">›</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-page-nav">
+        <div class="pc-page-nav-title">
+            PC端原型导航
+            <span class="badge">PC</span>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">高优先级</div>
+            <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
+            <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
+            <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">中优先级</div>
+            <a href="pc-project-list.html" class="pc-page-nav-item active">项目列表</a>
+            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">小程序原型</div>
+            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
+            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="createProjectModal">
+        <div class="pc-modal pc-modal-lg create-project-modal">
+            <div class="pc-modal-header">
+                <div class="pc-modal-title">新建项目</div>
+                <div class="pc-modal-close" onclick="closeCreateProjectModal()">×</div>
+            </div>
+            <div class="pc-modal-body">
+                <div class="form-section">
+                    <div class="form-section-title">客户信息</div>
+                    <div class="form-grid">
+                        <div class="pc-form-group">
+                            <label class="pc-form-label">客户姓名<span class="required">*</span></label>
+                            <input type="text" class="pc-form-input" placeholder="请输入客户姓名">
+                        </div>
+                        <div class="pc-form-group">
+                            <label class="pc-form-label">联系方式<span class="required">*</span></label>
+                            <input type="text" class="pc-form-input" placeholder="请输入手机号码">
+                        </div>
+                        <div class="pc-form-group">
+                            <label class="pc-form-label">所在区域<span class="required">*</span></label>
+                            <div class="flex gap-8">
+                                <select class="pc-form-select">
+                                    <option>浙江省</option>
+                                </select>
+                                <select class="pc-form-select">
+                                    <option>杭州市</option>
+                                </select>
+                                <select class="pc-form-select">
+                                    <option>西湖区</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pc-form-group">
+                        <label class="pc-form-label">详细地址<span class="required">*</span></label>
+                        <input type="text" class="pc-form-input" placeholder="请输入详细地址">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">房屋信息</div>
+                    <div class="form-grid">
+                        <div class="pc-form-group">
+                            <label class="pc-form-label">房屋面积（㎡）<span class="required">*</span></label>
+                            <input type="number" class="pc-form-input" placeholder="请输入房屋面积">
+                        </div>
+                        <div class="pc-form-group">
+                            <label class="pc-form-label">房屋类别<span class="required">*</span></label>
+                            <select class="pc-form-select">
+                                <option>毛坯房</option>
+                                <option>精装房</option>
+                                <option>旧房改造</option>
+                            </select>
+                        </div>
+                        <div class="pc-form-group">
+                            <label class="pc-form-label">房型<span class="required">*</span></label>
+                            <select class="pc-form-select">
+                                <option>平层</option>
+                                <option>别墅</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">风格喜好</div>
+                    <div class="style-options">
+                        <div class="style-option selected">中式</div>
+                        <div class="style-option">法式</div>
+                        <div class="style-option">现代</div>
+                        <div class="style-option">轻奢</div>
+                        <div class="style-option">简约</div>
+                        <div class="style-option">工业</div>
+                        <div class="style-option">美式</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-section-title">附件上传</div>
+                    <div class="attachment-upload">
+                        <div class="icon">📁</div>
+                        <div class="text">点击或拖拽文件到此区域上传</div>
+                        <div class="hint">支持图片、PDF、Word等格式</div>
+                    </div>
+                    <div class="attachment-list">
+                        <div class="attachment-item">
+                            <span>📄</span>
+                            <span class="name">户型图.pdf</span>
+                            <span class="remove">×</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pc-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeCreateProjectModal()">取消</button>
+                <button class="pc-btn pc-btn-primary" onclick="createProject()">创建项目</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCreateProjectModal() {
+            document.getElementById('createProjectModal').classList.add('show');
+        }
+
+        function closeCreateProjectModal() {
+            document.getElementById('createProjectModal').classList.remove('show');
+        }
+
+        function createProject() {
+            alert('项目创建成功！');
+            closeCreateProjectModal();
+        }
+
+        function goToProjectDetail(id) {
+            window.location.href = 'prototype-project-detail.html';
+        }
+
+        function editProject(id) {
+            alert('编辑项目：' + id);
+        }
+
+        document.querySelectorAll('.style-option').forEach(option => {
+            option.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+    </script>
+</body>
+</html>
