@@ -742,6 +742,47 @@
         .empty-execution .text {
             font-size: 13px;
         }
+
+        .custom-toast-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-toast-modal.show { display: flex; }
+
+        .custom-toast-modal .modal-box {
+            width: 280px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .custom-toast-modal .modal-body {
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .custom-toast-modal .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .custom-toast-modal .modal-btn {
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -752,25 +793,24 @@
         </div>
         
         <div class="nav-bar">
-            <div class="back" onclick="location.href='prototype-project-detail.html'">← 返回</div>
+            <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">临时任务详情</div>
             <div class="actions">
                 <div class="action-btn" onclick="toggleActionMenu()">⋯</div>
-                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+                <div class="action-btn" onclick="showCustomToast('关闭小程序')">✕</div>
             </div>
         </div>
         
         <div class="page-content">
             <div class="task-header-card" id="taskHeader">
-                <div class="task-type-tag">⚡ 临时任务</div>
                 <div class="task-name" id="taskName">紧急修补墙面裂缝</div>
                 <div class="task-contract">
                     <span>📄</span>
                     <span>关联合同：泥瓦分包合同</span>
                 </div>
                 <div class="task-status-row">
-                    <div class="status-badge" id="taskStatus">待接收</div>
-                    <div class="confirm-progress" id="confirmProgress">等待执行人接收</div>
+                    <div class="status-badge" id="taskStatus">待接受</div>
+                    <div class="confirm-progress" id="confirmProgress">等待执行人接受</div>
                 </div>
             </div>
             
@@ -782,10 +822,6 @@
                 <div class="info-row">
                     <div class="label">派发时间</div>
                     <div class="value">2024-01-25 14:30</div>
-                </div>
-                <div class="info-row">
-                    <div class="label">任务类型</div>
-                    <div class="value highlight">临时任务</div>
                 </div>
             </div>
             
@@ -915,7 +951,7 @@
         
         <div class="action-buttons" id="actionButtons">
             <div class="btn secondary" onclick="rejectTask()">拒绝</div>
-            <div class="btn purple" onclick="acceptTask()">接收任务</div>
+            <div class="btn purple" onclick="acceptTask()">接受任务</div>
         </div>
         
         <div class="confirm-modal" id="confirmModal">
@@ -935,15 +971,15 @@
                     </div>
                 </div>
                 <div class="media-upload">
-                    <div class="upload-item" onclick="alert('上传图片')">
+                    <div class="upload-item" onclick="showCustomToast('上传图片')">
                         <span class="icon">📷</span>
                         <span class="text">添加图片</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传视频')">
+                    <div class="upload-item" onclick="showCustomToast('上传视频')">
                         <span class="icon">🎬</span>
                         <span class="text">添加视频</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传音频')">
+                    <div class="upload-item" onclick="showCustomToast('上传音频')">
                         <span class="icon">🎵</span>
                         <span class="text">添加音频</span>
                     </div>
@@ -963,21 +999,32 @@
                     <div class="modal-close" onclick="closeUploadModal()">✕</div>
                 </div>
                 <div class="media-upload">
-                    <div class="upload-item" onclick="alert('上传图片')">
+                    <div class="upload-item" onclick="showCustomToast('上传图片')">
                         <span class="icon">📷</span>
                         <span class="text">添加图片</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传视频')">
+                    <div class="upload-item" onclick="showCustomToast('上传视频')">
                         <span class="icon">🎬</span>
                         <span class="text">添加视频</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传音频')">
+                    <div class="upload-item" onclick="showCustomToast('上传音频')">
                         <span class="icon">🎵</span>
                         <span class="text">添加音频</span>
                     </div>
                 </div>
                 <textarea class="desc-input" placeholder="请输入执行说明"></textarea>
                 <button class="submit-btn" onclick="submitExecution()">提交执行记录</button>
+            </div>
+        </div>
+        
+        <div class="custom-toast-modal" id="customToastModal">
+            <div class="modal-box">
+                <div class="modal-body" id="customToastMessage">
+                    操作成功
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn" onclick="closeCustomToast()">知道了</div>
+                </div>
             </div>
         </div>
     </div>
@@ -995,10 +1042,22 @@
         <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
             <div class="page-nav-title">任务状态切换</div>
             <div class="status-switcher">
-                <div class="status-switch-item active" onclick="updateTaskStatus('pending')">待接收</div>
+                <div class="status-switch-item active" onclick="updateTaskStatus('pending')">待接受</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('accepted')">待开始</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('rejected_pending')">驳回后待开始</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('confirming')">确认中</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('confirming_after_reject')">驳回后确认中</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('completed')">已完成</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('completed_with_reject')">已完成（含驳回）</div>
+            </div>
+        </div>
+        <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+            <div class="page-nav-title">用户视角切换</div>
+            <div class="status-switcher" id="roleSwitcher">
+                <div class="status-switch-item role-switch-item active" onclick="switchUserRole('executor')">执行人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('nonExecutor')">非执行人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('confirmer')">确认人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('nonConfirmer')">非确认人视角</div>
             </div>
         </div>
     </div>
@@ -1006,6 +1065,16 @@
     <script>
         let currentRating = 0;
         let currentTaskStatus = 'pending';
+        let currentUserRole = 'executor';
+        
+        function showCustomToast(message) {
+            document.getElementById('customToastMessage').innerHTML = message.replace(/\n/g, '<br>');
+            document.getElementById('customToastModal').classList.add('show');
+        }
+        
+        function closeCustomToast() {
+            document.getElementById('customToastModal').classList.remove('show');
+        }
         
         function toggleStandard(type) {
             const list = document.getElementById(type + 'Standard');
@@ -1049,35 +1118,29 @@
         }
         
         function acceptTask() {
-            alert('任务接收成功！\n\n请按时完成任务并提交执行记录。');
+            showCustomToast('任务接受成功！\n\n请按时完成任务并提交执行记录。');
             updateTaskStatus('accepted');
         }
         
         function rejectTask() {
-            const reason = prompt('请输入拒绝原因：');
-            if (reason) {
-                alert('已拒绝任务！\n\n系统已通知派发人。');
-                location.href = 'prototype-project-detail.html';
-            }
+            showCustomToast('已拒绝任务！\n\n系统已通知派发人。');
+            location.href = 'prototype-project-detail.html';
         }
         
         function confirmPass() {
             closeConfirmModal();
-            alert('确认成功！\n\n您的确认已记录。');
+            showCustomToast('确认成功！\n\n您的确认已记录。');
             updateTaskStatus('completed');
         }
         
         function rejectConfirm() {
-            const reason = prompt('请输入驳回原因：');
-            if (reason) {
-                closeConfirmModal();
-                alert('已驳回！\n\n系统已通知执行人重新执行。');
-            }
+            closeConfirmModal();
+            showCustomToast('已驳回！\n\n系统已通知执行人重新执行。');
         }
         
         function submitExecution() {
             closeUploadModal();
-            alert('执行记录已提交！\n\n系统已通知确认人进行确认。');
+            showCustomToast('执行记录已提交！\n\n系统已通知确认人进行确认。');
             updateTaskStatus('confirming');
         }
         
@@ -1089,48 +1152,87 @@
             const actionButtons = document.getElementById('actionButtons');
             const executionContent = document.getElementById('executionContent');
             const confirmCard = document.getElementById('confirmCard');
+            const executionCard = document.getElementById('executionCard');
             
-            document.querySelectorAll('.status-switch-item').forEach(item => {
+            document.querySelectorAll('.status-switch-item:not(.role-switch-item)').forEach(item => {
                 item.classList.remove('active');
             });
             
             if (status === 'pending') {
                 header.className = 'task-header-card';
-                statusBadge.textContent = '待接收';
-                confirmProgress.textContent = '等待执行人接收';
+                statusBadge.textContent = '待接受';
+                confirmProgress.textContent = '等待执行人接受';
+                executionCard.style.display = 'none';
+                confirmCard.style.display = 'none';
+                
                 actionButtons.innerHTML = `
                     <div class="btn secondary" onclick="rejectTask()">拒绝</div>
-                    <div class="btn purple" onclick="acceptTask()">接收任务</div>
+                    <div class="btn purple" onclick="acceptTask()">接受任务</div>
                 `;
-                executionContent.innerHTML = `
-                    <div class="empty-execution">
-                        <div class="icon">📋</div>
-                        <div class="text">暂无执行记录</div>
-                    </div>
-                `;
-                confirmCard.style.display = 'none';
             } else if (status === 'accepted') {
                 header.className = 'task-header-card pending';
                 statusBadge.textContent = '待开始';
-                confirmProgress.textContent = '已接收，等待执行';
-                actionButtons.innerHTML = `
-                    <div class="btn primary" onclick="showUploadModal()">开始执行</div>
-                `;
+                confirmProgress.textContent = '已接受，等待执行';
+                executionCard.style.display = 'block';
+                confirmCard.style.display = 'none';
+                
                 executionContent.innerHTML = `
                     <div class="empty-execution">
                         <div class="icon">📋</div>
                         <div class="text">暂无执行记录</div>
                     </div>
                 `;
+                
+                if (currentUserRole === 'executor') {
+                    actionButtons.innerHTML = `
+                        <div class="btn primary" onclick="showUploadModal()">开始执行</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                    `;
+                }
+            } else if (status === 'rejected_pending') {
+                header.className = 'task-header-card pending';
+                statusBadge.textContent = '待开始';
+                confirmProgress.textContent = '已驳回，请重新执行';
+                executionCard.style.display = 'block';
                 confirmCard.style.display = 'none';
+                
+                executionContent.innerHTML = `
+                    <div class="execution-section" style="opacity: 0.6; border: 1px dashed var(--error-color);">
+                        <div class="section-title" style="color: var(--error-color);">❌ 已驳回的执行记录</div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                        </div>
+                        <div class="execution-desc">
+                            墙面裂缝修补完成，打磨平整。
+                        </div>
+                        <div style="font-size: 12px; color: var(--error-color); margin-top: 8px; padding: 8px; background: #FFF1F0; border-radius: 4px;">
+                            <strong>驳回原因：</strong>修补区域色差明显，需重新调色修补<br>
+                            <strong>驳回人：</strong>王五（业主）<br>
+                            <strong>驳回时间：</strong>2024-01-26 09:00
+                        </div>
+                    </div>
+                `;
+                
+                if (currentUserRole === 'executor') {
+                    actionButtons.innerHTML = `
+                        <div class="btn primary" onclick="showUploadModal()">重新执行</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待执行人重新执行</div>
+                    `;
+                }
             } else if (status === 'confirming') {
                 header.className = 'task-header-card confirming';
                 statusBadge.textContent = '确认中';
                 confirmProgress.textContent = '确认进度：0/2';
-                actionButtons.innerHTML = `
-                    <div class="btn secondary" onclick="showConfirmModal()">驳回</div>
-                    <div class="btn success" onclick="showConfirmModal()">确认通过</div>
-                `;
+                executionCard.style.display = 'block';
+                confirmCard.style.display = 'block';
+                
                 executionContent.innerHTML = `
                     <div class="execution-section">
                         <div class="section-title">📤 执行人提交的内容</div>
@@ -1147,7 +1249,7 @@
                         </div>
                     </div>
                 `;
-                confirmCard.style.display = 'block';
+                
                 document.getElementById('confirmList').innerHTML = `
                     <div class="confirm-item">
                         <div class="avatar">张</div>
@@ -1170,14 +1272,97 @@
                         </div>
                     </div>
                 `;
+                
+                if (currentUserRole === 'confirmer') {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" onclick="showConfirmModal()">驳回</div>
+                        <div class="btn success" onclick="showConfirmModal()">确认通过</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待确认人确认</div>
+                    `;
+                }
+            } else if (status === 'confirming_after_reject') {
+                header.className = 'task-header-card confirming';
+                statusBadge.textContent = '确认中';
+                confirmProgress.textContent = '确认进度：1/2';
+                executionCard.style.display = 'block';
+                confirmCard.style.display = 'block';
+                
+                executionContent.innerHTML = `
+                    <div class="execution-section">
+                        <div class="section-title">📤 执行人提交的内容 <span style="font-size: 11px; color: var(--success-color); margin-left: 8px;">当前有效</span></div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                        </div>
+                        <div class="execution-desc">
+                            墙面裂缝已重新修补，使用相同批次材料调色，修补后无明显色差。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-26 14:30
+                        </div>
+                    </div>
+                    <div class="execution-section" style="opacity: 0.6; margin-top: 12px; border: 1px dashed var(--error-color);">
+                        <div class="section-title" style="color: var(--error-color);">❌ 已驳回的执行记录</div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                        </div>
+                        <div class="execution-desc">
+                            墙面裂缝修补完成，打磨平整。
+                        </div>
+                        <div style="font-size: 12px; color: var(--error-color); margin-top: 8px; padding: 8px; background: #FFF1F0; border-radius: 4px;">
+                            <strong>驳回原因：</strong>修补区域色差明显，需重新调色修补<br>
+                            <strong>驳回人：</strong>王五（业主）<br>
+                            <strong>驳回时间：</strong>2024-01-26 09:00
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('confirmList').innerHTML = `
+                    <div class="confirm-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name-row">
+                                <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                <div class="status-tag confirmed">已确认</div>
+                            </div>
+                            <div class="time">2024-01-26 15:00</div>
+                            <div class="content">重新修补后效果良好。</div>
+                        </div>
+                    </div>
+                    <div class="confirm-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name-row">
+                                <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                <div class="status-tag pending">待确认</div>
+                            </div>
+                            <div class="time">等待确认中...</div>
+                        </div>
+                    </div>
+                `;
+                
+                if (currentUserRole === 'confirmer') {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" onclick="showConfirmModal()">驳回</div>
+                        <div class="btn success" onclick="showConfirmModal()">确认通过</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待确认人确认</div>
+                    `;
+                }
             } else if (status === 'completed') {
                 header.className = 'task-header-card completed';
                 statusBadge.textContent = '已完成';
                 confirmProgress.textContent = '全部确认人已确认';
-                actionButtons.innerHTML = `
-                    <div class="btn secondary" onclick="alert('查看执行记录')">查看记录</div>
-                    <div class="btn primary" onclick="alert('查看评价')">查看评价</div>
-                `;
+                executionCard.style.display = 'block';
+                confirmCard.style.display = 'block';
+                
                 executionContent.innerHTML = `
                     <div class="execution-section">
                         <div class="section-title">📤 执行人提交的内容</div>
@@ -1194,7 +1379,7 @@
                         </div>
                     </div>
                 `;
-                confirmCard.style.display = 'block';
+                
                 document.getElementById('confirmList').innerHTML = `
                     <div class="confirm-item">
                         <div class="avatar">张</div>
@@ -1233,14 +1418,148 @@
                         </div>
                     </div>
                 `;
+                
+                actionButtons.innerHTML = `
+                    <div class="btn primary" onclick="showCustomToast('查看评价')">查看评价</div>
+                `;
+            } else if (status === 'completed_with_reject') {
+                header.className = 'task-header-card completed';
+                statusBadge.textContent = '已完成';
+                confirmProgress.textContent = '全部确认人已确认';
+                executionCard.style.display = 'block';
+                confirmCard.style.display = 'block';
+                
+                executionContent.innerHTML = `
+                    <div class="execution-section">
+                        <div class="section-title">📤 执行人提交的内容 <span style="font-size: 11px; color: var(--success-color); margin-left: 8px;">当前有效</span></div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                        </div>
+                        <div class="execution-desc">
+                            墙面裂缝已重新修补，使用相同批次材料调色，修补后无明显色差。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-26 14:30
+                        </div>
+                    </div>
+                    <div class="execution-section" style="opacity: 0.6; margin-top: 12px; border: 1px dashed var(--error-color);">
+                        <div class="section-title" style="color: var(--error-color);">❌ 已驳回的执行记录</div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                        </div>
+                        <div class="execution-desc">
+                            墙面裂缝修补完成，打磨平整。
+                        </div>
+                        <div style="font-size: 12px; color: var(--error-color); margin-top: 8px; padding: 8px; background: #FFF1F0; border-radius: 4px;">
+                            <strong>驳回原因：</strong>修补区域色差明显，需重新调色修补<br>
+                            <strong>驳回人：</strong>王五（业主）<br>
+                            <strong>驳回时间：</strong>2024-01-26 09:00
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('confirmList').innerHTML = `
+                    <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
+                        第2轮确认记录
+                    </div>
+                    <div class="confirm-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name-row">
+                                <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                <div class="status-tag confirmed">已确认</div>
+                            </div>
+                            <div class="time">2024-01-26 15:00</div>
+                            <div class="content">重新修补后效果良好。</div>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="confirm-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name-row">
+                                <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                <div class="status-tag confirmed">已确认</div>
+                            </div>
+                            <div class="time">2024-01-26 16:00</div>
+                            <div class="content">满意。</div>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin: 12px 0 8px 0;">
+                        第1轮确认记录
+                    </div>
+                    <div class="confirm-item" style="opacity: 0.6;">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name-row">
+                                <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                <div class="status-tag confirmed">已确认</div>
+                            </div>
+                            <div class="time">2024-01-26 10:00</div>
+                            <div class="content">修补完成，等待业主确认。</div>
+                        </div>
+                    </div>
+                    <div class="confirm-item" style="opacity: 0.6;">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name-row">
+                                <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                <div class="status-tag rejected">已驳回</div>
+                            </div>
+                            <div class="time">2024-01-26 09:00</div>
+                            <div class="content">修补区域色差明显，需重新调色修补。</div>
+                        </div>
+                    </div>
+                `;
+                
+                actionButtons.innerHTML = `
+                    <div class="btn primary" onclick="showCustomToast('查看评价')">查看评价</div>
+                `;
             }
             
-            document.querySelectorAll('.status-switch-item').forEach(item => {
+            document.querySelectorAll('.status-switch-item:not(.role-switch-item)').forEach(item => {
                 const text = item.textContent.trim();
-                if ((status === 'pending' && text === '待接收') ||
+                if ((status === 'pending' && text === '待接受') ||
                     (status === 'accepted' && text === '待开始') ||
+                    (status === 'rejected_pending' && text === '驳回后待开始') ||
                     (status === 'confirming' && text === '确认中') ||
-                    (status === 'completed' && text === '已完成')) {
+                    (status === 'confirming_after_reject' && text === '驳回后确认中') ||
+                    (status === 'completed' && text === '已完成') ||
+                    (status === 'completed_with_reject' && text === '已完成（含驳回）')) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        function switchUserRole(role) {
+            currentUserRole = role;
+            updateTaskStatus(currentTaskStatus);
+            
+            document.querySelectorAll('.role-switch-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.role-switch-item').forEach(item => {
+                const text = item.textContent.trim();
+                if ((role === 'executor' && text === '执行人视角') ||
+                    (role === 'nonExecutor' && text === '非执行人视角') ||
+                    (role === 'confirmer' && text === '确认人视角') ||
+                    (role === 'nonConfirmer' && text === '非确认人视角')) {
                     item.classList.add('active');
                 }
             });
@@ -1252,6 +1571,14 @@
                 e.target.classList.remove('show');
             }
         });
+        
+        function initFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status') || 'pending';
+            updateTaskStatus(status);
+        }
+        
+        initFromUrl();
     </script>
 </body>
 </html>

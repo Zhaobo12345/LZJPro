@@ -17,9 +17,33 @@
             border-radius: 0;
             padding: 16px;
             color: #FFFFFF;
+            position: relative;
+        }
+
+        .status-banner .guide-icon-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-banner .guide-icon-btn:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: scale(1.1);
         }
 
         .status-banner.draft      { background: linear-gradient(135deg, #8C8C8C 0%, #BFBFBF 100%); }
+        .status-banner.reviewing { background: linear-gradient(135deg, #13C2C2 0%, #36CFC9 100%); }
+        .status-banner.rejected  { background: linear-gradient(135deg, var(--error-color) 0%, var(--error-light) 100%); }
         .status-banner.confirming { background: linear-gradient(135deg, var(--orange-color) 0%, var(--orange-light) 100%); }
         .status-banner.confirmed  { background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%); }
         .status-banner.signing    { background: linear-gradient(135deg, var(--purple-color) 0%, var(--purple-light) 100%); }
@@ -561,6 +585,158 @@
             gap: 12px;
         }
 
+        .help-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-modal.show {
+            display: flex;
+        }
+
+        .help-modal-content {
+            width: 85%;
+            max-width: 300px;
+            max-height: 80%;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .help-modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .help-modal-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .help-modal-header .close-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .help-modal-body {
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .help-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .help-item:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .help-item .help-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .help-item .help-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .help-tip {
+            margin-top: 16px;
+            padding: 10px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .guide-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .guide-modal.show {
+            display: flex;
+        }
+
+        .guide-modal-content {
+            width: 85%;
+            max-width: 300px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .guide-modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .guide-modal-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .guide-modal-header .close-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .guide-modal-body {
+            padding: 20px 16px;
+        }
+
+        .guide-modal-body .guide-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
         .action-btn {
             height: 44px;
             border-radius: 8px;
@@ -810,13 +986,175 @@
         .change-modal {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--bg-primary);
+            background-color: var(--bg-secondary);
             z-index: 400;
             display: none;
             flex-direction: column;
         }
 
         .change-modal.show { display: flex; }
+
+        .change-modal .status-bar {
+            height: 44px;
+            background-color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 14px;
+        }
+
+        .change-modal .nav-bar {
+            height: 44px;
+            background-color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 16px;
+        }
+
+        .change-modal .nav-bar .back {
+            color: var(--primary-color);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .change-modal .nav-bar .title {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .change-modal .nav-bar .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .change-modal .nav-bar .nav-action-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .change-modal .nav-bar .nav-action-btn:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .custom-confirm-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-confirm-modal.show { display: flex; }
+
+        .custom-confirm-modal .modal-box {
+            width: 280px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .custom-confirm-modal .modal-header {
+            padding: 20px 16px 12px;
+            text-align: center;
+        }
+
+        .custom-confirm-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .custom-confirm-modal .modal-body {
+            padding: 0 16px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .custom-confirm-modal .modal-footer {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .custom-confirm-modal .modal-btn {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .custom-confirm-modal .modal-btn.cancel {
+            color: var(--text-tertiary);
+            border-right: 1px solid var(--border-color);
+        }
+
+        .custom-confirm-modal .modal-btn.confirm {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .custom-confirm-modal .modal-btn.danger {
+            color: var(--error-color);
+            font-weight: 600;
+        }
+
+        .custom-toast-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-toast-modal.show { display: flex; }
+
+        .custom-toast-modal .modal-box {
+            width: 280px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .custom-toast-modal .modal-body {
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .custom-toast-modal .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .custom-toast-modal .modal-btn {
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
 
         .sign-upload-page {
             position: absolute;
@@ -1295,10 +1633,13 @@
             display: flex;
             align-items: center;
             margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .stage-edit-item .stage-name-input {
             flex: 1;
+            min-width: 150px;
             font-size: 14px;
             font-weight: 600;
             border: none;
@@ -1310,6 +1651,44 @@
 
         .stage-edit-item .stage-name-input:focus {
             border-bottom-color: var(--primary-color);
+        }
+
+        .stage-edit-item .stage-sequential {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .stage-edit-item .stage-sequential .switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .stage-edit-item .stage-sequential .switch.active {
+            background-color: var(--primary-color);
+        }
+
+        .stage-edit-item .stage-sequential .switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .stage-edit-item .stage-sequential .switch.active::after {
+            transform: translateX(16px);
         }
 
         .stage-edit-item .stage-actions {
@@ -1360,10 +1739,16 @@
             outline: none;
             padding: 4px 0;
             border-bottom: 1px dashed transparent;
+            cursor: pointer;
+        }
+
+        .task-edit-item .task-input:hover {
+            color: var(--primary-color);
         }
 
         .task-edit-item .task-input:focus {
             border-bottom-color: var(--primary-color);
+            cursor: text;
         }
 
         .task-edit-item .task-action-btn {
@@ -1377,7 +1762,17 @@
             font-size: 12px;
             margin-left: 8px;
             background-color: #FFF1F0;
-            color: #CF1322;
+            color: var(--error-color);
+            transition: all 0.2s;
+        }
+
+        .task-edit-item .task-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .task-edit-item .task-action-btn.edit {
+            background-color: #E6F7FF;
+            color: var(--primary-color);
         }
 
         .add-task-btn {
@@ -1445,6 +1840,372 @@
             background-color: var(--primary-color);
             color: #FFFFFF;
             border: none;
+        }
+
+        .change-modal .change-footer .btn.submit.disabled {
+            background-color: #D9D9D9;
+            color: #8C8C8C;
+            cursor: not-allowed;
+        }
+
+        .add-task-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-task-modal.show { display: flex; }
+
+        .add-task-modal .modal-content {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .add-task-modal .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-task-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .add-task-modal .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .add-task-modal .modal-body {
+            padding: 16px;
+        }
+
+        .add-task-modal .form-group {
+            margin-bottom: 16px;
+        }
+
+        .add-task-modal .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .add-task-modal .required {
+            color: var(--error-color);
+        }
+
+        .add-task-modal .form-input,
+        .add-task-modal .form-select,
+        .add-task-modal .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .add-task-modal .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .add-task-modal .confirm-person-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .add-task-modal .confirm-person-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 16px;
+            font-size: 13px;
+        }
+
+        .add-task-modal .confirm-person-tag .remove {
+            margin-left: 6px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+        }
+
+        .add-task-modal .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .add-task-modal .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .add-task-modal .submit-btn:active {
+            opacity: 0.8;
+        }
+
+        .add-task-modal .search-select,
+        .edit-task-modal .search-select {
+            position: relative;
+        }
+
+        .add-task-modal .search-input-wrap,
+        .edit-task-modal .search-input-wrap {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: var(--bg-primary);
+        }
+
+        .add-task-modal .search-input,
+        .edit-task-modal .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .add-task-modal .search-input::placeholder,
+        .edit-task-modal .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .add-task-modal .arrow,
+        .edit-task-modal .arrow {
+            color: var(--text-tertiary);
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .add-task-modal .search-dropdown,
+        .edit-task-modal .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-top: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .add-task-modal .search-dropdown.show,
+        .edit-task-modal .search-dropdown.show {
+            display: block;
+        }
+
+        .add-task-modal .person-option,
+        .edit-task-modal .person-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .add-task-modal .person-option:hover,
+        .edit-task-modal .person-option:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .add-task-modal .person-option .avatar,
+        .edit-task-modal .person-option .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .add-task-modal .person-option .role-tag,
+        .edit-task-modal .person-option .role-tag {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .task-detail-modal,
+        .edit-task-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .task-detail-modal.show,
+        .edit-task-modal.show { display: flex; }
+
+        .task-detail-modal .modal-content,
+        .edit-task-modal .modal-content {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .task-detail-modal .modal-header,
+        .edit-task-modal .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-detail-modal .modal-title,
+        .edit-task-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .task-detail-modal .modal-close,
+        .edit-task-modal .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .task-detail-modal .modal-body,
+        .edit-task-modal .modal-body {
+            padding: 16px;
+        }
+
+        .task-detail-modal .detail-section {
+            margin-bottom: 16px;
+        }
+
+        .task-detail-modal .detail-label {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-bottom: 4px;
+        }
+
+        .task-detail-modal .detail-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .task-detail-modal .modal-footer,
+        .edit-task-modal .modal-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .task-detail-modal .submit-btn,
+        .edit-task-modal .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .task-detail-modal .submit-btn:active,
+        .edit-task-modal .submit-btn:active {
+            opacity: 0.8;
+        }
+
+        .edit-task-modal .form-group {
+            margin-bottom: 16px;
+        }
+
+        .edit-task-modal .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .edit-task-modal .required {
+            color: var(--error-color);
+        }
+
+        .edit-task-modal .form-input,
+        .edit-task-modal .form-select,
+        .edit-task-modal .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .edit-task-modal .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .edit-task-modal .confirm-person-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .edit-task-modal .confirm-person-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 16px;
+            font-size: 13px;
+        }
+
+        .edit-task-modal .confirm-person-tag .remove {
+            margin-left: 6px;
+            cursor: pointer;
+            color: var(--text-tertiary);
         }
 
         .change-confirm-modal {
@@ -1663,6 +2424,200 @@
         .status-banner.change-confirming {
             background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);
         }
+
+        .status-flow-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-flow-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .status-flow-title .help-link {
+            font-size: 12px;
+            color: var(--primary-color);
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .status-flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+        }
+
+        .status-flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .status-flow-step .step-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-bottom: 6px;
+            border: 2px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-tertiary);
+        }
+
+        .status-flow-step.completed .step-circle {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: #FFFFFF;
+        }
+
+        .status-flow-step.current .step-circle {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .status-flow-step.pending .step-circle {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-color);
+            color: #BFBFBF;
+            opacity: 0.6;
+        }
+
+        .status-flow-step .step-label {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .status-flow-step.completed .step-label,
+        .status-flow-step.current .step-label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .status-flow-step.pending .step-label {
+            color: #BFBFBF;
+            opacity: 0.6;
+        }
+
+        .status-flow-line {
+            flex: 0 0 16px;
+            height: 2px;
+            background-color: var(--border-color);
+            margin: 0 -2px;
+            margin-bottom: 20px;
+        }
+
+        .status-flow-line.completed {
+            background-color: var(--success-color);
+        }
+
+        .status-flow-line.pending {
+            background-color: var(--border-color);
+            opacity: 0.4;
+        }
+
+        .status-sub-text {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .reject-reason-box {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .reject-reason-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #FFFFFF;
+        }
+
+        .reject-reason-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #FFFFFF;
+            padding: 8px;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .reject-reason-tip {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .edit-guide-box {
+            background-color: #FFF7E6;
+            border: 1px solid #FFD591;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .edit-guide-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #D46B08;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .edit-guide-content {
+            font-size: 12px;
+            color: #595959;
+            line-height: 1.6;
+        }
+
+        .edit-guide-content ol {
+            margin: 8px 0;
+            padding-left: 16px;
+        }
+
+        .edit-guide-content li {
+            margin-bottom: 4px;
+        }
+
+        .edit-guide-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .edit-guide-btn:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -1673,11 +2628,11 @@
         </div>
         
         <div class="nav-bar">
-            <div class="back" onclick="location.href='prototype-project-detail.html'">← 返回</div>
+            <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">合同详情</div>
             <div class="actions">
                 <div class="action-btn" onclick="toggleActionMenu()">⋯</div>
-                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+                <div class="action-btn" onclick="showCustomToast('关闭小程序')">✕</div>
             </div>
             <div class="action-menu" id="actionMenu">
                 <div class="action-menu-item" onclick="showVersionModal(); closeActionMenu();">
@@ -1692,11 +2647,11 @@
                     <span class="icon">📄</span>
                     <span>导出合同文件</span>
                 </div>
-                <div class="action-menu-item" onclick="alert('分享给朋友'); closeActionMenu();">
+                <div class="action-menu-item" onclick="showCustomToast('分享给朋友'); closeActionMenu();">
                     <span class="icon">📤</span>
                     <span>分享给朋友</span>
                 </div>
-                <div class="action-menu-item" onclick="alert('生成海报'); closeActionMenu();">
+                <div class="action-menu-item" onclick="showCustomToast('生成海报'); closeActionMenu();">
                     <span class="icon">🖼️</span>
                     <span>生成海报</span>
                 </div>
@@ -1705,10 +2660,72 @@
         
         <div class="page-content">
             <div class="card status-banner signed" id="statusBanner">
+                <div class="guide-icon-btn" id="guideIconBtn" onclick="showGuideModal()">💡</div>
                 <div class="status-text" id="statusText">已签约</div>
                 <div class="status-desc" id="statusDesc">合同已正式生效，可发起变更申请</div>
+                <div class="status-sub-text" id="statusSubText">签约日期：2024-01-10</div>
+                <div class="reject-reason-box" id="rejectReasonBox" style="display: none;">
+                    <div class="reject-reason-title">⚠️ 驳回原因</div>
+                    <div class="reject-reason-content" id="rejectReasonContent"></div>
+                    <div class="reject-reason-tip">请根据以上原因修改合同内容后重新提交</div>
+                </div>
+                <div class="edit-guide-box" id="editGuideBox" style="display: none;">
+                    <div class="edit-guide-title">📝 修改引导</div>
+                    <div class="edit-guide-content">
+                        请按以下步骤修改合同内容：
+                        <ol>
+                            <li>在电脑浏览器打开平台官网</li>
+                            <li>使用手机扫码授权登录</li>
+                            <li>进入合同管理，找到此合同</li>
+                            <li>根据驳回原因修改对应内容</li>
+                            <li>保存后返回小程序重新提交</li>
+                        </ol>
+                        <div class="edit-guide-btn" onclick="copyEditLink()">
+                            <span>📋</span>
+                            <span>复制电脑端编辑链接</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
+
+            <div class="status-flow-card" id="statusFlowCard">
+                <div class="status-flow-title">
+                    <span>合同状态流程</span>
+                    <span class="help-link" onclick="showContractHelp()">查看说明</span>
+                </div>
+                <div class="status-flow-diagram">
+                    <div class="status-flow-step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">拟定中</div>
+                    </div>
+                    <div class="status-flow-line completed"></div>
+                    <div class="status-flow-step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">平台审核</div>
+                    </div>
+                    <div class="status-flow-line completed"></div>
+                    <div class="status-flow-step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">确认中</div>
+                    </div>
+                    <div class="status-flow-line completed"></div>
+                    <div class="status-flow-step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">已确认</div>
+                    </div>
+                    <div class="status-flow-line completed"></div>
+                    <div class="status-flow-step completed">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">签约中</div>
+                    </div>
+                    <div class="status-flow-line completed"></div>
+                    <div class="status-flow-step current">
+                        <div class="step-circle">📄</div>
+                        <div class="step-label">已签约</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="pc-edit-guide" id="pcEditGuide" style="display: none;">
                 <div class="guide-header">
                     <div class="guide-icon">💻</div>
@@ -2041,7 +3058,7 @@
                                 <div class="file-name">水电分包合同_签约文件.pdf</div>
                                 <div class="file-meta">张三上传 · 2024-01-15 10:30</div>
                             </div>
-                            <div class="download-btn" onclick="alert('预览文件')">👁️</div>
+                            <div class="download-btn" onclick="showCustomToast('预览文件')">👁️</div>
                         </div>
                     </div>
                 </div>
@@ -2056,7 +3073,7 @@
                             <div class="file-name">水电分包合同.pdf</div>
                             <div class="file-meta">2.3MB · 2024-01-10上传</div>
                         </div>
-                        <div class="download-btn" onclick="alert('下载文件')">⬇</div>
+                        <div class="download-btn" onclick="showCustomToast('下载文件')">⬇</div>
                     </div>
                     <div class="attachment-item">
                         <div class="file-icon">🖼️</div>
@@ -2064,7 +3081,7 @@
                             <div class="file-name">签约照片.jpg</div>
                             <div class="file-meta">1.5MB · 2024-01-10上传</div>
                         </div>
-                        <div class="download-btn" onclick="alert('预览图片')">👁️</div>
+                        <div class="download-btn" onclick="showCustomToast('预览图片')">👁️</div>
                     </div>
                 </div>
                 
@@ -2078,7 +3095,7 @@
                             <div class="file-name">材料清单.xlsx</div>
                             <div class="file-meta">156KB · 2024-01-12上传</div>
                         </div>
-                        <div class="download-btn" onclick="alert('下载文件')">⬇</div>
+                        <div class="download-btn" onclick="showCustomToast('下载文件')">⬇</div>
                     </div>
                     <div class="attachment-item">
                         <div class="file-icon">📐</div>
@@ -2086,25 +3103,28 @@
                             <div class="file-name">施工图纸.dwg</div>
                             <div class="file-meta">5.8MB · 2024-01-12上传</div>
                         </div>
-                        <div class="download-btn" onclick="alert('下载文件')">⬇</div>
+                        <div class="download-btn" onclick="showCustomToast('下载文件')">⬇</div>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="bottom-actions" id="bottomActions">
-            <div class="action-btn secondary" onclick="showStatusModal('change')">发起变更</div>
-            <div class="action-btn primary" onclick="alert('查看进度')">查看进度</div>
+            <div class="action-btn primary" onclick="showStatusModal('change')" style="width: 100%;">发起变更</div>
         </div>
         
         <div class="change-modal" id="changeModal">
-            <div class="change-header">
-                <div class="change-back" onclick="closeChangeModal()">
-                    <span class="back-arrow">←</span>
-                    <span>返回</span>
+            <div class="status-bar">
+                <div class="time">9:41</div>
+                <div class="icons">📶 🔋</div>
+            </div>
+            <div class="nav-bar">
+                <div class="back" onclick="closeChangeModal()">← 返回</div>
+                <div class="title">发起变更</div>
+                <div class="actions">
+                    <div class="nav-action-btn" onclick="showMoreOptions(event)">⋯</div>
+                    <div class="nav-action-btn" onclick="closeChangeModal()">✕</div>
                 </div>
-                <div class="change-title">发起变更</div>
-                <div class="change-close" onclick="closeChangeModal()">✕</div>
             </div>
             <div class="change-content">
                 <div class="change-notice">
@@ -2146,97 +3166,125 @@
                         <span>阶段任务变更</span>
                     </div>
                     <div id="stageEditContainer">
-                        <div class="stage-edit-item" data-stage="1">
+                        <div class="stage-edit-item" data-stage="1" data-sequential="false">
                             <div class="stage-header-row">
                                 <input type="text" class="stage-name-input" value="材料进场阶段" placeholder="请输入阶段名称">
+                                <div class="stage-sequential" onclick="toggleStageSequential(this)">
+                                    <span>按序执行</span>
+                                    <div class="switch"></div>
+                                </div>
                                 <div class="stage-actions">
                                     <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
                                     <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="材料采购" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五" data-exec-standard="按照设计图纸要求采购符合国家标准的电线、线管材料，并提供合格证明" data-confirm-standard="材料品牌、规格符合设计要求，质量合格证明齐全" data-liable-standard="材料质量问题导致返工，由采购人承担费用">
+                                    <input type="text" class="task-input" value="材料采购" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="材料运输" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三" data-exec-standard="确保材料安全运输至施工现场，运输过程中不得有损坏" data-confirm-standard="材料外包装完好，数量准确" data-liable-standard="运输过程中材料损坏，由运输方承担责任">
+                                    <input type="text" class="task-input" value="材料运输" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="材料确认" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="张三" data-confirmers="王五,赵六" data-exec-standard="核对材料数量、规格、品牌是否与合同一致" data-confirm-standard="材料与合同约定一致，签字确认" data-liable-standard="材料与合同不符，由供应商承担责任">
+                                    <input type="text" class="task-input" value="材料确认" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="stage-edit-item" data-stage="2">
+                        <div class="stage-edit-item" data-stage="2" data-sequential="true">
                             <div class="stage-header-row">
                                 <input type="text" class="stage-name-input" value="布管布线阶段" placeholder="请输入阶段名称">
+                                <div class="stage-sequential" onclick="toggleStageSequential(this)">
+                                    <span>按序执行</span>
+                                    <div class="switch active"></div>
+                                </div>
                                 <div class="stage-actions">
                                     <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
                                     <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="开槽" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五" data-exec-standard="按照设计图纸进行开槽，深度和宽度符合规范要求" data-confirm-standard="开槽位置准确，深度宽度符合要求" data-liable-standard="开槽位置错误导致返工，由执行人承担责任" data-completed="true">
+                                    <input type="text" class="task-input" value="开槽" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情" style="opacity: 0.3; cursor: not-allowed;">✎</div>
+                                    <div class="task-action-btn" onclick="deleteTask(this)" style="opacity: 0.3; cursor: not-allowed;">×</div>
+                                </div>
+                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五" data-exec-standard="按照设计图纸布设线管，固定牢固，走向合理" data-confirm-standard="线管布设符合设计要求，固定牢固" data-liable-standard="线管布设不合格导致返工，由执行人承担责任">
+                                    <input type="text" class="task-input" value="布管" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="布管" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五,赵六" data-exec-standard="按照规范要求穿设电线，确保绝缘良好" data-confirm-standard="电线穿设规范，绝缘测试合格" data-liable-standard="穿线不合格导致返工，由执行人承担责任">
+                                    <input type="text" class="task-input" value="穿线" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="穿线" placeholder="任务名称">
-                                    <div class="task-action-btn" onclick="deleteTask(this)">×</div>
-                                </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="阶段确认" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="张三" data-confirmers="王五,赵六,钱七" data-exec-standard="确认布管布线阶段所有任务已完成，质量合格" data-confirm-standard="阶段任务全部完成，质量符合要求" data-liable-standard="阶段确认后发现问题，确认人承担连带责任">
+                                    <input type="text" class="task-input" value="阶段确认" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="stage-edit-item" data-stage="3">
+                        <div class="stage-edit-item" data-stage="3" data-sequential="false">
                             <div class="stage-header-row">
                                 <input type="text" class="stage-name-input" value="安装阶段" placeholder="请输入阶段名称">
+                                <div class="stage-sequential" onclick="toggleStageSequential(this)">
+                                    <span>按序执行</span>
+                                    <div class="switch"></div>
+                                </div>
                                 <div class="stage-actions">
                                     <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
                                     <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="开关插座安装" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="赵六" data-confirmers="张三,王五" data-exec-standard="按照设计图纸安装开关插座，接线正确，固定牢固" data-confirm-standard="开关插座安装位置正确，接线规范，固定牢固" data-liable-standard="安装不合格导致返工，由执行人承担责任">
+                                    <input type="text" class="task-input" value="开关插座安装" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="灯具安装" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="赵六" data-confirmers="张三,王五" data-exec-standard="按照设计图纸安装灯具，接线正确，固定牢固" data-confirm-standard="灯具安装位置正确，接线规范，固定牢固" data-liable-standard="安装不合格导致返工，由执行人承担责任">
+                                    <input type="text" class="task-input" value="灯具安装" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="阶段确认" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="张三" data-confirmers="王五,赵六" data-exec-standard="确认安装阶段所有任务已完成，质量合格" data-confirm-standard="阶段任务全部完成，质量符合要求" data-liable-standard="阶段确认后发现问题，确认人承担连带责任">
+                                    <input type="text" class="task-input" value="阶段确认" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="stage-edit-item" data-stage="4">
+                        <div class="stage-edit-item" data-stage="4" data-sequential="false">
                             <div class="stage-header-row">
                                 <input type="text" class="stage-name-input" value="收尾阶段" placeholder="请输入阶段名称">
+                                <div class="stage-sequential" onclick="toggleStageSequential(this)">
+                                    <span>按序执行</span>
+                                    <div class="switch"></div>
+                                </div>
                                 <div class="stage-actions">
                                     <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
                                     <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="清理现场" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="钱七" data-confirmers="张三,王五" data-exec-standard="清理施工现场，确保现场整洁" data-confirm-standard="现场清理干净，无垃圾残留" data-liable-standard="清理不合格导致返工，由执行人承担责任">
+                                    <input type="text" class="task-input" value="清理现场" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
-                                <div class="task-edit-item">
-                                    <input type="text" class="task-input" value="最终确认" placeholder="任务名称">
+                                <div class="task-edit-item" data-executor="张三" data-confirmers="王五,赵六,钱七,孙八" data-exec-standard="确认所有阶段任务已完成，质量合格，项目验收" data-confirm-standard="项目验收合格，所有任务完成" data-liable-standard="最终确认后发现问题，确认人承担连带责任">
+                                    <input type="text" class="task-input" value="最终确认" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                                 </div>
                             </div>
@@ -2250,7 +3298,267 @@
             </div>
             <div class="change-footer">
                 <div class="btn cancel" onclick="closeChangeModal()">取消</div>
-                <div class="btn submit" onclick="submitChange()">提交变更</div>
+                <div class="btn submit disabled" id="submitChangeBtn" onclick="submitChange()">提交变更</div>
+            </div>
+        </div>
+        
+        <div class="add-task-modal" id="addTaskModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">添加新任务</div>
+                    <div class="modal-close" onclick="closeAddTaskModal()">✕</div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">任务名称 <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="newTaskName" placeholder="请输入任务名称">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">执行人 <span class="required">*</span></label>
+                        <div class="confirm-person-tags" id="newTaskExecutorTags" style="margin-bottom: 8px;"></div>
+                        <div class="search-select">
+                            <div class="search-input-wrap">
+                                <input type="text" class="search-input" id="newTaskExecutorSearch" placeholder="请选择执行人" oninput="filterExecutorList('new')" onfocus="toggleExecutorSearch('new')">
+                                <span class="arrow" onclick="toggleExecutorSearch('new')">▼</span>
+                            </div>
+                            <div class="search-dropdown" id="newTaskExecutorDropdown">
+                                <div class="person-option" onclick="selectExecutor('new', '张三', '项目经理')">
+                                    <div class="avatar">张</div>
+                                    <div class="name">张三</div>
+                                    <div class="role-tag">项目经理</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('new', '李四', '电工')">
+                                    <div class="avatar">李</div>
+                                    <div class="name">李四</div>
+                                    <div class="role-tag">电工</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('new', '王五', '泥瓦工')">
+                                    <div class="avatar">王</div>
+                                    <div class="name">王五</div>
+                                    <div class="role-tag">泥瓦工</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('new', '赵六', '木工')">
+                                    <div class="avatar">赵</div>
+                                    <div class="name">赵六</div>
+                                    <div class="role-tag">木工</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('new', '钱七', '油漆工')">
+                                    <div class="avatar">钱</div>
+                                    <div class="name">钱七</div>
+                                    <div class="role-tag">油漆工</div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="newTaskExecutor">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认人（最多5人）</label>
+                        <div class="confirm-person-tags" id="newTaskConfirmPersons">
+                        </div>
+                        <div class="search-select">
+                            <div class="search-input-wrap">
+                                <input type="text" class="search-input" id="newTaskConfirmerSearch" placeholder="添加确认人" oninput="filterConfirmerList('new')" onfocus="toggleConfirmerSearch('new')">
+                                <span class="arrow" onclick="toggleConfirmerSearch('new')">▼</span>
+                            </div>
+                            <div class="search-dropdown" id="newTaskConfirmerDropdown">
+                                <div class="person-option" onclick="selectConfirmer('new', '张三', '项目经理')">
+                                    <div class="avatar">张</div>
+                                    <div class="name">张三</div>
+                                    <div class="role-tag">项目经理</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('new', '李四', '电工')">
+                                    <div class="avatar">李</div>
+                                    <div class="name">李四</div>
+                                    <div class="role-tag">电工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('new', '王五', '泥瓦工')">
+                                    <div class="avatar">王</div>
+                                    <div class="name">王五</div>
+                                    <div class="role-tag">泥瓦工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('new', '赵六', '木工')">
+                                    <div class="avatar">赵</div>
+                                    <div class="name">赵六</div>
+                                    <div class="role-tag">木工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('new', '钱七', '油漆工')">
+                                    <div class="avatar">钱</div>
+                                    <div class="name">钱七</div>
+                                    <div class="role-tag">油漆工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('new', '孙八', '监理')">
+                                    <div class="avatar">孙</div>
+                                    <div class="name">孙八</div>
+                                    <div class="role-tag">监理</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">执行标准</label>
+                        <textarea class="form-textarea" id="newTaskExecStandard" placeholder="请输入执行标准（选填）"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认标准</label>
+                        <textarea class="form-textarea" id="newTaskConfirmStandard" placeholder="请输入确认标准（选填）"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">担责标准</label>
+                        <textarea class="form-textarea" id="newTaskLiableStandard" placeholder="请输入担责标准（选填）"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="submit-btn" onclick="confirmAddTask()">确定添加</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="task-detail-modal" id="taskDetailModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">任务详情</div>
+                    <div class="modal-close" onclick="closeTaskDetailModal()">✕</div>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-section">
+                        <div class="detail-label">任务名称</div>
+                        <div class="detail-value" id="detailTaskName">材料采购</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">执行人</div>
+                        <div class="detail-value" id="detailExecutor">李四（电工）</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">确认人</div>
+                        <div class="detail-value" id="detailConfirmers">张三、王五</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">执行标准</div>
+                        <div class="detail-value" id="detailExecStandard">按照设计图纸要求采购符合国家标准的电线、线管材料，并提供合格证明</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">确认标准</div>
+                        <div class="detail-value" id="detailConfirmStandard">材料品牌、规格符合设计要求，质量合格证明齐全</div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">担责标准</div>
+                        <div class="detail-value" id="detailLiableStandard">材料质量问题导致返工，由采购人承担费用</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="submit-btn" onclick="closeTaskDetailModal()">关闭</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="edit-task-modal" id="editTaskModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">编辑任务</div>
+                    <div class="modal-close" onclick="closeEditTaskModal()">✕</div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">任务名称 <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="editTaskName" placeholder="请输入任务名称">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">执行人 <span class="required">*</span></label>
+                        <div class="confirm-person-tags" id="editTaskExecutorTags" style="margin-bottom: 8px;"></div>
+                        <div class="search-select">
+                            <div class="search-input-wrap">
+                                <input type="text" class="search-input" id="editTaskExecutorSearch" placeholder="请选择执行人" oninput="filterExecutorList('edit')" onfocus="toggleExecutorSearch('edit')">
+                                <span class="arrow" onclick="toggleExecutorSearch('edit')">▼</span>
+                            </div>
+                            <div class="search-dropdown" id="editTaskExecutorDropdown">
+                                <div class="person-option" onclick="selectExecutor('edit', '张三', '项目经理')">
+                                    <div class="avatar">张</div>
+                                    <div class="name">张三</div>
+                                    <div class="role-tag">项目经理</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('edit', '李四', '电工')">
+                                    <div class="avatar">李</div>
+                                    <div class="name">李四</div>
+                                    <div class="role-tag">电工</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('edit', '王五', '泥瓦工')">
+                                    <div class="avatar">王</div>
+                                    <div class="name">王五</div>
+                                    <div class="role-tag">泥瓦工</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('edit', '赵六', '木工')">
+                                    <div class="avatar">赵</div>
+                                    <div class="name">赵六</div>
+                                    <div class="role-tag">木工</div>
+                                </div>
+                                <div class="person-option" onclick="selectExecutor('edit', '钱七', '油漆工')">
+                                    <div class="avatar">钱</div>
+                                    <div class="name">钱七</div>
+                                    <div class="role-tag">油漆工</div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="editTaskExecutor">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认人（最多5人）</label>
+                        <div class="confirm-person-tags" id="editTaskConfirmPersons">
+                        </div>
+                        <div class="search-select">
+                            <div class="search-input-wrap">
+                                <input type="text" class="search-input" id="editTaskConfirmerSearch" placeholder="添加确认人" oninput="filterConfirmerList('edit')" onfocus="toggleConfirmerSearch('edit')">
+                                <span class="arrow" onclick="toggleConfirmerSearch('edit')">▼</span>
+                            </div>
+                            <div class="search-dropdown" id="editTaskConfirmerDropdown">
+                                <div class="person-option" onclick="selectConfirmer('edit', '张三', '项目经理')">
+                                    <div class="avatar">张</div>
+                                    <div class="name">张三</div>
+                                    <div class="role-tag">项目经理</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('edit', '李四', '电工')">
+                                    <div class="avatar">李</div>
+                                    <div class="name">李四</div>
+                                    <div class="role-tag">电工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('edit', '王五', '泥瓦工')">
+                                    <div class="avatar">王</div>
+                                    <div class="name">王五</div>
+                                    <div class="role-tag">泥瓦工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('edit', '赵六', '木工')">
+                                    <div class="avatar">赵</div>
+                                    <div class="name">赵六</div>
+                                    <div class="role-tag">木工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('edit', '钱七', '油漆工')">
+                                    <div class="avatar">钱</div>
+                                    <div class="name">钱七</div>
+                                    <div class="role-tag">油漆工</div>
+                                </div>
+                                <div class="person-option" onclick="selectConfirmer('edit', '孙八', '监理')">
+                                    <div class="avatar">孙</div>
+                                    <div class="name">孙八</div>
+                                    <div class="role-tag">监理</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">执行标准</label>
+                        <textarea class="form-textarea" id="editTaskExecStandard" placeholder="请输入执行标准（选填）"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认标准</label>
+                        <textarea class="form-textarea" id="editTaskConfirmStandard" placeholder="请输入确认标准（选填）"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">担责标准</label>
+                        <textarea class="form-textarea" id="editTaskLiableStandard" placeholder="请输入担责标准（选填）"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="submit-btn" onclick="confirmEditTask()">保存修改</button>
+                </div>
             </div>
         </div>
         
@@ -2542,7 +3850,7 @@
                     </div>
                     <div class="arrow">›</div>
                 </div>
-                <div class="export-option" onclick="alert('分享到微信'); closeExportModal();">
+                <div class="export-option" onclick="showCustomToast('分享到微信'); closeExportModal();">
                     <div class="icon">💬</div>
                     <div class="info">
                         <div class="title">分享到微信</div>
@@ -2550,7 +3858,7 @@
                     </div>
                     <div class="arrow">›</div>
                 </div>
-                <div class="export-option" onclick="alert('发送到邮箱'); closeExportModal();">
+                <div class="export-option" onclick="showCustomToast('发送到邮箱'); closeExportModal();">
                     <div class="icon">📧</div>
                     <div class="info">
                         <div class="title">发送到邮箱</div>
@@ -2575,7 +3883,7 @@
                             <div class="version-name">初始版本（当前）</div>
                             <div class="version-date">2024-01-10 10:30 创建</div>
                         </div>
-                        <div class="view-btn" onclick="alert('查看详情')">查看</div>
+                        <div class="view-btn" onclick="showCustomToast('查看详情')">查看</div>
                     </div>
                     <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
                         <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">变更历史</div>
@@ -2600,6 +3908,88 @@
                 </div>
             </div>
         </div>
+
+        <div class="help-modal" id="helpModal">
+            <div class="help-modal-content">
+                <div class="help-modal-header">
+                    <div class="title">合同状态流程说明</div>
+                    <div class="close-btn" onclick="closeHelpModal()">✕</div>
+                </div>
+                <div class="help-modal-body">
+                    <div class="help-item">
+                        <div class="help-num">1</div>
+                        <div class="help-text"><strong>拟定中：</strong>合同创建后的初始状态，可编辑合同内容</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">2</div>
+                        <div class="help-text"><strong>待平台审核：</strong>已提交确认申请，平台运营人员审核中</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">3</div>
+                        <div class="help-text"><strong>平台审核驳回：</strong>审核未通过，需修改后重新提交</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">4</div>
+                        <div class="help-text"><strong>确认中：</strong>平台审核通过，等待另一方确认</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">5</div>
+                        <div class="help-text"><strong>已确认：</strong>双方均已确认合同内容</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">6</div>
+                        <div class="help-text"><strong>签约中：</strong>上传签约文件，等待对方确认签约</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">7</div>
+                        <div class="help-text"><strong>已签约：</strong>合同正式生效，可发起变更申请</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">8</div>
+                        <div class="help-text"><strong>变更中：</strong>变更申请已发起，等待对方确认</div>
+                    </div>
+                    <div class="help-tip">💡 点击状态横幅可查看详细操作历史</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-modal" id="guideModal">
+            <div class="guide-modal-content">
+                <div class="guide-modal-header">
+                    <div class="title">💡 下一步操作建议</div>
+                    <div class="close-btn" onclick="closeGuideModal()">✕</div>
+                </div>
+                <div class="guide-modal-body">
+                    <div class="guide-text" id="guideText">合同已签约生效，可发起变更申请</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="custom-confirm-modal" id="customConfirmModal">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <div class="modal-title" id="customConfirmTitle">确认提示</div>
+                </div>
+                <div class="modal-body" id="customConfirmMessage">
+                    确定要执行此操作吗？
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn cancel" id="customConfirmCancel" onclick="closeCustomConfirm()">取消</div>
+                    <div class="modal-btn confirm" id="customConfirmOk" onclick="confirmCustomConfirm()">确定</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="custom-toast-modal" id="customToastModal">
+            <div class="modal-box">
+                <div class="modal-body" id="customToastMessage">
+                    操作成功
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn" onclick="closeCustomToast()">知道了</div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="page-nav">
@@ -2614,6 +4004,10 @@
             <div class="page-nav-title">合同状态切换</div>
             <div class="status-switcher">
                 <div class="status-switch-item" onclick="updateContractStatus('draft')">拟定中</div>
+                <div class="status-switch-item" onclick="updateContractStatus('draft_submittable')">拟定中(可提交)</div>
+                <div class="status-switch-item" onclick="updateContractStatus('platform_reviewing')">待平台审核</div>
+                <div class="status-switch-item" onclick="updateContractStatus('platform_rejected')">平台审核驳回</div>
+                <div class="status-switch-item" onclick="updateContractStatus('platform_rejected_modified')">平台驳回(已修改)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirming_sender')">确认中(发起方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirming_receiver')">确认中(待确认方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirmed')">已确认</div>
@@ -2652,12 +4046,56 @@
                 actions: isNewContract ? [
                     { text: '提交确认', type: 'success', action: 'submit', disabled: true, disabledReason: '请在电脑端完善合同详细内容后再提交' }
                 ] : [
+                    { text: '提交确认', type: 'success', action: 'submit', disabled: true, disabledReason: '请在电脑端完善合同详细内容后再提交' }
+                ]
+            },
+            draft_submittable: {
+                text: '拟定中',
+                desc: '合同内容已完善，可以提交确认',
+                bannerClass: 'draft',
+                showPcGuide: true,
+                isNew: false,
+                actions: [
                     { text: '提交确认', type: 'success', action: 'submit' }
+                ]
+            },
+            platform_reviewing: {
+                text: '待平台审核',
+                desc: '已提交确认申请，平台运营人员正在审核中，审核通过后对方将收到确认通知',
+                bannerClass: 'reviewing',
+                readonly: true,
+                showPcGuide: false,
+                actions: [
+                    { text: '撤回申请', type: 'secondary', action: 'withdraw_review' }
+                ]
+            },
+            platform_rejected: {
+                text: '平台审核驳回',
+                desc: '平台审核未通过，请根据驳回原因修改合同内容后重新提交',
+                bannerClass: 'rejected',
+                showPcGuide: false,
+                showRejectReason: true,
+                rejectReason: '合同条款不符合平台规范，请补充完善施工范围说明及验收标准',
+                showEditGuide: true,
+                actions: [
+                    { text: '重新提交', type: 'success', action: 'resubmit', disabled: true, disabledReason: '请修改合同内容后再重新提交' }
+                ]
+            },
+            platform_rejected_modified: {
+                text: '平台审核驳回',
+                desc: '合同内容已修改，可以重新提交审核',
+                bannerClass: 'rejected',
+                showPcGuide: false,
+                showRejectReason: true,
+                rejectReason: '合同条款不符合平台规范，请补充完善施工范围说明及验收标准',
+                showModifiedTag: true,
+                actions: [
+                    { text: '重新提交', type: 'success', action: 'resubmit' }
                 ]
             },
             confirming_sender: {
                 text: '待对方确认',
-                desc: '已发起确认申请，等待对方确认合同内容（仅支持查看）',
+                desc: '平台审核已通过，等待对方确认合同内容（仅支持查看）',
                 bannerClass: 'confirming',
                 readonly: true,
                 showPcGuide: false,
@@ -2712,8 +4150,7 @@
                 bannerClass: 'signed',
                 showPcGuide: false,
                 actions: [
-                    { text: '发起变更', type: 'secondary', action: 'change' },
-                    { text: '查看进度', type: 'primary', action: 'progress' }
+                    { text: '发起变更', type: 'primary', action: 'change', fullWidth: true }
                 ]
             },
             changing: {
@@ -2831,7 +4268,7 @@
             
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(link).then(function() {
-                    alert('链接已复制到剪贴板！\n\n请在电脑浏览器中打开该链接，使用手机扫码授权登录后即可编辑合同。');
+                    showCustomToast('链接已复制到剪贴板！\n\n请在电脑浏览器中打开该链接，使用手机扫码授权登录后即可编辑合同。');
                 }).catch(function() {
                     fallbackCopy(link);
                 });
@@ -2849,9 +4286,9 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                alert('链接已复制到剪贴板！\n\n请在电脑浏览器中打开该链接，使用手机扫码授权登录后即可编辑合同。');
+                showCustomToast('链接已复制到剪贴板！\n\n请在电脑浏览器中打开该链接，使用手机扫码授权登录后即可编辑合同。');
             } catch (err) {
-                alert('复制失败，请手动复制以下链接：\n\n' + text);
+                showCustomToast('复制失败，请手动复制以下链接：\n\n' + text);
             }
             document.body.removeChild(textArea);
         }
@@ -2862,13 +4299,14 @@
             const message = document.getElementById('modalMessage');
             
             const actionTexts = {
-                submit: { title: '提交确认', message: '确定要提交合同进行确认吗？提交后等待对方确认。' },
+                submit: { title: '提交确认', message: '确定要提交合同进行确认吗？提交后将由平台运营人员进行审核，审核通过后对方将收到确认通知。' },
+                withdraw_review: { title: '撤回申请', message: '确定要撤回确认申请吗？撤回后可重新编辑合同内容。' },
+                resubmit: { title: '重新提交', message: '确定要重新提交合同进行确认吗？提交后将由平台运营人员进行审核。' },
                 withdraw: { title: '撤回确认', message: '确定要撤回确认申请吗？撤回后可重新编辑合同。' },
                 reject: { title: '驳回修改', message: '确定要驳回此合同并要求修改吗？请说明驳回原因。' },
                 confirm: { title: '确认合同', message: '确定要确认此合同吗？确认后双方需上传签约文件。' },
                 upload: { title: '上传签约文件', message: '请选择要上传的签约文件（支持PDF、JPG、PNG格式）。' },
                 change: { title: '发起变更', message: '确定要发起合同变更吗？变更后需对方确认。' },
-                progress: { title: '查看进度', message: '正在加载合同进度...' },
                 withdraw_change: { title: '撤回变更', message: '确定要撤回变更申请吗？撤回后阶段任务将恢复流转。' },
                 reject_change: { title: '驳回变更', message: '确定要驳回变更申请吗？请说明驳回原因。' },
                 confirm_change: { title: '确认变更', message: '确定要确认变更吗？确认后变更内容将生效，并生成新的版本记录。' },
@@ -2885,30 +4323,27 @@
             
             if (action === 'progress') {
                 closeModal();
-                alert('跳转到合同进度页面');
+                showCustomToast('跳转到合同进度页面');
                 return;
             }
             
             if (action === 'reject_sign') {
                 closeModal();
-                const reason = prompt('请输入驳回原因：');
-                if (reason) {
-                    alert('签约已驳回！系统已通知对方。');
-                    updateContractStatus('confirmed');
-                }
+                showCustomToast('签约已驳回！系统已通知对方。');
+                updateContractStatus('confirmed');
                 return;
             }
             
             if (action === 'confirm_sign') {
                 closeModal();
-                alert('签约确认成功！合同已正式生效。');
+                showCustomToast('签约确认成功！合同已正式生效。');
                 updateContractStatus('signed');
                 return;
             }
             
             if (action === 'withdraw_sign') {
                 closeModal();
-                alert('已撤回签约文件，可重新上传');
+                showCustomToast('已撤回签约文件，可重新上传');
                 updateContractStatus('confirmed');
                 return;
             }
@@ -2927,45 +4362,45 @@
             closeModal();
             
             if (title === '提交确认') {
-                alert('提交成功！等待对方确认');
-                updateContractStatus('confirming_sender');
+                showCustomToast('提交成功！已提交至平台审核，审核通过后对方将收到确认通知');
+                updateContractStatus('platform_reviewing');
+            } else if (title === '撤回申请') {
+                showCustomToast('已撤回申请，可重新编辑合同内容');
+                updateContractStatus('draft');
+            } else if (title === '重新提交') {
+                showCustomToast('重新提交成功！已提交至平台审核');
+                updateContractStatus('platform_reviewing');
             } else if (title === '撤回确认') {
-                alert('已撤回确认，可重新编辑合同');
+                showCustomToast('已撤回确认，可重新编辑合同');
                 updateContractStatus('draft');
             } else if (title === '驳回修改') {
-                alert('已驳回修改，请对方重新编辑');
+                showCustomToast('已驳回修改，请对方重新编辑');
                 updateContractStatus('draft');
             } else if (title === '确认合同') {
-                alert('确认成功！请上传签约文件');
+                showCustomToast('确认成功！请上传签约文件');
                 updateContractStatus('confirmed');
             } else if (title === '发起变更') {
                 showChangeModal();
             } else if (title === '撤回变更') {
-                alert('已撤回变更申请，阶段任务已恢复流转');
+                showCustomToast('已撤回变更申请，阶段任务已恢复流转');
                 updateContractStatus('signed');
             } else if (title === '驳回变更') {
-                const reason = prompt('请输入驳回原因：');
-                if (reason) {
-                    alert('变更已驳回！系统已通知对方驳回原因。');
-                    updateContractStatus('signed');
-                }
+                showCustomToast('变更已驳回！系统已通知对方驳回原因。');
+                updateContractStatus('signed');
             } else if (title === '确认变更') {
-                alert('变更已确认！变更内容已生效，系统已生成新的版本记录。');
+                showCustomToast('变更已确认！变更内容已生效，系统已生成新的版本记录。');
                 updateContractStatus('signed');
             } else if (title === '撤回签约文件') {
-                alert('已撤回签约文件，可重新上传');
+                showCustomToast('已撤回签约文件，可重新上传');
                 updateContractStatus('confirmed');
             } else if (title === '驳回签约') {
-                const reason = prompt('请输入驳回原因：');
-                if (reason) {
-                    alert('签约已驳回！系统已通知对方。');
-                    updateContractStatus('confirmed');
-                }
+                showCustomToast('签约已驳回！系统已通知对方。');
+                updateContractStatus('confirmed');
             } else if (title === '确认签约') {
-                alert('签约确认成功！合同已正式生效。');
+                showCustomToast('签约确认成功！合同已正式生效。');
                 updateContractStatus('signed');
             } else {
-                alert('操作成功！');
+                showCustomToast('操作成功！');
             }
         }
         
@@ -3024,56 +4459,519 @@
             }, duration);
         }
         
+        let hasChangeContent = false;
+        
+        function checkChangeContent() {
+            const container = document.getElementById('stageEditContainer');
+            const stages = container.querySelectorAll('.stage-edit-item');
+            
+            let hasContent = false;
+            
+            stages.forEach(stage => {
+                const stageName = stage.querySelector('.stage-name-input').value.trim();
+                if (stageName) {
+                    hasContent = true;
+                }
+                
+                const tasks = stage.querySelectorAll('.task-edit-item');
+                tasks.forEach(task => {
+                    const taskName = task.querySelector('.task-input').value.trim();
+                    if (taskName) {
+                        hasContent = true;
+                    }
+                });
+            });
+            
+            hasChangeContent = hasContent;
+            
+            const submitBtn = document.getElementById('submitChangeBtn');
+            if (hasContent) {
+                submitBtn.classList.remove('disabled');
+            } else {
+                submitBtn.classList.add('disabled');
+            }
+        }
+        
         function showChangeModal() {
             document.getElementById('changeModal').classList.add('show');
+            checkChangeContent();
         }
         
         function closeChangeModal() {
             document.getElementById('changeModal').classList.remove('show');
         }
         
+        function showMoreOptions(event) {
+            event.stopPropagation();
+            showCustomToast('更多选项\n\n• 保存草稿\n• 查看历史变更\n• 导出变更记录');
+        }
+        
         function showPCEditGuide() {
-            alert('请前往电脑端修改合同正文\n\n1. 在电脑浏览器打开平台官网\n2. 使用手机扫码授权登录\n3. 进入合同管理进行编辑\n\n链接已复制到剪贴板');
+            showCustomToast('请前往电脑端修改合同正文\n\n1. 在电脑浏览器打开平台官网\n2. 使用手机扫码授权登录\n3. 进入合同管理进行编辑\n\n链接已复制到剪贴板');
             copyEditLink();
         }
         
+        let currentStageItem = null;
+        let newTaskConfirmPersonList = [];
+        
         function addTaskToStage(btn) {
-            const stageItem = btn.closest('.stage-edit-item');
-            const taskList = stageItem.querySelector('.task-edit-list');
+            currentStageItem = btn.closest('.stage-edit-item');
+            newTaskConfirmPersonList = [];
+            document.getElementById('addTaskModal').classList.add('show');
+            document.getElementById('newTaskName').value = '';
+            document.getElementById('newTaskExecutor').value = '';
+            document.getElementById('newTaskExecutorSearch').value = '';
+            document.getElementById('newTaskExecutorTags').innerHTML = '';
+            document.getElementById('newTaskConfirmerSearch').value = '';
+            document.getElementById('newTaskExecStandard').value = '';
+            document.getElementById('newTaskConfirmStandard').value = '';
+            document.getElementById('newTaskLiableStandard').value = '';
+            updateConfirmPersonTags();
+        }
+        
+        function closeAddTaskModal() {
+            document.getElementById('addTaskModal').classList.remove('show');
+            document.getElementById('newTaskExecutorTags').innerHTML = '';
+            currentStageItem = null;
+            newTaskConfirmPersonList = [];
+        }
+        
+        function addNewTaskConfirmer() {
+            const select = document.getElementById('newTaskConfirmerSelect');
+            const name = select.value;
             
-            const newTask = document.createElement('div');
-            newTask.className = 'task-edit-item';
-            newTask.innerHTML = `
-                <input type="text" class="task-input" placeholder="任务名称">
-                <div class="task-action-btn" onclick="deleteTask(this)">×</div>
-            `;
-            taskList.appendChild(newTask);
-            newTask.querySelector('.task-input').focus();
+            if (name && !newTaskConfirmPersonList.includes(name) && newTaskConfirmPersonList.length < 5) {
+                newTaskConfirmPersonList.push(name);
+                updateConfirmPersonTags();
+            }
+            
+            select.value = '';
+        }
+        
+        function removeNewTaskConfirmer(name) {
+            newTaskConfirmPersonList = newTaskConfirmPersonList.filter(p => p !== name);
+            updateConfirmPersonTags();
+        }
+        
+        function updateConfirmPersonTags() {
+            const container = document.getElementById('newTaskConfirmPersons');
+            container.innerHTML = newTaskConfirmPersonList.map(name => `
+                <div class="confirm-person-tag">
+                    ${name}
+                    <span class="remove" onclick="removeNewTaskConfirmer('${name}')">×</span>
+                </div>
+            `).join('');
+        }
+        
+        function confirmAddTask() {
+            const taskName = document.getElementById('newTaskName').value.trim();
+            const executor = document.getElementById('newTaskExecutor').value;
+            
+            if (!taskName) {
+                showCustomToast('请输入任务名称');
+                return;
+            }
+            
+            if (!executor) {
+                showCustomToast('请选择执行人');
+                return;
+            }
+            
+            if (currentStageItem) {
+                const taskList = currentStageItem.querySelector('.task-edit-list');
+                const newTask = document.createElement('div');
+                newTask.className = 'task-edit-item';
+                newTask.innerHTML = `
+                    <input type="text" class="task-input" value="${taskName}" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
+                    <div class="task-action-btn" onclick="deleteTask(this)">×</div>
+                `;
+                newTask.dataset.executor = executor;
+                newTask.dataset.confirmers = newTaskConfirmPersonList.join(',');
+                newTask.dataset.execStandard = document.getElementById('newTaskExecStandard').value;
+                newTask.dataset.confirmStandard = document.getElementById('newTaskConfirmStandard').value;
+                newTask.dataset.liableStandard = document.getElementById('newTaskLiableStandard').value;
+                taskList.appendChild(newTask);
+                showToast('任务已添加，点击任务名称可查看详情，点击✎可编辑');
+            }
+            
+            closeAddTaskModal();
+            checkChangeContent();
+        }
+        
+        let currentEditTaskItem = null;
+        let editTaskConfirmPersonList = [];
+        
+        function viewTaskDetail(input) {
+            const taskItem = input.closest('.task-edit-item');
+            const taskName = taskItem.querySelector('.task-input').value;
+            
+            document.getElementById('detailTaskName').textContent = taskName;
+            document.getElementById('detailExecutor').textContent = taskItem.dataset.executor || '未设置';
+            document.getElementById('detailConfirmers').textContent = taskItem.dataset.confirmers || '未设置';
+            document.getElementById('detailExecStandard').textContent = taskItem.dataset.execStandard || '未设置';
+            document.getElementById('detailConfirmStandard').textContent = taskItem.dataset.confirmStandard || '未设置';
+            document.getElementById('detailLiableStandard').textContent = taskItem.dataset.liableStandard || '未设置';
+            
+            document.getElementById('taskDetailModal').classList.add('show');
+        }
+        
+        function closeTaskDetailModal() {
+            document.getElementById('taskDetailModal').classList.remove('show');
+        }
+        
+        function editTaskDetail(btn) {
+            const taskItem = btn.closest('.task-edit-item');
+            
+            if (taskItem.dataset.completed === 'true') {
+                showCustomToast('已完成的任务不支持编辑');
+                return;
+            }
+            
+            currentEditTaskItem = taskItem;
+            
+            const taskName = taskItem.querySelector('.task-input').value;
+            const executor = taskItem.dataset.executor || '';
+            const confirmers = taskItem.dataset.confirmers ? taskItem.dataset.confirmers.split(',') : [];
+            const execStandard = taskItem.dataset.execStandard || '';
+            const confirmStandard = taskItem.dataset.confirmStandard || '';
+            const liableStandard = taskItem.dataset.liableStandard || '';
+            
+            document.getElementById('editTaskName').value = taskName;
+            document.getElementById('editTaskExecutor').value = executor;
+            
+            const roleMap = {
+                '张三': '项目经理',
+                '李四': '电工',
+                '王五': '泥瓦工',
+                '赵六': '木工',
+                '钱七': '油漆工',
+                '孙八': '监理'
+            };
+            
+            const executorTagsContainer = document.getElementById('editTaskExecutorTags');
+            if (executor && roleMap[executor]) {
+                executorTagsContainer.innerHTML = `
+                    <div class="confirm-person-tag">
+                        ${executor}（${roleMap[executor]}）
+                        <span class="remove" onclick="removeExecutor('edit')">×</span>
+                    </div>
+                `;
+            } else {
+                executorTagsContainer.innerHTML = '';
+            }
+            
+            document.getElementById('editTaskExecutorSearch').value = '';
+            
+            editTaskConfirmPersonList = confirmers;
+            updateEditConfirmPersonTags();
+            document.getElementById('editTaskExecStandard').value = execStandard;
+            document.getElementById('editTaskConfirmStandard').value = confirmStandard;
+            document.getElementById('editTaskLiableStandard').value = liableStandard;
+            
+            document.getElementById('editTaskModal').classList.add('show');
+        }
+        
+        function closeEditTaskModal() {
+            document.getElementById('editTaskModal').classList.remove('show');
+            document.getElementById('editTaskExecutorTags').innerHTML = '';
+            currentEditTaskItem = null;
+            editTaskConfirmPersonList = [];
+        }
+        
+        function addEditTaskConfirmer() {
+            const select = document.getElementById('editTaskConfirmerSelect');
+            const name = select.value;
+            
+            if (name && !editTaskConfirmPersonList.includes(name) && editTaskConfirmPersonList.length < 5) {
+                editTaskConfirmPersonList.push(name);
+                updateEditConfirmPersonTags();
+            }
+            
+            select.value = '';
+        }
+        
+        function removeEditTaskConfirmer(name) {
+            editTaskConfirmPersonList = editTaskConfirmPersonList.filter(p => p !== name);
+            updateEditConfirmPersonTags();
+        }
+        
+        function updateEditConfirmPersonTags() {
+            const container = document.getElementById('editTaskConfirmPersons');
+            container.innerHTML = editTaskConfirmPersonList.map(name => `
+                <div class="confirm-person-tag">
+                    ${name}
+                    <span class="remove" onclick="removeEditTaskConfirmer('${name}')">×</span>
+                </div>
+            `).join('');
+        }
+        
+        function confirmEditTask() {
+            const taskName = document.getElementById('editTaskName').value.trim();
+            const executor = document.getElementById('editTaskExecutor').value;
+            
+            if (!taskName) {
+                showCustomToast('请输入任务名称');
+                return;
+            }
+            
+            if (!executor) {
+                showCustomToast('请选择执行人');
+                return;
+            }
+            
+            if (currentEditTaskItem) {
+                currentEditTaskItem.querySelector('.task-input').value = taskName;
+                currentEditTaskItem.dataset.executor = executor;
+                currentEditTaskItem.dataset.confirmers = editTaskConfirmPersonList.join(',');
+                currentEditTaskItem.dataset.execStandard = document.getElementById('editTaskExecStandard').value;
+                currentEditTaskItem.dataset.confirmStandard = document.getElementById('editTaskConfirmStandard').value;
+                currentEditTaskItem.dataset.liableStandard = document.getElementById('editTaskLiableStandard').value;
+                showToast('任务已更新');
+            }
+            
+            closeEditTaskModal();
+        }
+        
+        function toggleStageSequential(element) {
+            const stageItem = element.closest('.stage-edit-item');
+            const switchEl = element.querySelector('.switch');
+            const isSequential = stageItem.dataset.sequential === 'true';
+            
+            if (isSequential) {
+                stageItem.dataset.sequential = 'false';
+                switchEl.classList.remove('active');
+            } else {
+                stageItem.dataset.sequential = 'true';
+                switchEl.classList.add('active');
+                sortTasksByCompletion(stageItem);
+            }
+        }
+        
+        function sortTasksByCompletion(stageItem) {
+            const taskList = stageItem.querySelector('.task-edit-list');
+            const tasks = Array.from(taskList.querySelectorAll('.task-edit-item'));
+            
+            tasks.sort((a, b) => {
+                const aCompleted = a.dataset.completed === 'true';
+                const bCompleted = b.dataset.completed === 'true';
+                
+                if (aCompleted && !bCompleted) return -1;
+                if (!aCompleted && bCompleted) return 1;
+                return 0;
+            });
+            
+            tasks.forEach(task => taskList.appendChild(task));
+        }
+        
+        function editStageSettings(btn) {
+            const stageItem = btn.closest('.stage-edit-item');
+            const stageNameInput = stageItem.querySelector('.stage-name-input');
+            stageNameInput.focus();
+            stageNameInput.select();
         }
         
         function deleteTask(btn) {
             const taskItem = btn.closest('.task-edit-item');
             const taskList = taskItem.parentElement;
             
-            if (taskList.querySelectorAll('.task-edit-item').length > 1) {
-                taskItem.remove();
-            } else {
-                alert('每个阶段至少保留一个任务');
+            if (taskItem.dataset.completed === 'true') {
+                showCustomToast('已完成的任务不支持删除');
+                return;
             }
+            
+            if (taskList.querySelectorAll('.task-edit-item').length > 1) {
+                showCustomConfirm('删除任务', '确定要删除此任务吗？', function() {
+                    taskItem.remove();
+                    checkChangeContent();
+                }, true);
+            } else {
+                showCustomToast('每个阶段至少保留一个任务');
+            }
+        }
+        
+        let customConfirmCallback = null;
+        let customConfirmDanger = false;
+        
+        function showCustomConfirm(title, message, callback, isDanger = false) {
+            document.getElementById('customConfirmTitle').textContent = title;
+            document.getElementById('customConfirmMessage').textContent = message;
+            customConfirmCallback = callback;
+            customConfirmDanger = isDanger;
+            
+            const confirmBtn = document.getElementById('customConfirmOk');
+            if (isDanger) {
+                confirmBtn.className = 'modal-btn danger';
+                confirmBtn.textContent = '删除';
+            } else {
+                confirmBtn.className = 'modal-btn confirm';
+                confirmBtn.textContent = '确定';
+            }
+            
+            document.getElementById('customConfirmModal').classList.add('show');
+        }
+        
+        function closeCustomConfirm() {
+            document.getElementById('customConfirmModal').classList.remove('show');
+            customConfirmCallback = null;
+        }
+        
+        function confirmCustomConfirm() {
+            const callback = customConfirmCallback;
+            closeCustomConfirm();
+            if (callback) {
+                callback();
+            }
+        }
+        
+        function showCustomToast(message) {
+            document.getElementById('customToastMessage').innerHTML = message.replace(/\n/g, '<br>');
+            document.getElementById('customToastModal').classList.add('show');
+        }
+        
+        function closeCustomToast() {
+            document.getElementById('customToastModal').classList.remove('show');
         }
         
         function deleteStage(btn) {
             const stageItem = btn.closest('.stage-edit-item');
             const container = document.getElementById('stageEditContainer');
             
+            const completedTasks = stageItem.querySelectorAll('.task-edit-item[data-completed="true"]');
+            if (completedTasks.length > 0) {
+                showCustomToast('当前阶段存在已完成的任务，不支持删除');
+                return;
+            }
+            
             if (container.querySelectorAll('.stage-edit-item').length > 1) {
-                if (confirm('确定要删除此阶段吗？')) {
+                showCustomConfirm('删除阶段', '确定要删除此阶段吗？删除后该阶段下的所有任务也将被删除。', function() {
                     stageItem.remove();
-                }
+                    checkChangeContent();
+                }, true);
             } else {
-                alert('至少保留一个阶段');
+                showCustomToast('至少保留一个阶段');
             }
         }
+        
+        function toggleExecutorSearch(type) {
+            const dropdown = document.getElementById(type + 'TaskExecutorDropdown');
+            const allDropdowns = document.querySelectorAll('.search-dropdown');
+            
+            allDropdowns.forEach(d => {
+                if (d !== dropdown) d.classList.remove('show');
+            });
+            
+            dropdown.classList.add('show');
+            
+            const options = dropdown.querySelectorAll('.person-option');
+            options.forEach(option => {
+                option.style.display = 'flex';
+            });
+        }
+        
+        function toggleConfirmerSearch(type) {
+            const dropdown = document.getElementById(type + 'TaskConfirmerDropdown');
+            const allDropdowns = document.querySelectorAll('.search-dropdown');
+            
+            allDropdowns.forEach(d => {
+                if (d !== dropdown) d.classList.remove('show');
+            });
+            
+            dropdown.classList.add('show');
+            
+            const options = dropdown.querySelectorAll('.person-option');
+            options.forEach(option => {
+                option.style.display = 'flex';
+            });
+        }
+        
+        function selectExecutor(type, name, role) {
+            const searchInput = document.getElementById(type + 'TaskExecutorSearch');
+            const hiddenInput = document.getElementById(type + 'TaskExecutor');
+            const dropdown = document.getElementById(type + 'TaskExecutorDropdown');
+            const tagsContainer = document.getElementById(type + 'TaskExecutorTags');
+            
+            hiddenInput.value = name;
+            searchInput.value = '';
+            dropdown.classList.remove('show');
+            
+            tagsContainer.innerHTML = `
+                <div class="confirm-person-tag">
+                    ${name}（${role}）
+                    <span class="remove" onclick="removeExecutor('${type}')">×</span>
+                </div>
+            `;
+        }
+        
+        function removeExecutor(type) {
+            const hiddenInput = document.getElementById(type + 'TaskExecutor');
+            const tagsContainer = document.getElementById(type + 'TaskExecutorTags');
+            
+            hiddenInput.value = '';
+            tagsContainer.innerHTML = '';
+        }
+        
+        function selectConfirmer(type, name, role) {
+            const dropdown = document.getElementById(type + 'TaskConfirmerDropdown');
+            const searchInput = document.getElementById(type + 'TaskConfirmerSearch');
+            const confirmPersonList = type === 'new' ? newTaskConfirmPersonList : editTaskConfirmPersonList;
+            
+            if (!confirmPersonList.includes(name) && confirmPersonList.length < 5) {
+                confirmPersonList.push(name);
+                if (type === 'new') {
+                    updateConfirmPersonTags();
+                } else {
+                    updateEditConfirmPersonTags();
+                }
+            }
+            
+            searchInput.value = '';
+            dropdown.classList.remove('show');
+        }
+        
+        function filterExecutorList(type) {
+            const searchInput = document.getElementById(type + 'TaskExecutorSearch');
+            const dropdown = document.getElementById(type + 'TaskExecutorDropdown');
+            const keyword = searchInput.value.toLowerCase();
+            
+            const options = dropdown.querySelectorAll('.person-option');
+            options.forEach(option => {
+                const name = option.querySelector('.name').textContent.toLowerCase();
+                const role = option.querySelector('.role-tag').textContent.toLowerCase();
+                
+                if (name.includes(keyword) || role.includes(keyword)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+        
+        function filterConfirmerList(type) {
+            const searchInput = document.getElementById(type + 'TaskConfirmerSearch');
+            const dropdown = document.getElementById(type + 'TaskConfirmerDropdown');
+            const keyword = searchInput.value.toLowerCase();
+            
+            const options = dropdown.querySelectorAll('.person-option');
+            options.forEach(option => {
+                const name = option.querySelector('.name').textContent.toLowerCase();
+                const role = option.querySelector('.role-tag').textContent.toLowerCase();
+                
+                if (name.includes(keyword) || role.includes(keyword)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-select')) {
+                document.querySelectorAll('.search-dropdown').forEach(d => {
+                    d.classList.remove('show');
+                });
+            }
+        });
         
         function addNewStage() {
             const container = document.getElementById('stageEditContainer');
@@ -3082,9 +4980,14 @@
             const newStage = document.createElement('div');
             newStage.className = 'stage-edit-item';
             newStage.dataset.stage = stageCount + 1;
+            newStage.dataset.sequential = 'false';
             newStage.innerHTML = `
                 <div class="stage-header-row">
                     <input type="text" class="stage-name-input" placeholder="请输入阶段名称">
+                    <div class="stage-sequential" onclick="toggleStageSequential(this)">
+                        <span>按序执行</span>
+                        <div class="switch"></div>
+                    </div>
                     <div class="stage-actions">
                         <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
                         <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
@@ -3092,7 +4995,8 @@
                 </div>
                 <div class="task-edit-list">
                     <div class="task-edit-item">
-                        <input type="text" class="task-input" placeholder="任务名称">
+                        <input type="text" class="task-input" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                        <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                         <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                     </div>
                 </div>
@@ -3100,14 +5004,19 @@
             container.appendChild(newStage);
             newStage.querySelector('.stage-name-input').focus();
             newStage.scrollIntoView({ behavior: 'smooth' });
+            checkChangeContent();
         }
         
         function submitChange() {
-            if (confirm('确定要提交变更申请吗？\n\n提交后将通知对方进行确认，确认前阶段任务将暂停流转。')) {
-                closeChangeModal();
-                alert('变更申请已提交！\n\n系统已发送消息通知对方，请等待对方确认。');
-                updateContractStatus('changing');
+            if (!hasChangeContent) {
+                showCustomToast('请添加变更内容后再提交');
+                return;
             }
+            showCustomConfirm('提交变更', '确定要提交变更申请吗？\n\n提交后将通知对方进行确认，确认前阶段任务将暂停流转。', function() {
+                closeChangeModal();
+                showCustomToast('变更申请已提交！\n\n系统已发送消息通知对方，请等待对方确认。');
+                updateContractStatus('changing');
+            });
         }
         
         function showChangeConfirmModal() {
@@ -3120,17 +5029,14 @@
         
         function confirmChange() {
             closeChangeConfirmModal();
-            alert('变更已确认！\n\n变更内容已生效，系统已生成新的版本记录。');
+            showCustomToast('变更已确认！\n\n变更内容已生效，系统已生成新的版本记录。');
             updateContractStatus('signed');
         }
         
         function rejectChange() {
-            const reason = prompt('请输入驳回原因：');
-            if (reason) {
-                closeChangeConfirmModal();
-                alert('变更已驳回！\n\n系统已通知对方驳回原因，对方可重新发起变更申请。');
-                updateContractStatus('signed');
-            }
+            closeChangeConfirmModal();
+            showCustomToast('变更已驳回！\n\n系统已通知对方驳回原因，对方可重新发起变更申请。');
+            updateContractStatus('signed');
         }
         
         function updateContractStatus(status) {
@@ -3143,6 +5049,21 @@
             document.getElementById('statusText').textContent = config.text;
             document.getElementById('statusDesc').textContent = config.desc;
             
+            const rejectReasonBox = document.getElementById('rejectReasonBox');
+            if (config.showRejectReason) {
+                rejectReasonBox.style.display = 'block';
+                document.getElementById('rejectReasonContent').textContent = config.rejectReason;
+            } else {
+                rejectReasonBox.style.display = 'none';
+            }
+            
+            const editGuideBox = document.getElementById('editGuideBox');
+            if (config.showEditGuide) {
+                editGuideBox.style.display = 'block';
+            } else {
+                editGuideBox.style.display = 'none';
+            }
+            
             const pcGuide = document.getElementById('pcEditGuide');
             if (config.showPcGuide) {
                 pcGuide.style.display = 'block';
@@ -3153,9 +5074,9 @@
             const actionsContainer = document.getElementById('bottomActions');
             actionsContainer.innerHTML = config.actions.map(action => {
                 if (action.disabled) {
-                    return `<div class="action-btn ${action.type}" disabled style="opacity: 0.5; cursor: not-allowed;" title="${action.disabledReason || ''}">${action.text}</div>`;
+                    return `<div class="action-btn ${action.type}" disabled style="opacity: 0.5; cursor: not-allowed; ${action.fullWidth ? 'width: 100%;' : ''}" title="${action.disabledReason || ''}">${action.text}</div>`;
                 }
-                return `<div class="action-btn ${action.type}" onclick="showStatusModal('${action.action}')">${action.text}</div>`;
+                return `<div class="action-btn ${action.type}" onclick="showStatusModal('${action.action}')" ${action.fullWidth ? 'style="width: 100%;"' : ''}>${action.text}</div>`;
             }).join('');
             
             document.querySelectorAll('.status-switch-item').forEach(item => {
@@ -3164,6 +5085,8 @@
             
             const statusTextMap = {
                 'draft': '拟定中',
+                'platform_reviewing': '待平台审核',
+                'platform_rejected': '平台审核驳回',
                 'confirming_sender': '确认中(发起方)',
                 'confirming_receiver': '确认中(待确认方)',
                 'confirmed': '已确认',
@@ -3204,7 +5127,121 @@
             } else {
                 exportBtn.style.display = 'none';
             }
+            
+            updateStatusFlowDiagram(status);
+            updateActionGuide(status);
         }
+        
+        function updateStatusFlowDiagram(status) {
+            const flowSteps = document.querySelectorAll('.status-flow-step');
+            const flowLines = document.querySelectorAll('.status-flow-line');
+            
+            const statusOrder = [
+                'draft', 
+                'platform_reviewing', 
+                'confirming_sender', 
+                'confirmed', 
+                'signing_wait', 
+                'signed'
+            ];
+            
+            const currentIndex = statusOrder.indexOf(status);
+            if (currentIndex === -1) return;
+            
+            flowSteps.forEach((step, index) => {
+                step.classList.remove('completed', 'current', 'pending');
+                if (index < currentIndex) {
+                    step.classList.add('completed');
+                } else if (index === currentIndex) {
+                    step.classList.add('current');
+                } else {
+                    step.classList.add('pending');
+                }
+            });
+            
+            flowLines.forEach((line, index) => {
+                line.classList.remove('completed', 'pending');
+                if (index < currentIndex) {
+                    line.classList.add('completed');
+                } else {
+                    line.classList.add('pending');
+                }
+            });
+        }
+        
+        function updateActionGuide(status) {
+            const guideText = document.getElementById('guideText');
+            const guideIconBtn = document.getElementById('guideIconBtn');
+            
+            const guideConfig = {
+                'draft': {
+                    desc: '请完善合同内容后提交确认',
+                    show: true
+                },
+                'platform_reviewing': {
+                    desc: '平台正在审核中，请耐心等待',
+                    show: true
+                },
+                'platform_rejected': {
+                    desc: '请根据驳回原因修改后重新提交',
+                    show: true
+                },
+                'confirming_sender': {
+                    desc: '已提交确认，等待对方确认',
+                    show: true
+                },
+                'confirming_receiver': {
+                    desc: '请确认合同内容或驳回修改',
+                    show: true
+                },
+                'confirmed': {
+                    desc: '双方已确认，请上传签约文件',
+                    show: true
+                },
+                'signing_wait': {
+                    desc: '已上传签约文件，等待对方确认',
+                    show: true
+                },
+                'signing': {
+                    desc: '请确认签约文件是否与线下签署一致',
+                    show: true
+                },
+                'signed': {
+                    desc: '合同已签约生效，可发起变更申请',
+                    show: true
+                },
+                'changing': {
+                    desc: '变更申请已发起，等待对方确认',
+                    show: true
+                },
+                'change_confirming': {
+                    desc: '对方发起变更，请确认或驳回',
+                    show: true
+                }
+            };
+            
+            const config = guideConfig[status];
+            if (config && config.show) {
+                guideIconBtn.style.display = 'flex';
+                guideText.textContent = config.desc;
+            } else {
+                guideIconBtn.style.display = 'none';
+            }
+        }
+        
+        function showGuideModal() {
+            document.getElementById('guideModal').classList.add('show');
+        }
+        
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.remove('show');
+        }
+        
+        document.getElementById('guideModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGuideModal();
+            }
+        });
         
         function updatePartyStatus(status) {
             const partyATag = document.getElementById('partyATag');
@@ -3280,10 +5317,10 @@
         
         function submitSignFile() {
             if (signFiles.length === 0) {
-                alert('请上传签约文件');
+                showCustomToast('请上传签约文件');
                 return;
             }
-            alert('签约文件已提交！等待对方确认后合同将正式生效。');
+            showCustomToast('签约文件已提交！等待对方确认后合同将正式生效。');
             closeSignUploadPage();
             updateContractStatus('signing_wait');
         }
@@ -3297,23 +5334,34 @@
         }
         
         function previewSignFile() {
-            alert('预览签约文件');
+            showCustomToast('预览签约文件');
         }
         
         function rejectSign() {
-            const reason = prompt('请输入驳回原因：');
-            if (reason) {
-                alert('签约文件已驳回！系统已通知对方。');
-                closeSignConfirmModal();
-                updateContractStatus('confirmed');
-            }
+            showCustomToast('签约文件已驳回！系统已通知对方。');
+            closeSignConfirmModal();
+            updateContractStatus('confirmed');
         }
         
         function confirmSign() {
-            alert('签约确认成功！合同已正式生效。');
+            showCustomToast('签约确认成功！合同已正式生效。');
             closeSignConfirmModal();
             updateContractStatus('signed');
         }
+
+        function showContractHelp() {
+            document.getElementById('helpModal').classList.add('show');
+        }
+        
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('show');
+        }
+        
+        document.getElementById('helpModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeHelpModal();
+            }
+        });
         
         initFromUrl();
     </script>

@@ -1,0 +1,838 @@
+/* ==========================================================================
+   pc-common.css — 家装平台PC端原型 · 公共样式
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS 变量（统一设计系统）
+   -------------------------------------------------------------------------- */
+:root {
+    --primary-color: #1890FF;
+    --primary-light: #40A9FF;
+    --primary-dark: #096DD9;
+    --success-color: #52C41A;
+    --success-light: #73D13D;
+    --warning-color: #FAAD14;
+    --warning-light: #FFC53D;
+    --error-color: #FF4D4F;
+    --error-light: #FF7875;
+    --purple-color: #722ED1;
+    --orange-color: #FA8C16;
+
+    --text-primary: #262626;
+    --text-secondary: #595959;
+    --text-tertiary: #8C8C8C;
+    --text-disabled: #BFBFBF;
+
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F5F5F5;
+    --bg-tertiary: #E8E8E8;
+    --bg-dark: #001529;
+    --border-color: #E8E8E8;
+    --border-light: #F0F0F0;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --shadow-md: rgba(0, 0, 0, 0.1);
+    --shadow-lg: rgba(0, 0, 0, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   2. 重置样式
+   -------------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+                 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   3. PC端整体布局
+   -------------------------------------------------------------------------- */
+.pc-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   4. 侧边栏导航
+   -------------------------------------------------------------------------- */
+.pc-sidebar {
+    width: 220px;
+    background-color: var(--bg-dark);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.pc-sidebar-header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.pc-sidebar-logo {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pc-sidebar-logo .icon {
+    font-size: 24px;
+}
+
+.pc-sidebar-menu {
+    flex: 1;
+    padding: 12px 0;
+    overflow-y: auto;
+}
+
+.pc-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: rgba(255,255,255,0.65);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 10px;
+}
+
+.pc-menu-item:hover {
+    color: #fff;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.pc-menu-item.active {
+    color: #fff;
+    background-color: var(--primary-color);
+}
+
+.pc-menu-item .icon {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.pc-menu-item .label {
+    font-size: 14px;
+}
+
+.pc-menu-group {
+    margin-top: 8px;
+}
+
+.pc-menu-group-title {
+    padding: 8px 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   5. 主内容区域
+   -------------------------------------------------------------------------- */
+.pc-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   6. 顶部导航栏
+   -------------------------------------------------------------------------- */
+.pc-header {
+    height: 56px;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+}
+
+.pc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.pc-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.pc-breadcrumb .separator {
+    color: var(--text-tertiary);
+}
+
+.pc-breadcrumb .item {
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.pc-breadcrumb .item:hover {
+    color: var(--primary-color);
+}
+
+.pc-breadcrumb .item.current {
+    color: var(--text-primary);
+    cursor: default;
+}
+
+.pc-header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.pc-header-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s;
+    font-size: 18px;
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.pc-header-icon:hover {
+    background-color: var(--bg-secondary);
+    color: var(--primary-color);
+}
+
+.pc-header-icon .badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--error-color);
+    border-radius: 50%;
+}
+
+.pc-user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.pc-user-info:hover {
+    background-color: var(--bg-secondary);
+}
+
+.pc-user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+}
+
+.pc-user-name {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   7. 内容区域
+   -------------------------------------------------------------------------- */
+.pc-content {
+    flex: 1;
+    padding: 24px;
+    background-color: var(--bg-secondary);
+    overflow-y: auto;
+}
+
+.pc-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.pc-page-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.pc-content-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   8. 按钮样式
+   -------------------------------------------------------------------------- */
+.pc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.pc-btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.pc-btn-primary:hover {
+    background-color: var(--primary-light);
+}
+
+.pc-btn-default {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.pc-btn-default:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pc-btn-success {
+    background-color: var(--success-color);
+    color: #fff;
+}
+
+.pc-btn-danger {
+    background-color: var(--error-color);
+    color: #fff;
+}
+
+.pc-btn-warning {
+    background-color: var(--warning-color);
+    color: #fff;
+}
+
+.pc-btn-text {
+    background: transparent;
+    color: var(--primary-color);
+    padding: 4px 8px;
+}
+
+.pc-btn-text:hover {
+    background-color: var(--status-primary-bg);
+}
+
+.pc-btn-lg {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+.pc-btn-sm {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.pc-btn-icon {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. 卡片样式
+   -------------------------------------------------------------------------- */
+.pc-card {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px var(--shadow-color);
+}
+
+.pc-card-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pc-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.pc-card-body {
+    padding: 24px;
+}
+
+.pc-card-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   10. 表单样式
+   -------------------------------------------------------------------------- */
+.pc-form-group {
+    margin-bottom: 20px;
+}
+
+.pc-form-label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.pc-form-label .required {
+    color: var(--error-color);
+    margin-left: 2px;
+}
+
+.pc-form-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pc-form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.pc-form-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.pc-form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+    transition: all 0.2s;
+}
+
+.pc-form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.pc-form-select {
+    width: 100%;
+    height: 40px;
+    padding: 0 32px 0 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: var(--bg-primary);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238C8C8C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+.pc-form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.pc-form-row .pc-form-group {
+    flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   11. 表格样式
+   -------------------------------------------------------------------------- */
+.pc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pc-table th,
+.pc-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.pc-table th {
+    background-color: var(--bg-secondary);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.pc-table td {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.pc-table tbody tr:hover {
+    background-color: var(--bg-secondary);
+}
+
+.pc-table-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   12. 标签样式
+   -------------------------------------------------------------------------- */
+.pc-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.pc-tag-primary {
+    background-color: var(--status-primary-bg);
+    color: var(--primary-color);
+}
+
+.pc-tag-success {
+    background-color: #F6FFED;
+    color: var(--success-color);
+}
+
+.pc-tag-warning {
+    background-color: #FFF7E6;
+    color: var(--warning-color);
+}
+
+.pc-tag-error {
+    background-color: #FFF1F0;
+    color: var(--error-color);
+}
+
+.pc-tag-default {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   13. 模态框样式
+   -------------------------------------------------------------------------- */
+.pc-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.pc-modal-overlay.show {
+    display: flex;
+}
+
+.pc-modal {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-lg);
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pc-modal-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pc-modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.pc-modal-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    color: var(--text-tertiary);
+    font-size: 18px;
+}
+
+.pc-modal-close:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.pc-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.pc-modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.pc-modal-sm { width: 400px; }
+.pc-modal-md { width: 600px; }
+.pc-modal-lg { width: 800px; }
+.pc-modal-xl { width: 1000px; }
+
+/* --------------------------------------------------------------------------
+   14. 分页样式
+   -------------------------------------------------------------------------- */
+.pc-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 0;
+}
+
+.pc-pagination-item {
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.pc-pagination-item:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.pc-pagination-item.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.pc-pagination-item.disabled {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   15. 搜索栏样式
+   -------------------------------------------------------------------------- */
+.pc-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.pc-search-input {
+    position: relative;
+    flex: 1;
+    max-width: 300px;
+}
+
+.pc-search-input input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 36px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.pc-search-input .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   16. 空状态样式
+   -------------------------------------------------------------------------- */
+.pc-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.pc-empty-icon {
+    font-size: 64px;
+    color: var(--text-disabled);
+    margin-bottom: 16px;
+}
+
+.pc-empty-text {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin-bottom: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   17. 状态标签背景色
+   -------------------------------------------------------------------------- */
+:root {
+    --status-primary-bg: #E6F7FF;
+    --status-success-bg: #F6FFED;
+    --status-warning-bg: #FFF7E6;
+    --status-error-bg: #FFF1F0;
+}
+
+/* --------------------------------------------------------------------------
+   18. 工具类
+   -------------------------------------------------------------------------- */
+.text-primary { color: var(--primary-color); }
+.text-success { color: var(--success-color); }
+.text-warning { color: var(--warning-color); }
+.text-error { color: var(--error-color); }
+.text-muted { color: var(--text-tertiary); }
+.text-bold { font-weight: 600; }
+
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+
+.flex { display: flex; }
+.flex-1 { flex: 1; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+
+/* --------------------------------------------------------------------------
+   19. PC端原型导航面板
+   -------------------------------------------------------------------------- */
+.pc-page-nav {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px var(--shadow-md);
+    z-index: 100;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    width: 200px;
+}
+
+.pc-page-nav-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pc-page-nav-title .badge {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.pc-page-nav-group {
+    margin-bottom: 12px;
+}
+
+.pc-page-nav-group-title {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.pc-page-nav-item {
+    display: block;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.pc-page-nav-item:hover {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.pc-page-nav-item.active {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}

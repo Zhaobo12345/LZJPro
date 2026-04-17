@@ -334,6 +334,34 @@
             color: var(--text-tertiary);
         }
 
+        .stage-header .sequential-icon {
+            color: var(--warning-color);
+            margin-left: 8px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .stage-header .sequential-icon::before {
+            content: '↪';
+        }
+
+        .task-item.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .task-item.disabled .task-name {
+            color: var(--text-tertiary);
+        }
+
+        .task-item.disabled::after {
+            content: '🔒';
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
         .stage-header .arrow {
             margin-left: 8px;
             color: var(--text-tertiary);
@@ -343,6 +371,59 @@
 
         .stage-header .arrow.expanded {
             transform: rotate(180deg);
+        }
+
+        .temp-tasks-section {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .temp-tasks-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px 10px 44px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .temp-tasks-header:hover {
+            background-color: #F5F5F5;
+        }
+
+        .temp-tasks-icon {
+            font-size: 14px;
+            margin-right: 8px;
+        }
+
+        .temp-tasks-title {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: #722ED1;
+        }
+
+        .temp-tasks-count {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .temp-tasks-header .arrow {
+            margin-left: 8px;
+            color: var(--text-tertiary);
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .temp-tasks-header .arrow.expanded {
+            transform: rotate(180deg);
+        }
+
+        .temp-tasks-list {
+            display: none;
+        }
+
+        .temp-tasks-list.show {
+            display: block;
         }
 
         .task-list {
@@ -371,14 +452,14 @@
         }
 
         .task-item .task-status {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 12px;
-            font-size: 11px;
+            font-size: 12px;
             flex-shrink: 0;
         }
 
@@ -397,6 +478,85 @@
             color: var(--text-tertiary);
         }
 
+        .task-item .task-status-text {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .task-item .task-status-text .status-icon {
+            font-size: 10px;
+        }
+
+        .task-item .task-status-text.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .task-item .task-status-text.confirming {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .task-item .task-status-text.completed {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
+
+        .task-item .confirm-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .task-item .confirm-progress-bar {
+            flex: 1;
+            height: 4px;
+            background-color: var(--bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .task-item .confirm-progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .task-item .confirm-progress-text {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+        }
+
+        .task-item .priority-badge {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+
+        .task-item .priority-badge.urgent {
+            background-color: #FFF1F0;
+            color: var(--error-color);
+        }
+
+        .task-item .priority-badge.important {
+            background-color: #FFF7E6;
+            color: var(--warning-color);
+        }
+
+        .task-item .priority-badge.normal {
+            background-color: var(--bg-secondary);
+            color: var(--text-tertiary);
+        }
+
         .task-item .task-info {
             flex: 1;
             min-width: 0;
@@ -408,14 +568,17 @@
             color: var(--text-primary);
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            line-height: 1.4;
         }
 
         .task-item .task-tag {
             font-size: 10px;
             padding: 1px 6px;
             border-radius: 4px;
-            margin-left: 8px;
             flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .task-item .task-tag.contract {
@@ -432,28 +595,6 @@
             font-size: 12px;
             color: var(--text-tertiary);
             margin-top: 4px;
-        }
-
-        .task-item .task-status-text {
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            flex-shrink: 0;
-        }
-
-        .task-item .task-status-text.pending {
-            background-color: var(--status-warning-bg);
-            color: var(--warning-color);
-        }
-
-        .task-item .task-status-text.confirming {
-            background-color: var(--status-primary-bg);
-            color: var(--primary-color);
-        }
-
-        .task-item .task-status-text.completed {
-            background-color: var(--status-success-bg);
-            color: var(--success-color);
         }
 
         .empty-state {
@@ -490,6 +631,416 @@
             color: var(--primary-color);
             cursor: pointer;
         }
+
+        .quick-filter-bar {
+            display: flex;
+            padding: 8px 12px;
+            gap: 6px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: nowrap;
+        }
+
+        .quick-filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-filter-btn {
+            flex: 1;
+            padding: 6px 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            min-width: 0;
+        }
+
+        .quick-filter-btn:hover {
+            background-color: #E6F7FF;
+        }
+
+        .quick-filter-btn.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .quick-filter-btn .badge {
+            background-color: rgba(255,255,255,0.3);
+            padding: 0 6px;
+            border-radius: 8px;
+            font-size: 10px;
+        }
+
+        .quick-filter-btn:not(.active) .badge {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .filter-panel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .filter-panel-overlay.show {
+            display: block;
+        }
+
+        .filter-panel {
+            position: absolute;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100%;
+            background-color: var(--bg-primary);
+            z-index: 1000;
+            transition: right 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-panel.show {
+            right: 0;
+        }
+
+        .filter-panel-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .filter-panel-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .filter-panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-group-title .tip {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: normal;
+        }
+
+        .filter-multi-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-multi-option {
+            padding: 8px 14px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .filter-multi-option:hover {
+            background-color: #E6F7FF;
+        }
+
+        .filter-multi-option.selected {
+            background-color: #E6F7FF;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .filter-panel-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-panel-btn {
+            flex: 1;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .filter-panel-btn.reset {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .filter-panel-btn.apply {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .save-filter-btn {
+            font-size: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+        }
+
+        .saved-filters {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .saved-filter-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .saved-filter-item:hover {
+            background-color: #E6F7FF;
+        }
+
+        .saved-filter-name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .saved-filter-delete {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        .view-switch-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .view-switch-tabs {
+            display: flex;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 2px;
+        }
+
+        .view-switch-tab {
+            padding: 6px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-switch-tab.active {
+            background-color: var(--bg-primary);
+            color: var(--primary-color);
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .group-by-selector {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .group-by-selector select {
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+            background-color: var(--bg-primary);
+            cursor: pointer;
+        }
+
+        .flat-task-list {
+            display: none;
+        }
+
+        .flat-task-list.show {
+            display: block;
+        }
+
+        .flat-task-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .flat-task-item:hover {
+            background-color: #E6F7FF;
+        }
+
+        .flat-task-item .task-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .flat-task-item .task-status.completed {
+            background-color: var(--success-color);
+            color: #FFFFFF;
+        }
+
+        .flat-task-item .task-status.confirming {
+            background-color: var(--warning-color);
+            color: #FFFFFF;
+        }
+
+        .flat-task-item .task-status.pending {
+            background-color: var(--bg-tertiary);
+            color: var(--text-tertiary);
+        }
+
+        .flat-task-item .task-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .flat-task-item .task-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            line-height: 1.4;
+        }
+
+        .flat-task-item .task-tag {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .flat-task-item .task-tag.contract {
+            background-color: #E6F7FF;
+            color: #1890FF;
+        }
+
+        .flat-task-item .task-tag.temp {
+            background-color: #F9F0FF;
+            color: #722ED1;
+        }
+
+        .flat-task-item .priority-badge {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .flat-task-item .priority-badge.important {
+            background-color: #FFF1F0;
+            color: var(--error-color);
+        }
+
+        .flat-task-item .priority-badge.urgent {
+            background-color: #FFF1F0;
+            color: var(--error-color);
+        }
+
+        .flat-task-item .task-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .flat-task-item .task-meta .contract-name {
+            color: var(--primary-color);
+        }
+
+        .flat-task-item .task-status-text {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .flat-task-item .task-status-text.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .flat-task-item .task-status-text.confirming {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .flat-task-item .task-status-text.completed {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
     </style>
 </head>
 <body>
@@ -500,10 +1051,10 @@
         </div>
         
         <div class="nav-bar">
-            <div class="back" onclick="location.href='prototype-project-detail.html'">← 返回</div>
+            <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">全部任务</div>
             <div class="actions">
-                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+                <div class="action-btn" onclick="showToast('关闭小程序')">✕</div>
             </div>
         </div>
         
@@ -513,51 +1064,30 @@
                     <div class="search-input-wrap">
                         <input type="text" class="search-input" placeholder="搜索任务名称..." id="searchInput" oninput="filterTasks()">
                     </div>
-                    <div class="filter-btn" id="filterBtn" onclick="toggleFilterDropdown()">
-                        <span>🔍</span>
+                    <div class="filter-btn" id="filterBtn" onclick="openFilterPanel()">
+                        <span>⚙️</span>
                     </div>
                 </div>
-                <div class="filter-tags" id="filterTags" style="display: none;">
+            </div>
+
+            <div class="quick-filter-bar">
+                <div class="quick-filter-btn active" onclick="quickFilter('all', this)">
+                    全部 <span class="badge">22</span>
                 </div>
-                
-                <div class="filter-dropdown" id="filterDropdown">
-                    <div class="filter-dropdown-header">
-                        <span>筛选条件</span>
-                        <span class="filter-dropdown-close" onclick="closeFilterDropdown()">✕</span>
-                    </div>
-                    <div class="filter-section">
-                        <div class="filter-section-title">合同</div>
-                        <div class="filter-options" id="contractOptions">
-                            <div class="filter-option active" data-value="all" onclick="selectContract(this, 'all', '全部合同')">全部合同</div>
-                            <div class="filter-option" data-value="contract-1" onclick="selectContract(this, 'contract-1', '水电分包合同')">水电分包合同</div>
-                            <div class="filter-option" data-value="contract-2" onclick="selectContract(this, 'contract-2', '泥瓦分包合同')">泥瓦分包合同</div>
-                            <div class="filter-option" data-value="contract-3" onclick="selectContract(this, 'contract-3', '木工分包合同')">木工分包合同</div>
-                            <div class="filter-option" data-value="contract-4" onclick="selectContract(this, 'contract-4', '油漆分包合同')">油漆分包合同</div>
-                        </div>
-                    </div>
-                    <div class="filter-section">
-                        <div class="filter-section-title">任务类型</div>
-                        <div class="filter-options" id="typeOptions">
-                            <div class="filter-option active" data-value="all" onclick="selectType(this, 'all', '全部类型')">全部类型</div>
-                            <div class="filter-option" data-value="contract" onclick="selectType(this, 'contract', '合约任务')">合约任务</div>
-                            <div class="filter-option" data-value="temp" onclick="selectType(this, 'temp', '临时任务')">临时任务</div>
-                        </div>
-                    </div>
-                    <div class="filter-section">
-                        <div class="filter-section-title">状态</div>
-                        <div class="filter-options" id="statusOptions">
-                            <div class="filter-option active" data-value="all" onclick="selectStatus(this, 'all', '全部状态')">全部状态</div>
-                            <div class="filter-option" data-value="pending" onclick="selectStatus(this, 'pending', '待开始')">待开始</div>
-                            <div class="filter-option" data-value="confirming" onclick="selectStatus(this, 'confirming', '确认中')">确认中</div>
-                            <div class="filter-option" data-value="completed" onclick="selectStatus(this, 'completed', '已完成')">已完成</div>
-                        </div>
-                    </div>
+                <div class="quick-filter-btn" onclick="quickFilter('pending', this)">
+                    待开始 <span class="badge">9</span>
+                </div>
+                <div class="quick-filter-btn" onclick="quickFilter('confirming', this)">
+                    确认中 <span class="badge">5</span>
+                </div>
+                <div class="quick-filter-btn" onclick="quickFilter('temp', this)">
+                    临时任务 <span class="badge">2</span>
                 </div>
             </div>
             
             <div class="stats-summary">
                 <div class="stats-item">
-                    <div class="value highlight" id="totalCount">24</div>
+                    <div class="value highlight" id="totalCount">22</div>
                     <div class="label">全部任务</div>
                 </div>
                 <div class="stats-item">
@@ -571,6 +1101,21 @@
                 <div class="stats-item">
                     <div class="value" id="completedCount">12</div>
                     <div class="label">已完成</div>
+                </div>
+            </div>
+
+            <div class="view-switch-bar">
+                <div class="view-switch-tabs">
+                    <div class="view-switch-tab active" onclick="switchView('grouped', this)">分组列表</div>
+                    <div class="view-switch-tab" onclick="switchView('flat', this)">扁平列表</div>
+                </div>
+                <div class="group-by-selector" id="groupBySelector">
+                    <span>分组方式：</span>
+                    <select onchange="changeGroupBy(this.value)">
+                        <option value="contract">按合同</option>
+                        <option value="stage">按阶段</option>
+                        <option value="status">按状态</option>
+                    </select>
                 </div>
             </div>
             
@@ -594,115 +1139,114 @@
                         <div class="arrow expanded">▼</div>
                     </div>
                     <div class="stage-group show">
-                        <div class="stage-item">
+                        <div class="stage-item" data-sequential="true">
                             <div class="stage-header" onclick="toggleStage(this)">
                                 <div class="stage-dot completed"></div>
                                 <div class="stage-name">材料进场阶段</div>
+                                <div class="sequential-icon" title="按序执行"></div>
                                 <div class="stage-count">3/3 已完成</div>
                                 <div class="arrow expanded">▼</div>
                             </div>
                             <div class="task-list show">
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" data-task-index="0" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">材料采购 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：张三 · 确认人：李四、王五</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" data-task-index="1" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">材料运输 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：张三 · 确认人：李四</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" data-task-index="2" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">材料确认 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：张三 · 确认人：李四、王五、赵六</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="stage-item">
+                        <div class="stage-item" data-sequential="true">
                             <div class="stage-header" onclick="toggleStage(this)">
                                 <div class="stage-dot confirming"></div>
                                 <div class="stage-name">布管布线阶段</div>
+                                <div class="sequential-icon" title="按序执行"></div>
                                 <div class="stage-count">2/4 进行中</div>
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" data-task-index="0" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">开槽 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" data-task-index="1" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">布管 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="confirming" onclick="location.href='prototype-task-detail.html'">
-                                    <div class="task-status confirming">⋯</div>
+                                <div class="task-item" data-type="contract" data-status="confirming" data-priority="important" data-task-index="2" onclick="goToTaskDetail(this)">
+                                    <div class="task-status confirming">⏳</div>
                                     <div class="task-info">
-                                        <div class="task-name">穿线 <span class="task-tag contract">合约</span></div>
-                                        <div class="task-meta">执行人：李四 · 确认中：1/3</div>
+                                        <div class="task-name">穿线 <span class="task-tag contract">合约</span><span class="priority-badge important">重要</span></div>
+                                        <div class="task-meta">执行人：李四</div>
+                                        <div class="confirm-progress">
+                                            <div class="confirm-progress-bar"><div class="confirm-progress-fill" style="width: 33%;"></div></div>
+                                            <div class="confirm-progress-text">1/3 已确认</div>
+                                        </div>
                                     </div>
-                                    <div class="task-status-text confirming">确认中</div>
+                                    <div class="task-status-text confirming"><span class="status-icon">⏳</span>确认中</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" data-task-index="3" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">阶段确认 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="stage-item">
+                        <div class="stage-item" data-sequential="true">
                             <div class="stage-header" onclick="toggleStage(this)">
                                 <div class="stage-dot"></div>
                                 <div class="stage-name">安装阶段</div>
+                                <div class="sequential-icon" title="按序执行"></div>
                                 <div class="stage-count">0/3 待开始</div>
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" data-task-index="0" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">开关插座安装 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" data-task-index="1" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">灯具安装 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
-                                </div>
-                                <div class="task-item" data-type="temp" data-status="confirming" onclick="location.href='prototype-temp-task-detail.html?status=confirming'">
-                                    <div class="task-status confirming">⋯</div>
-                                    <div class="task-info">
-                                        <div class="task-name">更换损坏插座 <span class="task-tag temp">临时</span></div>
-                                        <div class="task-meta">执行人：李四 · 确认中：2/3</div>
-                                    </div>
-                                    <div class="task-status-text confirming">确认中</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
                             </div>
                         </div>
@@ -715,21 +1259,21 @@
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">清理现场 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：李四 · 确认人：张三、王五</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">最终确认 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：李四 · 确认人：张三、王五、赵六、钱七、孙八</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
                             </div>
                         </div>
@@ -758,21 +1302,21 @@
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">防水施工 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="completed" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="completed" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status completed">✓</div>
                                     <div class="task-info">
                                         <div class="task-name">防水确认 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text completed">已完成</div>
+                                    <div class="task-status-text completed"><span class="status-icon">✓</span>已完成</div>
                                 </div>
                             </div>
                         </div>
@@ -785,30 +1329,49 @@
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="confirming" onclick="location.href='prototype-task-detail.html'">
-                                    <div class="task-status confirming">⋯</div>
+                                <div class="task-item" data-type="contract" data-status="confirming" data-priority="urgent" onclick="goToTaskDetail(this)">
+                                    <div class="task-status confirming">⏳</div>
                                     <div class="task-info">
-                                        <div class="task-name">墙面贴砖 <span class="task-tag contract">合约</span></div>
-                                        <div class="task-meta">执行人：王五 · 确认中：2/3</div>
+                                        <div class="task-name">墙面贴砖 <span class="task-tag contract">合约</span><span class="priority-badge urgent">紧急</span></div>
+                                        <div class="task-meta">执行人：王五</div>
+                                        <div class="confirm-progress">
+                                            <div class="confirm-progress-bar"><div class="confirm-progress-fill" style="width: 67%;"></div></div>
+                                            <div class="confirm-progress-text">2/3 已确认</div>
+                                        </div>
                                     </div>
-                                    <div class="task-status-text confirming">确认中</div>
+                                    <div class="task-status-text confirming"><span class="status-icon">⏳</span>确认中</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">地面铺砖 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：王五 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
-                                </div>
-                                <div class="task-item" data-type="temp" data-status="pending" onclick="location.href='prototype-temp-task-detail.html?status=pending'">
-                                    <div class="task-status pending">○</div>
-                                    <div class="task-info">
-                                        <div class="task-name">紧急修补墙面裂缝 <span class="task-tag temp">临时</span></div>
-                                        <div class="task-meta">执行人：待接收 · 确认人：张三、李四</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                     </div>
-                                    <div class="task-status-text pending">待接收</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="temp-tasks-section">
+                        <div class="temp-tasks-header" onclick="toggleTempTasks(this)">
+                            <div class="temp-tasks-icon">📋</div>
+                            <div class="temp-tasks-title">临时任务</div>
+                            <div class="temp-tasks-count">1个任务</div>
+                            <div class="arrow expanded">▼</div>
+                        </div>
+                        <div class="temp-tasks-list show">
+                            <div class="task-item" data-type="temp" data-status="confirming" data-priority="important" onclick="goToTaskDetail(this)">
+                                <div class="task-status confirming">⏳</div>
+                                <div class="task-info">
+                                    <div class="task-name">更换损坏插座 <span class="task-tag temp">临时</span><span class="priority-badge important">重要</span></div>
+                                    <div class="task-meta">执行人：李四</div>
+                                    <div class="confirm-progress">
+                                        <div class="confirm-progress-bar"><div class="confirm-progress-fill" style="width: 67%;"></div></div>
+                                        <div class="confirm-progress-text">2/3 已确认</div>
+                                    </div>
                                 </div>
+                                <div class="task-status-text confirming"><span class="status-icon">⏳</span>确认中</div>
                             </div>
                         </div>
                     </div>
@@ -835,22 +1398,41 @@
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">吊顶施工 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：赵六 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" data-priority="normal" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">吊顶确认 <span class="task-tag contract">合约</span></div>
                                         <div class="task-meta">执行人：赵六 · 确认人：张三、李四</div>
                                     </div>
-                                    <div class="task-status-text pending">待开始</div>
+                                    <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="temp-tasks-section">
+                        <div class="temp-tasks-header" onclick="toggleTempTasks(this)">
+                            <div class="temp-tasks-icon">📋</div>
+                            <div class="temp-tasks-title">临时任务</div>
+                            <div class="temp-tasks-count">1个任务</div>
+                            <div class="arrow expanded">▼</div>
+                        </div>
+                        <div class="temp-tasks-list show">
+                            <div class="task-item" data-type="temp" data-status="pending" data-priority="normal" onclick="goToTaskDetail(this)">
+                                <div class="task-status pending">○</div>
+                                <div class="task-info">
+                                    <div class="task-name">临时增加插座 <span class="task-tag temp">临时</span></div>
+                                    <div class="task-meta">执行人：王五 · 确认人：张三</div>
+                                </div>
+                                <div class="task-status-text pending"><span class="status-icon">⏸</span>待开始</div>
                             </div>
                         </div>
                     </div>
@@ -877,7 +1459,7 @@
                                 <div class="arrow">▼</div>
                             </div>
                             <div class="task-list">
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">墙面批刮 <span class="task-tag contract">合约</span></div>
@@ -885,7 +1467,7 @@
                                     </div>
                                     <div class="task-status-text pending">待开始</div>
                                 </div>
-                                <div class="task-item" data-type="contract" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-item" data-type="contract" data-status="pending" onclick="goToTaskDetail(this)">
                                     <div class="task-status pending">○</div>
                                     <div class="task-info">
                                         <div class="task-name">批刮确认 <span class="task-tag contract">合约</span></div>
@@ -902,6 +1484,135 @@
             <div class="empty-state" id="emptyState" style="display: none;">
                 <div class="icon">📋</div>
                 <div class="text">暂无符合条件的任务</div>
+            </div>
+
+            <div class="flat-task-list" id="flatTaskList">
+                <div class="flat-task-item" data-status="completed" onclick="goToTaskDetail(this)">
+                    <div class="task-status completed">✓</div>
+                    <div class="task-info">
+                        <div class="task-name">材料采购 <span class="task-tag contract">合约</span></div>
+                        <div class="task-meta">
+                            <span class="contract-name">水电分包合同</span>
+                            <span>执行人：张三</span>
+                        </div>
+                    </div>
+                    <div class="task-status-text completed">已完成</div>
+                </div>
+                <div class="flat-task-item" data-status="confirming" onclick="goToTaskDetail(this)">
+                    <div class="task-status confirming">⏳</div>
+                    <div class="task-info">
+                        <div class="task-name">穿线 <span class="task-tag contract">合约</span><span class="priority-badge important">重要</span></div>
+                        <div class="task-meta">
+                            <span class="contract-name">水电分包合同</span>
+                            <span>执行人：李四</span>
+                            <span>确认中 1/3</span>
+                        </div>
+                    </div>
+                    <div class="task-status-text confirming">确认中</div>
+                </div>
+                <div class="flat-task-item" data-status="confirming" onclick="goToTaskDetail(this)">
+                    <div class="task-status confirming">⏳</div>
+                    <div class="task-info">
+                        <div class="task-name">墙面贴砖 <span class="task-tag contract">合约</span><span class="priority-badge urgent">紧急</span></div>
+                        <div class="task-meta">
+                            <span class="contract-name">泥瓦分包合同</span>
+                            <span>执行人：王五</span>
+                            <span>确认中 2/3</span>
+                        </div>
+                    </div>
+                    <div class="task-status-text confirming">确认中</div>
+                </div>
+                <div class="flat-task-item" data-status="pending" onclick="goToTaskDetail(this)">
+                    <div class="task-status pending">○</div>
+                    <div class="task-info">
+                        <div class="task-name">吊顶施工 <span class="task-tag contract">合约</span></div>
+                        <div class="task-meta">
+                            <span class="contract-name">木工分包合同</span>
+                            <span>执行人：赵六</span>
+                        </div>
+                    </div>
+                    <div class="task-status-text pending">待开始</div>
+                </div>
+                <div class="flat-task-item" data-status="pending" onclick="goToTaskDetail(this)">
+                    <div class="task-status pending">○</div>
+                    <div class="task-info">
+                        <div class="task-name">墙面批刮 <span class="task-tag contract">合约</span></div>
+                        <div class="task-meta">
+                            <span class="contract-name">油漆分包合同</span>
+                            <span>执行人：钱七</span>
+                        </div>
+                    </div>
+                    <div class="task-status-text pending">待开始</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-panel-overlay" id="filterPanelOverlay"></div>
+        <div class="filter-panel" id="filterPanel">
+            <div class="filter-panel-header">
+                <div class="filter-panel-title">筛选条件</div>
+                <div class="filter-panel-close" onclick="closeFilterPanel()">✕</div>
+            </div>
+            <div class="filter-panel-content">
+                <div class="filter-group">
+                    <div class="filter-group-title">
+                        <span>合同</span>
+                        <span class="tip">可多选</span>
+                    </div>
+                    <div class="filter-multi-options" id="contractFilterOptions">
+                        <div class="filter-multi-option selected" data-value="all" onclick="toggleMultiOption(this)">全部</div>
+                        <div class="filter-multi-option" data-value="contract-1" onclick="toggleMultiOption(this)">水电分包合同</div>
+                        <div class="filter-multi-option" data-value="contract-2" onclick="toggleMultiOption(this)">泥瓦分包合同</div>
+                        <div class="filter-multi-option" data-value="contract-3" onclick="toggleMultiOption(this)">木工分包合同</div>
+                        <div class="filter-multi-option" data-value="contract-4" onclick="toggleMultiOption(this)">油漆分包合同</div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-group-title">
+                        <span>任务类型</span>
+                        <span class="tip">可多选</span>
+                    </div>
+                    <div class="filter-multi-options" id="typeFilterOptions">
+                        <div class="filter-multi-option selected" data-value="all" onclick="toggleMultiOption(this)">全部</div>
+                        <div class="filter-multi-option" data-value="contract" onclick="toggleMultiOption(this)">合约任务</div>
+                        <div class="filter-multi-option" data-value="temp" onclick="toggleMultiOption(this)">临时任务</div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <div class="filter-group-title">
+                        <span>任务状态</span>
+                        <span class="tip">可多选</span>
+                    </div>
+                    <div class="filter-multi-options" id="statusFilterOptions">
+                        <div class="filter-multi-option selected" data-value="all" onclick="toggleMultiOption(this)">全部</div>
+                        <div class="filter-multi-option" data-value="pending" onclick="toggleMultiOption(this)">待开始</div>
+                        <div class="filter-multi-option" data-value="confirming" onclick="toggleMultiOption(this)">确认中</div>
+                        <div class="filter-multi-option" data-value="completed" onclick="toggleMultiOption(this)">已完成</div>
+                    </div>
+                </div>
+                
+                <div class="save-filter-btn" onclick="saveFilterScheme()">
+                    <span>💾</span>
+                    <span>保存筛选方案</span>
+                </div>
+                
+                <div class="saved-filters">
+                    <div class="filter-group-title">已保存的方案</div>
+                    <div class="saved-filter-item" onclick="showToast('应用方案：待处理任务')">
+                        <span class="saved-filter-name">待处理任务</span>
+                        <span class="saved-filter-delete" onclick="event.stopPropagation(); showToast('删除方案')">🗑️</span>
+                    </div>
+                    <div class="saved-filter-item" onclick="showToast('应用方案：紧急任务')">
+                        <span class="saved-filter-name">紧急任务</span>
+                        <span class="saved-filter-delete" onclick="event.stopPropagation(); showToast('删除方案')">🗑️</span>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-panel-footer">
+                <button class="filter-panel-btn reset" onclick="resetFilters()">重置</button>
+                <button class="filter-panel-btn apply" onclick="applyFilters()">应用筛选</button>
             </div>
         </div>
     </div>
@@ -929,6 +1640,41 @@
         };
         
         let allExpanded = true;
+        
+        function showToast(message, duration = 2500) {
+            const existingToast = document.querySelector('.app-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'app-toast';
+            toast.innerHTML = message.replace(/\n/g, '<br>');
+            toast.style.cssText = `
+                position: absolute;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #FFFFFF;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 13px;
+                z-index: 1000;
+                white-space: pre-wrap;
+                max-width: 90%;
+                text-align: center;
+                line-height: 1.5;
+            `;
+            const phoneFrame = document.querySelector('.phone-frame');
+            if (phoneFrame) {
+                phoneFrame.appendChild(toast);
+            }
+            
+            setTimeout(() => {
+                toast.remove();
+            }, duration);
+        }
         
         function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
@@ -1030,6 +1776,17 @@
             filterTasks();
         }
         
+        function goToTaskDetail(element) {
+            const taskType = element.dataset.type;
+            const taskStatus = element.dataset.status;
+            
+            if (taskType === 'temp') {
+                location.href = `prototype-temp-task-detail.html?status=${taskStatus}`;
+            } else {
+                location.href = `prototype-task-detail.html?status=${taskStatus}`;
+            }
+        }
+        
         function toggleContract(header) {
             const stageGroup = header.nextElementSibling;
             const arrow = header.querySelector('.arrow');
@@ -1044,6 +1801,19 @@
         }
         
         function toggleStage(header) {
+            const taskList = header.nextElementSibling;
+            const arrow = header.querySelector('.arrow');
+            
+            if (taskList.classList.contains('show')) {
+                taskList.classList.remove('show');
+                arrow.classList.remove('expanded');
+            } else {
+                taskList.classList.add('show');
+                arrow.classList.add('expanded');
+            }
+        }
+        
+        function toggleTempTasks(header) {
             const taskList = header.nextElementSibling;
             const arrow = header.querySelector('.arrow');
             
@@ -1097,42 +1867,103 @@
             
             contractSections.forEach(section => {
                 const contractId = section.dataset.contract;
-                const tasks = section.querySelectorAll('.task-item');
+                const stages = section.querySelectorAll('.stage-item');
+                const tempTasksSection = section.querySelector('.temp-tasks-section');
                 let contractVisibleCount = 0;
                 
-                tasks.forEach(task => {
-                    const taskType = task.dataset.type;
-                    const taskStatus = task.dataset.status;
-                    const taskName = task.querySelector('.task-name').textContent.toLowerCase();
+                stages.forEach(stage => {
+                    const tasks = stage.querySelectorAll('.task-item');
+                    let stageVisibleCount = 0;
                     
-                    let visible = true;
+                    tasks.forEach(task => {
+                        const taskType = task.dataset.type;
+                        const taskStatus = task.dataset.status;
+                        const taskName = task.querySelector('.task-name').textContent.toLowerCase();
+                        
+                        let visible = true;
+                        
+                        if (currentFilters.contract !== 'all' && contractId !== currentFilters.contract) {
+                            visible = false;
+                        }
+                        
+                        if (currentFilters.type !== 'all' && taskType !== currentFilters.type) {
+                            visible = false;
+                        }
+                        
+                        if (currentFilters.status !== 'all' && taskStatus !== currentFilters.status) {
+                            visible = false;
+                        }
+                        
+                        if (searchText && !taskName.includes(searchText)) {
+                            visible = false;
+                        }
+                        
+                        task.style.display = visible ? 'flex' : 'none';
+                        
+                        if (visible) {
+                            stageVisibleCount++;
+                            contractVisibleCount++;
+                            totalVisible++;
+                            if (taskStatus === 'pending') pendingCount++;
+                            if (taskStatus === 'confirming') confirmingCount++;
+                            if (taskStatus === 'completed') completedCount++;
+                        }
+                    });
                     
-                    if (currentFilters.contract !== 'all' && contractId !== currentFilters.contract) {
-                        visible = false;
-                    }
-                    
-                    if (currentFilters.type !== 'all' && taskType !== currentFilters.type) {
-                        visible = false;
-                    }
-                    
-                    if (currentFilters.status !== 'all' && taskStatus !== currentFilters.status) {
-                        visible = false;
-                    }
-                    
-                    if (searchText && !taskName.includes(searchText)) {
-                        visible = false;
-                    }
-                    
-                    task.style.display = visible ? 'flex' : 'none';
-                    
-                    if (visible) {
-                        contractVisibleCount++;
-                        totalVisible++;
-                        if (taskStatus === 'pending') pendingCount++;
-                        if (taskStatus === 'confirming') confirmingCount++;
-                        if (taskStatus === 'completed') completedCount++;
+                    if (stageVisibleCount > 0) {
+                        stage.style.display = 'block';
+                    } else {
+                        stage.style.display = 'none';
                     }
                 });
+                
+                if (tempTasksSection) {
+                    const tempTasks = tempTasksSection.querySelectorAll('.task-item');
+                    let tempVisibleCount = 0;
+                    
+                    tempTasks.forEach(task => {
+                        const taskType = task.dataset.type;
+                        const taskStatus = task.dataset.status;
+                        const taskName = task.querySelector('.task-name').textContent.toLowerCase();
+                        
+                        let visible = true;
+                        
+                        if (currentFilters.contract !== 'all' && contractId !== currentFilters.contract) {
+                            visible = false;
+                        }
+                        
+                        if (currentFilters.type !== 'all' && taskType !== currentFilters.type) {
+                            visible = false;
+                        }
+                        
+                        if (currentFilters.status !== 'all' && taskStatus !== currentFilters.status) {
+                            visible = false;
+                        }
+                        
+                        if (searchText && !taskName.includes(searchText)) {
+                            visible = false;
+                        }
+                        
+                        task.style.display = visible ? 'flex' : 'none';
+                        
+                        if (visible) {
+                            tempVisibleCount++;
+                            contractVisibleCount++;
+                            totalVisible++;
+                            if (taskStatus === 'pending') pendingCount++;
+                            if (taskStatus === 'confirming') confirmingCount++;
+                            if (taskStatus === 'completed') completedCount++;
+                        }
+                    });
+                    
+                    if (tempVisibleCount > 0) {
+                        tempTasksSection.style.display = 'block';
+                        const countEl = tempTasksSection.querySelector('.temp-tasks-count');
+                        if (countEl) countEl.textContent = tempVisibleCount + '个任务';
+                    } else {
+                        tempTasksSection.style.display = 'none';
+                    }
+                }
                 
                 if (contractVisibleCount > 0) {
                     section.style.display = 'block';
@@ -1157,9 +1988,286 @@
         
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.search-filter-bar')) {
-                document.getElementById('filterDropdown').classList.remove('show');
-                document.getElementById('filterBtn').classList.remove('active');
+                const dropdown = document.getElementById('filterDropdown');
+                if (dropdown) dropdown.classList.remove('show');
             }
+            
+            const filterPanel = document.getElementById('filterPanel');
+            const filterOverlay = document.getElementById('filterPanelOverlay');
+            if (filterPanel && filterPanel.classList.contains('show')) {
+                if (e.target === filterOverlay) {
+                    closeFilterPanel();
+                }
+            }
+        });
+
+        function openFilterPanel() {
+            const panel = document.getElementById('filterPanel');
+            const overlay = document.getElementById('filterPanelOverlay');
+            if (panel && overlay) {
+                panel.classList.add('show');
+                overlay.classList.add('show');
+            }
+        }
+
+        function closeFilterPanel() {
+            const panel = document.getElementById('filterPanel');
+            const overlay = document.getElementById('filterPanelOverlay');
+            if (panel && overlay) {
+                panel.classList.remove('show');
+                overlay.classList.remove('show');
+            }
+        }
+
+        function toggleMultiOption(element) {
+            element.classList.toggle('selected');
+        }
+
+        function quickFilter(type, btn) {
+            document.querySelectorAll('.quick-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            if (type === 'all') {
+                currentFilters.status = 'all';
+                currentFilters.type = 'all';
+            } else if (type === 'temp') {
+                currentFilters.status = 'all';
+                currentFilters.type = 'temp';
+            } else {
+                currentFilters.status = type;
+                currentFilters.type = 'all';
+            }
+            
+            filterTasks();
+        }
+
+        function saveFilterScheme() {
+            showToast('筛选方案已保存');
+        }
+
+        function applyFilters() {
+            const selectedContracts = [];
+            const selectedTypes = [];
+            const selectedStatuses = [];
+            
+            document.querySelectorAll('#contractFilterOptions .filter-multi-option.selected').forEach(opt => {
+                selectedContracts.push(opt.dataset.value);
+            });
+            
+            document.querySelectorAll('#typeFilterOptions .filter-multi-option.selected').forEach(opt => {
+                selectedTypes.push(opt.dataset.value);
+            });
+            
+            document.querySelectorAll('#statusFilterOptions .filter-multi-option.selected').forEach(opt => {
+                selectedStatuses.push(opt.dataset.value);
+            });
+            
+            filterTasks();
+            closeFilterPanel();
+        }
+
+        function resetFilters() {
+            document.querySelectorAll('.filter-multi-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            currentFilters = {
+                contract: 'all',
+                contractText: '全部合同',
+                type: 'all',
+                typeText: '全部类型',
+                status: 'all',
+                statusText: '全部状态'
+            };
+            filterTasks();
+        }
+
+        let currentView = 'grouped';
+        let currentGroupBy = 'contract';
+
+        function switchView(view, tab) {
+            currentView = view;
+            
+            document.querySelectorAll('.view-switch-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            const taskContainer = document.getElementById('taskContainer');
+            const flatList = document.getElementById('flatTaskList');
+            const groupBySelector = document.getElementById('groupBySelector');
+            const resultBar = document.querySelector('.result-bar');
+            
+            if (view === 'flat') {
+                taskContainer.style.display = 'none';
+                flatList.classList.add('show');
+                groupBySelector.style.display = 'none';
+                resultBar.style.display = 'none';
+            } else {
+                taskContainer.style.display = 'block';
+                flatList.classList.remove('show');
+                groupBySelector.style.display = 'flex';
+                resultBar.style.display = 'flex';
+            }
+        }
+
+        function changeGroupBy(value) {
+            currentGroupBy = value;
+            
+            const taskContainer = document.getElementById('taskContainer');
+            const contractSections = taskContainer.querySelectorAll('.contract-section');
+            
+            if (value === 'stage') {
+                contractSections.forEach(section => {
+                    const stages = section.querySelectorAll('.stage-item');
+                    stages.forEach(stage => {
+                        const stageName = stage.querySelector('.stage-name').textContent;
+                        const stageDot = stage.querySelector('.stage-dot');
+                        const stageHeader = stage.querySelector('.stage-header');
+                        
+                        if (stageName.includes('材料') || stageName.includes('防水')) {
+                            stageDot.className = 'stage-dot completed';
+                            stageHeader.style.borderLeft = '3px solid var(--success-color)';
+                        } else if (stageName.includes('布管') || stageName.includes('贴砖')) {
+                            stageDot.className = 'stage-dot confirming';
+                            stageHeader.style.borderLeft = '3px solid var(--warning-color)';
+                        } else {
+                            stageDot.className = 'stage-dot';
+                            stageHeader.style.borderLeft = '3px solid var(--primary-color)';
+                        }
+                    });
+                });
+                
+                showToast('已按阶段分组显示');
+            } else if (value === 'status') {
+                contractSections.forEach(section => {
+                    const stages = section.querySelectorAll('.stage-item');
+                    stages.forEach(stage => {
+                        const tasks = stage.querySelectorAll('.task-item');
+                        let hasConfirming = false;
+                        let hasPending = false;
+                        let allCompleted = true;
+                        
+                        tasks.forEach(task => {
+                            const status = task.dataset.status;
+                            if (status === 'confirming') hasConfirming = true;
+                            if (status === 'pending') hasPending = true;
+                            if (status !== 'completed') allCompleted = false;
+                        });
+                        
+                        const stageDot = stage.querySelector('.stage-dot');
+                        const stageHeader = stage.querySelector('.stage-header');
+                        
+                        if (allCompleted && tasks.length > 0) {
+                            stageDot.className = 'stage-dot completed';
+                            stageHeader.style.borderLeft = '3px solid var(--success-color)';
+                        } else if (hasConfirming) {
+                            stageDot.className = 'stage-dot confirming';
+                            stageHeader.style.borderLeft = '3px solid var(--warning-color)';
+                        } else {
+                            stageDot.className = 'stage-dot';
+                            stageHeader.style.borderLeft = '3px solid var(--primary-color)';
+                        }
+                    });
+                });
+                
+                showToast('已按状态分组显示');
+            } else {
+                contractSections.forEach(section => {
+                    const stages = section.querySelectorAll('.stage-item');
+                    stages.forEach(stage => {
+                        const stageDot = stage.querySelector('.stage-dot');
+                        const stageHeader = stage.querySelector('.stage-header');
+                        stageDot.className = 'stage-dot';
+                        stageHeader.style.borderLeft = 'none';
+                    });
+                });
+                
+                showToast('已按合同分组显示');
+            }
+        }
+
+        function goToTaskDetail(element) {
+            const taskType = element.dataset.type;
+            const taskStatus = element.dataset.status;
+            
+            if (element.classList.contains('disabled')) {
+                showToast('当前阶段内任务为按序执行，存在未完成的前置任务，当前任务无法执行');
+                return;
+            }
+            
+            if (taskType === 'temp') {
+                location.href = `prototype-temp-task-detail.html?status=${taskStatus}`;
+            } else {
+                location.href = `prototype-task-detail.html?status=${taskStatus}`;
+            }
+        }
+
+        function checkSequentialTasks() {
+            const contractSections = document.querySelectorAll('.contract-section');
+            
+            contractSections.forEach(section => {
+                const stages = section.querySelectorAll('.stage-item');
+                
+                stages.forEach(stage => {
+                    const isSequential = stage.dataset.sequential === 'true';
+                    if (!isSequential) return;
+                    
+                    const tasks = stage.querySelectorAll('.task-item');
+                    let prevTaskCompleted = true;
+                    
+                    tasks.forEach((task, index) => {
+                        const taskStatus = task.dataset.status;
+                        
+                        if (index > 0 && isSequential) {
+                            const prevTask = tasks[index - 1];
+                            const prevTaskStatus = prevTask.dataset.status;
+                            prevTaskCompleted = prevTaskStatus === 'completed';
+                            
+                            if (!prevTaskCompleted && taskStatus !== 'completed') {
+                                task.classList.add('disabled');
+                                task.removeAttribute('onclick');
+                                task.setAttribute('onclick', 'goToTaskDetail(this)');
+                            } else {
+                                task.classList.remove('disabled');
+                            }
+                        }
+                    });
+                });
+            });
+        }
+
+        function showToast(message, duration = 2500) {
+            const existingToast = document.querySelector('.app-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'app-toast';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.75);
+                color: #FFFFFF;
+                padding: 12px 20px;
+                border-radius: 8px;
+                font-size: 13px;
+                z-index: 10000;
+                white-space: nowrap;
+                max-width: 90%;
+                text-align: center;
+                line-height: 1.5;
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, duration);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSequentialTasks();
         });
     </script>
 </body>

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家装平台PC端 - 合同文本模板管理</title>
+    <link rel="stylesheet" href="pc-common.css">
+    <style>
+        .template-container {
+            display: flex;
+            gap: 24px;
+            height: calc(100vh - 130px);
+        }
+
+        .template-sidebar {
+            width: 240px;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 1px 2px var(--shadow-color);
+        }
+
+        .template-sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .category-tree {
+            padding: 0;
+        }
+
+        .category-tree-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .category-tree-item:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .category-tree-item.active {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .category-tree-item .count {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            background-color: var(--bg-secondary);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .category-tree-item.active .count {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .template-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .template-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .template-search {
+            display: flex;
+            gap: 12px;
+        }
+
+        .template-search input {
+            width: 280px;
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .template-search input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .template-list {
+            flex: 1;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            overflow-y: auto;
+            box-shadow: 0 1px 2px var(--shadow-color);
+        }
+
+        .template-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .template-table th {
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-secondary);
+            z-index: 1;
+        }
+
+        .template-table th,
+        .template-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .template-table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .template-table td {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .template-table tbody tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .template-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .template-name:hover {
+            color: var(--primary-color);
+        }
+
+        .template-category-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .template-version {
+            font-size: 12px;
+            color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .template-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .template-status.active {
+            color: var(--success-color);
+        }
+
+        .template-status.inactive {
+            color: var(--text-tertiary);
+        }
+
+        .template-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+
+        .template-edit-modal .modal-body-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .template-edit-form {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .template-edit-form .form-section {
+            margin-bottom: 24px;
+        }
+
+        .template-edit-form .form-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .variable-list {
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .variable-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .variable-item:last-child {
+            border-bottom: none;
+        }
+
+        .variable-item input {
+            flex: 1;
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .variable-item .remove-btn {
+            color: var(--error-color);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .add-variable-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .preview-panel {
+            position: fixed;
+            top: 0;
+            right: -600px;
+            width: 600px;
+            height: 100vh;
+            background-color: var(--bg-primary);
+            box-shadow: -4px 0 12px var(--shadow-lg);
+            z-index: 1001;
+            transition: right 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-panel.show {
+            right: 0;
+        }
+
+        .preview-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .preview-close {
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-tertiary);
+        }
+
+        .preview-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .version-history {
+            margin-top: 16px;
+        }
+
+        .version-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .version-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            margin-top: 6px;
+        }
+
+        .version-info {
+            flex: 1;
+        }
+
+        .version-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .version-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .version-actions {
+            display: flex;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pc-container">
+        <div class="pc-sidebar">
+            <div class="pc-sidebar-header">
+                <div class="pc-sidebar-logo">
+                    <span class="icon">🏗️</span>
+                    <span>家装管理平台</span>
+                </div>
+            </div>
+            <div class="pc-sidebar-menu">
+                <a href="pc-project-list.html" class="pc-menu-item">
+                    <span class="icon">📊</span>
+                    <span class="label">工作台</span>
+                </a>
+                <a href="pc-project-list.html" class="pc-menu-item">
+                    <span class="icon">📁</span>
+                    <span class="label">项目管理</span>
+                </a>
+                <a href="pc-contract-edit.html" class="pc-menu-item">
+                    <span class="icon">📋</span>
+                    <span class="label">合同管理</span>
+                </a>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">模板管理</div>
+                    <a href="pc-contract-template.html" class="pc-menu-item active">
+                        <span class="icon">📄</span>
+                        <span class="label">合同文本模板</span>
+                    </a>
+                    <a href="pc-stage-template.html" class="pc-menu-item">
+                        <span class="icon">📝</span>
+                        <span class="label">阶段任务模板</span>
+                    </a>
+                </div>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">系统设置</div>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">👥</span>
+                        <span class="label">成员管理</span>
+                    </a>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">⚙️</span>
+                        <span class="label">系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-main">
+            <div class="pc-header">
+                <div class="pc-header-left">
+                    <div class="pc-breadcrumb">
+                        <span class="item">模板管理</span>
+                        <span class="separator">/</span>
+                        <span class="item current">合同文本模板</span>
+                    </div>
+                </div>
+                <div class="pc-header-right">
+                    <div class="pc-header-icon">
+                        🔔
+                        <span class="badge"></span>
+                    </div>
+                    <div class="pc-user-info">
+                        <div class="pc-user-avatar">张</div>
+                        <span class="pc-user-name">张三</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pc-content">
+                <div class="pc-content-header">
+                    <div class="pc-page-title">合同文本模板</div>
+                    <div class="pc-content-actions">
+                        <button class="pc-btn pc-btn-primary" onclick="showCreateModal()">
+                            + 新建模板
+                        </button>
+                    </div>
+                </div>
+
+                <div class="template-container">
+                    <div class="template-sidebar">
+                        <div class="template-sidebar-title">模板分类</div>
+                        <div class="category-tree">
+                            <div class="category-tree-item active">
+                                <span>全部模板</span>
+                                <span class="count">24</span>
+                            </div>
+                            <div class="category-tree-item">
+                                <span>分包合同</span>
+                                <span class="count">8</span>
+                            </div>
+                            <div class="category-tree-item">
+                                <span>主合同</span>
+                                <span class="count">3</span>
+                            </div>
+                            <div class="category-tree-item">
+                                <span>补充协议</span>
+                                <span class="count">5</span>
+                            </div>
+                            <div class="category-tree-item">
+                                <span>劳务合同</span>
+                                <span class="count">4</span>
+                            </div>
+                            <div class="category-tree-item">
+                                <span>材料采购</span>
+                                <span class="count">4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-main">
+                        <div class="template-toolbar">
+                            <div class="template-search">
+                                <input type="text" placeholder="搜索模板名称...">
+                                <select class="pc-form-select" style="width: 150px;">
+                                    <option>全部状态</option>
+                                    <option>启用</option>
+                                    <option>停用</option>
+                                </select>
+                            </div>
+                            <div class="flex gap-8">
+                                <button class="pc-btn pc-btn-default">导出</button>
+                            </div>
+                        </div>
+
+                        <div class="template-list">
+                            <table class="template-table">
+                                <thead>
+                                    <tr>
+                                        <th>模板名称</th>
+                                        <th>分类</th>
+                                        <th>版本</th>
+                                        <th>变量数</th>
+                                        <th>引用次数</th>
+                                        <th>状态</th>
+                                        <th>更新时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="template-name" onclick="previewTemplate(1)">水电分包合同模板</span>
+                                        </td>
+                                        <td><span class="template-category-tag">分包合同</span></td>
+                                        <td><span class="template-version">v2.0</span></td>
+                                        <td>6</td>
+                                        <td>128</td>
+                                        <td>
+                                            <span class="template-status active">
+                                                <span class="dot"></span>启用
+                                            </span>
+                                        </td>
+                                        <td>2024-01-10 14:30</td>
+                                        <td>
+                                            <div class="pc-table-actions">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(1)">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(1)">复制</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(1)">版本</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(1)">停用</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="template-name" onclick="previewTemplate(2)">泥瓦分包合同模板</span>
+                                        </td>
+                                        <td><span class="template-category-tag">分包合同</span></td>
+                                        <td><span class="template-version">v1.5</span></td>
+                                        <td>5</td>
+                                        <td>86</td>
+                                        <td>
+                                            <span class="template-status active">
+                                                <span class="dot"></span>启用
+                                            </span>
+                                        </td>
+                                        <td>2024-01-08 10:20</td>
+                                        <td>
+                                            <div class="pc-table-actions">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(2)">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(2)">复制</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(2)">版本</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(2)">停用</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="template-name" onclick="previewTemplate(3)">木工分包合同模板</span>
+                                        </td>
+                                        <td><span class="template-category-tag">分包合同</span></td>
+                                        <td><span class="template-version">v1.2</span></td>
+                                        <td>4</td>
+                                        <td>52</td>
+                                        <td>
+                                            <span class="template-status active">
+                                                <span class="dot"></span>启用
+                                            </span>
+                                        </td>
+                                        <td>2024-01-05 16:45</td>
+                                        <td>
+                                            <div class="pc-table-actions">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(3)">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(3)">复制</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(3)">版本</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(3)">停用</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="template-name" onclick="previewTemplate(4)">油漆分包合同模板</span>
+                                        </td>
+                                        <td><span class="template-category-tag">分包合同</span></td>
+                                        <td><span class="template-version">v1.0</span></td>
+                                        <td>4</td>
+                                        <td>38</td>
+                                        <td>
+                                            <span class="template-status active">
+                                                <span class="dot"></span>启用
+                                            </span>
+                                        </td>
+                                        <td>2024-01-03 09:15</td>
+                                        <td>
+                                            <div class="pc-table-actions">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(4)">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(4)">复制</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(4)">版本</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(4)">停用</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="template-name" onclick="previewTemplate(5)">主合同模板（标准版）</span>
+                                        </td>
+                                        <td><span class="template-category-tag">主合同</span></td>
+                                        <td><span class="template-version">v3.0</span></td>
+                                        <td>12</td>
+                                        <td>256</td>
+                                        <td>
+                                            <span class="template-status active">
+                                                <span class="dot"></span>启用
+                                            </span>
+                                        </td>
+                                        <td>2024-01-01 08:00</td>
+                                        <td>
+                                            <div class="pc-table-actions">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(5)">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(5)">复制</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(5)">版本</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(5)">停用</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="template-name" onclick="previewTemplate(6)">旧版水电合同模板</span>
+                                        </td>
+                                        <td><span class="template-category-tag">分包合同</span></td>
+                                        <td><span class="template-version">v1.0</span></td>
+                                        <td>4</td>
+                                        <td>0</td>
+                                        <td>
+                                            <span class="template-status inactive">
+                                                <span class="dot"></span>停用
+                                            </span>
+                                        </td>
+                                        <td>2023-12-15 11:30</td>
+                                        <td>
+                                            <div class="pc-table-actions">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(6)">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(6)">复制</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(6)">版本</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(6)">启用</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pc-pagination">
+                            <span style="color: var(--text-tertiary); font-size: 13px;">共 24 条</span>
+                            <div class="pc-pagination-item disabled">‹</div>
+                            <div class="pc-pagination-item active">1</div>
+                            <div class="pc-pagination-item">2</div>
+                            <div class="pc-pagination-item">3</div>
+                            <div class="pc-pagination-item">›</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-page-nav">
+        <div class="pc-page-nav-title">
+            PC端原型导航
+            <span class="badge">PC</span>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">高优先级</div>
+            <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
+            <a href="pc-contract-template.html" class="pc-page-nav-item active">合同文本模板</a>
+            <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">中优先级</div>
+            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">小程序原型</div>
+            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
+            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="createModal">
+        <div class="pc-modal pc-modal-xl">
+            <div class="pc-modal-header">
+                <div class="pc-modal-title">新建合同文本模板</div>
+                <div class="pc-modal-close" onclick="closeCreateModal()">×</div>
+            </div>
+            <div class="pc-modal-body">
+                <div class="template-edit-form">
+                    <div class="form-section">
+                        <div class="form-section-title">基本信息</div>
+                        <div class="form-grid">
+                            <div class="pc-form-group">
+                                <label class="pc-form-label">模板名称<span class="required">*</span></label>
+                                <input type="text" class="pc-form-input" placeholder="请输入模板名称">
+                            </div>
+                            <div class="pc-form-group">
+                                <label class="pc-form-label">模板分类<span class="required">*</span></label>
+                                <select class="pc-form-select">
+                                    <option>分包合同</option>
+                                    <option>主合同</option>
+                                    <option>补充协议</option>
+                                    <option>劳务合同</option>
+                                    <option>材料采购</option>
+                                </select>
+                            </div>
+                            <div class="pc-form-group">
+                                <label class="pc-form-label">模板描述</label>
+                                <input type="text" class="pc-form-input" placeholder="请输入模板描述">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">模板变量</div>
+                        <div class="variable-list">
+                            <div class="variable-item">
+                                <input type="text" value="甲方名称" placeholder="变量名称">
+                                <input type="text" value="{{party_a}}" placeholder="变量标识">
+                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
+                            </div>
+                            <div class="variable-item">
+                                <input type="text" value="乙方名称" placeholder="变量名称">
+                                <input type="text" value="{{party_b}}" placeholder="变量标识">
+                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
+                            </div>
+                            <div class="variable-item">
+                                <input type="text" value="合同金额" placeholder="变量名称">
+                                <input type="text" value="{{amount}}" placeholder="变量标识">
+                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
+                            </div>
+                            <div class="variable-item">
+                                <input type="text" value="工期" placeholder="变量名称">
+                                <input type="text" value="{{duration}}" placeholder="变量标识">
+                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
+                            </div>
+                        </div>
+                        <div class="add-variable-btn" onclick="addVariable()">
+                            <span>+</span>
+                            <span>添加变量</span>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">合同正文</div>
+                        <div class="editor-toolbar">
+                            <button class="toolbar-btn" title="加粗"><b>B</b></button>
+                            <button class="toolbar-btn" title="斜体"><i>I</i></button>
+                            <button class="toolbar-btn" title="下划线"><u>U</u></button>
+                            <span class="toolbar-divider"></span>
+                            <button class="toolbar-btn" title="插入变量">{} 变量</button>
+                            <span class="toolbar-divider"></span>
+                            <button class="toolbar-btn" title="插入表格">⊞</button>
+                            <button class="toolbar-btn" title="插入图片">🖼</button>
+                        </div>
+                        <div class="editor-content" contenteditable="true" style="min-height: 300px;">
+                            <p>在此输入合同正文内容，使用 {{变量名}} 插入动态变量...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pc-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeCreateModal()">取消</button>
+                <button class="pc-btn pc-btn-default">保存草稿</button>
+                <button class="pc-btn pc-btn-primary" onclick="saveTemplate()">保存并发布</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-panel" id="previewPanel">
+        <div class="preview-header">
+            <div class="preview-title">模板预览 - 水电分包合同模板</div>
+            <div class="preview-close" onclick="closePreview()">×</div>
+        </div>
+        <div class="preview-body">
+            <h3 style="text-align: center; margin-bottom: 20px;">水电分包合同</h3>
+            
+            <p><strong>甲方：</strong>{{party_a}}</p>
+            <p><strong>乙方：</strong>{{party_b}}</p>
+            <br>
+            
+            <p>根据《中华人民共和国合同法》及相关法律法规，甲乙双方本着平等、自愿、公平、诚实信用的原则，就水电工程分包事宜，经协商一致，签订本合同。</p>
+            <br>
+            
+            <h4>第一条 工程概况</h4>
+            <p>1.1 工程名称：{{project_name}}</p>
+            <p>1.2 工程地点：{{project_location}}</p>
+            <p>1.3 承包范围：强电、弱电、给排水等水电安装工程</p>
+            <br>
+            
+            <h4>第二条 合同价款</h4>
+            <p>2.1 本合同总价款为人民币{{amount}}元整</p>
+            <p>2.2 合同价款为固定总价，不因市场价格波动而调整</p>
+            <br>
+            
+            <h4>第三条 工期</h4>
+            <p>3.1 工期总日历天数：{{duration}}天</p>
+            <p>3.2 开工日期：以甲方书面通知为准</p>
+            <p>3.3 竣工日期：开工日期后{{duration}}日内</p>
+
+            <div class="version-history">
+                <h4 style="margin-bottom: 16px;">版本历史</h4>
+                <div class="version-item">
+                    <div class="version-dot"></div>
+                    <div class="version-info">
+                        <div class="version-name">v2.0 (当前版本)</div>
+                        <div class="version-meta">2024-01-10 14:30 · 张三</div>
+                    </div>
+                    <div class="version-actions">
+                        <button class="pc-btn pc-btn-text pc-btn-sm">查看</button>
+                    </div>
+                </div>
+                <div class="version-item">
+                    <div class="version-dot" style="background-color: var(--text-tertiary);"></div>
+                    <div class="version-info">
+                        <div class="version-name">v1.0</div>
+                        <div class="version-meta">2023-12-15 11:30 · 张三</div>
+                    </div>
+                    <div class="version-actions">
+                        <button class="pc-btn pc-btn-text pc-btn-sm">查看</button>
+                        <button class="pc-btn pc-btn-text pc-btn-sm">恢复</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCreateModal() {
+            document.getElementById('createModal').classList.add('show');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+
+        function editTemplate(id) {
+            document.getElementById('createModal').classList.add('show');
+        }
+
+        function copyTemplate(id) {
+            alert('已复制模板，请在编辑后保存');
+        }
+
+        function previewTemplate(id) {
+            document.getElementById('previewPanel').classList.add('show');
+        }
+
+        function closePreview() {
+            document.getElementById('previewPanel').classList.remove('show');
+        }
+
+        function showVersionHistory(id) {
+            document.getElementById('previewPanel').classList.add('show');
+        }
+
+        function toggleStatus(id) {
+            if (confirm('确定要切换模板状态吗？')) {
+                alert('状态已更新');
+                location.reload();
+            }
+        }
+
+        function addVariable() {
+            const list = document.querySelector('.variable-list');
+            const item = document.createElement('div');
+            item.className = 'variable-item';
+            item.innerHTML = `
+                <input type="text" placeholder="变量名称">
+                <input type="text" placeholder="变量标识">
+                <span class="remove-btn" onclick="removeVariable(this)">×</span>
+            `;
+            list.appendChild(item);
+        }
+
+        function removeVariable(btn) {
+            btn.parentElement.remove();
+        }
+
+        function saveTemplate() {
+            alert('模板已保存并发布！');
+            closeCreateModal();
+        }
+
+        document.querySelectorAll('.category-tree-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.category-tree-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

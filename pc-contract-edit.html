@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家装平台PC端 - 创建合同</title>
+    <link rel="stylesheet" href="pc-common.css">
+    <style>
+        .contract-edit-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .edit-section {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px var(--shadow-color);
+        }
+
+        .edit-section-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .edit-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .edit-section-title .icon {
+            font-size: 18px;
+        }
+
+        .edit-section-body {
+            padding: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .template-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .toolbar-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 4px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .toolbar-btn:hover {
+            background-color: var(--bg-primary);
+            color: var(--primary-color);
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 20px;
+            background-color: var(--border-color);
+            margin: 0 4px;
+        }
+
+        .editor-content {
+            min-height: 400px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 6px 6px;
+            font-size: 14px;
+            line-height: 1.8;
+            background-color: var(--bg-primary);
+        }
+
+        .editor-content:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .stage-list {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .stage-item {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .stage-item:last-child {
+            border-bottom: none;
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: var(--bg-secondary);
+            cursor: pointer;
+        }
+
+        .stage-header:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .stage-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stage-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .stage-duration {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            background-color: var(--bg-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .stage-sequential {
+            font-size: 12px;
+            color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .stage-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .stage-body {
+            padding: 16px;
+            background-color: var(--bg-primary);
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task-name {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .task-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .add-stage-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+            border: 2px dashed var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: all 0.2s;
+            margin-top: 16px;
+        }
+
+        .add-stage-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .variable-form {
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .variable-form-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .variable-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .variable-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .variable-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .variable-input {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .footer-actions {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--bg-primary);
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+        }
+
+        .footer-left {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .template-modal-content {
+            display: flex;
+            height: 500px;
+        }
+
+        .template-category {
+            width: 200px;
+            border-right: 1px solid var(--border-color);
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .category-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .category-item:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .category-item.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .template-list {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .template-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(24, 144, 255, 0.15);
+        }
+
+        .template-card.selected {
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .template-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .template-card-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .template-card-version {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .template-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .template-card-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+    </style>
+</head>
+<body>
+    <div class="pc-container">
+        <div class="pc-sidebar">
+            <div class="pc-sidebar-header">
+                <div class="pc-sidebar-logo">
+                    <span class="icon">🏗️</span>
+                    <span>家装管理平台</span>
+                </div>
+            </div>
+            <div class="pc-sidebar-menu">
+                <a href="pc-project-list.html" class="pc-menu-item">
+                    <span class="icon">📊</span>
+                    <span class="label">工作台</span>
+                </a>
+                <a href="pc-project-list.html" class="pc-menu-item">
+                    <span class="icon">📁</span>
+                    <span class="label">项目管理</span>
+                </a>
+                <a href="pc-contract-edit.html" class="pc-menu-item active">
+                    <span class="icon">📋</span>
+                    <span class="label">合同管理</span>
+                </a>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">模板管理</div>
+                    <a href="pc-contract-template.html" class="pc-menu-item">
+                        <span class="icon">📄</span>
+                        <span class="label">合同文本模板</span>
+                    </a>
+                    <a href="pc-stage-template.html" class="pc-menu-item">
+                        <span class="icon">📝</span>
+                        <span class="label">阶段任务模板</span>
+                    </a>
+                </div>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">系统设置</div>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">👥</span>
+                        <span class="label">成员管理</span>
+                    </a>
+                    <a href="#" class="pc-menu-item">
+                        <span class="icon">⚙️</span>
+                        <span class="label">系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-main">
+            <div class="pc-header">
+                <div class="pc-header-left">
+                    <div class="pc-breadcrumb">
+                        <span class="item">项目管理</span>
+                        <span class="separator">/</span>
+                        <span class="item">绿城桃花源项目</span>
+                        <span class="separator">/</span>
+                        <span class="item current">创建合同</span>
+                    </div>
+                </div>
+                <div class="pc-header-right">
+                    <div class="pc-header-icon">
+                        🔔
+                        <span class="badge"></span>
+                    </div>
+                    <div class="pc-user-info">
+                        <div class="pc-user-avatar">张</div>
+                        <span class="pc-user-name">张三</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pc-content">
+                <div class="contract-edit-container">
+                    <div class="edit-section">
+                        <div class="edit-section-header">
+                            <div class="edit-section-title">
+                                <span class="icon">📋</span>
+                                基本信息
+                            </div>
+                        </div>
+                        <div class="edit-section-body">
+                            <div class="form-grid">
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">合同名称<span class="required">*</span></label>
+                                    <input type="text" class="pc-form-input" placeholder="请输入合同名称" value="水电分包合同">
+                                </div>
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">合同类型<span class="required">*</span></label>
+                                    <select class="pc-form-select">
+                                        <option>分包合同</option>
+                                        <option>主合同</option>
+                                        <option>补充协议</option>
+                                    </select>
+                                </div>
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">关联工作组<span class="required">*</span></label>
+                                    <select class="pc-form-select">
+                                        <option>水电工作组</option>
+                                        <option>泥瓦工作组</option>
+                                        <option>木工工作组</option>
+                                        <option>油漆工作组</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-grid mt-16">
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">甲方<span class="required">*</span></label>
+                                    <input type="text" class="pc-form-input" placeholder="请输入甲方名称" value="杭州绿城装饰工程有限公司">
+                                </div>
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">乙方<span class="required">*</span></label>
+                                    <input type="text" class="pc-form-input" placeholder="请输入乙方名称" value="杭州水电安装有限公司">
+                                </div>
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">合同金额<span class="required">*</span></label>
+                                    <input type="text" class="pc-form-input" placeholder="请输入合同金额" value="150000">
+                                </div>
+                            </div>
+                            <div class="form-grid-2 mt-16">
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">工期（天）<span class="required">*</span></label>
+                                    <input type="number" class="pc-form-input" placeholder="请输入工期" value="45">
+                                </div>
+                                <div class="pc-form-group">
+                                    <label class="pc-form-label">签约日期</label>
+                                    <input type="date" class="pc-form-input" value="2024-01-15">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edit-section">
+                        <div class="edit-section-header">
+                            <div class="edit-section-title">
+                                <span class="icon">📄</span>
+                                合同正文
+                            </div>
+                            <div class="template-selector">
+                                <button class="pc-btn pc-btn-default" onclick="showTemplateModal()">
+                                    📑 选择模板
+                                </button>
+                                <button class="pc-btn pc-btn-text" onclick="clearContent()">
+                                    清空内容
+                                </button>
+                            </div>
+                        </div>
+                        <div class="edit-section-body">
+                            <div class="variable-form">
+                                <div class="variable-form-title">模板变量填写</div>
+                                <div class="variable-grid">
+                                    <div class="variable-item">
+                                        <label class="variable-label">甲方名称</label>
+                                        <input type="text" class="variable-input" value="杭州绿城装饰工程有限公司">
+                                    </div>
+                                    <div class="variable-item">
+                                        <label class="variable-label">乙方名称</label>
+                                        <input type="text" class="variable-input" value="杭州水电安装有限公司">
+                                    </div>
+                                    <div class="variable-item">
+                                        <label class="variable-label">合同金额</label>
+                                        <input type="text" class="variable-input" value="150000元">
+                                    </div>
+                                    <div class="variable-item">
+                                        <label class="variable-label">工期</label>
+                                        <input type="text" class="variable-input" value="45天">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="editor-toolbar">
+                                <button class="toolbar-btn" title="加粗"><b>B</b></button>
+                                <button class="toolbar-btn" title="斜体"><i>I</i></button>
+                                <button class="toolbar-btn" title="下划线"><u>U</u></button>
+                                <span class="toolbar-divider"></span>
+                                <button class="toolbar-btn" title="左对齐">≡</button>
+                                <button class="toolbar-btn" title="居中">≡</button>
+                                <button class="toolbar-btn" title="右对齐">≡</button>
+                                <span class="toolbar-divider"></span>
+                                <button class="toolbar-btn" title="有序列表">1.</button>
+                                <button class="toolbar-btn" title="无序列表">•</button>
+                                <span class="toolbar-divider"></span>
+                                <button class="toolbar-btn" title="插入表格">⊞</button>
+                                <button class="toolbar-btn" title="插入图片">🖼</button>
+                                <button class="toolbar-btn" title="插入链接">🔗</button>
+                            </div>
+                            <div class="editor-content" contenteditable="true">
+                                <h3 style="text-align: center; margin-bottom: 20px;">水电分包合同</h3>
+                                
+                                <p><strong>甲方：</strong>杭州绿城装饰工程有限公司</p>
+                                <p><strong>乙方：</strong>杭州水电安装有限公司</p>
+                                <br>
+                                
+                                <p>根据《中华人民共和国合同法》及相关法律法规，甲乙双方本着平等、自愿、公平、诚实信用的原则，就水电工程分包事宜，经协商一致，签订本合同。</p>
+                                <br>
+                                
+                                <h4>第一条 工程概况</h4>
+                                <p>1.1 工程名称：绿城桃花源项目水电工程</p>
+                                <p>1.2 工程地点：杭州市西湖区</p>
+                                <p>1.3 承包范围：强电、弱电、给排水等水电安装工程</p>
+                                <br>
+                                
+                                <h4>第二条 合同价款</h4>
+                                <p>2.1 本合同总价款为人民币壹拾伍万元整（¥150,000.00）</p>
+                                <p>2.2 合同价款为固定总价，不因市场价格波动而调整</p>
+                                <br>
+                                
+                                <h4>第三条 工期</h4>
+                                <p>3.1 工期总日历天数：45天</p>
+                                <p>3.2 开工日期：以甲方书面通知为准</p>
+                                <p>3.3 竣工日期：开工日期后45日内</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edit-section">
+                        <div class="edit-section-header">
+                            <div class="edit-section-title">
+                                <span class="icon">📝</span>
+                                阶段任务
+                            </div>
+                            <div class="template-selector">
+                                <button class="pc-btn pc-btn-default" onclick="showStageTemplateModal()">
+                                    📋 选择阶段模板
+                                </button>
+                            </div>
+                        </div>
+                        <div class="edit-section-body">
+                            <div class="stage-list">
+                                <div class="stage-item">
+                                    <div class="stage-header" onclick="toggleStage(this)">
+                                        <div class="stage-info">
+                                            <span class="stage-name">阶段一：材料进场</span>
+                                            <span class="stage-duration">工期：3天</span>
+                                            <span class="stage-sequential">按序执行</span>
+                                        </div>
+                                        <div class="stage-actions">
+                                            <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editStage(1)">编辑</button>
+                                            <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteStage(1)">删除</button>
+                                            <span style="color: var(--text-tertiary);">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="stage-body">
+                                        <div class="task-item">
+                                            <div class="task-info">
+                                                <span class="task-name">材料验收</span>
+                                                <span class="task-meta">执行人：材料员 | 确认人：项目经理、监理</span>
+                                            </div>
+                                            <div class="flex gap-8">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
+                                            </div>
+                                        </div>
+                                        <div class="task-item">
+                                            <div class="task-info">
+                                                <span class="task-name">材料入库</span>
+                                                <span class="task-meta">执行人：材料员 | 确认人：仓库管理员</span>
+                                            </div>
+                                            <div class="flex gap-8">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
+                                            </div>
+                                        </div>
+                                        <button class="pc-btn pc-btn-default pc-btn-sm mt-8" onclick="addTask(1)">+ 添加任务</button>
+                                    </div>
+                                </div>
+
+                                <div class="stage-item">
+                                    <div class="stage-header" onclick="toggleStage(this)">
+                                        <div class="stage-info">
+                                            <span class="stage-name">阶段二：布管布线</span>
+                                            <span class="stage-duration">工期：15天</span>
+                                        </div>
+                                        <div class="stage-actions">
+                                            <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editStage(2)">编辑</button>
+                                            <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteStage(2)">删除</button>
+                                            <span style="color: var(--text-tertiary);">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="stage-body">
+                                        <div class="task-item">
+                                            <div class="task-info">
+                                                <span class="task-name">强电布管</span>
+                                                <span class="task-meta">执行人：电工组 | 确认人：项目经理</span>
+                                            </div>
+                                            <div class="flex gap-8">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
+                                            </div>
+                                        </div>
+                                        <div class="task-item">
+                                            <div class="task-info">
+                                                <span class="task-name">弱电布线</span>
+                                                <span class="task-meta">执行人：弱电组 | 确认人：项目经理</span>
+                                            </div>
+                                            <div class="flex gap-8">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
+                                            </div>
+                                        </div>
+                                        <button class="pc-btn pc-btn-default pc-btn-sm mt-8" onclick="addTask(2)">+ 添加任务</button>
+                                    </div>
+                                </div>
+
+                                <div class="stage-item">
+                                    <div class="stage-header" onclick="toggleStage(this)">
+                                        <div class="stage-info">
+                                            <span class="stage-name">阶段三：验收调试</span>
+                                            <span class="stage-duration">工期：5天</span>
+                                            <span class="stage-sequential">按序执行</span>
+                                        </div>
+                                        <div class="stage-actions">
+                                            <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editStage(3)">编辑</button>
+                                            <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteStage(3)">删除</button>
+                                            <span style="color: var(--text-tertiary);">▼</span>
+                                        </div>
+                                    </div>
+                                    <div class="stage-body" style="display: none;">
+                                        <div class="task-item">
+                                            <div class="task-info">
+                                                <span class="task-name">通电测试</span>
+                                                <span class="task-meta">执行人：电工组 | 确认人：项目经理、业主</span>
+                                            </div>
+                                            <div class="flex gap-8">
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">编辑</button>
+                                                <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
+                                            </div>
+                                        </div>
+                                        <button class="pc-btn pc-btn-default pc-btn-sm mt-8" onclick="addTask(3)">+ 添加任务</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="add-stage-btn" onclick="addStage()">
+                                <span style="font-size: 18px;">+</span>
+                                <span>添加新阶段</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-actions">
+                        <div class="footer-left">
+                            <button class="pc-btn pc-btn-default">保存草稿</button>
+                            <button class="pc-btn pc-btn-default">预览合同</button>
+                        </div>
+                        <div class="footer-right">
+                            <button class="pc-btn pc-btn-default" onclick="history.back()">取消</button>
+                            <button class="pc-btn pc-btn-primary" onclick="submitContract()">提交合同</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-page-nav">
+        <div class="pc-page-nav-title">
+            PC端原型导航
+            <span class="badge">PC</span>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">高优先级</div>
+            <a href="pc-contract-edit.html" class="pc-page-nav-item active">合同创建/编辑</a>
+            <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
+            <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">中优先级</div>
+            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+        </div>
+        <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group-title">小程序原型</div>
+            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
+            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="templateModal">
+        <div class="pc-modal pc-modal-lg">
+            <div class="pc-modal-header">
+                <div class="pc-modal-title">选择合同文本模板</div>
+                <div class="pc-modal-close" onclick="closeTemplateModal()">×</div>
+            </div>
+            <div class="pc-modal-body" style="padding: 0;">
+                <div class="template-modal-content">
+                    <div class="template-category">
+                        <div class="category-item active">全部模板</div>
+                        <div class="category-item">分包合同</div>
+                        <div class="category-item">主合同</div>
+                        <div class="category-item">补充协议</div>
+                        <div class="category-item">劳务合同</div>
+                        <div class="category-item">材料采购</div>
+                    </div>
+                    <div class="template-list">
+                        <div class="template-card selected" onclick="selectTemplate(this, 1)">
+                            <div class="template-card-header">
+                                <span class="template-card-name">水电分包合同模板</span>
+                                <span class="template-card-version">v2.0</span>
+                            </div>
+                            <div class="template-card-desc">适用于水电工程分包，包含工程概况、价款、工期、质量标准等条款</div>
+                            <div class="template-card-meta">引用次数：128 | 更新时间：2024-01-10</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate(this, 2)">
+                            <div class="template-card-header">
+                                <span class="template-card-name">泥瓦分包合同模板</span>
+                                <span class="template-card-version">v1.5</span>
+                            </div>
+                            <div class="template-card-desc">适用于泥瓦工程分包，包含瓷砖铺贴、防水处理等条款</div>
+                            <div class="template-card-meta">引用次数：86 | 更新时间：2024-01-08</div>
+                        </div>
+                        <div class="template-card" onclick="selectTemplate(this, 3)">
+                            <div class="template-card-header">
+                                <span class="template-card-name">木工分包合同模板</span>
+                                <span class="template-card-version">v1.2</span>
+                            </div>
+                            <div class="template-card-desc">适用于木工工程分包，包含柜体制作、吊顶安装等条款</div>
+                            <div class="template-card-meta">引用次数：52 | 更新时间：2024-01-05</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pc-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeTemplateModal()">取消</button>
+                <button class="pc-btn pc-btn-primary" onclick="confirmTemplate()">确认选择</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="stageTemplateModal">
+        <div class="pc-modal pc-modal-lg">
+            <div class="pc-modal-header">
+                <div class="pc-modal-title">选择阶段任务模板</div>
+                <div class="pc-modal-close" onclick="closeStageTemplateModal()">×</div>
+            </div>
+            <div class="pc-modal-body" style="padding: 0;">
+                <div class="template-modal-content">
+                    <div class="template-category">
+                        <div class="category-item active">全部模板</div>
+                        <div class="category-item">水电工程</div>
+                        <div class="category-item">泥瓦工程</div>
+                        <div class="category-item">木工工程</div>
+                        <div class="category-item">油漆工程</div>
+                    </div>
+                    <div class="template-list">
+                        <div class="template-card" onclick="selectStageTemplate(this, 1)">
+                            <div class="template-card-header">
+                                <span class="template-card-name">水电施工阶段模板</span>
+                                <span class="template-card-version">3个阶段</span>
+                            </div>
+                            <div class="template-card-desc">包含：材料进场、布管布线、验收调试三个阶段，共8个任务</div>
+                            <div class="template-card-meta">引用次数：156 | 更新时间：2024-01-10</div>
+                        </div>
+                        <div class="template-card" onclick="selectStageTemplate(this, 2)">
+                            <div class="template-card-header">
+                                <span class="template-card-name">泥瓦施工阶段模板</span>
+                                <span class="template-card-version">4个阶段</span>
+                            </div>
+                            <div class="template-card-desc">包含：基层处理、防水施工、瓷砖铺贴、验收清洁四个阶段</div>
+                            <div class="template-card-meta">引用次数：98 | 更新时间：2024-01-08</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pc-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeStageTemplateModal()">取消</button>
+                <button class="pc-btn pc-btn-primary" onclick="confirmStageTemplate()">确认选择</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleStage(header) {
+            const body = header.nextElementSibling;
+            const arrow = header.querySelector('.stage-actions span:last-child');
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                body.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        }
+
+        function showTemplateModal() {
+            document.getElementById('templateModal').classList.add('show');
+        }
+
+        function closeTemplateModal() {
+            document.getElementById('templateModal').classList.remove('show');
+        }
+
+        function selectTemplate(card, id) {
+            document.querySelectorAll('#templateModal .template-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            card.classList.add('selected');
+        }
+
+        function confirmTemplate() {
+            alert('已选择模板，内容已填充到编辑区');
+            closeTemplateModal();
+        }
+
+        function showStageTemplateModal() {
+            document.getElementById('stageTemplateModal').classList.add('show');
+        }
+
+        function closeStageTemplateModal() {
+            document.getElementById('stageTemplateModal').classList.remove('show');
+        }
+
+        function selectStageTemplate(card, id) {
+            document.querySelectorAll('#stageTemplateModal .template-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            card.classList.add('selected');
+        }
+
+        function confirmStageTemplate() {
+            alert('已选择阶段模板，任务已添加到列表');
+            closeStageTemplateModal();
+        }
+
+        function addStage() {
+            alert('打开添加阶段弹窗');
+        }
+
+        function editStage(id) {
+            alert('编辑阶段：' + id);
+        }
+
+        function deleteStage(id) {
+            if (confirm('确定要删除此阶段吗？')) {
+                alert('已删除阶段：' + id);
+            }
+        }
+
+        function addTask(stageId) {
+            alert('为阶段 ' + stageId + ' 添加任务');
+        }
+
+        function clearContent() {
+            if (confirm('确定要清空合同正文内容吗？')) {
+                document.querySelector('.editor-content').innerHTML = '';
+            }
+        }
+
+        function submitContract() {
+            if (confirm('确定要提交合同吗？\n\n提交后将进入待确认状态，需等待对方确认。')) {
+                alert('合同已提交！');
+                window.location.href = 'pc-contract-detail.html';
+            }
+        }
+    </script>
+</body>
+</html>

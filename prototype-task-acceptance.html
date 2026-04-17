@@ -93,6 +93,69 @@
             cursor: pointer;
         }
 
+        .filter-bar {
+            display: none;
+            padding: 10px 16px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            gap: 10px;
+        }
+
+        .filter-bar.show {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-bar .search-input-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 0 10px;
+            height: 32px;
+        }
+
+        .filter-bar .search-input-wrap .search-icon {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-right: 6px;
+        }
+
+        .filter-bar .search-input-wrap .search-input {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 13px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .filter-bar .search-input-wrap .search-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .filter-bar .contract-filter {
+            width: 100px;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0 8px;
+            font-size: 12px;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+        }
+
+        .filter-bar .contract-filter:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
         .task-list {
             padding: 12px 16px;
         }
@@ -378,6 +441,47 @@
         .reject-reason:focus {
             border-color: var(--primary-color);
         }
+
+        .custom-toast-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-toast-modal.show { display: flex; }
+
+        .custom-toast-modal .modal-box {
+            width: 280px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .custom-toast-modal .modal-body {
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .custom-toast-modal .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .custom-toast-modal .modal-btn {
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -388,10 +492,10 @@
         </div>
         
         <div class="nav-bar">
-            <div class="back" onclick="location.href='prototype-project-detail.html'">← 返回</div>
+            <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">临时任务</div>
             <div class="actions">
-                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+                <div class="action-btn" onclick="showCustomToast('关闭小程序')">✕</div>
             </div>
         </div>
         
@@ -402,7 +506,7 @@
                     <span class="badge" id="pendingBadge">3</span>
                 </div>
                 <div class="status-tab" onclick="switchStatusTab(this, 'accepted')">
-                    已接收
+                    已接受
                     <span class="badge" id="acceptedBadge" style="background-color: var(--success-color);">5</span>
                 </div>
                 <div class="status-tab" onclick="switchStatusTab(this, 'rejected')">
@@ -416,7 +520,7 @@
             </div>
             
             <div class="task-list" id="pendingList">
-                <div class="task-card" data-id="1">
+                <div class="task-card" data-id="1" onclick="goToTaskDetail(1)">
                     <div class="card-header">
                         <div class="task-title">紧急修补墙面裂缝</div>
                         <div class="task-type temp">临时任务</div>
@@ -445,13 +549,13 @@
                             <div class="sender-time">派发时间：2024-01-25 14:30</div>
                         </div>
                     </div>
-                    <div class="card-actions">
+                    <div class="card-actions" onclick="event.stopPropagation()">
                         <button class="action-btn reject" onclick="showRejectModal(1)">拒绝</button>
                         <button class="action-btn accept" onclick="acceptTask(1)">接受任务</button>
                     </div>
                 </div>
                 
-                <div class="task-card" data-id="2">
+                <div class="task-card" data-id="2" onclick="goToTaskDetail(2)">
                     <div class="card-header">
                         <div class="task-title">更换损坏插座</div>
                         <div class="task-type temp">临时任务</div>
@@ -480,13 +584,13 @@
                             <div class="sender-time">派发时间：2024-01-25 10:15</div>
                         </div>
                     </div>
-                    <div class="card-actions">
+                    <div class="card-actions" onclick="event.stopPropagation()">
                         <button class="action-btn reject" onclick="showRejectModal(2)">拒绝</button>
                         <button class="action-btn accept" onclick="acceptTask(2)">接受任务</button>
                     </div>
                 </div>
                 
-                <div class="task-card" data-id="3">
+                <div class="task-card" data-id="3" onclick="goToTaskDetail(3)">
                     <div class="card-header">
                         <div class="task-title">临时增加射灯安装</div>
                         <div class="task-type temp">临时任务</div>
@@ -515,15 +619,29 @@
                             <div class="sender-time">派发时间：2024-01-25 09:00</div>
                         </div>
                     </div>
-                    <div class="card-actions">
+                    <div class="card-actions" onclick="event.stopPropagation()">
                         <button class="action-btn reject" onclick="showRejectModal(3)">拒绝</button>
                         <button class="action-btn accept" onclick="acceptTask(3)">接受任务</button>
                     </div>
                 </div>
             </div>
             
+            <div class="filter-bar" id="acceptedFilterBar">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="acceptedSearchInput" placeholder="搜索任务名称..." oninput="filterAcceptedTasks()">
+                </div>
+                <select class="contract-filter" id="acceptedContractFilter" onchange="filterAcceptedTasks()">
+                    <option value="">全部合同</option>
+                    <option value="water">水电分包合同</option>
+                    <option value="tile">泥瓦分包合同</option>
+                    <option value="wood">木工分包合同</option>
+                    <option value="paint">油漆分包合同</option>
+                </select>
+            </div>
+            
             <div class="task-list" id="acceptedList" style="display: none;">
-                <div class="task-card">
+                <div class="task-card" data-contract="water">
                     <div class="card-header">
                         <div class="task-title">水电线路检测</div>
                         <div class="task-type temp">临时任务</div>
@@ -547,12 +665,12 @@
                         <div class="status-tag pending">待开始</div>
                     </div>
                     <div class="card-actions" style="margin-top: 12px;">
-                        <button class="action-btn view" onclick="location.href='prototype-task-detail.html'">查看详情</button>
-                        <button class="action-btn accept" onclick="alert('开始执行任务')">开始执行</button>
+                        <button class="action-btn view" onclick="location.href='prototype-temp-task-detail.html?status=accepted'">查看详情</button>
+                        <button class="action-btn accept" onclick="showCustomToast('开始执行任务')">开始执行</button>
                     </div>
                 </div>
                 
-                <div class="task-card">
+                <div class="task-card" data-contract="wood">
                     <div class="card-header">
                         <div class="task-title">修补门框划痕</div>
                         <div class="task-type temp">临时任务</div>
@@ -576,7 +694,7 @@
                         <div class="status-tag in-progress">确认中</div>
                     </div>
                     <div class="card-actions" style="margin-top: 12px;">
-                        <button class="action-btn view" onclick="location.href='prototype-task-detail.html'">查看详情</button>
+                        <button class="action-btn view" onclick="location.href='prototype-temp-task-detail.html?status=confirming'">查看详情</button>
                     </div>
                 </div>
                 
@@ -604,13 +722,27 @@
                         <div class="status-tag completed">已完成</div>
                     </div>
                     <div class="card-actions" style="margin-top: 12px;">
-                        <button class="action-btn view" onclick="location.href='prototype-task-detail.html'">查看详情</button>
+                        <button class="action-btn view" onclick="location.href='prototype-temp-task-detail.html?status=completed'">查看详情</button>
                     </div>
                 </div>
             </div>
             
+            <div class="filter-bar" id="rejectedFilterBar">
+                <div class="search-input-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="rejectedSearchInput" placeholder="搜索任务名称..." oninput="filterRejectedTasks()">
+                </div>
+                <select class="contract-filter" id="rejectedContractFilter" onchange="filterRejectedTasks()">
+                    <option value="">全部合同</option>
+                    <option value="water">水电分包合同</option>
+                    <option value="tile">泥瓦分包合同</option>
+                    <option value="wood">木工分包合同</option>
+                    <option value="paint">油漆分包合同</option>
+                </select>
+            </div>
+            
             <div class="task-list" id="rejectedList" style="display: none;">
-                <div class="task-card">
+                <div class="task-card" data-contract="wood">
                     <div class="card-header">
                         <div class="task-title">高空作业加固</div>
                         <div class="task-type temp">临时任务</div>
@@ -672,6 +804,17 @@
                 <div class="modal-btn confirm" onclick="confirmAccept()">确认接受</div>
             </div>
         </div>
+        
+        <div class="custom-toast-modal" id="customToastModal">
+            <div class="modal-box">
+                <div class="modal-body" id="customToastMessage">
+                    操作成功
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn" onclick="closeCustomToast()">知道了</div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="page-nav">
@@ -691,6 +834,19 @@
         let pendingCount = 3;
         let acceptedCount = 5;
         
+        function showCustomToast(message) {
+            document.getElementById('customToastMessage').innerHTML = message.replace(/\n/g, '<br>');
+            document.getElementById('customToastModal').classList.add('show');
+        }
+        
+        function closeCustomToast() {
+            document.getElementById('customToastModal').classList.remove('show');
+        }
+        
+        function goToTaskDetail(taskId) {
+            location.href = 'prototype-temp-task-detail.html?status=pending';
+        }
+        
         function switchStatusTab(tab, status) {
             currentStatus = status;
             document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
@@ -701,6 +857,39 @@
             document.getElementById('rejectedList').style.display = status === 'rejected' ? 'block' : 'none';
             
             document.getElementById('batchActionBar').classList.toggle('show', status === 'pending' && pendingCount > 0);
+            
+            document.getElementById('acceptedFilterBar').classList.toggle('show', status === 'accepted');
+            document.getElementById('rejectedFilterBar').classList.toggle('show', status === 'rejected');
+        }
+        
+        function filterAcceptedTasks() {
+            const keyword = document.getElementById('acceptedSearchInput').value.toLowerCase().trim();
+            const contract = document.getElementById('acceptedContractFilter').value;
+            const cards = document.querySelectorAll('#acceptedList .task-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.task-title').textContent.toLowerCase();
+                const cardContract = card.getAttribute('data-contract') || '';
+                const contractMatch = !contract || cardContract === contract;
+                const keywordMatch = !keyword || title.includes(keyword);
+                
+                card.style.display = (contractMatch && keywordMatch) ? 'block' : 'none';
+            });
+        }
+        
+        function filterRejectedTasks() {
+            const keyword = document.getElementById('rejectedSearchInput').value.toLowerCase().trim();
+            const contract = document.getElementById('rejectedContractFilter').value;
+            const cards = document.querySelectorAll('#rejectedList .task-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.task-title').textContent.toLowerCase();
+                const cardContract = card.getAttribute('data-contract') || '';
+                const contractMatch = !contract || cardContract === contract;
+                const keywordMatch = !keyword || title.includes(keyword);
+                
+                card.style.display = (contractMatch && keywordMatch) ? 'block' : 'none';
+            });
         }
         
         function showRejectModal(taskId) {
@@ -717,7 +906,7 @@
         function confirmReject() {
             const reason = document.getElementById('rejectReason').value.trim();
             if (!reason) {
-                alert('请输入拒绝原因');
+                showCustomToast('请输入拒绝原因');
                 return;
             }
             
@@ -729,7 +918,7 @@
             }
             
             closeRejectModal();
-            alert('已拒绝该任务');
+            showCustomToast('已拒绝该任务');
         }
         
         function acceptTask(taskId) {
@@ -752,18 +941,16 @@
             }
             
             closeAcceptModal();
-            alert('任务已接受！请按时完成执行。');
+            showCustomToast('任务已接受！请按时完成执行。');
         }
         
         function acceptAllTasks() {
-            if (confirm('确定要接受所有待处理的任务吗？')) {
-                const cards = document.querySelectorAll('#pendingList .task-card');
-                cards.forEach(card => card.remove());
-                acceptedCount += pendingCount;
-                pendingCount = 0;
-                updateCounts();
-                alert('已接受所有任务！');
-            }
+            const cards = document.querySelectorAll('#pendingList .task-card');
+            cards.forEach(card => card.remove());
+            acceptedCount += pendingCount;
+            pendingCount = 0;
+            updateCounts();
+            showCustomToast('已接受所有任务！');
         }
         
         function updateCounts() {

@@ -59,20 +59,20 @@
         .people-section {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .people-card {
             background-color: var(--bg-secondary);
             border-radius: 8px;
-            padding: 12px;
+            padding: 10px 12px;
         }
 
         .people-card .card-label {
             font-size: 12px;
             color: var(--text-tertiary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -99,17 +99,17 @@
         .people-card .person-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             background-color: var(--bg-primary);
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
             flex: 1;
-            min-width: 140px;
+            min-width: 120px;
         }
 
         .people-card .person-avatar {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             display: flex;
@@ -481,15 +481,18 @@
             display: none;
             align-items: flex-end;
             justify-content: center;
+            overflow: hidden;
         }
 
         .upload-modal.show { display: flex; }
 
         .upload-modal .modal-content {
             width: 100%;
+            max-height: 90%;
             background-color: var(--bg-primary);
             border-radius: 16px 16px 0 0;
             padding: 16px;
+            overflow-y: auto;
         }
 
         .upload-modal .modal-header {
@@ -514,7 +517,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .upload-modal .upload-item {
@@ -530,25 +533,26 @@
         }
 
         .upload-modal .upload-item .icon {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 4px;
         }
 
         .upload-modal .upload-item .text {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-tertiary);
         }
 
         .upload-modal .desc-input {
             width: 100%;
-            height: 80px;
+            height: 60px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 10px;
             font-size: 14px;
             resize: none;
             outline: none;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
         }
 
         .upload-modal .desc-input:focus {
@@ -574,15 +578,18 @@
             display: none;
             align-items: flex-end;
             justify-content: center;
+            overflow: hidden;
         }
 
         .confirm-modal.show { display: flex; }
 
         .confirm-modal .modal-content {
             width: 100%;
+            max-height: 90%;
             background-color: var(--bg-primary);
             border-radius: 16px 16px 0 0;
             padding: 16px;
+            overflow-y: auto;
         }
 
         .confirm-modal .modal-header {
@@ -633,7 +640,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .confirm-modal .upload-item {
@@ -649,25 +656,26 @@
         }
 
         .confirm-modal .upload-item .icon {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 4px;
         }
 
         .confirm-modal .upload-item .text {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-tertiary);
         }
 
         .confirm-modal .desc-input {
             width: 100%;
-            height: 80px;
+            height: 60px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 10px;
             font-size: 14px;
             resize: none;
             outline: none;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
         }
 
         .confirm-modal .desc-input:focus {
@@ -685,12 +693,21 @@
             border-radius: 8px;
             font-size: 15px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirm-modal .modal-actions .btn.secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: none;
         }
 
         .confirm-modal .modal-actions .btn.reject {
-            background-color: #FFF1F0;
-            color: var(--error-color);
-            border: 1px solid var(--error-color);
+            background-color: var(--error-color);
+            color: #FFFFFF;
+            border: none;
         }
 
         .confirm-modal .modal-actions .btn.confirm {
@@ -721,6 +738,762 @@
             color: var(--primary-color);
             font-weight: 600;
         }
+
+        .confirmer-recommend {
+            background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%);
+            border: 1px solid #91D5FF;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .confirmer-recommend .recommend-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .confirmer-recommend .recommend-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .confirmer-recommend .recommend-title .icon {
+            font-size: 14px;
+        }
+
+        .confirmer-recommend .recommend-tip {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .confirmer-recommend .recommend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .confirmer-recommend .recommend-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255,255,255,0.8);
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .confirmer-recommend .recommend-item:hover {
+            background-color: #FFFFFF;
+        }
+
+        .confirmer-recommend .recommend-item.selected {
+            border: 1px solid var(--primary-color);
+            background-color: #FFFFFF;
+        }
+
+        .confirmer-recommend .recommend-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 14px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .confirmer-recommend .recommend-info {
+            flex: 1;
+        }
+
+        .confirmer-recommend .recommend-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .confirmer-recommend .recommend-qual {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .confirmer-recommend .recommend-stats {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .confirmer-recommend .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            color: var(--text-secondary);
+        }
+
+        .confirmer-recommend .stat-item .value {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .confirmer-recommend .recommend-reason {
+            font-size: 10px;
+            color: var(--success-color);
+            background-color: var(--status-success-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+
+        .confirmer-category {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            padding: 4px 0;
+            margin-top: 8px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .confirmer-workload {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: var(--warning-color);
+            margin-top: 4px;
+        }
+
+        .confirmer-workload .icon {
+            font-size: 12px;
+        }
+
+        .person-qualification {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .person-qualification .qual-tag {
+            font-size: 10px;
+            padding: 1px 4px;
+            border-radius: 3px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .person-qualification .qual-tag.expert {
+            background-color: #FFF7E6;
+            color: #FA8C16;
+        }
+
+        .quick-add-confirmer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background-color: var(--bg-secondary);
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            margin-top: 6px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .quick-add-confirmer:hover {
+            background-color: #E6F7FF;
+            border-color: var(--primary-color);
+        }
+
+        .quick-add-confirmer .icon {
+            margin-right: 4px;
+        }
+
+        .acceptance-flow-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .acceptance-flow-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .acceptance-flow-title .status-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .acceptance-flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2px;
+            margin-bottom: 6px;
+        }
+
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .flow-step .step-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            margin-bottom: 2px;
+            border: 2px solid var(--border-color);
+            background-color: var(--bg-secondary);
+            color: var(--text-tertiary);
+        }
+
+        .flow-step.completed .step-icon {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: #FFFFFF;
+        }
+
+        .flow-step.current .step-icon {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #FFFFFF;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        .flow-step .step-label {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .flow-step.completed .step-label,
+        .flow-step.current .step-label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .flow-line {
+            flex: 0 0 20px;
+            height: 2px;
+            background-color: var(--border-color);
+            margin: 0 -4px;
+            margin-bottom: 22px;
+        }
+
+        .flow-line.completed {
+            background-color: var(--success-color);
+        }
+
+        .acceptance-progress {
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 6px 8px;
+        }
+
+        .acceptance-progress-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .acceptance-progress-bar {
+            height: 3px;
+            background-color: var(--bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .acceptance-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            border-radius: 2px;
+            transition: width 0.5s;
+        }
+
+        .reminder-icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #FFF7E6;
+            color: #FA8C16;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .reminder-icon-btn:hover {
+            background-color: #FFD591;
+        }
+
+        .reminder-icon-btn .icon {
+            font-size: 14px;
+        }
+
+        .reminder-tooltip {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 8px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: #FFFFFF;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            display: none;
+            z-index: 100;
+        }
+
+        .reminder-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            right: 8px;
+            border: 6px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.75);
+        }
+
+        .reminder-tooltip.show {
+            display: block;
+        }
+
+        .reminder-tooltip .tooltip-action {
+            color: #91D5FF;
+            cursor: pointer;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .reminder-tooltip .tooltip-action:hover {
+            text-decoration: underline;
+        }
+
+        .confirmer-status-list {
+            margin-top: 8px;
+        }
+
+        .confirmer-status-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .confirmer-status-item:last-child {
+            border-bottom: none;
+        }
+
+        .confirmer-status-item .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 11px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .confirmer-status-item .info {
+            flex: 1;
+        }
+
+        .confirmer-status-item .name {
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+
+        .confirmer-status-item .time {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-top: 1px;
+        }
+
+        .confirmer-status-item .status {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .confirmer-status-item .status.confirmed {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
+
+        .confirmer-status-item .status.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .help-link {
+            font-size: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .help-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-modal.show {
+            display: flex;
+        }
+
+        .help-modal-content {
+            width: 85%;
+            max-width: 300px;
+            max-height: 80%;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .help-modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .help-modal-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .help-modal-header .close-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .help-modal-body {
+            padding: 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .help-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .help-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .help-item .help-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .help-item .help-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .help-tip {
+            margin-top: 16px;
+            padding: 10px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .evaluation-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .evaluation-modal.show { display: flex; }
+
+        .evaluation-modal .modal-content {
+            width: 100%;
+            max-height: 90%;
+            background-color: var(--bg-primary);
+            border-radius: 16px 16px 0 0;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .evaluation-modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .evaluation-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .evaluation-modal .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .evaluation-modal .rating-section {
+            margin-bottom: 16px;
+        }
+
+        .evaluation-modal .rating-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .evaluation-modal .rating-stars {
+            display: flex;
+            gap: 8px;
+        }
+
+        .evaluation-modal .rating-stars .star {
+            font-size: 32px;
+            color: var(--bg-tertiary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .evaluation-modal .rating-stars .star.active {
+            color: #FFD700;
+        }
+
+        .evaluation-modal .rating-stars .star:hover {
+            transform: scale(1.1);
+        }
+
+        .evaluation-modal .desc-input {
+            width: 100%;
+            height: 80px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+
+        .evaluation-modal .desc-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .evaluation-modal .submit-btn {
+            width: 100%;
+            height: 44px;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .evaluation-list-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .evaluation-list-modal.show { display: flex; }
+
+        .evaluation-list-modal .modal-content {
+            width: 100%;
+            max-height: 80%;
+            background-color: var(--bg-primary);
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+        }
+
+        .evaluation-list-modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .evaluation-list-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .evaluation-list-modal .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .evaluation-list-modal .modal-body {
+            padding: 16px;
+            overflow-y: auto;
+            max-height: calc(80vh - 60px);
+        }
+
+        .evaluation-item {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .evaluation-item:last-child {
+            border-bottom: none;
+        }
+
+        .evaluation-item .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 16px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .evaluation-item .info {
+            flex: 1;
+        }
+
+        .evaluation-item .name-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .evaluation-item .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .evaluation-item .rating {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .evaluation-item .rating .star {
+            font-size: 14px;
+            color: #FFD700;
+        }
+
+        .evaluation-item .rating .star.empty {
+            color: var(--bg-tertiary);
+        }
+
+        .evaluation-item .time {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+        }
+
+        .evaluation-item .content {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .evaluation-item .no-evaluation {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
+        .go-evaluate-btn {
+            font-size: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .go-evaluate-btn:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -731,11 +1504,11 @@
         </div>
         
         <div class="nav-bar">
-            <div class="back" onclick="location.href='prototype-contract-detail.html'">← 返回</div>
+            <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">任务详情</div>
             <div class="actions">
                 <div class="action-btn" onclick="toggleActionMenu()">⋯</div>
-                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+                <div class="action-btn" onclick="showToast('关闭小程序')">✕</div>
             </div>
         </div>
         
@@ -751,6 +1524,47 @@
             
             <div class="card">
                 <div class="people-section">
+                    <div class="acceptance-flow-card">
+                        <div class="acceptance-flow-title">
+                            <span>任务流程</span>
+                            <span class="help-link" onclick="showTaskFlowHelp()">说明</span>
+                        </div>
+                        <div class="acceptance-flow-diagram">
+                            <div class="flow-step current" id="flowStep1">
+                                <div class="step-icon">⏸</div>
+                                <div class="step-label">待开始</div>
+                            </div>
+                            <div class="flow-line" id="flowLine1"></div>
+                            <div class="flow-step" id="flowStep2">
+                                <div class="step-icon">⏳</div>
+                                <div class="step-label">确认中</div>
+                            </div>
+                            <div class="flow-line" id="flowLine2"></div>
+                            <div class="flow-step" id="flowStep3">
+                                <div class="step-icon">✓</div>
+                                <div class="step-label">已完成</div>
+                            </div>
+                        </div>
+                        <div class="acceptance-progress" id="acceptanceProgress">
+                            <div class="acceptance-progress-title">
+                                <span>确认进度</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span id="flowProgressText">1/3 已确认</span>
+                                    <div class="reminder-icon-btn" id="reminderIconBtn" onclick="toggleReminderTooltip(event)" style="display: none;">
+                                        <span class="icon">⏰</span>
+                                        <div class="reminder-tooltip" id="reminderTooltip">
+                                            <div>等待王五、赵六确认中，已超过24小时</div>
+                                            <span class="tooltip-action" onclick="sendReminder(event)">点击催办</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="acceptance-progress-bar">
+                                <div class="acceptance-progress-fill" id="flowProgressBar" style="width: 33%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="people-card">
                         <div class="card-label">
                             <span class="label-icon">👤</span>
@@ -765,34 +1579,44 @@
                             </div>
                         </div>
                     </div>
-                    <div class="people-card">
+                    
+                    <div class="people-card" id="confirmerCard">
                         <div class="card-label">
                             <span class="label-icon">👥</span>
                             <span>确认人</span>
-                            <span class="label-tag">3人</span>
+                            <span class="label-tag" id="confirmerCount">3人</span>
                         </div>
-                        <div class="person-list">
-                            <div class="person-item">
-                                <div class="person-avatar">张</div>
-                                <div class="person-info">
-                                    <div class="person-name">张三 <span class="role-badge manager">项目总</span></div>
+                        
+                        <div class="confirmer-status-list" id="confirmerList">
+                            <div class="confirmer-status-item">
+                                <div class="avatar">张</div>
+                                <div class="info">
+                                    <div class="name">张三 · 项目总</div>
+                                    <div class="time">2024-01-15 14:30 已确认</div>
                                 </div>
-                                <div class="person-tag confirmed">已确认</div>
+                                <div class="status confirmed">已确认</div>
                             </div>
-                            <div class="person-item">
-                                <div class="person-avatar">王</div>
-                                <div class="person-info">
-                                    <div class="person-name">王五 <span class="role-badge owner">业主</span></div>
+                            <div class="confirmer-status-item">
+                                <div class="avatar">王</div>
+                                <div class="info">
+                                    <div class="name">王五 · 业主</div>
+                                    <div class="time">等待确认中...</div>
                                 </div>
-                                <div class="person-tag pending">待确认</div>
+                                <div class="status pending">待确认</div>
                             </div>
-                            <div class="person-item">
-                                <div class="person-avatar">赵</div>
-                                <div class="person-info">
-                                    <div class="person-name">赵六 <span class="role-badge designer">设计师</span></div>
+                            <div class="confirmer-status-item">
+                                <div class="avatar">赵</div>
+                                <div class="info">
+                                    <div class="name">赵六 · 设计师</div>
+                                    <div class="time">等待确认中...</div>
                                 </div>
-                                <div class="person-tag pending">待确认</div>
+                                <div class="status pending">待确认</div>
                             </div>
+                        </div>
+                        
+                        <div class="quick-add-confirmer" id="addConfirmerBtn" onclick="showConfirmerSelector()">
+                            <span class="icon">+</span>
+                            <span>添加确认人</span>
                         </div>
                     </div>
                 </div>
@@ -869,13 +1693,17 @@
                 </div>
             </div>
             
-            <div class="card">
+            <div class="card" id="executionRecordCard">
                 <div class="card-title">
                     <span>📸 执行记录</span>
-                    <span class="more" onclick="showExecutionDetail()">查看详情 ></span>
+                    <span class="more" onclick="toggleHistoryRecords()" style="display: none;">查看历史记录</span>
                 </div>
-                <div class="execution-section">
-                    <div class="section-title">📤 执行人提交的内容</div>
+                
+                <!-- 当前有效执行记录 -->
+                <div class="execution-section" id="currentExecution">
+                    <div class="section-title">
+                        <span>📤 执行人提交的内容</span>
+                    </div>
                     <div class="media-grid">
                         <div class="media-item">📷</div>
                         <div class="media-item">📷</div>
@@ -892,9 +1720,13 @@
                         提交人：李四 · 2024-01-25 14:30
                     </div>
                 </div>
+                
+                <!-- 历史执行记录（默认隐藏） -->
+                <div id="historyRecords" style="display: none;">
+                </div>
             </div>
             
-            <div class="card">
+            <div class="card" id="confirmRecordCard">
                 <div class="card-title">
                     <span>✅ 确认记录</span>
                 </div>
@@ -955,7 +1787,7 @@
         <div class="confirm-modal" id="confirmModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title">确认任务</div>
+                    <div class="modal-title">确认通过</div>
                     <div class="modal-close" onclick="closeConfirmModal()">✕</div>
                 </div>
                 <div class="rating-section">
@@ -969,23 +1801,51 @@
                     </div>
                 </div>
                 <div class="media-upload">
-                    <div class="upload-item" onclick="alert('上传图片')">
+                    <div class="upload-item" onclick="triggerUpload('image', 'confirm')">
                         <span class="icon">📷</span>
                         <span class="text">添加图片</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传视频')">
+                    <div class="upload-item" onclick="triggerUpload('video', 'confirm')">
                         <span class="icon">🎬</span>
                         <span class="text">添加视频</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传音频')">
+                    <div class="upload-item" onclick="triggerUpload('audio', 'confirm')">
                         <span class="icon">🎵</span>
                         <span class="text">添加音频</span>
                     </div>
                 </div>
-                <textarea class="desc-input" placeholder="请输入确认说明（选填）"></textarea>
+                <textarea class="desc-input" id="confirmDescInput" placeholder="请输入确认说明（选填）"></textarea>
                 <div class="modal-actions">
-                    <div class="btn reject" onclick="rejectTask()">驳回</div>
-                    <div class="btn confirm" onclick="confirmTask()">确认通过</div>
+                    <div class="btn secondary" onclick="closeConfirmModal()" style="display: flex; align-items: center; justify-content: center;">取消</div>
+                    <div class="btn confirm" onclick="confirmTask()" style="display: flex; align-items: center; justify-content: center;">确认通过</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="confirm-modal" id="rejectModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">驳回任务</div>
+                    <div class="modal-close" onclick="closeRejectModal()">✕</div>
+                </div>
+                <div class="media-upload">
+                    <div class="upload-item" onclick="triggerUpload('image', 'reject')">
+                        <span class="icon">📷</span>
+                        <span class="text">添加图片</span>
+                    </div>
+                    <div class="upload-item" onclick="triggerUpload('video', 'reject')">
+                        <span class="icon">🎬</span>
+                        <span class="text">添加视频</span>
+                    </div>
+                    <div class="upload-item" onclick="triggerUpload('audio', 'reject')">
+                        <span class="icon">🎵</span>
+                        <span class="text">添加音频</span>
+                    </div>
+                </div>
+                <textarea class="desc-input" id="rejectDescInput" placeholder="请输入驳回原因（必填）"></textarea>
+                <div class="modal-actions">
+                    <div class="btn secondary" onclick="closeRejectModal()" style="display: flex; align-items: center; justify-content: center;">取消</div>
+                    <div class="btn reject" onclick="rejectTask()" style="display: flex; align-items: center; justify-content: center; background-color: var(--error-color); color: #FFFFFF; border: none;">确认驳回</div>
                 </div>
             </div>
         </div>
@@ -996,22 +1856,98 @@
                     <div class="modal-title">提交执行记录</div>
                     <div class="modal-close" onclick="closeUploadModal()">✕</div>
                 </div>
-                <div class="media-upload">
-                    <div class="upload-item" onclick="alert('上传图片')">
+                <div class="media-upload" id="uploadMediaGrid">
+                    <div class="upload-item" onclick="triggerUpload('image', 'execution')">
                         <span class="icon">📷</span>
                         <span class="text">添加图片</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传视频')">
+                    <div class="upload-item" onclick="triggerUpload('video', 'execution')">
                         <span class="icon">🎬</span>
                         <span class="text">添加视频</span>
                     </div>
-                    <div class="upload-item" onclick="alert('上传音频')">
+                    <div class="upload-item" onclick="triggerUpload('audio', 'execution')">
                         <span class="icon">🎵</span>
                         <span class="text">添加音频</span>
                     </div>
                 </div>
-                <textarea class="desc-input" placeholder="请输入执行说明"></textarea>
+                <div id="uploadedPreview" style="display: none; margin-bottom: 12px;">
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">已上传文件：</div>
+                    <div id="uploadedFiles" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                </div>
+                <textarea class="desc-input" id="executionDescInput" placeholder="请输入执行说明"></textarea>
                 <button class="submit-btn" onclick="submitExecution()">提交执行记录</button>
+            </div>
+        </div>
+        
+        <input type="file" id="fileInput" accept="image/*,video/*,audio/*" style="display: none;" onchange="handleFileSelect(event)">
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleFileSelect(event)">
+
+        <div class="help-modal" id="taskFlowHelpModal">
+            <div class="help-modal-content">
+                <div class="help-modal-header">
+                    <div class="title">任务流程说明</div>
+                    <div class="close-btn" onclick="closeTaskFlowHelp()">✕</div>
+                </div>
+                <div class="help-modal-body">
+                    <div class="help-item">
+                        <div class="help-num">1</div>
+                        <div class="help-text"><strong>待开始：</strong>任务已分配给执行人，等待执行人开始执行</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">2</div>
+                        <div class="help-text"><strong>确认中（首次）：</strong>执行人首次提交执行记录，等待确认人确认</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">3</div>
+                        <div class="help-text"><strong>驳回：</strong>确认人驳回任务，任务退回执行人，执行人需重新执行</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">4</div>
+                        <div class="help-text"><strong>驳回后待开始：</strong>任务已被驳回，执行人需根据驳回原因重新执行</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">5</div>
+                        <div class="help-text"><strong>确认中（被驳回后）：</strong>执行人重新提交执行记录，等待确认人确认</div>
+                    </div>
+                    <div class="help-item">
+                        <div class="help-num">6</div>
+                        <div class="help-text"><strong>已完成：</strong>所有确认人已确认，任务完成</div>
+                    </div>
+                    <div class="help-tip">💡 若未配置确认人，执行人提交后任务直接完成</div>
+                    <div class="help-tip" style="margin-top: 8px; background-color: #FFF1F0; border-left-color: var(--error-color);">⚠️ 驳回说明：任务被驳回后，历史执行记录和驳回原因会被保留，执行人可根据驳回原因调整后重新提交</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="evaluation-modal" id="evaluationModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">评价任务</div>
+                    <div class="modal-close" onclick="closeEvaluationModal()">✕</div>
+                </div>
+                <div class="rating-section">
+                    <div class="rating-label">评分（必填）</div>
+                    <div class="rating-stars" id="evaluationStars">
+                        <span class="star" onclick="setEvaluationRating(1)">★</span>
+                        <span class="star" onclick="setEvaluationRating(2)">★</span>
+                        <span class="star" onclick="setEvaluationRating(3)">★</span>
+                        <span class="star" onclick="setEvaluationRating(4)">★</span>
+                        <span class="star" onclick="setEvaluationRating(5)">★</span>
+                    </div>
+                </div>
+                <textarea class="desc-input" id="evaluationDescInput" placeholder="请输入评价内容（选填）"></textarea>
+                <button class="submit-btn" onclick="submitEvaluation()">提交评价</button>
+            </div>
+        </div>
+
+        <div class="evaluation-list-modal" id="evaluationListModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">确认人评价</div>
+                    <div class="modal-close" onclick="closeEvaluationListModal()">✕</div>
+                </div>
+                <div class="modal-body" id="evaluationListBody">
+                </div>
             </div>
         </div>
     </div>
@@ -1030,8 +1966,20 @@
             <div class="page-nav-title">任务状态切换</div>
             <div class="status-switcher">
                 <div class="status-switch-item" onclick="updateTaskStatus('pending')">待开始</div>
-                <div class="status-switch-item active" onclick="updateTaskStatus('confirming')">确认中</div>
-                <div class="status-switch-item" onclick="updateTaskStatus('completed')">已完成</div>
+                <div class="status-switch-item active" onclick="updateTaskStatus('confirming')">确认中（首次）</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('confirming_after_reject')">确认中（被驳回后）</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('rejected_pending')">驳回后待开始</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('completed')">已完成（无驳回）</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('completed_with_reject')">已完成（含驳回）</div>
+            </div>
+        </div>
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+            <div class="page-nav-title">用户视角切换</div>
+            <div class="status-switcher" id="roleSwitcher">
+                <div class="status-switch-item role-switch-item active" onclick="switchUserRole('executor')">执行人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('nonExecutor')">非执行人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('confirmer')">确认人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('nonConfirmer')">非确认人视角</div>
             </div>
         </div>
     </div>
@@ -1039,6 +1987,9 @@
     <script>
         let currentRating = 0;
         let currentTaskStatus = 'confirming';
+        let currentUserRole = 'executor';
+        let uploadedFiles = [];
+        let currentUploadContext = 'execution';
         
         function toggleStandard(type) {
             const list = document.getElementById(type + 'Standard');
@@ -1061,12 +2012,22 @@
             document.getElementById('confirmModal').classList.remove('show');
         }
         
+        function showRejectModal() {
+            document.getElementById('rejectModal').classList.add('show');
+        }
+        
+        function closeRejectModal() {
+            document.getElementById('rejectModal').classList.remove('show');
+        }
+        
         function showUploadModal() {
             document.getElementById('uploadModal').classList.add('show');
         }
         
         function closeUploadModal() {
             document.getElementById('uploadModal').classList.remove('show');
+            uploadedFiles = [];
+            updateUploadedPreview();
         }
         
         function setRating(rating) {
@@ -1083,25 +2044,132 @@
         
         function confirmTask() {
             closeConfirmModal();
-            alert('确认成功！\n\n您的确认已记录，等待其他确认人确认。');
+            showToast('确认成功！您的确认已记录。');
         }
         
         function rejectTask() {
-            const reason = prompt('请输入驳回原因：');
-            if (reason) {
-                closeConfirmModal();
-                alert('已驳回！\n\n系统已通知执行人重新执行。');
+            const reason = document.getElementById('rejectDescInput').value;
+            if (!reason.trim()) {
+                showToast('请输入驳回原因');
+                return;
             }
+            closeRejectModal();
+            showToast('已驳回！系统已通知执行人重新执行。');
+            updateTaskStatus('rejected_pending');
         }
         
         function submitExecution() {
             closeUploadModal();
-            alert('执行记录已提交！\n\n系统已通知确认人进行确认。');
-            updateTaskStatus('confirming');
+            showToast('执行记录已提交！系统已通知确认人进行确认。');
+            // 根据当前状态判断切换到哪个确认中状态
+            if (currentTaskStatus === 'rejected_pending') {
+                updateTaskStatus('confirming_after_reject');
+            } else {
+                updateTaskStatus('confirming');
+            }
+        }
+        
+        function showToast(message) {
+            const existingToast = document.querySelector('.app-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = 'app-toast';
+            toast.innerHTML = message.replace(/\n/g, '<br>');
+            toast.style.cssText = `
+                position: absolute;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.7);
+                color: #FFFFFF;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 13px;
+                z-index: 1000;
+                white-space: pre-wrap;
+                max-width: 90%;
+                text-align: center;
+                line-height: 1.5;
+            `;
+            const phoneFrame = document.querySelector('.phone-frame');
+            if (phoneFrame) {
+                phoneFrame.appendChild(toast);
+            }
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2500);
         }
         
         function showExecutionDetail() {
-            alert('查看完整执行记录详情');
+            showToast('查看完整执行记录详情');
+        }
+        
+        function toggleHistoryRecords() {
+            const historyRecords = document.getElementById('historyRecords');
+            const moreBtn = document.querySelector('#executionRecordCard .more');
+            
+            if (historyRecords.style.display === 'none') {
+                historyRecords.style.display = 'block';
+                moreBtn.textContent = '收起历史记录';
+            } else {
+                historyRecords.style.display = 'none';
+                moreBtn.textContent = '查看历史记录';
+            }
+        }
+        
+        function triggerUpload(type, context) {
+            currentUploadContext = context;
+            if (type === 'image') {
+                document.getElementById('fileInput').accept = 'image/*';
+                document.getElementById('fileInput').click();
+            } else if (type === 'video') {
+                document.getElementById('fileInput').accept = 'video/*';
+                document.getElementById('fileInput').click();
+            } else if (type === 'audio') {
+                document.getElementById('fileInput').accept = 'audio/*';
+                document.getElementById('fileInput').click();
+            }
+        }
+        
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadedFiles.push({
+                    name: file.name,
+                    type: file.type,
+                    size: file.size
+                });
+                updateUploadedPreview();
+                showToast('文件已选择：' + file.name);
+            }
+            event.target.value = '';
+        }
+        
+        function updateUploadedPreview() {
+            const preview = document.getElementById('uploadedPreview');
+            const filesContainer = document.getElementById('uploadedFiles');
+            
+            if (uploadedFiles.length > 0) {
+                preview.style.display = 'block';
+                filesContainer.innerHTML = uploadedFiles.map((file, index) => `
+                    <div style="display: flex; align-items: center; gap: 4px; background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                        <span>${file.type.startsWith('image') ? '📷' : file.type.startsWith('video') ? '🎬' : '🎵'}</span>
+                        <span style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${file.name}</span>
+                        <span onclick="removeFile(${index})" style="cursor: pointer; color: var(--error-color);">✕</span>
+                    </div>
+                `).join('');
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateUploadedPreview();
         }
         
         function updateTaskStatus(status) {
@@ -1110,41 +2178,922 @@
             const statusBadge = document.getElementById('taskStatus');
             const confirmProgress = document.getElementById('confirmProgress');
             const actionButtons = document.getElementById('actionButtons');
+            const addConfirmerBtn = document.getElementById('addConfirmerBtn');
+            const confirmerCard = document.getElementById('confirmerCard');
+            const reminderIconBtn = document.getElementById('reminderIconBtn');
+            const flowProgressText = document.getElementById('flowProgressText');
+            const flowProgressBar = document.getElementById('flowProgressBar');
+            const executionRecordCard = document.getElementById('executionRecordCard');
+            const confirmRecordCard = document.getElementById('confirmRecordCard');
+            const confirmerList = document.getElementById('confirmerList');
+            const acceptanceProgress = document.getElementById('acceptanceProgress');
             
             document.querySelectorAll('.status-switch-item').forEach(item => {
                 item.classList.remove('active');
             });
             
+            const flowStep1 = document.getElementById('flowStep1');
+            const flowStep2 = document.getElementById('flowStep2');
+            const flowStep3 = document.getElementById('flowStep3');
+            const flowLine1 = document.getElementById('flowLine1');
+            const flowLine2 = document.getElementById('flowLine2');
+            
+            flowStep1.className = 'flow-step';
+            flowStep2.className = 'flow-step';
+            flowStep3.className = 'flow-step';
+            flowLine1.className = 'flow-line';
+            flowLine2.className = 'flow-line';
+            
             if (status === 'pending') {
                 header.className = 'task-header-card';
                 statusBadge.textContent = '待开始';
                 confirmProgress.textContent = '等待执行人执行';
-                actionButtons.innerHTML = `
-                    <div class="btn primary" onclick="showUploadModal()">开始执行</div>
+                
+                executionRecordCard.style.display = 'none';
+                confirmRecordCard.style.display = 'none';
+                
+                confirmerList.innerHTML = `
+                    <div class="confirmer-status-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name">张三 · 项目总</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name">王五 · 业主</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">赵</div>
+                        <div class="info">
+                            <div class="name">赵六 · 设计师</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
                 `;
+                
+                if (currentUserRole === 'executor') {
+                    actionButtons.innerHTML = `
+                        <div class="btn primary" onclick="showUploadModal()">开始执行</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                    `;
+                }
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
+                
+                // 待开始状态：不显示确认进度条
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step current';
+                flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                
+                if (flowProgressText) flowProgressText.textContent = '等待执行';
+                if (flowProgressBar) flowProgressBar.style.width = '0%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
             } else if (status === 'confirming') {
                 header.className = 'task-header-card confirming';
                 statusBadge.textContent = '确认中';
                 confirmProgress.textContent = '确认进度：1/3';
-                actionButtons.innerHTML = `
-                    <div class="btn secondary" onclick="showConfirmModal()">驳回</div>
-                    <div class="btn success" onclick="showConfirmModal()">确认通过</div>
+                
+                executionRecordCard.style.display = 'block';
+                confirmRecordCard.style.display = 'block';
+                
+                // 首次确认中：只显示第1轮次执行记录，不显示驳回信息
+                const currentExecution = document.getElementById('currentExecution');
+                const historyRecords = document.getElementById('historyRecords');
+                const moreBtn = document.querySelector('#executionRecordCard .more');
+                
+                if (currentExecution) {
+                    currentExecution.innerHTML = `
+                        <div class="section-title">
+                            <span>📤 执行人提交的内容</span>
+                        </div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item" style="background-color: #000;">
+                                <span class="play-icon">▶</span>
+                                <span class="duration">0:15</span>
+                            </div>
+                        </div>
+                        <div class="execution-desc">
+                            穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-25 14:30
+                        </div>
+                    `;
+                }
+                
+                if (historyRecords) {
+                    historyRecords.style.display = 'none';
+                }
+                
+                if (moreBtn) {
+                    moreBtn.style.display = 'none';
+                }
+                
+                confirmerList.innerHTML = `
+                    <div class="confirmer-status-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name">张三 · 项目总</div>
+                            <div class="time">2024-01-15 14:30 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name">王五 · 业主</div>
+                            <div class="time">等待确认中...</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">赵</div>
+                        <div class="info">
+                            <div class="name">赵六 · 设计师</div>
+                            <div class="time">等待确认中...</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
                 `;
+                
+                // 确认记录显示完整的确认历史（包括驳回操作记录）
+                const confirmRecordList = confirmRecordCard.querySelector('.confirm-list');
+                if (confirmRecordList) {
+                    confirmRecordList.innerHTML = `
+                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
+                            第2轮确认记录
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-26 11:00</div>
+                                <div class="content">调整后的线路走向符合设计要求，确认通过。</div>
+                                <div class="media-row">
+                                    <div class="media-thumb">📷</div>
+                                </div>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="text">优秀</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag pending">待确认</div>
+                                </div>
+                                <div class="time">等待确认中...</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">赵</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">赵六 <span class="role-badge designer">设计师</span></div>
+                                    <div class="status-tag pending">待确认</div>
+                                </div>
+                                <div class="time">等待确认中...</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin: 16px 0 8px 0;">
+                            第1轮确认记录
+                        </div>
+                        <div class="confirm-item" style="opacity: 0.6;">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 15:20</div>
+                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item" style="opacity: 0.6;">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag rejected">已驳回</div>
+                                </div>
+                                <div class="time">2024-01-25 16:00</div>
+                                <div class="content">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (currentUserRole === 'confirmer') {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" onclick="showRejectModal()">驳回</div>
+                        <div class="btn success" onclick="showConfirmModal()">确认通过</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待确认人确认</div>
+                    `;
+                }
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                // 确认中状态：显示确认进度条
+                if (acceptanceProgress) acceptanceProgress.style.display = 'block';
+                
+                flowStep1.className = 'flow-step completed';
+                flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowLine1.className = 'flow-line completed';
+                flowStep2.className = 'flow-step current';
+                flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                
+                if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
+                if (flowProgressBar) flowProgressBar.style.width = '33%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
+                
+            } else if (status === 'confirming_after_reject') {
+                header.className = 'task-header-card confirming';
+                statusBadge.textContent = '确认中';
+                confirmProgress.textContent = '确认进度：1/3';
+                
+                executionRecordCard.style.display = 'block';
+                confirmRecordCard.style.display = 'block';
+                
+                // 被驳回后确认中：显示历史驳回记录 + 当前执行记录，按时间倒序
+                const currentExecution = document.getElementById('currentExecution');
+                const historyRecords = document.getElementById('historyRecords');
+                const moreBtn = document.querySelector('#executionRecordCard .more');
+                
+                // 第2轮次（最新）- 当前有效
+                if (currentExecution) {
+                    currentExecution.innerHTML = `
+                        <div class="section-title">
+                            <span>📤 第2次执行</span>
+                            <span class="status-tag" style="background-color: var(--status-primary-bg); color: var(--primary-color); margin-left: 8px;">当前有效</span>
+                        </div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item" style="background-color: #000;">
+                                <span class="play-icon">▶</span>
+                                <span class="duration">0:15</span>
+                            </div>
+                        </div>
+                        <div class="execution-desc">
+                            已按照要求调整线路走向，重新穿设强电线管12根，弱电线管6根。所有线路走向均符合设计图纸要求，绝缘测试合格。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-26 10:30
+                        </div>
+                    `;
+                }
+                
+                // 第1轮次（已驳回）- 历史记录
+                if (historyRecords) {
+                    historyRecords.style.display = 'block';
+                    historyRecords.innerHTML = `
+                        <div class="execution-section" style="opacity: 0.6; background-color: var(--bg-tertiary);">
+                            <div class="section-title">
+                                <span>📤 第1次执行</span>
+                                <span class="status-tag rejected" style="margin-left: 8px;">已驳回</span>
+                            </div>
+                            <div class="media-grid">
+                                <div class="media-item">📷</div>
+                                <div class="media-item">📷</div>
+                                <div class="media-item">📷</div>
+                                <div class="media-item" style="background-color: #000;">
+                                    <span class="play-icon">▶</span>
+                                    <span class="duration">0:15</span>
+                                </div>
+                            </div>
+                            <div class="execution-desc">
+                                穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                                提交人：李四 · 2024-01-25 14:30
+                            </div>
+                            <div style="margin-top: 8px; padding: 8px; background-color: #FFF1F0; border-radius: 6px; border-left: 3px solid var(--error-color);">
+                                <div style="font-size: 12px; color: var(--error-color); font-weight: 600; margin-bottom: 4px;">驳回原因：</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                                <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">驳回人：王五 · 2024-01-25 16:00</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (moreBtn) {
+                    moreBtn.style.display = 'none';
+                }
+                
+                confirmerList.innerHTML = `
+                    <div class="confirmer-status-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name">张三 · 项目总</div>
+                            <div class="time">2024-01-26 11:00 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name">王五 · 业主</div>
+                            <div class="time">等待确认中...</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">赵</div>
+                        <div class="info">
+                            <div class="name">赵六 · 设计师</div>
+                            <div class="time">等待确认中...</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
+                `;
+                
+                if (currentUserRole === 'confirmer') {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" onclick="showRejectModal()">驳回</div>
+                        <div class="btn success" onclick="showConfirmModal()">确认通过</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待确认人确认</div>
+                    `;
+                }
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                // 确认中（被驳回后）状态：显示确认进度条
+                if (acceptanceProgress) acceptanceProgress.style.display = 'block';
+                
+                flowStep1.className = 'flow-step completed';
+                flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowLine1.className = 'flow-line completed';
+                flowStep2.className = 'flow-step current';
+                flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                
+                if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
+                if (flowProgressBar) flowProgressBar.style.width = '33%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
+                
             } else if (status === 'completed') {
                 header.className = 'task-header-card completed';
                 statusBadge.textContent = '已完成';
                 confirmProgress.textContent = '全部确认人已确认';
-                actionButtons.innerHTML = `
-                    <div class="btn secondary" onclick="alert('查看执行记录')">查看记录</div>
-                    <div class="btn primary" onclick="alert('查看评价')">查看评价</div>
+                
+                executionRecordCard.style.display = 'block';
+                confirmRecordCard.style.display = 'block';
+                
+                // 已完成（无驳回）：只显示第1轮次执行记录，不显示驳回信息
+                const currentExecution = document.getElementById('currentExecution');
+                const historyRecords = document.getElementById('historyRecords');
+                const moreBtn = document.querySelector('#executionRecordCard .more');
+                
+                if (currentExecution) {
+                    currentExecution.innerHTML = `
+                        <div class="section-title">
+                            <span>📤 执行人提交的内容</span>
+                        </div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item" style="background-color: #000;">
+                                <span class="play-icon">▶</span>
+                                <span class="duration">0:15</span>
+                            </div>
+                        </div>
+                        <div class="execution-desc">
+                            穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-25 14:30
+                        </div>
+                    `;
+                }
+                
+                if (historyRecords) {
+                    historyRecords.style.display = 'none';
+                }
+                
+                if (moreBtn) {
+                    moreBtn.style.display = 'none';
+                }
+                
+                confirmerList.innerHTML = `
+                    <div class="confirmer-status-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name">张三 · 项目总</div>
+                            <div class="time">2024-01-25 15:20 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name">王五 · 业主</div>
+                            <div class="time">2024-01-25 16:30 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">赵</div>
+                        <div class="info">
+                            <div class="name">赵六 · 设计师</div>
+                            <div class="time">2024-01-25 17:00 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
                 `;
+                
+                const confirmRecordList = confirmRecordCard.querySelector('.confirm-list');
+                if (confirmRecordList) {
+                    const isConfirmer = currentUserRole === 'confirmer';
+                    confirmRecordList.innerHTML = `
+                        <div class="confirm-item">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 15:20</div>
+                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
+                                <div class="media-row">
+                                    <div class="media-thumb">📷</div>
+                                </div>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star empty">★</span>
+                                    <span class="text">优秀</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 16:30</div>
+                                <div class="content">施工质量满意，确认通过。</div>
+                                <div style="margin-top: 8px; font-size: 12px; color: var(--text-tertiary);">
+                                    暂未评价${isConfirmer ? '<span class="go-evaluate-btn" onclick="showEvaluationModal(\'王五\')">去评价</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">赵</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">赵六 <span class="role-badge designer">设计师</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 17:00</div>
+                                <div class="content">符合设计要求，确认。</div>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="text">优秀</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                actionButtons.innerHTML = `
+                    <div class="btn primary" onclick="showEvaluationListModal()">查看评价</div>
+                `;
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                // 已完成（无驳回）状态：不显示确认进度条
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step completed';
+                flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowLine1.className = 'flow-line completed';
+                flowStep2.className = 'flow-step completed';
+                flowStep2.querySelector('.step-icon').textContent = '✓';
+                flowLine2.className = 'flow-line completed';
+                flowStep3.className = 'flow-step completed';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                
+                if (flowProgressText) flowProgressText.textContent = '已完成';
+                if (flowProgressBar) flowProgressBar.style.width = '100%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
+            } else if (status === 'completed_with_reject') {
+                header.className = 'task-header-card completed';
+                statusBadge.textContent = '已完成';
+                confirmProgress.textContent = '全部确认人已确认';
+                
+                executionRecordCard.style.display = 'block';
+                confirmRecordCard.style.display = 'block';
+                
+                // 已完成（含驳回）：显示历史驳回记录 + 最终通过的记录
+                const currentExecution = document.getElementById('currentExecution');
+                const historyRecords = document.getElementById('historyRecords');
+                const moreBtn = document.querySelector('#executionRecordCard .more');
+                
+                // 第2轮次（最终通过）
+                if (currentExecution) {
+                    currentExecution.innerHTML = `
+                        <div class="section-title">
+                            <span>📤 第2次执行</span>
+                            <span class="status-tag" style="background-color: var(--status-success-bg); color: var(--success-color); margin-left: 8px;">已通过</span>
+                        </div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item" style="background-color: #000;">
+                                <span class="play-icon">▶</span>
+                                <span class="duration">0:15</span>
+                            </div>
+                        </div>
+                        <div class="execution-desc">
+                            已按照要求调整线路走向，重新穿设强电线管12根，弱电线管6根。所有线路走向均符合设计图纸要求，绝缘测试合格。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-26 10:30
+                        </div>
+                    `;
+                }
+                
+                // 第1轮次（已驳回）
+                if (historyRecords) {
+                    historyRecords.style.display = 'block';
+                    historyRecords.innerHTML = `
+                        <div class="execution-section" style="opacity: 0.6; background-color: var(--bg-tertiary);">
+                            <div class="section-title">
+                                <span>📤 第1次执行</span>
+                                <span class="status-tag rejected" style="margin-left: 8px;">已驳回</span>
+                            </div>
+                            <div class="media-grid">
+                                <div class="media-item">📷</div>
+                                <div class="media-item">📷</div>
+                                <div class="media-item">📷</div>
+                                <div class="media-item" style="background-color: #000;">
+                                    <span class="play-icon">▶</span>
+                                    <span class="duration">0:15</span>
+                                </div>
+                            </div>
+                            <div class="execution-desc">
+                                穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                                提交人：李四 · 2024-01-25 14:30
+                            </div>
+                            <div style="margin-top: 8px; padding: 8px; background-color: #FFF1F0; border-radius: 6px; border-left: 3px solid var(--error-color);">
+                                <div style="font-size: 12px; color: var(--error-color); font-weight: 600; margin-bottom: 4px;">驳回原因：</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                                <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">驳回人：王五 · 2024-01-25 16:00</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (moreBtn) {
+                    moreBtn.style.display = 'none';
+                }
+                
+                confirmerList.innerHTML = `
+                    <div class="confirmer-status-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name">张三 · 项目总</div>
+                            <div class="time">2024-01-26 11:00 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name">王五 · 业主</div>
+                            <div class="time">2024-01-26 14:30 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">赵</div>
+                        <div class="info">
+                            <div class="name">赵六 · 设计师</div>
+                            <div class="time">2024-01-26 15:00 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                `;
+                
+                // 确认记录显示完整的确认历史（包括驳回操作记录）
+                const confirmRecordList = confirmRecordCard.querySelector('.confirm-list');
+                if (confirmRecordList) {
+                    const isConfirmer = currentUserRole === 'confirmer';
+                    confirmRecordList.innerHTML = `
+                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
+                            第2轮确认记录
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-26 11:00</div>
+                                <div class="content">调整后的线路走向符合设计要求，确认通过。</div>
+                                <div class="media-row">
+                                    <div class="media-thumb">📷</div>
+                                </div>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="text">优秀</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-26 14:30</div>
+                                <div class="content">已按要求调整，满意。</div>
+                                <div style="margin-top: 8px; font-size: 12px; color: var(--text-tertiary);">
+                                    暂未评价${isConfirmer ? '<span class="go-evaluate-btn" onclick="showEvaluationModal(\'王五\')">去评价</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">赵</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">赵六 <span class="role-badge designer">设计师</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-26 15:00</div>
+                                <div class="content">线路走向符合设计图纸，确认。</div>
+                                <div class="rating">
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="text">优秀</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin: 16px 0 8px 0;">
+                            第1轮确认记录
+                        </div>
+                        <div class="confirm-item" style="opacity: 0.6;">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 15:20</div>
+                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item" style="opacity: 0.6;">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag rejected">已驳回</div>
+                                </div>
+                                <div class="time">2024-01-25 16:00</div>
+                                <div class="content">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                actionButtons.innerHTML = `
+                    <div class="btn primary" onclick="showEvaluationListModal()">查看评价</div>
+                `;
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                // 已完成（含驳回）状态：不显示确认进度条
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step completed';
+                flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowLine1.className = 'flow-line completed';
+                flowStep2.className = 'flow-step completed';
+                flowStep2.querySelector('.step-icon').textContent = '✓';
+                flowLine2.className = 'flow-line completed';
+                flowStep3.className = 'flow-step completed';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                
+                if (flowProgressText) flowProgressText.textContent = '已完成';
+                if (flowProgressBar) flowProgressBar.style.width = '100%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
+            } else if (status === 'rejected_pending') {
+                header.className = 'task-header-card';
+                statusBadge.textContent = '待开始';
+                confirmProgress.textContent = '任务已驳回，请重新执行';
+                
+                executionRecordCard.style.display = 'block';
+                confirmRecordCard.style.display = 'block';
+                
+                // 更新执行记录卡片内容，显示被驳回的历史记录
+                const currentExecution = document.getElementById('currentExecution');
+                const historyRecords = document.getElementById('historyRecords');
+                const moreBtn = document.querySelector('#executionRecordCard .more');
+                
+                if (currentExecution) {
+                    currentExecution.innerHTML = `
+                        <div class="section-title">
+                            <span>📤 第1次执行</span>
+                            <span class="status-tag rejected" style="margin-left: 8px;">已驳回</span>
+                        </div>
+                        <div class="media-grid">
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item">📷</div>
+                            <div class="media-item" style="background-color: #000;">
+                                <span class="play-icon">▶</span>
+                                <span class="duration">0:15</span>
+                            </div>
+                        </div>
+                        <div class="execution-desc">
+                            穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                            提交人：李四 · 2024-01-25 14:30
+                        </div>
+                        <div style="margin-top: 8px; padding: 8px; background-color: #FFF1F0; border-radius: 6px; border-left: 3px solid var(--error-color);">
+                            <div style="font-size: 12px; color: var(--error-color); font-weight: 600; margin-bottom: 4px;">驳回原因：</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                            <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">驳回人：王五 · 2024-01-25 16:00</div>
+                        </div>
+                    `;
+                }
+                
+                if (historyRecords) {
+                    historyRecords.style.display = 'none';
+                }
+                
+                if (moreBtn) {
+                    moreBtn.style.display = 'none';
+                }
+                
+                confirmerList.innerHTML = `
+                    <div class="confirmer-status-item">
+                        <div class="avatar">张</div>
+                        <div class="info">
+                            <div class="name">张三 · 项目总</div>
+                            <div class="time">2024-01-25 15:20 已确认</div>
+                        </div>
+                        <div class="status confirmed">已确认</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">王</div>
+                        <div class="info">
+                            <div class="name">王五 · 业主</div>
+                            <div class="time">2024-01-25 16:00 已驳回</div>
+                        </div>
+                        <div class="status" style="background-color: #FFF1F0; color: var(--error-color);">已驳回</div>
+                    </div>
+                    <div class="confirmer-status-item">
+                        <div class="avatar">赵</div>
+                        <div class="info">
+                            <div class="name">赵六 · 设计师</div>
+                        </div>
+                        <div class="status pending">待确认</div>
+                    </div>
+                `;
+                
+                const confirmRecordList = confirmRecordCard.querySelector('.confirm-list');
+                if (confirmRecordList) {
+                    confirmRecordList.innerHTML = `
+                        <div class="confirm-item">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 15:20</div>
+                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag rejected">已驳回</div>
+                                </div>
+                                <div class="time">2024-01-25 16:00</div>
+                                <div class="content">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">赵</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">赵六 <span class="role-badge designer">设计师</span></div>
+                                    <div class="status-tag pending">待确认</div>
+                                </div>
+                                <div class="time">等待确认中...</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (currentUserRole === 'executor') {
+                    actionButtons.innerHTML = `
+                        <div class="btn primary" onclick="showUploadModal()">重新执行</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待执行人重新执行</div>
+                    `;
+                }
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                // 驳回后待开始状态：不显示确认进度条
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step current';
+                flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowLine1.className = 'flow-line';
+                flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                
+                if (flowProgressText) flowProgressText.textContent = '已驳回';
+                if (flowProgressBar) flowProgressBar.style.width = '0%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
             }
             
             document.querySelectorAll('.status-switch-item').forEach(item => {
                 const text = item.textContent.trim();
                 if ((status === 'pending' && text === '待开始') ||
-                    (status === 'confirming' && text === '确认中') ||
-                    (status === 'completed' && text === '已完成')) {
+                    (status === 'confirming' && text === '确认中（首次）') ||
+                    (status === 'confirming_after_reject' && text === '确认中（被驳回后）') ||
+                    (status === 'rejected_pending' && text === '驳回后待开始') ||
+                    (status === 'completed' && text === '已完成（无驳回）') ||
+                    (status === 'completed_with_reject' && text === '已完成（含驳回）')) {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        function switchUserRole(role) {
+            currentUserRole = role;
+            updateTaskStatus(currentTaskStatus);
+            
+            document.querySelectorAll('.role-switch-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.role-switch-item').forEach(item => {
+                const text = item.textContent.trim();
+                if ((role === 'executor' && text === '执行人视角') ||
+                    (role === 'nonExecutor' && text === '非执行人视角') ||
+                    (role === 'confirmer' && text === '确认人视角') ||
+                    (role === 'nonConfirmer' && text === '非确认人视角')) {
                     item.classList.add('active');
                 }
             });
@@ -1156,6 +3105,223 @@
                 e.target.classList.remove('show');
             }
         });
+
+        function showConfirmerSelector() {
+            showToast('选择确认人\n\n可从以下人员中选择：\n1. 项目成员列表\n2. 推荐确认人\n3. 跨合同确认人\n\n最多可添加5位确认人');
+        }
+        
+        function showTaskFlowHelp() {
+            document.getElementById('taskFlowHelpModal').classList.add('show');
+        }
+        
+        function closeTaskFlowHelp() {
+            document.getElementById('taskFlowHelpModal').classList.remove('show');
+        }
+        
+        document.getElementById('taskFlowHelpModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTaskFlowHelp();
+            }
+        });
+        
+        function toggleReminderTooltip(event) {
+            event.stopPropagation();
+            const tooltip = document.getElementById('reminderTooltip');
+            tooltip.classList.toggle('show');
+        }
+        
+        function sendReminder(event) {
+            event.stopPropagation();
+            document.getElementById('reminderTooltip').classList.remove('show');
+            showToast('已发送催办通知');
+        }
+        
+        document.addEventListener('click', function(e) {
+            const tooltip = document.getElementById('reminderTooltip');
+            if (tooltip && tooltip.classList.contains('show')) {
+                if (!e.target.closest('.reminder-icon-btn')) {
+                    tooltip.classList.remove('show');
+                }
+            }
+        });
+        
+        function initFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status') || 'confirming';
+            const role = urlParams.get('role') || 'executor';
+            
+            if (status === 'pending' || status === 'rejected_pending') {
+                currentUserRole = role === 'nonExecutor' ? 'nonExecutor' : 'executor';
+            } else if (status === 'confirming' || status === 'confirming_after_reject') {
+                currentUserRole = role === 'nonConfirmer' ? 'nonConfirmer' : 'confirmer';
+            } else if (status === 'completed' || status === 'completed_with_reject') {
+                currentUserRole = role === 'confirmer' ? 'confirmer' : 'nonConfirmer';
+            }
+            
+            updateTaskStatus(status);
+            switchUserRole(currentUserRole);
+        }
+
+        let currentEvaluationRating = 0;
+        let currentEvaluatingConfirmer = null;
+
+        function showEvaluationModal(confirmerName) {
+            currentEvaluatingConfirmer = confirmerName;
+            currentEvaluationRating = 0;
+            document.getElementById('evaluationDescInput').value = '';
+            document.querySelectorAll('#evaluationStars .star').forEach(star => {
+                star.classList.remove('active');
+            });
+            document.getElementById('evaluationModal').classList.add('show');
+        }
+
+        function closeEvaluationModal() {
+            document.getElementById('evaluationModal').classList.remove('show');
+        }
+
+        function setEvaluationRating(rating) {
+            currentEvaluationRating = rating;
+            const stars = document.querySelectorAll('#evaluationStars .star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function submitEvaluation() {
+            if (currentEvaluationRating === 0) {
+                showToast('请选择评分');
+                return;
+            }
+            
+            const comment = document.getElementById('evaluationDescInput').value;
+            closeEvaluationModal();
+            showToast('评价提交成功！');
+            
+            updateConfirmerEvaluation(currentEvaluatingConfirmer, currentEvaluationRating, comment);
+        }
+
+        function updateConfirmerEvaluation(confirmerName, rating, comment) {
+            const confirmerList = document.getElementById('confirmerList');
+            if (confirmerList) {
+                const items = confirmerList.querySelectorAll('.confirmer-status-item');
+                items.forEach(item => {
+                    const nameEl = item.querySelector('.name');
+                    if (nameEl && nameEl.textContent.includes(confirmerName)) {
+                        const existingRating = item.querySelector('.rating');
+                        if (!existingRating) {
+                            const ratingHtml = `
+                                <div class="rating" style="margin-top: 4px;">
+                                    ${generateStarsHtml(rating)}
+                                    <span class="text" style="font-size: 11px; color: var(--text-tertiary); margin-left: 4px;">${getRatingText(rating)}</span>
+                                </div>
+                            `;
+                            item.querySelector('.info').insertAdjacentHTML('beforeend', ratingHtml);
+                            
+                            const goEvaluateBtn = item.querySelector('.go-evaluate-btn');
+                            if (goEvaluateBtn) {
+                                goEvaluateBtn.remove();
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const confirmRecordList = document.querySelector('#confirmRecordCard .confirm-list');
+            if (confirmRecordList) {
+                const items = confirmRecordList.querySelectorAll('.confirm-item');
+                items.forEach(item => {
+                    const nameEl = item.querySelector('.name');
+                    if (nameEl && nameEl.textContent.includes(confirmerName)) {
+                        const existingRating = item.querySelector('.rating');
+                        if (!existingRating) {
+                            const ratingHtml = `
+                                <div class="rating">
+                                    ${generateStarsHtml(rating)}
+                                    <span class="text">${getRatingText(rating)}</span>
+                                </div>
+                            `;
+                            const contentEl = item.querySelector('.content');
+                            if (contentEl) {
+                                contentEl.insertAdjacentHTML('afterend', ratingHtml);
+                            } else {
+                                item.querySelector('.info').insertAdjacentHTML('beforeend', ratingHtml);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function generateStarsHtml(rating) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += `<span class="star${i > rating ? ' empty' : ''}">★</span>`;
+            }
+            return html;
+        }
+
+        function getRatingText(rating) {
+            const texts = ['', '很差', '较差', '一般', '良好', '优秀'];
+            return texts[rating] || '';
+        }
+
+        function showEvaluationListModal() {
+            const evaluationListBody = document.getElementById('evaluationListBody');
+            
+            const evaluations = [
+                { name: '张三', role: '项目总', rating: 4, comment: '穿线工作符合标准，绝缘测试数据合格。', time: '2024-01-25 15:20', hasEvaluation: true },
+                { name: '王五', role: '业主', rating: 0, comment: '', time: '2024-01-25 16:30', hasEvaluation: false },
+                { name: '赵六', role: '设计师', rating: 5, comment: '符合设计要求，确认。', time: '2024-01-25 17:00', hasEvaluation: true }
+            ];
+            
+            const isConfirmer = currentUserRole === 'confirmer';
+            
+            evaluationListBody.innerHTML = evaluations.map(eva => `
+                <div class="evaluation-item">
+                    <div class="avatar">${eva.name.charAt(0)}</div>
+                    <div class="info">
+                        <div class="name-row">
+                            <div class="name">${eva.name} · ${eva.role}</div>
+                            <div class="rating">
+                                ${eva.hasEvaluation ? generateStarsHtml(eva.rating) : '<span style="color: var(--text-tertiary); font-size: 12px;">未评价</span>'}
+                            </div>
+                        </div>
+                        <div class="time">${eva.time}</div>
+                        ${eva.hasEvaluation ? 
+                            `<div class="content">${eva.comment || '无评价内容'}</div>` : 
+                            (isConfirmer ? 
+                                `<div class="no-evaluation">暂未评价<span class="go-evaluate-btn" onclick="showEvaluationModal('${eva.name}')">去评价</span></div>` :
+                                `<div class="no-evaluation">暂未评价</div>`
+                            )
+                        }
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('evaluationListModal').classList.add('show');
+        }
+
+        function closeEvaluationListModal() {
+            document.getElementById('evaluationListModal').classList.remove('show');
+        }
+
+        document.getElementById('evaluationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEvaluationModal();
+            }
+        });
+
+        document.getElementById('evaluationListModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEvaluationListModal();
+            }
+        });
+        
+        initFromUrl();
     </script>
 </body>
 </html>

@@ -537,6 +537,8 @@ body {
     padding: 16px;
     box-shadow: 0 2px 10px var(--shadow-md);
     z-index: 1000;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
 }
 
 .page-nav h3,
@@ -710,3 +712,1575 @@ body {
 }
 
 .app-toast.show { display: block; }
+
+/* --------------------------------------------------------------------------
+   21. 骨架屏加载（Skeleton Loading）
+   -------------------------------------------------------------------------- */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.5) 50%, 
+        rgba(255,255,255,0) 100%);
+    animation: skeleton-wave 1.5s infinite;
+}
+
+@keyframes skeleton-wave {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.skeleton-text {
+    height: 14px;
+    margin-bottom: 8px;
+}
+
+.skeleton-text.short { width: 40%; }
+.skeleton-text.medium { width: 70%; }
+.skeleton-text.long { width: 90%; }
+
+.skeleton-title {
+    height: 20px;
+    width: 60%;
+    margin-bottom: 12px;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.skeleton-card {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.skeleton-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.skeleton-row:last-child {
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   22. 全局加载遮罩（Global Loading Overlay）
+   -------------------------------------------------------------------------- */
+.global-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.9);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.global-loading.show {
+    display: flex;
+}
+
+.global-loading .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.global-loading .text {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-tertiary);
+}
+
+.global-loading .progress {
+    width: 200px;
+    height: 4px;
+    background-color: var(--bg-tertiary);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.global-loading .progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+    transition: width 0.3s;
+}
+
+/* --------------------------------------------------------------------------
+   23. 局部加载（Partial Loading）
+   -------------------------------------------------------------------------- */
+.partial-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.7);
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.partial-loading.show {
+    display: flex;
+}
+
+.partial-loading .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   24. 离线提示（Offline Notice）
+   -------------------------------------------------------------------------- */
+.offline-notice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--error-color);
+    color: #FFFFFF;
+    padding: 8px 16px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.offline-notice.show {
+    display: flex;
+}
+
+.offline-notice .retry-btn {
+    background-color: rgba(255,255,255,0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   25. 加载更多（Load More）
+   -------------------------------------------------------------------------- */
+.load-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: var(--text-tertiary);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.load-more.loading {
+    color: var(--primary-color);
+}
+
+.load-more .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+}
+
+.load-more.no-more {
+    color: var(--text-tertiary);
+    cursor: default;
+}
+
+.load-more.no-more::before,
+.load-more.no-more::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 0 12px;
+}
+
+/* --------------------------------------------------------------------------
+   26. 下拉刷新（Pull to Refresh）
+   -------------------------------------------------------------------------- */
+.pull-refresh {
+    position: relative;
+    overflow: hidden;
+}
+
+.pull-refresh-indicator {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    transition: top 0.2s;
+}
+
+.pull-refresh-indicator.pulling {
+    top: 0;
+}
+
+.pull-refresh-indicator .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   27. 错误状态（Error States）
+   -------------------------------------------------------------------------- */
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.error-page .error-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+}
+
+.error-page .error-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.error-page .error-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    max-width: 260px;
+}
+
+.error-page .error-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.error-page .error-btn {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.error-page .error-btn.primary {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.error-page .error-btn.secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.error-card {
+    background-color: var(--status-error-bg);
+    border: 1px solid #FFA39E;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 16px;
+}
+
+.error-card .error-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.error-card .error-icon {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.error-card .error-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--error-color);
+}
+
+.error-card .error-desc {
+    font-size: 12px;
+    color: #873800;
+    margin-bottom: 12px;
+}
+
+.error-card .error-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.error-card .error-action-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    background-color: #FFFFFF;
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+}
+
+.error-card .error-action-btn:hover {
+    background-color: var(--error-color);
+    color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   28. 网络错误提示（Network Error）
+   -------------------------------------------------------------------------- */
+.network-error {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: var(--status-error-bg);
+    border-bottom: 1px solid #FFA39E;
+}
+
+.network-error .error-icon {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.network-error .error-text {
+    flex: 1;
+    font-size: 13px;
+    color: #873800;
+}
+
+.network-error .retry-btn {
+    padding: 4px 12px;
+    background-color: var(--error-color);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   29. 权限错误提示（Permission Error）
+   -------------------------------------------------------------------------- */
+.permission-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    text-align: center;
+}
+
+.permission-error .error-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.6;
+}
+
+.permission-error .error-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.permission-error .error-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.permission-error .apply-btn {
+    padding: 10px 24px;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   30. 表单错误提示（Form Error）
+   -------------------------------------------------------------------------- */
+.form-error {
+    font-size: 12px;
+    color: var(--error-color);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.form-error::before {
+    content: '⚠';
+}
+
+.input-error {
+    border-color: var(--error-color) !important;
+}
+
+.input-error:focus {
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   31. Toast 提示增强（Enhanced Toast）
+   -------------------------------------------------------------------------- */
+.app-toast.success {
+    background-color: var(--success-color);
+}
+
+.app-toast.error {
+    background-color: var(--error-color);
+}
+
+.app-toast.warning {
+    background-color: var(--warning-color);
+}
+
+/* --------------------------------------------------------------------------
+   32. 反馈入口（Feedback Entry）
+   -------------------------------------------------------------------------- */
+.feedback-fab {
+    position: fixed;
+    right: 16px;
+    bottom: 80px;
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #FFFFFF;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+    z-index: 100;
+    transition: transform 0.2s;
+}
+
+.feedback-fab:hover {
+    transform: scale(1.1);
+}
+
+.feedback-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-modal.show {
+    display: flex;
+}
+
+.feedback-modal .modal-content {
+    width: 300px;
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.feedback-modal .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.feedback-modal .feedback-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.feedback-modal .feedback-type {
+    padding: 8px 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.feedback-modal .feedback-type.selected {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.feedback-modal textarea {
+    width: 100%;
+    height: 100px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 13px;
+    resize: none;
+    margin-bottom: 16px;
+}
+
+.feedback-modal .modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.feedback-modal .modal-btn {
+    flex: 1;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+
+.feedback-modal .modal-btn.cancel {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.feedback-modal .modal-btn.submit {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   33. 数据统计卡片（Statistics Card）
+   -------------------------------------------------------------------------- */
+.stats-card {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.stats-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.stats-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.stats-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.stats-card-action {
+    font-size: 11px;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--status-primary-bg);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.stats-grid-item {
+    text-align: center;
+    padding: 12px 8px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.stats-grid-item .value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stats-grid-item .value.primary { color: var(--primary-color); }
+.stats-grid-item .value.success { color: var(--success-color); }
+.stats-grid-item .value.warning { color: var(--warning-color); }
+.stats-grid-item .value.error { color: var(--error-color); }
+
+.stats-grid-item .label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+}
+
+.stats-grid-item .trend {
+    font-size: 10px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.stats-grid-item .trend.up { color: var(--success-color); }
+.stats-grid-item .trend.down { color: var(--error-color); }
+
+/* --------------------------------------------------------------------------
+   34. 简易图表（Simple Charts）
+   -------------------------------------------------------------------------- */
+.chart-container {
+    padding: 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.chart-bar-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 100px;
+    padding: 0 8px;
+}
+
+.chart-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.chart-bar {
+    width: 24px;
+    background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s;
+}
+
+.chart-bar-label {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+}
+
+.chart-bar-value {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.chart-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.chart-legend-dot.primary { background-color: var(--primary-color); }
+.chart-legend-dot.success { background-color: var(--success-color); }
+.chart-legend-dot.warning { background-color: var(--warning-color); }
+.chart-legend-dot.error { background-color: var(--error-color); }
+
+/* 环形进度图 */
+.chart-ring {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+}
+
+.chart-ring svg {
+    transform: rotate(-90deg);
+}
+
+.chart-ring circle {
+    fill: none;
+    stroke-width: 8;
+}
+
+.chart-ring .bg {
+    stroke: var(--bg-tertiary);
+}
+
+.chart-ring .progress {
+    stroke: var(--primary-color);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s;
+}
+
+.chart-ring .center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.chart-ring .center-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.chart-ring .center-label {
+    font-size: 10px;
+    color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   35. 趋势指示器（Trend Indicator）
+   -------------------------------------------------------------------------- */
+.trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.trend-indicator.up {
+    background-color: var(--status-success-bg);
+    color: var(--success-color);
+}
+
+.trend-indicator.down {
+    background-color: var(--status-error-bg);
+    color: var(--error-color);
+}
+
+.trend-indicator.stable {
+    background-color: var(--bg-secondary);
+    color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   36. 数据对比（Data Comparison）
+   -------------------------------------------------------------------------- */
+.comparison-card {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.comparison-item {
+    flex: 1;
+    text-align: center;
+}
+
+.comparison-item .label {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 4px;
+}
+
+.comparison-item .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.comparison-item .sub {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+
+.comparison-divider {
+    width: 1px;
+    background-color: var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   37. 预警指标（Alert Metrics）
+   -------------------------------------------------------------------------- */
+.alert-metric {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.alert-metric.warning {
+    background-color: var(--status-warning-bg);
+    border: 1px solid #FFD591;
+}
+
+.alert-metric.danger {
+    background-color: var(--status-error-bg);
+    border: 1px solid #FFA39E;
+}
+
+.alert-metric .icon {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.alert-metric .content {
+    flex: 1;
+}
+
+.alert-metric .title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.alert-metric .desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.alert-metric .action {
+    font-size: 12px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   38. 虚拟列表占位（Virtual List Placeholder）
+   -------------------------------------------------------------------------- */
+.virtual-list-container {
+    position: relative;
+    overflow-y: auto;
+}
+
+.virtual-list-phantom {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: -1;
+}
+
+.virtual-list-content {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   39. 图片懒加载（Lazy Load Image）
+   -------------------------------------------------------------------------- */
+.lazy-image {
+    background-color: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.lazy-image.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.5) 50%, 
+        rgba(255,255,255,0) 100%);
+    animation: skeleton-wave 1.5s infinite;
+}
+
+.lazy-image.loaded {
+    background-color: transparent;
+}
+
+.lazy-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.lazy-image.loaded img {
+    opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   40. 防抖节流指示器（Debounce/Throttle Indicator）
+   -------------------------------------------------------------------------- */
+.loading-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: transparent;
+    z-index: 3000;
+    pointer-events: none;
+}
+
+.loading-indicator.active {
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--primary-color) 50%, 
+        transparent 100%);
+    animation: loading-slide 1.5s infinite;
+}
+
+@keyframes loading-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* --------------------------------------------------------------------------
+   41. 缓存状态指示（Cache Status Indicator）
+   -------------------------------------------------------------------------- */
+.cache-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+    color: var(--text-tertiary);
+}
+
+.cache-indicator.cached {
+    background-color: var(--status-success-bg);
+    color: var(--success-color);
+}
+
+.cache-indicator .icon {
+    font-size: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   42. 性能监控面板（Performance Monitor）
+   -------------------------------------------------------------------------- */
+.perf-monitor {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    background-color: rgba(0,0,0,0.8);
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-family: monospace;
+    z-index: 3000;
+    display: none;
+}
+
+.perf-monitor.show {
+    display: block;
+}
+
+.perf-monitor .metric {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.perf-monitor .metric:last-child {
+    margin-bottom: 0;
+}
+
+.perf-monitor .metric .label {
+    color: rgba(255,255,255,0.6);
+}
+
+.perf-monitor .metric .value {
+    font-weight: 600;
+}
+
+.perf-monitor .metric .value.good { color: #52C41A; }
+.perf-monitor .metric .value.warning { color: #FAAD14; }
+.perf-monitor .metric .value.bad { color: #FF4D4F; }
+
+/* --------------------------------------------------------------------------
+   43. 预加载提示（Preload Hint）
+   -------------------------------------------------------------------------- */
+.preload-hint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.preload-hint.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.preload-hint .hint-content {
+    text-align: center;
+}
+
+.preload-hint .hint-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.preload-hint .hint-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   44. 节流按钮（Throttled Button）
+   -------------------------------------------------------------------------- */
+.btn-throttled {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-throttled.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.btn-throttled .cooldown-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.1);
+    transition: width 0.1s linear;
+}
+
+/* --------------------------------------------------------------------------
+   45. 内存优化提示（Memory Optimization）
+   -------------------------------------------------------------------------- */
+.memory-warning {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.8);
+    color: #FFFFFF;
+    padding: 16px 24px;
+    border-radius: 12px;
+    text-align: center;
+    z-index: 3000;
+    display: none;
+}
+
+.memory-warning.show {
+    display: block;
+}
+
+.memory-warning .icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.memory-warning .title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.memory-warning .desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+}
+
+/* --------------------------------------------------------------------------
+   46. 增强空状态（Enhanced Empty State）
+   -------------------------------------------------------------------------- */
+.empty-state-enhanced {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+    min-height: 300px;
+}
+
+.empty-state-enhanced .illustration {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    opacity: 0.8;
+}
+
+.empty-state-enhanced .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.empty-state-enhanced .description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    max-width: 240px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.empty-state-enhanced .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.empty-state-enhanced .action-btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.empty-state-enhanced .action-btn.primary {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+.empty-state-enhanced .action-btn.secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.empty-state-enhanced .help-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.empty-state-enhanced .help-link {
+    font-size: 12px;
+    color: var(--primary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 不同场景的空状态 */
+.empty-state-enhanced.no-project .illustration { color: var(--primary-color); }
+.empty-state-enhanced.no-task .illustration { color: var(--warning-color); }
+.empty-state-enhanced.no-data .illustration { color: var(--text-tertiary); }
+.empty-state-enhanced.no-message .illustration { color: var(--purple-color); }
+.empty-state-enhanced.no-result .illustration { color: var(--text-tertiary); }
+.empty-state-enhanced.no-network .illustration { color: var(--error-color); }
+
+/* --------------------------------------------------------------------------
+   47. 搜索无结果（No Search Result）
+   -------------------------------------------------------------------------- */
+.no-result-state {
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.no-result-state .search-keyword {
+    display: inline-block;
+    background-color: var(--status-primary-bg);
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.no-result-state .suggestions {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.no-result-state .suggestions-title {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.no-result-state .suggestion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.no-result-state .suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.no-result-state .suggestion-item:hover {
+    background-color: #E6F7FF;
+}
+
+.no-result-state .suggestion-item .icon {
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.no-result-state .suggestion-item .text {
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   48. 引导提示（Onboarding Hint）
+   -------------------------------------------------------------------------- */
+.onboarding-hint {
+    position: relative;
+    padding: 16px;
+    background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%);
+    border: 1px solid #91D5FF;
+    border-radius: 12px;
+    margin: 12px 16px;
+}
+
+.onboarding-hint .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 16px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+}
+
+.onboarding-hint .hint-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.onboarding-hint .hint-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.onboarding-hint .hint-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.onboarding-hint .hint-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.onboarding-hint .hint-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.onboarding-hint .hint-step .step-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   49. 功能引导气泡（Feature Tooltip）
+   -------------------------------------------------------------------------- */
+.feature-tooltip {
+    position: absolute;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    max-width: 240px;
+}
+
+.feature-tooltip::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+}
+
+.feature-tooltip.top::before {
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--bg-primary);
+}
+
+.feature-tooltip.bottom::before {
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--bg-primary);
+}
+
+.feature-tooltip .tooltip-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.feature-tooltip .tooltip-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.feature-tooltip .tooltip-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.feature-tooltip .tooltip-btn {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.feature-tooltip .tooltip-btn.skip {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.feature-tooltip .tooltip-btn.got-it {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   50. 首次使用引导（First Time User Experience）
+   -------------------------------------------------------------------------- */
+.ftue-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 4000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.ftue-overlay.show {
+    display: flex;
+}
+
+.ftue-modal {
+    width: 300px;
+    background-color: var(--bg-primary);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.ftue-modal .modal-header {
+    padding: 24px 20px 16px;
+    text-align: center;
+}
+
+.ftue-modal .modal-illustration {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.ftue-modal .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.ftue-modal .modal-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.ftue-modal .modal-features {
+    padding: 0 20px 20px;
+}
+
+.ftue-modal .feature-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ftue-modal .feature-item:last-child {
+    border-bottom: none;
+}
+
+.ftue-modal .feature-item .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.ftue-modal .feature-item .info {
+    flex: 1;
+}
+
+.ftue-modal .feature-item .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ftue-modal .feature-item .desc {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+
+.ftue-modal .modal-footer {
+    padding: 16px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ftue-modal .start-btn {
+    width: 100%;
+    height: 44px;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ftue-modal .skip-btn {
+    width: 100%;
+    height: 36px;
+    background-color: transparent;
+    color: var(--text-tertiary);
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+}

@@ -59,7 +59,8 @@
             border-bottom: 1px solid var(--border-color);
             transition: all 0.3s ease;
             overflow: hidden;
-            max-height: 120px;
+            max-height: 100px;
+            position: relative;
         }
 
         .quick-nav.collapsed {
@@ -67,6 +68,41 @@
             padding: 0 16px;
             gap: 0;
             border-bottom: none;
+        }
+
+        .quick-nav.collapsed .quick-nav-item {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .quick-nav .pin-btn {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: var(--bg-secondary);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .quick-nav:hover .pin-btn {
+            opacity: 1;
+        }
+
+        .quick-nav.pinned .pin-btn {
+            opacity: 1;
+            color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .quick-nav.pinned {
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
         .quick-nav-item {
@@ -156,6 +192,79 @@
             background-color: var(--primary-color);
         }
 
+        .breadcrumb-nav {
+            background-color: var(--bg-primary);
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .breadcrumb-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .breadcrumb-nav .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb-nav .breadcrumb-item:hover {
+            color: var(--primary-color);
+        }
+
+        .breadcrumb-nav .breadcrumb-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .breadcrumb-nav .breadcrumb-item .separator {
+            margin: 0 6px;
+            color: var(--text-tertiary);
+        }
+
+        .breadcrumb-inline {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .breadcrumb-inline .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb-inline .breadcrumb-item:hover {
+            color: var(--primary-color);
+        }
+
+        .breadcrumb-inline .breadcrumb-item.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .breadcrumb-inline .separator {
+            margin: 0 4px;
+            color: var(--text-tertiary);
+        }
+
+        .text-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .level-selector {
             background-color: var(--bg-primary);
             padding: 12px 16px;
@@ -210,10 +319,31 @@
             color: var(--text-primary);
         }
 
-        .level-dropdown .current .desc {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            margin-top: 2px;
+        .level-dropdown .current .type-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .level-dropdown .current .type-badge.project {
+            background-color: #E6F7FF;
+            color: #1890FF;
+        }
+
+        .level-dropdown .current .type-badge.workgroup {
+            background-color: #F6FFED;
+            color: #52C41A;
+        }
+
+        .level-dropdown .current .type-badge.team {
+            background-color: #FFF7E6;
+            color: #FA8C16;
+        }
+
+        .level-dropdown .current .type-badge.task {
+            background-color: #F9F0FF;
+            color: #722ED1;
         }
 
         .level-dropdown .arrow {
@@ -303,6 +433,12 @@
             align-items: center;
             flex: 1;
             position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .contract-stat:hover {
+            transform: scale(1.05);
         }
 
         .contract-stat:not(:last-child)::after {
@@ -320,6 +456,14 @@
             font-weight: 700;
             color: var(--text-primary);
             line-height: 1.2;
+        }
+
+        .contract-stat .value.warning {
+            color: var(--warning-color);
+        }
+
+        .contract-stat .value.danger {
+            color: var(--error-color);
         }
 
         .contract-stat .value .current {
@@ -405,8 +549,8 @@
 
         .task-stats {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
 
         .task-stats-tabs {
@@ -445,8 +589,9 @@
 
         .task-stat-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 12px 10px;
+            padding: 10px 6px;
             background-color: var(--bg-secondary);
             border-radius: 10px;
             cursor: pointer;
@@ -459,14 +604,14 @@
         }
 
         .task-stat-item .icon-wrap {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 8px;
-            font-size: 16px;
+            margin-bottom: 6px;
+            font-size: 14px;
             flex-shrink: 0;
         }
 
@@ -478,10 +623,11 @@
         .task-stat-item .info {
             flex: 1;
             min-width: 0;
+            text-align: center;
         }
 
         .task-stat-item .value {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-primary);
             line-height: 1.2;
@@ -726,33 +872,39 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px;
-            background-color: var(--bg-secondary);
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #F9F0FF 0%, #EFDBFF 100%);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            border: 1px solid #D3ADF7;
+            margin-bottom: 12px;
         }
 
         .create-temp-task:hover {
-            background-color: #E6F7FF;
+            background: linear-gradient(135deg, #EFDBFF 0%, #D3ADF7 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(114, 46, 209, 0.2);
         }
 
         .create-temp-task .icon {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #9254DE 0%, #722ED1 100%);
             color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 8px;
-            font-size: 16px;
+            margin-right: 10px;
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .create-temp-task .text {
-            font-size: 13px;
-            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+            color: #722ED1;
         }
 
         .temp-task-modal {
@@ -1120,26 +1272,40 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            margin-top: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%);
             color: var(--primary-color);
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            border-radius: 8px;
+            border: 1px solid #91D5FF;
         }
 
         .view-all-link:hover {
-            background-color: var(--bg-secondary);
-            border-radius: 8px;
+            background: linear-gradient(135deg, #BAE7FF 0%, #91D5FF 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
         }
 
         .view-all-link .arrow {
-            margin-left: 4px;
-            font-size: 16px;
+            margin-left: 6px;
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .activity-list {
             padding: 0;
+            max-height: 180px;
+            overflow: hidden;
+            transition: max-height 0.3s;
+        }
+
+        .activity-list.expanded {
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .activity-item {
@@ -1344,6 +1510,79 @@
             color: var(--text-tertiary);
         }
 
+        .skeleton-loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skeleton-loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.5) 50%, 
+                rgba(255,255,255,0) 100%);
+            animation: skeleton-wave 1.5s infinite;
+        }
+
+        @keyframes skeleton-wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .skeleton-card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-row {
+            height: 16px;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-row:last-child {
+            margin-bottom: 0;
+            width: 60%;
+        }
+
+        .skeleton-row.short {
+            width: 40%;
+        }
+
+        .skeleton-row.medium {
+            width: 70%;
+        }
+
+        .partial-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255,255,255,0.7);
+            z-index: 50;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .partial-loading.show {
+            display: flex;
+        }
+
+        .partial-loading .loading-spinner {
+            width: 32px;
+            height: 32px;
+        }
+
         .empty-state {
             display: flex;
             flex-direction: column;
@@ -1377,6 +1616,47 @@
         .empty-state .action:hover {
             background-color: var(--primary-light);
         }
+
+        .custom-toast-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-toast-modal.show { display: flex; }
+
+        .custom-toast-modal .modal-box {
+            width: 280px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .custom-toast-modal .modal-body {
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .custom-toast-modal .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .custom-toast-modal .modal-btn {
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -1387,26 +1667,26 @@
         </div>
 
         <div class="nav-bar">
-            <div class="back" onclick="location.href='prototype-project-list.html'">← 返回</div>
+            <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">XX小区整体装修</div>
             <div class="actions">
                 <div class="action-btn" onclick="toggleActionMenu()">⋯</div>
-                <div class="action-btn" onclick="alert('关闭小程序')">✕</div>
+                <div class="action-btn" onclick="showCustomToast('关闭小程序')">✕</div>
             </div>
             <div class="action-menu" id="actionMenu">
-                <div class="action-menu-item" onclick="alert('分享给朋友')">
+                <div class="action-menu-item" onclick="showCustomToast('分享给朋友')">
                     <span class="icon">📤</span>
                     <span>分享给朋友</span>
                 </div>
-                <div class="action-menu-item" onclick="alert('转发')">
+                <div class="action-menu-item" onclick="showCustomToast('转发')">
                     <span class="icon">↗️</span>
                     <span>转发</span>
                 </div>
-                <div class="action-menu-item" onclick="alert('收藏')">
+                <div class="action-menu-item" onclick="showCustomToast('收藏')">
                     <span class="icon">⭐</span>
                     <span>收藏</span>
                 </div>
-                <div class="action-menu-item" onclick="alert('刷新')">
+                <div class="action-menu-item" onclick="showCustomToast('刷新')">
                     <span class="icon">🔄</span>
                     <span>刷新</span>
                 </div>
@@ -1428,6 +1708,7 @@
 
             <div class="sticky-header" id="stickyHeader">
                 <div class="quick-nav" id="quickNav">
+                    <div class="pin-btn" id="pinBtn" onclick="togglePinQuickNav(event)">📌 固定</div>
                     <div class="quick-nav-item" onclick="location.href='prototype-project-info.html'">
                         <div class="icon info">📋</div>
                         <div class="label">项目信息</div>
@@ -1436,11 +1717,11 @@
                         <div class="icon structure">🏗️</div>
                         <div class="label">架构</div>
                     </div>
-                    <div class="quick-nav-item" onclick="alert('查看成员')">
+                    <div class="quick-nav-item" onclick="location.href='prototype-member.html'">
                         <div class="icon member">👥</div>
                         <div class="label">成员</div>
                     </div>
-                    <div class="quick-nav-item" onclick="alert('查看资料')">
+                    <div class="quick-nav-item" onclick="window.location.href='prototype-project-files.html'">
                         <div class="icon file">📁</div>
                         <div class="label">资料</div>
                     </div>
@@ -1462,55 +1743,20 @@
                 <div class="level-selector" id="levelSelector">
                     <div class="level-dropdown" onclick="toggleLevelDropdown()">
                         <div class="current">
-                            <div class="icon">🏢</div>
+                            <div class="icon" id="levelIcon">🏢</div>
                             <div>
-                                <div class="text">项目部</div>
-                                <div class="desc">水电工作组、泥瓦工作组等5个工作组</div>
+                                <div class="text-row">
+                                    <div class="text" id="levelText">项目部</div>
+                                    <div class="type-badge" id="levelType">项目部</div>
+                                </div>
+                                <div class="breadcrumb-inline" id="breadcrumbInline">
+                                    <span class="breadcrumb-item active">项目部</span>
+                                </div>
                             </div>
                         </div>
                         <div class="arrow" id="levelArrow">▼</div>
                     </div>
                     <div class="level-options" id="levelOptions">
-                        <div class="level-option selected" onclick="selectLevel(this, '项目部')">
-                            <div class="icon">🏢</div>
-                            <div class="info">
-                                <div class="name">项目部</div>
-                                <div class="count">5个工作组 · 8份合同</div>
-                            </div>
-                            <div class="check">✓</div>
-                        </div>
-                        <div class="level-option" onclick="selectLevel(this, '水电工作组')">
-                            <div class="icon">⚡</div>
-                            <div class="info">
-                                <div class="name">水电工作组</div>
-                                <div class="count">3个施工组 · 2份合同</div>
-                            </div>
-                            <div class="check" style="visibility: hidden;">✓</div>
-                        </div>
-                        <div class="level-option" onclick="selectLevel(this, '泥瓦工作组')">
-                            <div class="icon">🧱</div>
-                            <div class="info">
-                                <div class="name">泥瓦工作组</div>
-                                <div class="count">2个施工组 · 1份合同</div>
-                            </div>
-                            <div class="check" style="visibility: hidden;">✓</div>
-                        </div>
-                        <div class="level-option" onclick="selectLevel(this, '木工工作组')">
-                            <div class="icon">🪵</div>
-                            <div class="info">
-                                <div class="name">木工工作组</div>
-                                <div class="count">2个施工组 · 1份合同</div>
-                            </div>
-                            <div class="check" style="visibility: hidden;">✓</div>
-                        </div>
-                        <div class="level-option" onclick="selectLevel(this, '油漆工作组')">
-                            <div class="icon">🎨</div>
-                            <div class="info">
-                                <div class="name">油漆工作组</div>
-                                <div class="count">1个施工组 · 1份合同</div>
-                            </div>
-                            <div class="check" style="visibility: hidden;">✓</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1584,6 +1830,71 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>📝 今日动态</span>
+                    <span class="more" onclick="location.href='prototype-activity-list.html?level=' + encodeURIComponent(currentLevel)">查看全部 ></span>
+                </div>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-avatar">李</div>
+                            <div class="activity-info">
+                                <div class="activity-user">李监理</div>
+                                <div class="activity-time">01-15 10:30</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">完成了 开槽布线 的验收</div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">📷</div>
+                            <div class="activity-media-item">📷</div>
+                            <div class="activity-media-item video">🎬</div>
+                        </div>
+                    </div>
+                    <div class="activity-item secondary">
+                        <div class="activity-header">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);">张</div>
+                            <div class="activity-info">
+                                <div class="activity-user">张工长</div>
+                                <div class="activity-time">01-15 09:15</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">提交了 开槽布线 的验收申请</div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">📷</div>
+                            <div class="activity-media-item">📷</div>
+                        </div>
+                    </div>
+                    <div class="activity-item tertiary hidden">
+                        <div class="activity-header">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);">王</div>
+                            <div class="activity-info">
+                                <div class="activity-user">王工长</div>
+                                <div class="activity-time">01-15 08:00</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">创建了临时任务 紧急修补墙面裂缝</div>
+                    </div>
+                    <div class="activity-item quaternary hidden">
+                        <div class="activity-header">
+                            <div class="activity-avatar" style="background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);">项</div>
+                            <div class="activity-info">
+                                <div class="activity-user">项目总</div>
+                                <div class="activity-time">01-14 10:00</div>
+                            </div>
+                        </div>
+                        <div class="activity-content">签署了 水电分包合同</div>
+                        <div class="activity-media">
+                            <div class="activity-media-item">📄</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-more-btn" id="activityMoreBtn" onclick="toggleActivityList()">
+                    <span id="activityMoreText">展开更多</span>
+                    <span class="arrow" id="activityMoreArrow">▼</span>
                 </div>
             </div>
 
@@ -1695,9 +2006,9 @@
                         <div class="icon" style="background-color: #F9F0FF;">🟣</div>
                         <div class="content">
                             <div class="title">紧急修补墙面裂缝 <span class="task-tag temp">临时</span></div>
-                            <div class="desc">泥瓦分包合同 | 待接收</div>
+                            <div class="desc">泥瓦分包合同 | 待接受</div>
                         </div>
-                        <div class="status urgent">待接收</div>
+                        <div class="status urgent">待接受</div>
                     </div>
                     <div class="todo-item" onclick="location.href='prototype-temp-task-detail.html?status=accepted'">
                         <div class="icon" style="background-color: #F9F0FF;">🟣</div>
@@ -1715,7 +2026,7 @@
                         </div>
                         <div class="status pending">待开始</div>
                     </div>
-                    <div class="view-all-link" onclick="alert('查看全部待办事项')">
+                    <div class="view-all-link" onclick="location.href='prototype-todo-list.html'">
                         <span>查看全部待办</span>
                         <span class="arrow">›</span>
                     </div>
@@ -1754,84 +2065,6 @@
                         <span>查看全部临时任务</span>
                         <span class="arrow">›</span>
                     </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    <span>📝 今日动态</span>
-                    <span class="more" onclick="location.href='prototype-activity-list.html'">查看全部 ></span>
-                </div>
-                <div class="activity-list" id="activityList">
-                    <div class="activity-item">
-                        <div class="activity-header">
-                            <div class="activity-avatar">李</div>
-                            <div class="activity-info">
-                                <div class="activity-user">李监理</div>
-                                <div class="activity-time">01-15 10:30</div>
-                            </div>
-                        </div>
-                        <div class="activity-content">完成了 开槽布线 的验收</div>
-                        <div class="activity-media">
-                            <div class="activity-media-item">📷</div>
-                            <div class="activity-media-item">📷</div>
-                            <div class="activity-media-item video">🎬</div>
-                        </div>
-                    </div>
-                    <div class="activity-item secondary">
-                        <div class="activity-header">
-                            <div class="activity-avatar" style="background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);">张</div>
-                            <div class="activity-info">
-                                <div class="activity-user">张工长</div>
-                                <div class="activity-time">01-15 09:15</div>
-                            </div>
-                        </div>
-                        <div class="activity-content">提交了 开槽布线 的验收申请</div>
-                        <div class="activity-media">
-                            <div class="activity-media-item">📷</div>
-                            <div class="activity-media-item">📷</div>
-                        </div>
-                    </div>
-                    <div class="activity-item tertiary">
-                        <div class="activity-header">
-                            <div class="activity-avatar" style="background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);">王</div>
-                            <div class="activity-info">
-                                <div class="activity-user">王工长</div>
-                                <div class="activity-time">01-15 08:00</div>
-                            </div>
-                        </div>
-                        <div class="activity-content">创建了临时任务 紧急修补墙面裂缝</div>
-                    </div>
-                    <div class="activity-item quaternary hidden">
-                        <div class="activity-header">
-                            <div class="activity-avatar" style="background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);">项</div>
-                            <div class="activity-info">
-                                <div class="activity-user">项目总</div>
-                                <div class="activity-time">01-14 10:00</div>
-                            </div>
-                        </div>
-                        <div class="activity-content">签署了 水电分包合同</div>
-                        <div class="activity-media">
-                            <div class="activity-media-item">📄</div>
-                        </div>
-                    </div>
-                    <div class="activity-item hidden">
-                        <div class="activity-header">
-                            <div class="activity-avatar">赵</div>
-                            <div class="activity-info">
-                                <div class="activity-user">赵工长</div>
-                                <div class="activity-time">01-14 09:30</div>
-                            </div>
-                        </div>
-                        <div class="activity-content">完成了 水管铺设 任务</div>
-                        <div class="activity-media">
-                            <div class="activity-media-item">📷</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="activity-more-btn" id="activityMoreBtn" onclick="toggleActivityList()">
-                    <span id="activityMoreText">展开更多</span>
-                    <span class="arrow" id="activityMoreArrow">▼</span>
                 </div>
             </div>
 
@@ -1963,6 +2196,17 @@
                 </div>
             </div>
         </div>
+        
+        <div class="custom-toast-modal" id="customToastModal">
+            <div class="modal-box">
+                <div class="modal-body" id="customToastMessage">
+                    操作成功
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn" onclick="closeCustomToast()">知道了</div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="page-nav">
@@ -1980,43 +2224,200 @@
     </div>
 
     <script>
+        function showCustomToast(message) {
+            document.getElementById('customToastMessage').innerHTML = message.replace(/\n/g, '<br>');
+            document.getElementById('customToastModal').classList.add('show');
+        }
+        
+        function closeCustomToast() {
+            document.getElementById('customToastModal').classList.remove('show');
+        }
+        
         const levelData = {
             '项目部': {
+                level: 0,
+                type: 'project',
+                typeName: '项目部',
                 desc: '水电工作组、泥瓦工作组等5个工作组',
+                parent: null,
+                children: ['水电工作组', '泥瓦工作组', '木工工作组', '油漆工作组'],
                 tasks: { total: 24, accept: { current: 3, total: 8 }, contract: { current: 18, total: 20 }, temp: { current: 2, total: 4 } },
                 myTasks: { total: 8, accept: { current: 2, total: 3 }, contract: { current: 4, total: 5 }, temp: { current: 1, total: 2 } },
                 contract: { signed: { current: 6, total: 8 }, days: { used: 58, total: 90 }, remain: 32, progress: 65 },
                 todo: { count: 5, tempCount: 3 }
             },
             '水电工作组': {
+                level: 1,
+                type: 'workgroup',
+                typeName: '工作组',
                 desc: '强电施工组、弱电施工组等3个施工组',
+                parent: '项目部',
+                children: ['强电施工组', '弱电施工组', '水电辅助施工组'],
                 tasks: { total: 12, accept: { current: 2, total: 4 }, contract: { current: 8, total: 10 }, temp: { current: 1, total: 2 } },
                 myTasks: { total: 5, accept: { current: 1, total: 2 }, contract: { current: 3, total: 4 }, temp: { current: 1, total: 1 } },
                 contract: { signed: { current: 2, total: 2 }, days: { used: 35, total: 45 }, remain: 10, progress: 78 },
                 todo: { count: 3, tempCount: 2 }
             },
+            '强电施工组': {
+                level: 2,
+                type: 'team',
+                typeName: '施工组',
+                desc: '包含5个任务包，组长：张三',
+                parent: '水电工作组',
+                children: ['材料采购任务包', '布管穿线任务包', '开关插座任务包', '灯具安装任务包', '验收调试任务包'],
+                tasks: { total: 5, accept: { current: 1, total: 2 }, contract: { current: 4, total: 4 }, temp: { current: 0, total: 0 } },
+                myTasks: { total: 2, accept: { current: 1, total: 1 }, contract: { current: 1, total: 1 }, temp: { current: 0, total: 0 } },
+                contract: { signed: { current: 1, total: 1 }, days: { used: 15, total: 20 }, remain: 5, progress: 75 },
+                todo: { count: 2, tempCount: 0 }
+            },
+            '弱电施工组': {
+                level: 2,
+                type: 'team',
+                typeName: '施工组',
+                desc: '包含4个任务包，组长：李四',
+                parent: '水电工作组',
+                children: ['弱电布线任务包', '网络设备任务包', '安防系统任务包', '智能家居任务包'],
+                tasks: { total: 4, accept: { current: 1, total: 2 }, contract: { current: 3, total: 3 }, temp: { current: 1, total: 1 } },
+                myTasks: { total: 2, accept: { current: 0, total: 1 }, contract: { current: 2, total: 2 }, temp: { current: 1, total: 1 } },
+                contract: { signed: { current: 1, total: 1 }, days: { used: 10, total: 15 }, remain: 5, progress: 67 },
+                todo: { count: 1, tempCount: 1 }
+            },
+            '水电辅助施工组': {
+                level: 2,
+                type: 'team',
+                typeName: '施工组',
+                desc: '包含3个任务包，组长：王五',
+                parent: '水电工作组',
+                children: ['开槽任务包', '修补任务包', '清理任务包'],
+                tasks: { total: 3, accept: { current: 0, total: 0 }, contract: { current: 1, total: 3 }, temp: { current: 0, total: 1 } },
+                myTasks: { total: 1, accept: { current: 0, total: 0 }, contract: { current: 0, total: 1 }, temp: { current: 0, total: 0 } },
+                contract: { signed: { current: 0, total: 0 }, days: { used: 10, total: 10 }, remain: 0, progress: 100 },
+                todo: { count: 0, tempCount: 1 }
+            },
             '泥瓦工作组': {
+                level: 1,
+                type: 'workgroup',
+                typeName: '工作组',
                 desc: '贴砖施工组、防水施工组等2个施工组',
+                parent: '项目部',
+                children: ['贴砖施工组', '防水施工组'],
                 tasks: { total: 8, accept: { current: 1, total: 3 }, contract: { current: 6, total: 6 }, temp: { current: 1, total: 2 } },
                 myTasks: { total: 3, accept: { current: 1, total: 1 }, contract: { current: 2, total: 2 }, temp: { current: 0, total: 1 } },
                 contract: { signed: { current: 1, total: 1 }, days: { used: 20, total: 30 }, remain: 10, progress: 67 },
                 todo: { count: 2, tempCount: 1 }
             },
+            '贴砖施工组': {
+                level: 2,
+                type: 'team',
+                typeName: '施工组',
+                desc: '包含4个任务包，组长：赵六',
+                parent: '泥瓦工作组',
+                children: ['地面铺砖任务包', '墙面贴砖任务包', '勾缝任务包', '清理任务包'],
+                tasks: { total: 4, accept: { current: 1, total: 2 }, contract: { current: 3, total: 3 }, temp: { current: 0, total: 0 } },
+                myTasks: { total: 2, accept: { current: 1, total: 1 }, contract: { current: 1, total: 1 }, temp: { current: 0, total: 0 } },
+                contract: { signed: { current: 1, total: 1 }, days: { used: 12, total: 18 }, remain: 6, progress: 67 },
+                todo: { count: 1, tempCount: 0 }
+            },
+            '防水施工组': {
+                level: 2,
+                type: 'team',
+                typeName: '施工组',
+                desc: '包含2个任务包，组长：钱七',
+                parent: '泥瓦工作组',
+                children: ['防水施工任务包', '闭水试验任务包'],
+                tasks: { total: 2, accept: { current: 0, total: 1 }, contract: { current: 2, total: 2 }, temp: { current: 0, total: 0 } },
+                myTasks: { total: 1, accept: { current: 0, total: 0 }, contract: { current: 1, total: 1 }, temp: { current: 0, total: 0 } },
+                contract: { signed: { current: 0, total: 0 }, days: { used: 8, total: 12 }, remain: 4, progress: 67 },
+                todo: { count: 1, tempCount: 0 }
+            },
             '木工工作组': {
+                level: 1,
+                type: 'workgroup',
+                typeName: '工作组',
                 desc: '吊顶施工组、柜体施工组等2个施工组',
+                parent: '项目部',
+                children: ['吊顶施工组', '柜体施工组'],
                 tasks: { total: 6, accept: { current: 0, total: 2 }, contract: { current: 4, total: 4 }, temp: { current: 0, total: 0 } },
                 myTasks: { total: 2, accept: { current: 0, total: 1 }, contract: { current: 2, total: 2 }, temp: { current: 0, total: 0 } },
                 contract: { signed: { current: 1, total: 1 }, days: { used: 5, total: 25 }, remain: 20, progress: 20 },
                 todo: { count: 1, tempCount: 0 }
             },
             '油漆工作组': {
+                level: 1,
+                type: 'workgroup',
+                typeName: '工作组',
                 desc: '墙面施工组等1个施工组',
+                parent: '项目部',
+                children: ['墙面施工组'],
                 tasks: { total: 4, accept: { current: 0, total: 1 }, contract: { current: 4, total: 4 }, temp: { current: 0, total: 0 } },
                 myTasks: { total: 1, accept: { current: 0, total: 0 }, contract: { current: 1, total: 1 }, temp: { current: 0, total: 0 } },
                 contract: { signed: { current: 1, total: 1 }, days: { used: 0, total: 20 }, remain: 20, progress: 0 },
                 todo: { count: 0, tempCount: 0 }
             }
         };
+
+        let currentLevel = '项目部';
+        let currentLevelPath = ['项目部'];
+
+        function updateBreadcrumb(level) {
+            const breadcrumbInline = document.getElementById('breadcrumbInline');
+            const parts = [];
+            let current = level;
+            
+            while (current) {
+                parts.unshift(current);
+                current = levelData[current].parent;
+            }
+            
+            breadcrumbInline.innerHTML = parts.map((part, index) => {
+                const isLast = index === parts.length - 1;
+                const separator = isLast ? '' : '<span class="separator">›</span>';
+                return `<span class="breadcrumb-item ${isLast ? 'active' : ''}" onclick="navigateToLevel('${part}')">${part}</span>${separator}`;
+            }).join('');
+        }
+
+        function navigateToLevel(level) {
+            if (level === currentLevel) return;
+            
+            const data = levelData[level];
+            
+            document.getElementById('levelIcon').textContent = getLevelIcon(data.type);
+            document.getElementById('levelText').textContent = level;
+            
+            const typeBadge = document.getElementById('levelType');
+            typeBadge.textContent = data.typeName;
+            typeBadge.className = 'type-badge ' + data.type;
+
+            showPartialLoading();
+
+            setTimeout(() => {
+                updatePageData(level);
+                updateBreadcrumb(level);
+                currentLevel = level;
+                hidePartialLoading();
+            }, 200);
+        }
+
+        function showPartialLoading() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (!card.querySelector('.partial-loading')) {
+                    const loading = document.createElement('div');
+                    loading.className = 'partial-loading show';
+                    loading.innerHTML = '<div class="loading-spinner"></div>';
+                    card.style.position = 'relative';
+                    card.appendChild(loading);
+                } else {
+                    card.querySelector('.partial-loading').classList.add('show');
+                }
+            });
+        }
+
+        function hidePartialLoading() {
+            document.querySelectorAll('.partial-loading').forEach(loading => {
+                loading.classList.remove('show');
+            });
+        }
 
         function toggleLevelDropdown() {
             const options = document.getElementById('levelOptions');
@@ -2028,32 +2429,103 @@
                 arrow.classList.remove('open');
                 pageContent.style.overflow = 'auto';
             } else {
+                updateLevelOptions();
                 options.classList.add('show');
                 arrow.classList.add('open');
                 pageContent.style.overflow = 'hidden';
             }
         }
 
-        function selectLevel(element, name) {
-            document.querySelectorAll('.level-option').forEach(opt => {
-                opt.classList.remove('selected');
-                opt.querySelector('.check').style.visibility = 'hidden';
-            });
-            element.classList.add('selected');
-            element.querySelector('.check').style.visibility = 'visible';
+        function getLevelIcon(type) {
+            const icons = {
+                'project': '🏢',
+                'workgroup': '⚡',
+                'team': '👷',
+                'task': '📦'
+            };
+            return icons[type] || '📋';
+        }
 
-            document.querySelector('.level-dropdown .text').textContent = name;
-            document.querySelector('.level-dropdown .desc').textContent = levelData[name].desc;
+        function updateLevelOptions() {
+            const options = document.getElementById('levelOptions');
+            const currentData = levelData[currentLevel];
+            const currentLevelNum = currentData.level;
+            
+            let html = '';
+            
+            if (currentLevelNum > 0) {
+                let parent = currentData.parent;
+                while (parent) {
+                    const parentData = levelData[parent];
+                    html = createLevelOption(parent, parentData, false) + html;
+                    parent = parentData.parent;
+                }
+            }
+            
+            html += createLevelOption(currentLevel, currentData, true);
+            
+            if (currentData.children && currentData.children.length > 0) {
+                currentData.children.forEach(child => {
+                    const childData = levelData[child];
+                    if (childData) {
+                        html += createLevelOption(child, childData, false);
+                    }
+                });
+            }
+            
+            options.innerHTML = html;
+        }
+
+        function createLevelOption(name, data, isSelected) {
+            const icon = getLevelIcon(data.type);
+            const childrenCount = data.children ? data.children.length : 0;
+            let countText = '';
+            
+            if (data.type === 'project') {
+                countText = `${childrenCount}个工作组 · ${data.contract.signed.total}份合同`;
+            } else if (data.type === 'workgroup') {
+                countText = `${childrenCount}个施工组 · ${data.contract.signed.total}份合同`;
+            } else if (data.type === 'team') {
+                countText = `${childrenCount}个任务包 · ${data.tasks.total}个任务`;
+            }
+            
+            return `
+                <div class="level-option ${isSelected ? 'selected' : ''}" onclick="selectLevel(this, '${name}')">
+                    <div class="icon">${icon}</div>
+                    <div class="info">
+                        <div class="name">${name}</div>
+                        <div class="count">${countText}</div>
+                    </div>
+                    <div class="check" style="visibility: ${isSelected ? 'visible' : 'hidden'};">✓</div>
+                </div>
+            `;
+        }
+
+        function selectLevel(element, name) {
+            if (name === currentLevel) {
+                toggleLevelDropdown();
+                return;
+            }
+            
+            const data = levelData[name];
+            
+            document.getElementById('levelIcon').textContent = getLevelIcon(data.type);
+            document.getElementById('levelText').textContent = name;
+            
+            const typeBadge = document.getElementById('levelType');
+            typeBadge.textContent = data.typeName;
+            typeBadge.className = 'type-badge ' + data.type;
 
             toggleLevelDropdown();
 
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            loadingOverlay.classList.add('show');
+            showPartialLoading();
 
             setTimeout(() => {
                 updatePageData(name);
-                loadingOverlay.classList.remove('show');
-            }, 300);
+                updateBreadcrumb(name);
+                currentLevel = name;
+                hidePartialLoading();
+            }, 200);
         }
 
         function updatePageData(level) {
@@ -2243,15 +2715,15 @@
 
         function addConfirmPerson(name) {
             if (selectedConfirmPersons.length >= 5) {
-                alert('确认人最多只能添加5人');
+                showCustomToast('确认人最多只能添加5人');
                 return;
             }
             if (selectedConfirmPersons.includes(name)) {
-                alert('该确认人已添加');
+                showCustomToast('该确认人已添加');
                 return;
             }
             if (name === selectedExecutor) {
-                alert('确认人不能与执行人相同');
+                showCustomToast('确认人不能与执行人相同');
                 return;
             }
             selectedConfirmPersons.push(name);
@@ -2290,11 +2762,11 @@
             const liableStandard = document.getElementById('tempTaskLiableStandard').value.trim();
 
             if (!name || !contract || !selectedExecutor) {
-                alert('请填写必填项');
+                showCustomToast('请填写必填项');
                 return;
             }
 
-            alert(`临时任务创建成功！\n\n任务名称：${name}\n执行人：${selectedExecutor}\n确认人：${selectedConfirmPersons.join('、') || '无'}\n\n已派发给执行人，等待接收。`);
+            showCustomToast(`临时任务创建成功！\n\n任务名称：${name}\n执行人：${selectedExecutor}\n确认人：${selectedConfirmPersons.join('、') || '无'}\n\n已派发给执行人，等待接受。`);
             closeCreateTempTaskModal();
             
             showTaskNotification(1);
@@ -2351,15 +2823,18 @@
         function toggleActivityList() {
             const moreText = document.getElementById('activityMoreText');
             const moreArrow = document.getElementById('activityMoreArrow');
+            const activityList = document.getElementById('activityList');
             const hiddenItems = document.querySelectorAll('.activity-item.hidden');
 
             if (activityExpanded) {
                 hiddenItems.forEach(item => item.classList.add('hidden'));
+                activityList.classList.remove('expanded');
                 moreText.textContent = '展开更多';
                 moreArrow.classList.remove('expanded');
                 activityExpanded = false;
             } else {
                 document.querySelectorAll('.activity-item').forEach(item => item.classList.remove('hidden'));
+                activityList.classList.add('expanded');
                 moreText.textContent = '收起';
                 moreArrow.classList.add('expanded');
                 activityExpanded = true;
@@ -2444,6 +2919,44 @@
                 actionMenu.classList.remove('show');
             }
         });
+
+        function togglePinQuickNav(event) {
+            event.stopPropagation();
+            const quickNav = document.getElementById('quickNav');
+            const pinBtn = document.getElementById('pinBtn');
+            
+            if (quickNav.classList.contains('pinned')) {
+                quickNav.classList.remove('pinned');
+                pinBtn.textContent = '📌 固定';
+                localStorage.setItem('quickNavPinned', 'false');
+            } else {
+                quickNav.classList.add('pinned');
+                pinBtn.textContent = '📌 取消固定';
+                localStorage.setItem('quickNavPinned', 'true');
+            }
+        }
+
+        function initQuickNavPinState() {
+            const isPinned = localStorage.getItem('quickNavPinned') === 'true';
+            const quickNav = document.getElementById('quickNav');
+            const pinBtn = document.getElementById('pinBtn');
+            
+            if (isPinned && quickNav && pinBtn) {
+                quickNav.classList.add('pinned');
+                pinBtn.textContent = '📌 取消固定';
+            }
+        }
+
+        initQuickNavPinState();
+        
+        (function initLevelDisplay() {
+            const data = levelData[currentLevel];
+            const typeBadge = document.getElementById('levelType');
+            if (typeBadge && data) {
+                typeBadge.textContent = data.typeName;
+                typeBadge.className = 'type-badge ' + data.type;
+            }
+        })();
     </script>
 </body>
 </html>
