@@ -103,12 +103,12 @@
 
         .people-section {
             display: flex;
-            gap: 16px;
+            flex-direction: column;
+            gap: 12px;
             margin-bottom: 16px;
         }
 
         .people-card {
-            flex: 1;
             background-color: var(--bg-secondary);
             border-radius: 8px;
             padding: 12px;
@@ -117,7 +117,22 @@
         .people-card .card-label {
             font-size: 12px;
             color: var(--text-tertiary);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .people-card .card-label .label-icon {
+            font-size: 14px;
+        }
+
+        .people-card .card-label .label-tag {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
         }
 
         .people-card .person-list {
@@ -129,33 +144,49 @@
         .people-card .person-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             background-color: var(--bg-primary);
-            padding: 6px 10px;
-            border-radius: 16px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 140px;
         }
 
         .people-card .person-avatar {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #FFFFFF;
-            font-size: 11px;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .people-card .person-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .people-card .person-name {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .people-card .person-role {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
         }
 
         .people-card .person-tag {
             font-size: 10px;
-            padding: 1px 4px;
+            padding: 2px 6px;
             border-radius: 4px;
+            flex-shrink: 0;
         }
 
         .people-card .person-tag.confirmed {
@@ -166,6 +197,36 @@
         .people-card .person-tag.pending {
             background-color: var(--status-warning-bg);
             color: var(--warning-color);
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        .role-badge.designer {
+            background-color: #E6F7FF;
+            color: #1890FF;
+        }
+
+        .role-badge.foreman {
+            background-color: #F6FFED;
+            color: #52C41A;
+        }
+
+        .role-badge.owner {
+            background-color: #FFF7E6;
+            color: #FA8C16;
+        }
+
+        .role-badge.manager {
+            background-color: #F9F0FF;
+            color: #722ED1;
         }
 
         .standard-card {
@@ -731,25 +792,38 @@
             <div class="card">
                 <div class="people-section">
                     <div class="people-card">
-                        <div class="card-label">执行人</div>
+                        <div class="card-label">
+                            <span class="label-icon">👤</span>
+                            <span>执行人</span>
+                        </div>
                         <div class="person-list">
                             <div class="person-item">
                                 <div class="person-avatar">李</div>
-                                <div class="person-name">李四</div>
+                                <div class="person-info">
+                                    <div class="person-name">李四 <span class="role-badge foreman">工长</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="people-card">
-                        <div class="card-label">确认人</div>
+                        <div class="card-label">
+                            <span class="label-icon">👥</span>
+                            <span>确认人</span>
+                            <span class="label-tag">2人</span>
+                        </div>
                         <div class="person-list" id="confirmPersonList">
                             <div class="person-item">
                                 <div class="person-avatar">张</div>
-                                <div class="person-name">张三</div>
+                                <div class="person-info">
+                                    <div class="person-name">张三 <span class="role-badge manager">项目总</span></div>
+                                </div>
                                 <div class="person-tag pending" id="confirm1">待确认</div>
                             </div>
                             <div class="person-item">
                                 <div class="person-avatar">王</div>
-                                <div class="person-name">王五</div>
+                                <div class="person-info">
+                                    <div class="person-name">王五 <span class="role-badge owner">业主</span></div>
+                                </div>
                                 <div class="person-tag pending" id="confirm2">待确认</div>
                             </div>
                         </div>
@@ -917,7 +991,7 @@
         <a href="prototype-contract-detail.html" class="page-nav-item">合同详情</a>
         <a href="prototype-task-detail.html" class="page-nav-item">任务详情</a>
         <a href="prototype-temp-task-detail.html" class="page-nav-item active">临时任务详情</a>
-        <a href="prototype-task-acceptance.html" class="page-nav-item">接任务</a>
+        <a href="prototype-task-acceptance.html" class="page-nav-item">临时任务</a>
         <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
             <div class="page-nav-title">任务状态切换</div>
             <div class="status-switcher">
@@ -1079,7 +1153,7 @@
                         <div class="avatar">张</div>
                         <div class="info">
                             <div class="name-row">
-                                <div class="name">张三</div>
+                                <div class="name">张三 <span class="role-badge manager">项目总</span></div>
                                 <div class="status-tag pending">待确认</div>
                             </div>
                             <div class="time">等待确认中...</div>
@@ -1089,7 +1163,7 @@
                         <div class="avatar">王</div>
                         <div class="info">
                             <div class="name-row">
-                                <div class="name">王五</div>
+                                <div class="name">王五 <span class="role-badge owner">业主</span></div>
                                 <div class="status-tag pending">待确认</div>
                             </div>
                             <div class="time">等待确认中...</div>
@@ -1126,7 +1200,7 @@
                         <div class="avatar">张</div>
                         <div class="info">
                             <div class="name-row">
-                                <div class="name">张三</div>
+                                <div class="name">张三 <span class="role-badge manager">项目总</span></div>
                                 <div class="status-tag confirmed">已确认</div>
                             </div>
                             <div class="time">2024-01-26 14:20</div>
@@ -1144,7 +1218,7 @@
                         <div class="avatar">王</div>
                         <div class="info">
                             <div class="name-row">
-                                <div class="name">王五</div>
+                                <div class="name">王五 <span class="role-badge owner">业主</span></div>
                                 <div class="status-tag confirmed">已确认</div>
                             </div>
                             <div class="time">2024-01-26 15:30</div>

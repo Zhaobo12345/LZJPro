@@ -91,6 +91,77 @@
             margin-right: 16px;
         }
 
+        .project-stats {
+            display: flex;
+            gap: 16px;
+            margin: 12px 0;
+        }
+
+        .stat-box {
+            flex: 1;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .stat-box .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .stat-box .stat-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .stat-box .stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-box .stat-progress {
+            height: 4px;
+            background-color: var(--bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .stat-box .stat-progress-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .stat-box .stat-progress-bar.contract {
+            background-color: var(--success-color);
+        }
+
+        .stat-box .stat-progress-bar.task {
+            background-color: var(--primary-color);
+        }
+
+        .stat-box .stat-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
+        .pending-task-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
         /* ── 子项目标签 */
         .sub-projects {
             display: flex;
@@ -155,8 +226,8 @@
         <div class="nav-bar">
             <div class="title">📋 项目列表</div>
             <div class="actions">
-                <div class="action-btn" onclick="location.href='prototype-create-project.html'">+</div>
-                <div class="action-btn">🔍</div>
+                <div class="action-btn" onclick="showMoreActions()">⋯</div>
+                <div class="action-btn" onclick="closeMiniProgram()">✕</div>
             </div>
         </div>
         
@@ -179,21 +250,39 @@
                     <div class="project-status">进行中</div>
                 </div>
                 <div class="project-info">
-                    <span class="project-info-item">项目类型：家装</span>
-                    <span class="project-info-item">预算：50万元</span>
-                </div>
-                <div class="project-info">
+                    <span class="project-info-item">📍 XX小区***号***室</span>
                     <span class="project-info-item">工期：2024-01-01 ~ 2024-03-31</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 65%"></div>
+                <div class="project-stats">
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">合同</span>
+                            <span class="stat-value">4/5</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar contract" style="width: 80%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已签约4份</span>
+                            <span>共5份</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">任务</span>
+                            <span class="stat-value">18/24</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar task" style="width: 75%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已完成18项</span>
+                            <span>共24项</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="progress-text">进度：65%</div>
-                <div class="sub-projects">
-                    <span class="sub-project-tag">水电工程 65%</span>
-                    <span class="sub-project-tag">泥瓦工程 30%</span>
-                    <span class="sub-project-tag">木工工程 0%</span>
-                    <span class="sub-project-tag">油漆工程 0%</span>
+                <div class="project-info">
+                    <span class="pending-task-badge">📋 待完成 3 项任务</span>
                 </div>
             </div>
             
@@ -203,19 +292,39 @@
                     <div class="project-status">进行中</div>
                 </div>
                 <div class="project-info">
-                    <span class="project-info-item">项目类型：家装</span>
-                    <span class="project-info-item">预算：35万元</span>
-                </div>
-                <div class="project-info">
+                    <span class="project-info-item">📍 YY花园***栋***单元</span>
                     <span class="project-info-item">工期：2024-02-01 ~ 2024-04-30</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 30%"></div>
+                <div class="project-stats">
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">合同</span>
+                            <span class="stat-value">2/3</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar contract" style="width: 66%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已签约2份</span>
+                            <span>共3份</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">任务</span>
+                            <span class="stat-value">8/15</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar task" style="width: 53%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已完成8项</span>
+                            <span>共15项</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="progress-text">进度：30%</div>
-                <div class="sub-projects">
-                    <span class="sub-project-tag">水电工程 60%</span>
-                    <span class="sub-project-tag">泥瓦工程 0%</span>
+                <div class="project-info">
+                    <span class="pending-task-badge">📋 待完成 5 项任务</span>
                 </div>
             </div>
             
@@ -225,16 +334,37 @@
                     <div class="project-status pending">待启动</div>
                 </div>
                 <div class="project-info">
-                    <span class="project-info-item">项目类型：工装</span>
-                    <span class="project-info-item">预算：80万元</span>
-                </div>
-                <div class="project-info">
+                    <span class="project-info-item">📍 ZZ办公楼***层</span>
                     <span class="project-info-item">工期：2024-03-01 ~ 2024-06-30</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 0%"></div>
+                <div class="project-stats">
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">合同</span>
+                            <span class="stat-value">0/3</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar contract" style="width: 0%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已签约0份</span>
+                            <span>共3份</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">任务</span>
+                            <span class="stat-value">0/20</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar task" style="width: 0%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已完成0项</span>
+                            <span>共20项</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="progress-text">进度：0%</div>
             </div>
             
             <div class="project-card" onclick="location.href='prototype-project-detail.html'">
@@ -243,16 +373,37 @@
                     <div class="project-status completed">已完工</div>
                 </div>
                 <div class="project-info">
-                    <span class="project-info-item">项目类型：家装</span>
-                    <span class="project-info-item">预算：120万元</span>
-                </div>
-                <div class="project-info">
+                    <span class="project-info-item">📍 AA别墅***号</span>
                     <span class="project-info-item">工期：2023-09-01 ~ 2024-01-31</span>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 100%; background-color: var(--success-color);"></div>
+                <div class="project-stats">
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">合同</span>
+                            <span class="stat-value">6/6</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar contract" style="width: 100%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已签约6份</span>
+                            <span>共6份</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-header">
+                            <span class="stat-label">任务</span>
+                            <span class="stat-value">32/32</span>
+                        </div>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar task" style="width: 100%"></div>
+                        </div>
+                        <div class="stat-footer">
+                            <span>已完成32项</span>
+                            <span>共32项</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="progress-text">进度：100%</div>
             </div>
         </div>
         
@@ -301,6 +452,14 @@
                 this.classList.add('active');
             });
         });
+        
+        function showMoreActions() {
+            alert('更多操作：\n• 分享\n• 刷新\n• 设置');
+        }
+        
+        function closeMiniProgram() {
+            alert('关闭小程序');
+        }
     </script>
 </body>
 </html>

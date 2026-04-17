@@ -604,3 +604,109 @@ body {
 .mt-8           { margin-top: 8px; }
 .mb-8           { margin-bottom: 8px; }
 .mb-12          { margin-bottom: 12px; }
+
+/* --------------------------------------------------------------------------
+   20. 小程序内部弹窗（Toast / Modal）
+   -------------------------------------------------------------------------- */
+.app-modal {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-modal.show { display: flex; }
+
+.app-modal .modal-box {
+    width: 280px;
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.app-modal .modal-title {
+    padding: 20px 20px 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.app-modal .modal-content {
+    padding: 0 20px 20px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.app-modal .modal-actions {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+}
+
+.app-modal .modal-btn {
+    flex: 1;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.app-modal .modal-btn:first-child {
+    border-right: 1px solid var(--border-color);
+}
+
+.app-modal .modal-btn.cancel {
+    color: var(--text-secondary);
+}
+
+.app-modal .modal-btn.confirm {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.app-modal .modal-btn.danger {
+    color: var(--error-color);
+    font-weight: 600;
+}
+
+.app-modal .modal-single-btn {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    border-top: 1px solid var(--border-color);
+}
+
+.app-toast {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.7);
+    color: #FFFFFF;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 1001;
+    display: none;
+    text-align: center;
+    max-width: 200px;
+}
+
+.app-toast.show { display: block; }

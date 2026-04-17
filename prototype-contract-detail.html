@@ -22,6 +22,8 @@
         .status-banner.draft      { background: linear-gradient(135deg, #8C8C8C 0%, #BFBFBF 100%); }
         .status-banner.confirming { background: linear-gradient(135deg, var(--orange-color) 0%, var(--orange-light) 100%); }
         .status-banner.confirmed  { background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%); }
+        .status-banner.signing    { background: linear-gradient(135deg, var(--purple-color) 0%, var(--purple-light) 100%); }
+        .status-banner.signing-wait { background: linear-gradient(135deg, var(--warning-color) 0%, var(--warning-light) 100%); }
         .status-banner.signed     { background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); }
 
         .status-banner .status-text {
@@ -203,6 +205,17 @@
             font-size: 13px;
             color: var(--text-primary);
             text-align: left;
+        }
+
+        .contract-category-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
         }
 
         .party-card {
@@ -414,6 +427,9 @@
         }
 
         .task-item .task-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
             font-size: 11px;
             color: var(--text-secondary);
             background-color: var(--bg-secondary);
@@ -421,10 +437,25 @@
             border-radius: 4px;
         }
 
-        .task-item .task-amount {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--warning-color);
+        .task-item .task-meta-item .role-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 4px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .task-item .task-meta-item .role-tag.executor {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .task-item .task-meta-item .role-tag.confirmer {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
         }
 
         .attachment-item {
@@ -787,6 +818,299 @@
 
         .change-modal.show { display: flex; }
 
+        .sign-upload-page {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--bg-secondary);
+            z-index: 500;
+            display: none;
+            flex-direction: column;
+        }
+
+        .sign-upload-page.show { display: flex; }
+
+        .sign-upload-page .page-header {
+            height: 44px;
+            background-color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .sign-upload-page .header-back {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .sign-upload-page .header-title {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .sign-upload-page .header-placeholder {
+            width: 60px;
+        }
+
+        .sign-upload-page .page-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .sign-upload-page .page-footer {
+            padding: 12px 16px;
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .sign-upload-page .submit-btn {
+            width: 100%;
+            height: 44px;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .sign-upload-page .notice-card {
+            background-color: #E6F7FF;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .sign-upload-page .notice-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .sign-upload-page .notice-list {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding-left: 16px;
+            margin: 0;
+        }
+
+        .sign-upload-page .notice-list li {
+            margin-bottom: 4px;
+        }
+
+        .sign-upload-page .section-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .sign-upload-page .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sign-upload-page .upload-box {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sign-upload-page .upload-box:hover {
+            border-color: var(--primary-color);
+            background-color: #E6F7FF;
+        }
+
+        .sign-upload-page .upload-box .icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .sign-upload-page .upload-box .text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .sign-upload-page .upload-box .hint {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .sign-upload-page .file-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-top: 12px;
+        }
+
+        .sign-upload-page .file-item .file-icon {
+            font-size: 28px;
+            margin-right: 12px;
+        }
+
+        .sign-upload-page .file-item .file-info {
+            flex: 1;
+        }
+
+        .sign-upload-page .file-item .file-name {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .sign-upload-page .file-item .file-size {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .sign-upload-page .file-item .file-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--error-color);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .sign-upload-page .remark-input {
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            color: var(--text-primary);
+            resize: none;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .sign-upload-page .remark-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .export-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .export-modal.show { display: flex; }
+
+        .export-modal .modal-content {
+            width: 100%;
+            background-color: var(--bg-primary);
+            border-radius: 16px 16px 0 0;
+            padding: 16px;
+        }
+
+        .export-modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .export-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .export-modal .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .export-modal .export-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-modal .export-option:hover {
+            background-color: #E6F7FF;
+        }
+
+        .export-modal .export-option .icon {
+            font-size: 28px;
+            margin-right: 12px;
+        }
+
+        .export-modal .export-option .info {
+            flex: 1;
+        }
+
+        .export-modal .export-option .title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .export-modal .export-option .desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .export-modal .export-option .arrow {
+            color: var(--text-tertiary);
+        }
+
+        .toast {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.7);
+            color: #FFFFFF;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 700;
+            display: none;
+            text-align: center;
+        }
+
+        .toast.show { display: block; }
+
         .change-modal .change-header {
             height: 44px;
             background-color: var(--bg-primary);
@@ -1134,6 +1458,119 @@
         }
 
         .change-confirm-modal.show { display: flex; }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: #E6F7FF;
+        }
+        
+        .upload-area .upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .upload-area .upload-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .upload-area .upload-hint {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .file-list {
+            margin-top: 12px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .file-item .file-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .file-item .file-info {
+            flex: 1;
+        }
+        
+        .file-item .file-name {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        
+        .file-item .file-size {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+        
+        .file-item .file-remove {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--error-color);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .sign-file-preview {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        
+        .sign-file-preview .file-icon {
+            font-size: 32px;
+            margin-right: 12px;
+        }
+        
+        .sign-file-preview .file-info {
+            flex: 1;
+        }
+        
+        .sign-file-preview .file-name {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .sign-file-preview .file-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+        
+        .sign-file-preview .file-action {
+            padding: 6px 12px;
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
 
         .change-confirm-modal .modal-content {
             width: 300px;
@@ -1247,6 +1684,14 @@
                     <span class="icon">📋</span>
                     <span>版本记录</span>
                 </div>
+                <div class="action-menu-item" onclick="showChangeRecordModal(); closeActionMenu();">
+                    <span class="icon">📜</span>
+                    <span>变更记录</span>
+                </div>
+                <div class="action-menu-item" id="exportContractBtn" style="display: none;" onclick="exportContract(); closeActionMenu();">
+                    <span class="icon">📄</span>
+                    <span>导出合同文件</span>
+                </div>
                 <div class="action-menu-item" onclick="alert('分享给朋友'); closeActionMenu();">
                     <span class="icon">📤</span>
                     <span>分享给朋友</span>
@@ -1314,6 +1759,10 @@
                     <div class="value">水电分包合同</div>
                 </div>
                 <div class="info-row">
+                    <div class="label">合同类别</div>
+                    <div class="value"><span class="contract-category-tag">水电服务合同</span></div>
+                </div>
+                <div class="info-row">
                     <div class="label">合同编号</div>
                     <div class="value">HT-2024-001</div>
                 </div>
@@ -1357,7 +1806,6 @@
                 <div class="section-tab active" onclick="switchSection(this, 'content')">合同内容</div>
                 <div class="section-tab" onclick="switchSection(this, 'stages')">阶段任务</div>
                 <div class="section-tab" onclick="switchSection(this, 'attachments')">附件</div>
-                <div class="section-tab" onclick="switchSection(this, 'agreement')">补充协议</div>
             </div>
             
             <div class="section-content show" id="contentSection">
@@ -1400,36 +1848,33 @@
                                 <div class="task-info">
                                     <div class="task-name">材料采购</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：张三</span>
-                                        <span class="task-meta-item">确认人：李四、王五</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 张三</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 李四、王五</span>
                                     </div>
                                     <div class="task-desc">已完成 · 2024-01-12</div>
                                 </div>
-                                <div class="task-amount">¥15,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status completed">✓</div>
                                 <div class="task-info">
                                     <div class="task-name">材料运输</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：张三</span>
-                                        <span class="task-meta-item">确认人：李四</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 张三</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 李四</span>
                                     </div>
                                     <div class="task-desc">已完成 · 2024-01-13</div>
                                 </div>
-                                <div class="task-amount">¥2,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status completed">✓</div>
                                 <div class="task-info">
                                     <div class="task-name">材料确认</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：张三</span>
-                                        <span class="task-meta-item">确认人：李四、王五、赵六</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 张三</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 李四、王五、赵六</span>
                                     </div>
                                     <div class="task-desc">已完成 · 2024-01-13</div>
                                 </div>
-                                <div class="task-amount">-</div>
                             </div>
                         </div>
                     </div>
@@ -1452,48 +1897,44 @@
                                 <div class="task-info">
                                     <div class="task-name">开槽</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：李四</span>
-                                        <span class="task-meta-item">确认人：张三、王五</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五</span>
                                     </div>
                                     <div class="task-desc">已完成 · 2024-01-18</div>
                                 </div>
-                                <div class="task-amount">¥5,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status completed">✓</div>
                                 <div class="task-info">
                                     <div class="task-name">布管</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：李四</span>
-                                        <span class="task-meta-item">确认人：张三、王五</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五</span>
                                     </div>
                                     <div class="task-desc">已完成 · 2024-01-22</div>
                                 </div>
-                                <div class="task-amount">¥8,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status in-progress">⋯</div>
                                 <div class="task-info">
                                     <div class="task-name">穿线</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：李四</span>
-                                        <span class="task-meta-item">确认人：张三、王五、赵六</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五、赵六</span>
                                     </div>
                                     <div class="task-desc">确认中 · 已提交执行记录</div>
                                 </div>
-                                <div class="task-amount">¥10,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status pending">○</div>
                                 <div class="task-info">
                                     <div class="task-name">阶段确认</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：李四</span>
-                                        <span class="task-meta-item">确认人：张三、王五</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
-                                <div class="task-amount">-</div>
                             </div>
                         </div>
                     </div>
@@ -1516,36 +1957,33 @@
                                 <div class="task-info">
                                     <div class="task-name">开关插座安装</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：王五</span>
-                                        <span class="task-meta-item">确认人：张三、李四</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 王五</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、李四</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
-                                <div class="task-amount">¥8,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status pending">○</div>
                                 <div class="task-info">
                                     <div class="task-name">灯具安装</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：王五</span>
-                                        <span class="task-meta-item">确认人：张三、李四</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 王五</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、李四</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
-                                <div class="task-amount">¥6,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status pending">○</div>
                                 <div class="task-info">
                                     <div class="task-name">阶段确认</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：王五</span>
-                                        <span class="task-meta-item">确认人：张三、李四、赵六</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 王五</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、李四、赵六</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
-                                <div class="task-amount">-</div>
                             </div>
                         </div>
                     </div>
@@ -1568,24 +2006,22 @@
                                 <div class="task-info">
                                     <div class="task-name">清理现场</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：李四</span>
-                                        <span class="task-meta-item">确认人：张三、王五</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
-                                <div class="task-amount">¥1,000</div>
                             </div>
                             <div class="task-item" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status pending">○</div>
                                 <div class="task-info">
                                     <div class="task-name">最终确认</div>
                                     <div class="task-meta-row">
-                                        <span class="task-meta-item">执行人：李四</span>
-                                        <span class="task-meta-item">确认人：张三、王五、赵六、钱七、孙八</span>
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五、赵六、钱七、孙八</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
-                                <div class="task-amount">-</div>
                             </div>
                         </div>
                     </div>
@@ -1593,6 +2029,23 @@
             </div>
             
             <div class="section-content" id="attachmentsSection">
+                <div class="card" id="signFileCard" style="display: none;">
+                    <div class="card-title">
+                        <span>📝 签约文件</span>
+                        <span class="more" id="signFileUploadBtn" onclick="showSignUploadPage()">+ 上传</span>
+                    </div>
+                    <div id="signFileListContainer">
+                        <div class="attachment-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-info">
+                                <div class="file-name">水电分包合同_签约文件.pdf</div>
+                                <div class="file-meta">张三上传 · 2024-01-15 10:30</div>
+                            </div>
+                            <div class="download-btn" onclick="alert('预览文件')">👁️</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="card">
                     <div class="card-title">
                         <span>📎 合同附件</span>
@@ -1618,7 +2071,6 @@
                 <div class="card">
                     <div class="card-title">
                         <span>📁 补充文件</span>
-                        <span class="more" onclick="alert('上传附件')">+ 上传</span>
                     </div>
                     <div class="attachment-item">
                         <div class="file-icon">📊</div>
@@ -1635,33 +2087,6 @@
                             <div class="file-meta">5.8MB · 2024-01-12上传</div>
                         </div>
                         <div class="download-btn" onclick="alert('下载文件')">⬇</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="section-content" id="agreementSection">
-                <div class="card">
-                    <div class="card-title">
-                        <span>📄 补充协议</span>
-                        <span class="more" onclick="alert('添加补充协议')">+ 添加</span>
-                    </div>
-                    <div class="empty-state">
-                        <div class="icon">📋</div>
-                        <div class="text">暂无补充协议</div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <span>📜 变更记录</span>
-                    </div>
-                    <div class="version-item">
-                        <div class="version-tag current">V1</div>
-                        <div class="version-info">
-                            <div class="version-name">初始版本</div>
-                            <div class="version-date">2024-01-10 10:30 创建</div>
-                        </div>
-                        <div class="view-btn" onclick="alert('查看详情')">查看</div>
                     </div>
                 </div>
             </div>
@@ -1979,49 +2404,200 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="title" id="modalTitle">确认操作</div>
-            </div>
-            <div class="modal-body">
-                <div class="message" id="modalMessage">确定要执行此操作吗？</div>
-            </div>
-            <div class="modal-footer">
-                <div class="btn cancel" onclick="closeModal()">取消</div>
-                <div class="btn confirm" onclick="confirmAction()">确定</div>
+        
+        <div class="modal-overlay" id="confirmModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="title" id="modalTitle">确认操作</div>
+                </div>
+                <div class="modal-body">
+                    <div class="message" id="modalMessage">确定要执行此操作吗？</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn cancel" onclick="closeModal()">取消</div>
+                    <div class="btn confirm" onclick="confirmAction()">确定</div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="modal-overlay" id="versionModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="title">合同版本记录</div>
-            </div>
-            <div class="modal-body">
-                <div class="version-item">
-                    <div class="version-tag current">V1</div>
-                    <div class="version-info">
-                        <div class="version-name">初始版本（当前）</div>
-                        <div class="version-date">2024-01-10 创建</div>
-                    </div>
-                    <div class="view-btn">查看</div>
+        
+        <div class="modal-overlay" id="versionModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="title">合同版本记录</div>
                 </div>
-                <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
-                    <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">状态流转记录</div>
-                    <div style="font-size: 12px; color: #595959; line-height: 1.8;">
-                        <div>2024-01-05 创建合同（拟定中）</div>
-                        <div>2024-01-06 提交确认（确认中）</div>
-                        <div>2024-01-08 乙方确认（已确认）</div>
-                        <div>2024-01-10 上传签约文件（已签约）</div>
+                <div class="modal-body">
+                    <div class="version-item">
+                        <div class="version-tag current">V1</div>
+                        <div class="version-info">
+                            <div class="version-name">初始版本（当前）</div>
+                            <div class="version-date">2024-01-10 创建</div>
+                        </div>
+                        <div class="view-btn">查看</div>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+                        <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">状态流转记录</div>
+                        <div style="font-size: 12px; color: #595959; line-height: 1.8;">
+                            <div>2024-01-05 创建合同（拟定中）</div>
+                            <div>2024-01-06 提交确认（确认中）</div>
+                            <div>2024-01-08 乙方确认（已确认）</div>
+                            <div>2024-01-10 上传签约文件（已签约）</div>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <div class="btn confirm" onclick="closeVersionModal()" style="width: 100%;">关闭</div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <div class="btn confirm" onclick="closeVersionModal()" style="width: 100%;">关闭</div>
+        </div>
+        
+        <div class="sign-upload-page" id="signUploadPage">
+            <div class="page-header">
+                <div class="header-back" onclick="closeSignUploadPage()">
+                    <span>← 返回</span>
+                </div>
+                <div class="header-title">上传签约文件</div>
+                <div class="header-placeholder"></div>
+            </div>
+            <div class="page-content">
+                <div class="notice-card">
+                    <div class="notice-title">
+                        <span>📋</span>
+                        <span>上传说明</span>
+                    </div>
+                    <ul class="notice-list">
+                        <li>请上传线下签约后的合同扫描件或照片</li>
+                        <li>支持PDF、JPG、PNG格式，单个文件不超过10MB</li>
+                        <li>上传后需要对方确认，确认后合同正式生效</li>
+                    </ul>
+                </div>
+                
+                <div class="section-card">
+                    <div class="section-title">
+                        <span>📎</span>
+                        <span>签约文件</span>
+                    </div>
+                    <div class="upload-box" onclick="document.getElementById('signFileInput').click()">
+                        <div class="icon">📁</div>
+                        <div class="text">点击上传签约文件</div>
+                        <div class="hint">支持 PDF、JPG、PNG 格式</div>
+                    </div>
+                    <input type="file" id="signFileInput" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleSignFileSelect(this)">
+                    <div id="signFileList"></div>
+                </div>
+                
+                <div class="section-card">
+                    <div class="section-title">
+                        <span>📝</span>
+                        <span>备注说明</span>
+                    </div>
+                    <textarea class="remark-input" id="signRemark" placeholder="请输入备注说明（选填）"></textarea>
+                </div>
+            </div>
+            <div class="page-footer">
+                <button class="submit-btn" onclick="submitSignFile()">提交签约文件</button>
+            </div>
+        </div>
+        
+        <div class="change-confirm-modal" id="signConfirmModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="title">确认签约</div>
+                </div>
+                <div class="modal-body">
+                    <div class="sign-file-preview">
+                        <div class="file-icon">📄</div>
+                        <div class="file-info">
+                            <div class="file-name">水电分包合同_签约文件.pdf</div>
+                            <div class="file-meta">上传人：张三 · 2024-01-10 15:30</div>
+                        </div>
+                        <div class="file-action" onclick="previewSignFile()">预览</div>
+                    </div>
+                    <div style="margin-top: 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                        <p style="margin-bottom: 8px;"><strong>上传方：</strong>XX装修公司</p>
+                        <p style="margin-bottom: 8px;"><strong>上传时间：</strong>2024-01-10 15:30</p>
+                        <p><strong>备注：</strong>双方已于2024年1月10日线下签署合同，现上传签约文件供确认。</p>
+                    </div>
+                    <div style="margin-top: 16px; padding: 12px; background-color: #FFF7E6; border-radius: 8px; font-size: 12px; color: #FA8C16;">
+                        ⚠️ 确认签约后合同将正式生效，请仔细核对签约文件内容。
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn reject" onclick="rejectSign()">驳回签约</div>
+                    <div class="btn confirm" onclick="confirmSign()">确认签约</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="export-modal" id="exportModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">导出合同文件</div>
+                    <div class="modal-close" onclick="closeExportModal()">✕</div>
+                </div>
+                <div class="export-option" onclick="exportToPDF()">
+                    <div class="icon">📄</div>
+                    <div class="info">
+                        <div class="title">导出为PDF</div>
+                        <div class="desc">生成完整合同文件，保存到手机本地</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+                <div class="export-option" onclick="alert('分享到微信'); closeExportModal();">
+                    <div class="icon">💬</div>
+                    <div class="info">
+                        <div class="title">分享到微信</div>
+                        <div class="desc">生成PDF文件并发送给微信好友</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+                <div class="export-option" onclick="alert('发送到邮箱'); closeExportModal();">
+                    <div class="icon">📧</div>
+                    <div class="info">
+                        <div class="title">发送到邮箱</div>
+                        <div class="desc">生成PDF文件并发送到指定邮箱</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="toast" id="toast"></div>
+        
+        <div class="modal-overlay" id="changeRecordModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <div class="title">变更记录</div>
+                </div>
+                <div class="modal-body">
+                    <div class="version-item">
+                        <div class="version-tag current">V1</div>
+                        <div class="version-info">
+                            <div class="version-name">初始版本（当前）</div>
+                            <div class="version-date">2024-01-10 10:30 创建</div>
+                        </div>
+                        <div class="view-btn" onclick="alert('查看详情')">查看</div>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
+                        <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">变更历史</div>
+                        <div style="font-size: 12px; color: #595959; line-height: 1.8;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="color: var(--success-color);">●</span>
+                                <span>2024-01-10 合同创建</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="color: var(--primary-color);">●</span>
+                                <span>2024-01-12 双方确认完成</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: var(--warning-color);">●</span>
+                                <span>2024-01-15 签约完成</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn confirm" onclick="closeChangeRecordModal()" style="width: 100%;">关闭</div>
+                </div>
             </div>
         </div>
     </div>
@@ -2033,7 +2609,7 @@
         <a href="prototype-project-detail.html" class="page-nav-item">项目详情</a>
         <a href="prototype-contract-detail.html" class="page-nav-item active">合同详情</a>
         <a href="prototype-task-detail.html" class="page-nav-item">任务详情</a>
-        <a href="prototype-task-acceptance.html" class="page-nav-item">接任务</a>
+        <a href="prototype-task-acceptance.html" class="page-nav-item">临时任务</a>
         <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
             <div class="page-nav-title">合同状态切换</div>
             <div class="status-switcher">
@@ -2041,6 +2617,8 @@
                 <div class="status-switch-item" onclick="updateContractStatus('confirming_sender')">确认中(发起方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirming_receiver')">确认中(待确认方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirmed')">已确认</div>
+                <div class="status-switch-item" onclick="updateContractStatus('signing_wait')">待对方确认签约</div>
+                <div class="status-switch-item" onclick="updateContractStatus('signing')">待确认签约</div>
                 <div class="status-switch-item active" onclick="updateContractStatus('signed')">已签约</div>
                 <div class="status-switch-item" onclick="updateContractStatus('changing')">变更中(发起方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('change_confirming')">变更中(待确认方)</div>
@@ -2049,13 +2627,31 @@
     </div>
     
     <script>
+        let isNewContract = false;
+        let newContractData = {};
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('new') === '1') {
+            isNewContract = true;
+            newContractData = {
+                name: urlParams.get('name') || '',
+                amount: urlParams.get('amount') || '',
+                duration: urlParams.get('duration') || '',
+                remark: urlParams.get('remark') || '',
+                group: urlParams.get('group') || ''
+            };
+        }
+        
         const contractStatus = {
             draft: {
                 text: '拟定中',
-                desc: '合同正在编辑中，编辑完成后可提交确认',
+                desc: isNewContract ? '合同已创建，请前往电脑端完善合同详细内容' : '合同正在编辑中，编辑完成后可提交确认',
                 bannerClass: 'draft',
                 showPcGuide: true,
-                actions: [
+                isNew: isNewContract,
+                actions: isNewContract ? [
+                    { text: '提交确认', type: 'success', action: 'submit', disabled: true, disabledReason: '请在电脑端完善合同详细内容后再提交' }
+                ] : [
                     { text: '提交确认', type: 'success', action: 'submit' }
                 ]
             },
@@ -2087,6 +2683,27 @@
                 showPcGuide: false,
                 actions: [
                     { text: '上传签约文件', type: 'primary', action: 'upload' }
+                ]
+            },
+            signing: {
+                text: '待确认签约',
+                desc: '对方已上传签约文件，请确认后合同正式生效',
+                bannerClass: 'signing',
+                showPcGuide: false,
+                readonly: true,
+                actions: [
+                    { text: '驳回', type: 'secondary', action: 'reject_sign' },
+                    { text: '确认签约文件', type: 'primary', action: 'confirm_sign' }
+                ]
+            },
+            signing_wait: {
+                text: '待对方确认签约',
+                desc: '签约文件已上传，等待对方确认后合同正式生效',
+                bannerClass: 'signing-wait',
+                showPcGuide: false,
+                readonly: true,
+                actions: [
+                    { text: '撤回签约文件', type: 'secondary', action: 'withdraw_sign' }
                 ]
             },
             signed: {
@@ -2132,9 +2749,47 @@
         
         function initFromUrl() {
             const status = getUrlParam('status');
-            if (status && contractStatus[status]) {
+            if (isNewContract) {
+                updateContractStatus('draft');
+                updateNewContractDisplay();
+            } else if (status && contractStatus[status]) {
                 updateContractStatus(status);
             }
+        }
+        
+        function updateNewContractDisplay() {
+            const contractTitleEl = document.querySelector('.contract-title');
+            if (contractTitleEl && newContractData.name) {
+                contractTitleEl.textContent = newContractData.name;
+            }
+            
+            const infoItems = document.querySelectorAll('.info-item');
+            infoItems.forEach(item => {
+                const label = item.querySelector('.info-label');
+                const value = item.querySelector('.info-value');
+                if (label && value) {
+                    const labelText = label.textContent;
+                    if (labelText.includes('合同金额') && newContractData.amount) {
+                        value.textContent = newContractData.amount + ' 元';
+                    } else if (labelText.includes('工期') && newContractData.duration) {
+                        value.textContent = newContractData.duration + ' 天';
+                    } else if (labelText.includes('所属组织') && newContractData.group) {
+                        value.textContent = newContractData.group;
+                    }
+                }
+            });
+            
+            const basicInfoRows = document.querySelectorAll('.basic-info-row');
+            basicInfoRows.forEach(row => {
+                const label = row.querySelector('.basic-info-label');
+                const value = row.querySelector('.basic-info-value');
+                if (label && value) {
+                    const labelText = label.textContent;
+                    if (labelText.includes('备注') && newContractData.remark) {
+                        value.textContent = newContractData.remark;
+                    }
+                }
+            });
         }
         
         function switchSection(tab, section) {
@@ -2216,28 +2871,45 @@
                 progress: { title: '查看进度', message: '正在加载合同进度...' },
                 withdraw_change: { title: '撤回变更', message: '确定要撤回变更申请吗？撤回后阶段任务将恢复流转。' },
                 reject_change: { title: '驳回变更', message: '确定要驳回变更申请吗？请说明驳回原因。' },
-                confirm_change: { title: '确认变更', message: '确定要确认变更吗？确认后变更内容将生效，并生成新的版本记录。' }
+                confirm_change: { title: '确认变更', message: '确定要确认变更吗？确认后变更内容将生效，并生成新的版本记录。' },
+                withdraw_sign: { title: '撤回签约文件', message: '确定要撤回签约文件吗？撤回后可重新上传。' },
+                reject_sign: { title: '驳回签约', message: '确定要驳回签约文件吗？请说明驳回原因。' },
+                confirm_sign: { title: '确认签约', message: '确定要确认签约吗？确认后合同将正式生效。' }
             };
             
             if (action === 'upload') {
                 closeModal();
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.accept = '.pdf,.jpg,.jpeg,.png';
-                fileInput.onchange = function(e) {
-                    if (e.target.files.length > 0) {
-                        const file = e.target.files[0];
-                        alert('文件"' + file.name + '"上传成功！');
-                        updateContractStatus('signed');
-                    }
-                };
-                fileInput.click();
+                showSignUploadPage();
                 return;
             }
             
             if (action === 'progress') {
                 closeModal();
                 alert('跳转到合同进度页面');
+                return;
+            }
+            
+            if (action === 'reject_sign') {
+                closeModal();
+                const reason = prompt('请输入驳回原因：');
+                if (reason) {
+                    alert('签约已驳回！系统已通知对方。');
+                    updateContractStatus('confirmed');
+                }
+                return;
+            }
+            
+            if (action === 'confirm_sign') {
+                closeModal();
+                alert('签约确认成功！合同已正式生效。');
+                updateContractStatus('signed');
+                return;
+            }
+            
+            if (action === 'withdraw_sign') {
+                closeModal();
+                alert('已撤回签约文件，可重新上传');
+                updateContractStatus('confirmed');
                 return;
             }
             
@@ -2280,6 +2952,18 @@
             } else if (title === '确认变更') {
                 alert('变更已确认！变更内容已生效，系统已生成新的版本记录。');
                 updateContractStatus('signed');
+            } else if (title === '撤回签约文件') {
+                alert('已撤回签约文件，可重新上传');
+                updateContractStatus('confirmed');
+            } else if (title === '驳回签约') {
+                const reason = prompt('请输入驳回原因：');
+                if (reason) {
+                    alert('签约已驳回！系统已通知对方。');
+                    updateContractStatus('confirmed');
+                }
+            } else if (title === '确认签约') {
+                alert('签约确认成功！合同已正式生效。');
+                updateContractStatus('signed');
             } else {
                 alert('操作成功！');
             }
@@ -2301,6 +2985,43 @@
         function closeActionMenu() {
             const actionMenu = document.getElementById('actionMenu');
             actionMenu.classList.remove('show');
+        }
+        
+        function exportContract() {
+            showExportModal();
+        }
+        
+        function showExportModal() {
+            document.getElementById('exportModal').classList.add('show');
+        }
+        
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('show');
+        }
+        
+        function showChangeRecordModal() {
+            document.getElementById('changeRecordModal').classList.add('show');
+        }
+        
+        function closeChangeRecordModal() {
+            document.getElementById('changeRecordModal').classList.remove('show');
+        }
+        
+        function exportToPDF() {
+            closeExportModal();
+            showToast('正在生成PDF文件...');
+            setTimeout(() => {
+                showToast('PDF文件已保存到手机本地');
+            }, 2000);
+        }
+        
+        function showToast(message, duration = 2000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
         }
         
         function showChangeModal() {
@@ -2430,9 +3151,12 @@
             }
             
             const actionsContainer = document.getElementById('bottomActions');
-            actionsContainer.innerHTML = config.actions.map(action => 
-                `<div class="action-btn ${action.type}" onclick="showStatusModal('${action.action}')">${action.text}</div>`
-            ).join('');
+            actionsContainer.innerHTML = config.actions.map(action => {
+                if (action.disabled) {
+                    return `<div class="action-btn ${action.type}" disabled style="opacity: 0.5; cursor: not-allowed;" title="${action.disabledReason || ''}">${action.text}</div>`;
+                }
+                return `<div class="action-btn ${action.type}" onclick="showStatusModal('${action.action}')">${action.text}</div>`;
+            }).join('');
             
             document.querySelectorAll('.status-switch-item').forEach(item => {
                 item.classList.remove('active');
@@ -2443,6 +3167,8 @@
                 'confirming_sender': '确认中(发起方)',
                 'confirming_receiver': '确认中(待确认方)',
                 'confirmed': '已确认',
+                'signing_wait': '待对方确认签约',
+                'signing': '待确认签约',
                 'signed': '已签约',
                 'changing': '变更中(发起方)',
                 'change_confirming': '变更中(待确认方)'
@@ -2454,6 +3180,30 @@
             });
             
             updatePartyStatus(status);
+            
+            const signFileCard = document.getElementById('signFileCard');
+            const signFileUploadBtn = document.getElementById('signFileUploadBtn');
+            const showSignFileStates = ['confirmed', 'signing_wait', 'signing', 'signed', 'changing', 'change_confirming'];
+            const canUploadSignFileStates = ['confirmed'];
+            
+            if (showSignFileStates.includes(status)) {
+                signFileCard.style.display = 'block';
+            } else {
+                signFileCard.style.display = 'none';
+            }
+            
+            if (canUploadSignFileStates.includes(status)) {
+                signFileUploadBtn.style.display = 'inline';
+            } else {
+                signFileUploadBtn.style.display = 'none';
+            }
+            
+            const exportBtn = document.getElementById('exportContractBtn');
+            if (showSignFileStates.includes(status)) {
+                exportBtn.style.display = 'flex';
+            } else {
+                exportBtn.style.display = 'none';
+            }
         }
         
         function updatePartyStatus(status) {
@@ -2465,6 +3215,8 @@
                 'confirming_sender': { a: '已确认', b: '确认中' },
                 'confirming_receiver': { a: '已确认', b: '确认中' },
                 'confirmed': { a: '已确认', b: '已确认' },
+                'signing_wait': { a: '已上传签约', b: '待确认签约' },
+                'signing': { a: '待确认签约', b: '已上传签约' },
                 'signed': { a: '已签约', b: '已签约' },
                 'changing': { a: '变更中', b: '待确认' },
                 'change_confirming': { a: '已确认', b: '变更中' }
@@ -2485,6 +3237,83 @@
                 actionMenu.classList.remove('show');
             }
         });
+        
+        let signFiles = [];
+        
+        function showSignUploadPage() {
+            document.getElementById('signUploadPage').classList.add('show');
+        }
+        
+        function closeSignUploadPage() {
+            document.getElementById('signUploadPage').classList.remove('show');
+        }
+        
+        function handleSignFileSelect(input) {
+            if (input.files.length > 0) {
+                const file = input.files[0];
+                signFiles.push({
+                    name: file.name,
+                    size: (file.size / 1024).toFixed(1) + 'KB'
+                });
+                renderSignFileList();
+            }
+        }
+        
+        function renderSignFileList() {
+            const fileList = document.getElementById('signFileList');
+            fileList.innerHTML = signFiles.map((file, index) => `
+                <div class="file-item">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${file.size}</div>
+                    </div>
+                    <div class="file-remove" onclick="removeSignFile(${index})">×</div>
+                </div>
+            `).join('');
+        }
+        
+        function removeSignFile(index) {
+            signFiles.splice(index, 1);
+            renderSignFileList();
+        }
+        
+        function submitSignFile() {
+            if (signFiles.length === 0) {
+                alert('请上传签约文件');
+                return;
+            }
+            alert('签约文件已提交！等待对方确认后合同将正式生效。');
+            closeSignUploadPage();
+            updateContractStatus('signing_wait');
+        }
+        
+        function showSignConfirmModal() {
+            document.getElementById('signConfirmModal').classList.add('show');
+        }
+        
+        function closeSignConfirmModal() {
+            document.getElementById('signConfirmModal').classList.remove('show');
+        }
+        
+        function previewSignFile() {
+            alert('预览签约文件');
+        }
+        
+        function rejectSign() {
+            const reason = prompt('请输入驳回原因：');
+            if (reason) {
+                alert('签约文件已驳回！系统已通知对方。');
+                closeSignConfirmModal();
+                updateContractStatus('confirmed');
+            }
+        }
+        
+        function confirmSign() {
+            alert('签约确认成功！合同已正式生效。');
+            closeSignConfirmModal();
+            updateContractStatus('signed');
+        }
         
         initFromUrl();
     </script>

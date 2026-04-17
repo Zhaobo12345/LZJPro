@@ -536,6 +536,19 @@
         <div class="submit-section">
             <button type="button" class="submit-btn" onclick="submitForm()">创建项目</button>
         </div>
+        
+        <div class="app-modal" id="appModal">
+            <div class="modal-box">
+                <div class="modal-title" id="modalTitle">提示</div>
+                <div class="modal-content" id="modalContent"></div>
+                <div class="modal-actions" id="modalActions">
+                    <div class="modal-btn cancel" id="modalCancel" onclick="closeModal()">取消</div>
+                    <div class="modal-btn confirm" id="modalConfirm" onclick="closeModal()">确定</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="app-toast" id="appToast"></div>
     </div>
     
     <div class="page-nav">
@@ -557,6 +570,31 @@
         let selectedHouseType = '';
         let selectedStyles = [];
         let uploadedFiles = [];
+        
+        function showModal(title, content, onConfirm, showCancel = true) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').textContent = content;
+            document.getElementById('modalCancel').style.display = showCancel ? 'flex' : 'none';
+            document.getElementById('appModal').classList.add('show');
+            
+            document.getElementById('modalConfirm').onclick = function() {
+                closeModal();
+                if (onConfirm) onConfirm();
+            };
+        }
+        
+        function closeModal() {
+            document.getElementById('appModal').classList.remove('show');
+        }
+        
+        function showToast(message, duration = 2000) {
+            const toast = document.getElementById('appToast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
         
         function selectCategory(element) {
             document.querySelectorAll('#categoryOptions .category-option').forEach(opt => opt.classList.remove('selected'));
@@ -720,8 +758,9 @@
                 
                 console.log('提交数据:', formData);
                 
-                alert('项目创建成功！\n\n即将跳转到项目详情页面。');
-                location.href = 'prototype-project-detail.html';
+                showModal('创建成功', '项目创建成功！即将跳转到项目详情页面。', function() {
+                    location.href = 'prototype-project-detail.html';
+                }, false);
             } else {
                 const firstError = document.querySelector('.error-message.show, .form-input.error, .form-select.error');
                 if (firstError) {
