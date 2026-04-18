@@ -160,6 +160,78 @@
             display: block;
         }
 
+        .template-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .template-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .template-status.active {
+            background-color: #F6FFED;
+            color: #52C41A;
+        }
+
+        .template-status.active .dot {
+            background-color: #52C41A;
+        }
+
+        .template-status.disabled {
+            background-color: #F5F5F5;
+            color: #8C8C8C;
+        }
+
+        .template-status.disabled .dot {
+            background-color: #8C8C8C;
+        }
+
+        .template-card.disabled {
+            opacity: 0.6;
+        }
+
+        .template-card.disabled .template-card-name {
+            color: var(--text-tertiary);
+        }
+
+        .pc-btn-toggle {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .pc-btn-toggle.disable {
+            background-color: #FFF1F0;
+            color: #FF4D4F;
+            border: 1px solid #FFA39E;
+        }
+
+        .pc-btn-toggle.disable:hover {
+            background-color: #FF4D4F;
+            color: #FFFFFF;
+        }
+
+        .pc-btn-toggle.enable {
+            background-color: #F6FFED;
+            color: #52C41A;
+            border: 1px solid #B7EB8F;
+        }
+
+        .pc-btn-toggle.enable:hover {
+            background-color: #52C41A;
+            color: #FFFFFF;
+        }
+
         .stage-preview {
             margin-bottom: 16px;
         }
@@ -203,18 +275,10 @@
             color: var(--text-tertiary);
         }
 
-        .stage-duration {
-            font-size: 12px;
-            color: var(--primary-color);
-            background-color: var(--status-primary-bg);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
         .edit-modal-content {
             display: flex;
-            flex-direction: column;
-            height: 600px;
+            flex-direction: row;
+            height: 100%;
         }
 
         .edit-modal-sidebar {
@@ -228,7 +292,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-y: auto;
+            background-color: var(--bg-primary);
         }
 
         .stage-list-panel {
@@ -266,6 +331,24 @@
             color: var(--text-tertiary);
         }
 
+        .stage-delete-btn {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stage-delete-btn:hover {
+            background-color: var(--error-color);
+            color: #fff;
+        }
+
         .add-stage-btn {
             display: flex;
             align-items: center;
@@ -288,6 +371,8 @@
             flex: 1;
             padding: 24px;
             overflow-y: auto;
+            background-color: var(--bg-primary);
+            min-height: 100%;
         }
 
         .task-list {
@@ -331,11 +416,6 @@
         .task-item-name {
             font-size: 14px;
             color: var(--text-primary);
-        }
-
-        .task-item-meta {
-            font-size: 12px;
-            color: var(--text-tertiary);
         }
 
         .add-task-btn {
@@ -382,43 +462,6 @@
             font-weight: 600;
             margin-bottom: 20px;
         }
-
-        .confirmer-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .confirmer-tag {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            background-color: var(--status-primary-bg);
-            color: var(--primary-color);
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        .confirmer-tag .remove {
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .confirmer-add {
-            padding: 4px 10px;
-            border: 1px dashed var(--border-color);
-            border-radius: 4px;
-            font-size: 12px;
-            color: var(--text-tertiary);
-            cursor: pointer;
-        }
-
-        .confirmer-add:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
     </style>
 </head>
 <body>
@@ -427,19 +470,15 @@
             <div class="pc-sidebar-header">
                 <div class="pc-sidebar-logo">
                     <span class="icon">🏗️</span>
-                    <span>家装管理平台</span>
+                    <span>良造家平台</span>
                 </div>
             </div>
             <div class="pc-sidebar-menu">
-                <a href="pc-project-list.html" class="pc-menu-item">
-                    <span class="icon">📊</span>
-                    <span class="label">工作台</span>
-                </a>
-                <a href="pc-project-list.html" class="pc-menu-item">
+                <a href="pc-project-list.html" class="pc-menu-item main-nav">
                     <span class="icon">📁</span>
                     <span class="label">项目管理</span>
                 </a>
-                <a href="pc-contract-edit.html" class="pc-menu-item">
+                <a href="pc-contract-list.html" class="pc-menu-item main-nav">
                     <span class="icon">📋</span>
                     <span class="label">合同管理</span>
                 </a>
@@ -452,17 +491,6 @@
                     <a href="pc-stage-template.html" class="pc-menu-item active">
                         <span class="icon">📝</span>
                         <span class="label">阶段任务模板</span>
-                    </a>
-                </div>
-                <div class="pc-menu-group">
-                    <div class="pc-menu-group-title">系统设置</div>
-                    <a href="#" class="pc-menu-item">
-                        <span class="icon">👥</span>
-                        <span class="label">成员管理</span>
-                    </a>
-                    <a href="#" class="pc-menu-item">
-                        <span class="icon">⚙️</span>
-                        <span class="label">系统设置</span>
                     </a>
                 </div>
             </div>
@@ -478,10 +506,6 @@
                     </div>
                 </div>
                 <div class="pc-header-right">
-                    <div class="pc-header-icon">
-                        🔔
-                        <span class="badge"></span>
-                    </div>
                     <div class="pc-user-info">
                         <div class="pc-user-avatar">张</div>
                         <span class="pc-user-name">张三</span>
@@ -534,32 +558,37 @@
                         <div class="template-toolbar">
                             <div class="template-search">
                                 <input type="text" placeholder="搜索模板名称...">
-                                <select class="pc-form-select" style="width: 150px;">
+                                <select class="pc-form-select" style="width: 120px;">
+                                    <option>全部城市</option>
+                                    <option>全国</option>
+                                    <option>杭州</option>
+                                    <option>上海</option>
+                                    <option>北京</option>
+                                    <option>深圳</option>
+                                </select>
+                                <select class="pc-form-select" style="width: 120px;">
                                     <option>全部状态</option>
                                     <option>启用</option>
                                     <option>停用</option>
                                 </select>
                             </div>
-                            <div class="flex gap-8">
-                                <button class="pc-btn pc-btn-default">导出</button>
-                            </div>
                         </div>
 
                         <div class="template-list">
-                            <div class="template-card expanded">
+                            <div class="template-card expanded" data-id="1" data-status="active" data-refs="156">
                                 <div class="template-card-header" onclick="toggleCard(this)">
                                     <div class="template-card-info">
                                         <span class="template-card-name">水电施工阶段模板</span>
                                         <div class="template-card-meta">
+                                            <span>类型：水电工程</span>
+                                            <span>城市：杭州</span>
                                             <span>📋 3个阶段</span>
                                             <span>📝 8个任务</span>
-                                            <span>📅 总工期23天</span>
                                         </div>
                                     </div>
                                     <div class="template-card-actions">
                                         <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editTemplate(1)">编辑</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); copyTemplate(1)">复制</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteTemplate(1)">删除</button>
+                                        <button class="pc-btn-toggle disable" id="toggleBtn1" onclick="event.stopPropagation(); toggleTemplateStatus(1)">禁用</button>
                                         <span style="color: var(--text-tertiary); margin-left: 8px;">▼</span>
                                     </div>
                                 </div>
@@ -571,7 +600,6 @@
                                                 <div class="stage-name">材料进场</div>
                                                 <div class="stage-tasks">任务：材料验收、材料入库 | 按序执行</div>
                                             </div>
-                                            <div class="stage-duration">3天</div>
                                         </div>
                                         <div class="stage-preview-item">
                                             <div class="stage-number">2</div>
@@ -579,7 +607,6 @@
                                                 <div class="stage-name">布管布线</div>
                                                 <div class="stage-tasks">任务：强电布管、弱电布线、给水管道、排水管道</div>
                                             </div>
-                                            <div class="stage-duration">15天</div>
                                         </div>
                                         <div class="stage-preview-item">
                                             <div class="stage-number">3</div>
@@ -587,30 +614,29 @@
                                                 <div class="stage-name">验收调试</div>
                                                 <div class="stage-tasks">任务：通电测试、通水测试、整体验收 | 按序执行</div>
                                             </div>
-                                            <div class="stage-duration">5天</div>
                                         </div>
                                     </div>
                                     <div class="flex-between" style="font-size: 12px; color: var(--text-tertiary);">
                                         <span>引用次数：156次 | 更新时间：2024-01-10 14:30</span>
-                                        <span class="template-status active"><span class="dot"></span>启用中</span>
+                                        <span class="template-status active" id="status1"><span class="dot"></span>启用中</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="template-card">
+                            <div class="template-card" data-id="2" data-status="active" data-refs="98">
                                 <div class="template-card-header" onclick="toggleCard(this)">
                                     <div class="template-card-info">
                                         <span class="template-card-name">泥瓦施工阶段模板</span>
                                         <div class="template-card-meta">
+                                            <span>类型：泥瓦工程</span>
+                                            <span>城市：杭州</span>
                                             <span>📋 4个阶段</span>
                                             <span>📝 10个任务</span>
-                                            <span>📅 总工期30天</span>
                                         </div>
                                     </div>
                                     <div class="template-card-actions">
                                         <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editTemplate(2)">编辑</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); copyTemplate(2)">复制</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteTemplate(2)">删除</button>
+                                        <button class="pc-btn-toggle disable" id="toggleBtn2" onclick="event.stopPropagation(); toggleTemplateStatus(2)">禁用</button>
                                         <span style="color: var(--text-tertiary); margin-left: 8px;">▶</span>
                                     </div>
                                 </div>
@@ -622,7 +648,6 @@
                                                 <div class="stage-name">基层处理</div>
                                                 <div class="stage-tasks">任务：墙面找平、地面找平</div>
                                             </div>
-                                            <div class="stage-duration">5天</div>
                                         </div>
                                         <div class="stage-preview-item">
                                             <div class="stage-number">2</div>
@@ -630,62 +655,61 @@
                                                 <div class="stage-name">防水施工</div>
                                                 <div class="stage-tasks">任务：防水涂刷、闭水试验 | 按序执行</div>
                                             </div>
-                                            <div class="stage-duration">3天</div>
                                         </div>
                                     </div>
                                     <div class="flex-between" style="font-size: 12px; color: var(--text-tertiary);">
                                         <span>引用次数：98次 | 更新时间：2024-01-08 10:20</span>
-                                        <span class="template-status active"><span class="dot"></span>启用中</span>
+                                        <span class="template-status active" id="status2"><span class="dot"></span>启用中</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="template-card">
+                            <div class="template-card" data-id="3" data-status="active" data-refs="52">
                                 <div class="template-card-header" onclick="toggleCard(this)">
                                     <div class="template-card-info">
                                         <span class="template-card-name">木工施工阶段模板</span>
                                         <div class="template-card-meta">
+                                            <span>类型：木工工程</span>
+                                            <span>城市：全国</span>
                                             <span>📋 3个阶段</span>
                                             <span>📝 7个任务</span>
-                                            <span>📅 总工期20天</span>
                                         </div>
                                     </div>
                                     <div class="template-card-actions">
                                         <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editTemplate(3)">编辑</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); copyTemplate(3)">复制</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteTemplate(3)">删除</button>
+                                        <button class="pc-btn-toggle disable" id="toggleBtn3" onclick="event.stopPropagation(); toggleTemplateStatus(3)">禁用</button>
                                         <span style="color: var(--text-tertiary); margin-left: 8px;">▶</span>
                                     </div>
                                 </div>
                                 <div class="template-card-body">
                                     <div class="flex-between" style="font-size: 12px; color: var(--text-tertiary);">
                                         <span>引用次数：52次 | 更新时间：2024-01-05 16:45</span>
-                                        <span class="template-status active"><span class="dot"></span>启用中</span>
+                                        <span class="template-status active" id="status3"><span class="dot"></span>启用中</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="template-card">
+                            <div class="template-card" data-id="4" data-status="active" data-refs="38">
                                 <div class="template-card-header" onclick="toggleCard(this)">
                                     <div class="template-card-info">
                                         <span class="template-card-name">油漆施工阶段模板</span>
                                         <div class="template-card-meta">
+                                            <span>类型：油漆工程</span>
+                                            <span>城市：杭州</span>
                                             <span>📋 2个阶段</span>
                                             <span>📝 5个任务</span>
-                                            <span>📅 总工期12天</span>
                                         </div>
                                     </div>
                                     <div class="template-card-actions">
                                         <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); editTemplate(4)">编辑</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); copyTemplate(4)">复制</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="event.stopPropagation(); deleteTemplate(4)">删除</button>
+                                        <button class="pc-btn-toggle disable" id="toggleBtn4" onclick="event.stopPropagation(); toggleTemplateStatus(4)">禁用</button>
                                         <span style="color: var(--text-tertiary); margin-left: 8px;">▶</span>
                                     </div>
                                 </div>
                                 <div class="template-card-body">
                                     <div class="flex-between" style="font-size: 12px; color: var(--text-tertiary);">
                                         <span>引用次数：38次 | 更新时间：2024-01-03 09:15</span>
-                                        <span class="template-status active"><span class="dot"></span>启用中</span>
+                                        <span class="template-status active" id="status4"><span class="dot"></span>启用中</span>
                                     </div>
                                 </div>
                             </div>
@@ -704,67 +728,79 @@
         </div>
     </div>
 
-    <div class="pc-page-nav">
-        <div class="pc-page-nav-title">
-            PC端原型导航
-            <span class="badge">PC</span>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">高优先级</div>
-            <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
-            <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
-            <a href="pc-stage-template.html" class="pc-page-nav-item active">阶段任务模板</a>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">中优先级</div>
-            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
-            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">小程序原型</div>
-            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
-            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
-            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+    <div class="pc-page-nav-wrapper" id="pageNavWrapper">
+        <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
+        <div class="pc-page-nav" id="pageNav">
+            <div class="pc-page-nav-title">
+                PC端原型导航
+                <span class="badge">PC</span>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">高优先级</div>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
+                <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
+                <a href="pc-stage-template.html" class="pc-page-nav-item active">阶段任务模板</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">中优先级</div>
+                <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+                <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">小程序原型</div>
+                <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            </div>
         </div>
     </div>
 
     <div class="pc-modal-overlay" id="createModal">
-        <div class="pc-modal pc-modal-xl">
+        <div class="pc-modal" style="width: 100%; height: 100%; max-width: 100%; max-height: 100%; border-radius: 0;">
             <div class="pc-modal-header">
-                <div class="pc-modal-title">新建阶段任务模板</div>
+                <div class="pc-modal-title" id="templateModalTitle">新建阶段任务模板</div>
                 <div class="pc-modal-close" onclick="closeCreateModal()">×</div>
             </div>
-            <div class="pc-modal-body" style="padding: 0; height: 600px;">
-                <div class="edit-modal-content" style="flex-direction: row; height: 100%;">
-                    <div class="edit-modal-sidebar">
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
-                            <div class="pc-form-group" style="margin-bottom: 0;">
-                                <label class="pc-form-label">模板名称<span class="required">*</span></label>
-                                <input type="text" class="pc-form-input" placeholder="请输入模板名称" value="水电施工阶段模板">
-                            </div>
+            <div class="pc-modal-body" style="padding: 0; height: calc(100vh - 120px); display: flex; flex-direction: column;">
+                <div class="template-info-bar" style="padding: 16px 20px; border-bottom: 1px solid var(--border-color); background: var(--bg-secondary);">
+                    <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end;">
+                        <div class="pc-form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                            <label class="pc-form-label">模板名称<span class="required">*</span></label>
+                            <input type="text" class="pc-form-input" id="templateName" placeholder="请输入模板名称">
                         </div>
-                        <div class="stage-list-panel" style="flex: 1;">
-                            <div style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 12px;">阶段列表</div>
-                            <div class="stage-list-item active" onclick="selectStage(this, 1)">
-                                <div>
-                                    <div class="name">阶段一：材料进场</div>
-                                    <div class="meta">2个任务 · 3天</div>
-                                </div>
-                                <span style="color: var(--text-tertiary);">☰</span>
+                        <div class="pc-form-group" style="margin-bottom: 0; width: 150px;">
+                            <label class="pc-form-label">类型分类<span class="required">*</span></label>
+                            <select class="pc-form-select" id="templateType">
+                                <option value="">请选择</option>
+                                <option>水电工程</option>
+                                <option>泥瓦工程</option>
+                                <option>木工工程</option>
+                                <option>油漆工程</option>
+                            </select>
+                        </div>
+                        <div class="pc-form-group" style="margin-bottom: 0; width: 120px;">
+                            <label class="pc-form-label">适用城市<span class="required">*</span></label>
+                            <select class="pc-form-select" id="templateCity">
+                                <option value="">请选择</option>
+                                <option>全国</option>
+                                <option>杭州</option>
+                                <option>上海</option>
+                                <option>北京</option>
+                                <option>深圳</option>
+                            </select>
+                        </div>
+                        <div class="pc-form-group" style="margin-bottom: 0; flex: 2; min-width: 300px;">
+                            <label class="pc-form-label">模板说明</label>
+                            <input type="text" class="pc-form-input" id="templateDesc" placeholder="请输入模板说明（选填）">
+                        </div>
+                    </div>
+                </div>
+                <div class="edit-modal-content" style="flex: 1; display: flex;">
+                    <div class="edit-modal-sidebar" style="width: 280px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; background-color: var(--bg-secondary);">
+                        <div class="stage-list-panel" style="flex: 1; padding: 16px; overflow-y: auto;">
+                            <div style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                                <span>阶段列表</span>
+                                <span style="font-size: 12px;" id="stageCount">共0个阶段</span>
                             </div>
-                            <div class="stage-list-item" onclick="selectStage(this, 2)">
-                                <div>
-                                    <div class="name">阶段二：布管布线</div>
-                                    <div class="meta">4个任务 · 15天</div>
-                                </div>
-                                <span style="color: var(--text-tertiary);">☰</span>
-                            </div>
-                            <div class="stage-list-item" onclick="selectStage(this, 3)">
-                                <div>
-                                    <div class="name">阶段三：验收调试</div>
-                                    <div class="meta">3个任务 · 5天</div>
-                                </div>
-                                <span style="color: var(--text-tertiary);">☰</span>
+                            <div id="stageListContent">
                             </div>
                             <div class="add-stage-btn" onclick="addNewStage()">
                                 <span>+ 添加阶段</span>
@@ -772,50 +808,24 @@
                         </div>
                     </div>
 
-                    <div class="edit-modal-main">
+                    <div class="edit-modal-main" style="flex: 1; overflow-y: auto;">
                         <div class="stage-edit-panel">
-                            <div class="form-grid-2">
-                                <div class="pc-form-group">
-                                    <label class="pc-form-label">阶段名称<span class="required">*</span></label>
-                                    <input type="text" class="pc-form-input" value="材料进场">
-                                </div>
-                                <div class="pc-form-group">
-                                    <label class="pc-form-label">工期（天）<span class="required">*</span></label>
-                                    <input type="number" class="pc-form-input" value="3">
-                                </div>
+                            <div class="pc-form-group">
+                                <label class="pc-form-label">阶段名称<span class="required">*</span></label>
+                                <input type="text" class="pc-form-input" id="stageName" placeholder="请输入阶段名称">
                             </div>
                             <div class="pc-form-group">
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="checkbox" checked> 按序执行（任务按完成状态自动排序）
+                                    <input type="checkbox" id="stageOrder" checked> 按序执行（任务按完成状态自动排序）
                                 </label>
                             </div>
 
-                            <div class="task-list">
+                            <div class="task-list" id="taskListContainer">
                                 <div class="task-list-header">
                                     <h4>任务列表</h4>
                                     <button class="pc-btn pc-btn-primary pc-btn-sm" onclick="showTaskEditModal()">+ 添加任务</button>
                                 </div>
-                                <div class="task-item">
-                                    <div class="task-item-info">
-                                        <span style="color: var(--text-tertiary); cursor: grab;">☰</span>
-                                        <span class="task-item-name">材料验收</span>
-                                    </div>
-                                    <div class="task-item-meta">执行人：材料员 | 确认人：项目经理、监理</div>
-                                    <div class="flex gap-8">
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showTaskEditModal()">编辑</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
-                                    </div>
-                                </div>
-                                <div class="task-item">
-                                    <div class="task-item-info">
-                                        <span style="color: var(--text-tertiary); cursor: grab;">☰</span>
-                                        <span class="task-item-name">材料入库</span>
-                                    </div>
-                                    <div class="task-item-meta">执行人：材料员 | 确认人：仓库管理员</div>
-                                    <div class="flex gap-8">
-                                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showTaskEditModal()">编辑</button>
-                                        <button class="pc-btn pc-btn-text pc-btn-sm">删除</button>
-                                    </div>
+                                <div id="taskListContent">
                                 </div>
                                 <div class="add-task-btn" onclick="showTaskEditModal()">
                                     <span>+ 添加任务</span>
@@ -834,7 +844,7 @@
     </div>
 
     <div class="pc-modal-overlay" id="taskEditModal">
-        <div class="pc-modal pc-modal-md">
+        <div class="pc-modal" style="width: 700px; max-width: 90%;">
             <div class="pc-modal-header">
                 <div class="pc-modal-title">编辑任务</div>
                 <div class="pc-modal-close" onclick="closeTaskEditModal()">×</div>
@@ -845,39 +855,15 @@
                     <input type="text" class="pc-form-input" value="材料验收">
                 </div>
                 <div class="pc-form-group">
-                    <label class="pc-form-label">执行人<span class="required">*</span></label>
-                    <select class="pc-form-select">
-                        <option>材料员</option>
-                        <option>施工员</option>
-                        <option>项目经理</option>
-                        <option>电工</option>
-                        <option>瓦工</option>
-                    </select>
-                </div>
-                <div class="pc-form-group">
-                    <label class="pc-form-label">确认人（最多5人）</label>
-                    <div class="confirmer-tags">
-                        <div class="confirmer-tag">
-                            项目经理
-                            <span class="remove" onclick="this.parentElement.remove()">×</span>
-                        </div>
-                        <div class="confirmer-tag">
-                            监理
-                            <span class="remove" onclick="this.parentElement.remove()">×</span>
-                        </div>
-                        <div class="confirmer-add" onclick="addConfirmer()">+ 添加</div>
-                    </div>
-                </div>
-                <div class="pc-form-group">
-                    <label class="pc-form-label">执行标准</label>
+                    <label class="pc-form-label">执行标准<span class="required">*</span></label>
                     <textarea class="pc-form-textarea" placeholder="请输入执行标准">核对材料清单，检查材料数量、规格、品牌是否与采购单一致</textarea>
                 </div>
                 <div class="pc-form-group">
-                    <label class="pc-form-label">确认标准</label>
+                    <label class="pc-form-label">确认标准<span class="required">*</span></label>
                     <textarea class="pc-form-textarea" placeholder="请输入确认标准">确认材料质量合格，数量无误后签字确认</textarea>
                 </div>
                 <div class="pc-form-group">
-                    <label class="pc-form-label">担责标准</label>
+                    <label class="pc-form-label">担责标准<span class="required">*</span></label>
                     <textarea class="pc-form-textarea" placeholder="请输入担责标准">材料验收不合格导致的返工由材料员负责</textarea>
                 </div>
             </div>
@@ -889,6 +875,19 @@
     </div>
 
     <script>
+        function togglePageNav() {
+            const wrapper = document.getElementById('pageNavWrapper');
+            const nav = document.getElementById('pageNav');
+            const toggle = wrapper.querySelector('.pc-page-nav-toggle');
+            nav.classList.toggle('collapsed');
+            wrapper.classList.toggle('collapsed');
+            if (nav.classList.contains('collapsed')) {
+                toggle.textContent = '▶';
+            } else {
+                toggle.textContent = '◀';
+            }
+        }
+
         function toggleCard(header) {
             const card = header.parentElement;
             const arrow = header.querySelector('.template-card-actions span:last-child');
@@ -901,6 +900,16 @@
         }
 
         function showCreateModal() {
+            document.getElementById('templateModalTitle').textContent = '新建阶段任务模板';
+            document.getElementById('templateName').value = '';
+            document.getElementById('templateType').value = '';
+            document.getElementById('templateCity').value = '';
+            document.getElementById('templateDesc').value = '';
+            document.getElementById('stageName').value = '';
+            document.getElementById('stageOrder').checked = false;
+            document.getElementById('taskListContent').innerHTML = '';
+            document.getElementById('stageListContent').innerHTML = '';
+            document.getElementById('stageCount').textContent = '共0个阶段';
             document.getElementById('createModal').classList.add('show');
         }
 
@@ -908,29 +917,173 @@
             document.getElementById('createModal').classList.remove('show');
         }
 
+        function renderStageList() {
+            let stageHtml = '';
+            const stageIds = Object.keys(stageData);
+            stageIds.forEach((id, index) => {
+                const stage = stageData[id];
+                stageHtml += `
+                    <div class="stage-list-item ${index === 0 ? 'active' : ''}" onclick="selectStage(this, ${id})">
+                        <div>
+                            <div class="name">阶段${index + 1}：${stage.name}</div>
+                            <div class="meta">${stage.tasks.length}个任务</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="stage-delete-btn" onclick="event.stopPropagation(); deleteStage(${id}, ${stage.tasks.length})">×</span>
+                            <span style="color: var(--text-tertiary);">☰</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('stageListContent').innerHTML = stageHtml;
+            document.getElementById('stageCount').textContent = `共${stageIds.length}个阶段`;
+        }
+
         function editTemplate(id) {
+            document.getElementById('templateModalTitle').textContent = '编辑阶段任务模板';
+            document.getElementById('templateName').value = '水电施工阶段模板';
+            document.getElementById('templateType').value = '水电工程';
+            document.getElementById('templateCity').value = '全国';
+            document.getElementById('templateDesc').value = '适用于住宅装修水电施工阶段，包含材料进场、布管布线、验收调试等标准流程。';
+            renderStageList();
+            selectStage(document.querySelector('.stage-list-item'), 1);
             document.getElementById('createModal').classList.add('show');
         }
 
-        function copyTemplate(id) {
-            alert('已复制模板，请在编辑后保存');
-        }
-
-        function deleteTemplate(id) {
-            if (confirm('确定要删除此模板吗？')) {
-                alert('模板已删除');
+        function toggleTemplateStatus(id) {
+            const card = document.querySelector(`.template-card[data-id="${id}"]`);
+            const currentStatus = card.dataset.status;
+            const refs = parseInt(card.dataset.refs);
+            const toggleBtn = document.getElementById('toggleBtn' + id);
+            const statusSpan = document.getElementById('status' + id);
+            
+            if (currentStatus === 'active') {
+                if (refs > 0) {
+                    if (!confirm(`该模板已被引用${refs}次，禁用后新建合同将无法选择此模板。确定要禁用吗？`)) {
+                        return;
+                    }
+                }
+                card.dataset.status = 'disabled';
+                card.classList.add('disabled');
+                toggleBtn.textContent = '启用';
+                toggleBtn.className = 'pc-btn-toggle enable';
+                statusSpan.className = 'template-status disabled';
+                statusSpan.innerHTML = '<span class="dot"></span>已禁用';
+                alert('模板已禁用，新建合同将无法选择此模板');
+            } else {
+                card.dataset.status = 'active';
+                card.classList.remove('disabled');
+                toggleBtn.textContent = '禁用';
+                toggleBtn.className = 'pc-btn-toggle disable';
+                statusSpan.className = 'template-status active';
+                statusSpan.innerHTML = '<span class="dot"></span>启用中';
+                alert('模板已启用，新建合同可选择此模板');
             }
         }
+
+        const stageData = {
+            1: {
+                name: '材料进场',
+                order: true,
+                tasks: [
+                    { name: '材料验收' },
+                    { name: '材料入库' }
+                ]
+            },
+            2: {
+                name: '布管布线',
+                order: false,
+                tasks: [
+                    { name: '强电布管' },
+                    { name: '弱电布线' },
+                    { name: '给水管道' },
+                    { name: '排水管道' }
+                ]
+            },
+            3: {
+                name: '验收调试',
+                order: true,
+                tasks: [
+                    { name: '通电测试' },
+                    { name: '通水测试' },
+                    { name: '整体验收' }
+                ]
+            }
+        };
 
         function selectStage(item, id) {
             document.querySelectorAll('.stage-list-item').forEach(i => i.classList.remove('active'));
             item.classList.add('active');
+            
+            const stage = stageData[id];
+            if (stage) {
+                document.getElementById('stageName').value = stage.name;
+                document.getElementById('stageOrder').checked = stage.order;
+                
+                let taskHtml = '';
+                stage.tasks.forEach(task => {
+                    taskHtml += `
+                        <div class="task-item">
+                            <div class="task-item-info">
+                                <span style="color: var(--text-tertiary); cursor: grab;">☰</span>
+                                <span class="task-item-name">${task.name}</span>
+                            </div>
+                            <div class="flex gap-8">
+                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showTaskEditModal()">编辑</button>
+                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="deleteTask(this)">删除</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('taskListContent').innerHTML = taskHtml;
+            }
         }
 
         function addNewStage() {
             const name = prompt('请输入阶段名称：');
             if (name) {
-                alert('已添加新阶段：' + name);
+                const stageList = document.querySelector('.stage-list-panel');
+                const addBtn = stageList.querySelector('.add-stage-btn');
+                const stageCount = stageList.querySelectorAll('.stage-list-item').length + 1;
+                
+                const newStage = document.createElement('div');
+                newStage.className = 'stage-list-item';
+                newStage.onclick = function() { selectStage(this, stageCount); };
+                newStage.innerHTML = `
+                    <div>
+                        <div class="name">阶段${stageCount}：${name}</div>
+                        <div class="meta">0个任务</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="stage-delete-btn" onclick="event.stopPropagation(); deleteStage(${stageCount}, 0)">×</span>
+                        <span style="color: var(--text-tertiary);">☰</span>
+                    </div>
+                `;
+                stageList.insertBefore(newStage, addBtn);
+                
+                selectStage(newStage, stageCount);
+            }
+        }
+
+        function deleteStage(stageId, taskCount) {
+            let message = '确定要删除此阶段吗？';
+            if (taskCount > 0) {
+                message = `当前阶段存在 ${taskCount} 个任务，删除阶段后这些任务也将被删除，是否确认删除？`;
+            }
+            
+            if (confirm(message)) {
+                const stageItems = document.querySelectorAll('.stage-list-item');
+                stageItems.forEach(item => {
+                    const deleteBtn = item.querySelector('.stage-delete-btn');
+                    if (deleteBtn && deleteBtn.getAttribute('onclick').includes(`deleteStage(${stageId}`)) {
+                        item.remove();
+                    }
+                });
+                
+                const remainingItems = document.querySelectorAll('.stage-list-item');
+                if (remainingItems.length > 0) {
+                    selectStage(remainingItems[0], 1);
+                }
             }
         }
 
@@ -942,16 +1095,55 @@
             document.getElementById('taskEditModal').classList.remove('show');
         }
 
-        function addConfirmer() {
-            alert('打开选择确认人弹窗');
-        }
-
         function saveTask() {
             alert('任务已保存');
             closeTaskEditModal();
         }
 
+        function deleteTask(btn) {
+            if (confirm('确定要删除此任务吗？')) {
+                const taskItem = btn.closest('.task-item');
+                taskItem.remove();
+            }
+        }
+
         function saveTemplate() {
+            const templateName = document.getElementById('templateName').value.trim();
+            const templateType = document.getElementById('templateType').value;
+            const templateCity = document.getElementById('templateCity').value;
+            
+            let hasError = false;
+            let errorMessages = [];
+            
+            if (!templateName) {
+                hasError = true;
+                errorMessages.push('请输入模板名称');
+                document.getElementById('templateName').style.borderColor = '#FF4D4F';
+            } else {
+                document.getElementById('templateName').style.borderColor = '';
+            }
+            
+            if (!templateType) {
+                hasError = true;
+                errorMessages.push('请选择类型分类');
+                document.getElementById('templateType').style.borderColor = '#FF4D4F';
+            } else {
+                document.getElementById('templateType').style.borderColor = '';
+            }
+            
+            if (!templateCity) {
+                hasError = true;
+                errorMessages.push('请选择适用城市');
+                document.getElementById('templateCity').style.borderColor = '#FF4D4F';
+            } else {
+                document.getElementById('templateCity').style.borderColor = '';
+            }
+            
+            if (hasError) {
+                alert('请完善以下信息：\n' + errorMessages.join('\n'));
+                return;
+            }
+            
             alert('模板已保存并发布！');
             closeCreateModal();
         }

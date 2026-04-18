@@ -2093,7 +2093,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">执行人 <span class="required">*</span></label>
+                        <label class="form-label">执行人（选填）</label>
                         <div class="search-select" id="executorSearchSelect">
                             <div class="search-input-wrap" onclick="toggleExecutorDropdown()">
                                 <input type="text" class="search-input" id="executorSearchInput" placeholder="搜索并选择执行人" oninput="filterExecutors()">
@@ -2179,15 +2179,15 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">执行标准</label>
+                        <label class="form-label">执行标准 <span class="required">*</span></label>
                         <textarea class="form-textarea" id="tempTaskExecStandard" placeholder="请输入执行标准"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">确认标准</label>
+                        <label class="form-label">确认标准 <span class="required">*</span></label>
                         <textarea class="form-textarea" id="tempTaskConfirmStandard" placeholder="请输入确认标准"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">担责标准</label>
+                        <label class="form-label">担责标准 <span class="required">*</span></label>
                         <textarea class="form-textarea" id="tempTaskLiableStandard" placeholder="请输入担责标准"></textarea>
                     </div>
                 </div>
@@ -2750,7 +2750,10 @@
         function validateTempTaskForm() {
             const name = document.getElementById('tempTaskName').value.trim();
             const contract = document.getElementById('tempTaskContract').value;
-            const isValid = name && contract && selectedExecutor;
+            const execStandard = document.getElementById('tempTaskExecStandard').value.trim();
+            const confirmStandard = document.getElementById('tempTaskConfirmStandard').value.trim();
+            const liableStandard = document.getElementById('tempTaskLiableStandard').value.trim();
+            const isValid = name && contract && execStandard && confirmStandard && liableStandard;
             document.getElementById('submitTempTaskBtn').disabled = !isValid;
         }
 
@@ -2761,12 +2764,32 @@
             const confirmStandard = document.getElementById('tempTaskConfirmStandard').value.trim();
             const liableStandard = document.getElementById('tempTaskLiableStandard').value.trim();
 
-            if (!name || !contract || !selectedExecutor) {
-                showCustomToast('请填写必填项');
+            if (!name) {
+                showCustomToast('请输入任务名称');
+                return;
+            }
+            
+            if (!contract) {
+                showCustomToast('请选择关联合同');
+                return;
+            }
+            
+            if (!execStandard) {
+                showCustomToast('请输入执行标准');
+                return;
+            }
+            
+            if (!confirmStandard) {
+                showCustomToast('请输入确认标准');
+                return;
+            }
+            
+            if (!liableStandard) {
+                showCustomToast('请输入担责标准');
                 return;
             }
 
-            showCustomToast(`临时任务创建成功！\n\n任务名称：${name}\n执行人：${selectedExecutor}\n确认人：${selectedConfirmPersons.join('、') || '无'}\n\n已派发给执行人，等待接受。`);
+            showCustomToast(`临时任务创建成功！\n\n任务名称：${name}\n执行人：${selectedExecutor || '暂无'}\n确认人：${selectedConfirmPersons.join('、') || '无'}\n\n已派发给执行人，等待接受。`);
             closeCreateTempTaskModal();
             
             showTaskNotification(1);
@@ -2808,6 +2831,9 @@
 
         document.getElementById('tempTaskName').addEventListener('input', validateTempTaskForm);
         document.getElementById('tempTaskContract').addEventListener('change', validateTempTaskForm);
+        document.getElementById('tempTaskExecStandard').addEventListener('input', validateTempTaskForm);
+        document.getElementById('tempTaskConfirmStandard').addEventListener('input', validateTempTaskForm);
+        document.getElementById('tempTaskLiableStandard').addEventListener('input', validateTempTaskForm);
 
         document.addEventListener('click', function(e) {
             if (e.target.id === 'createTempTaskModal') {

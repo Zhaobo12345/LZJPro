@@ -136,10 +136,44 @@ body {
 }
 
 .pc-menu-group-title {
-    padding: 8px 20px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.45);
-    text-transform: uppercase;
+    padding: 12px 20px 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.5px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 8px;
+}
+
+.pc-menu-group:first-child .pc-menu-group-title {
+    border-top: none;
+    margin-top: 0;
+}
+
+.pc-menu-group .pc-menu-item {
+    padding-left: 36px;
+    font-size: 13px;
+}
+
+.pc-menu-group .pc-menu-item .icon {
+    font-size: 14px;
+    width: 18px;
+}
+
+.pc-menu-item.main-nav {
+    font-weight: 500;
+    font-size: 14px;
+    padding: 14px 20px;
+    background-color: rgba(0,0,0,0.1);
+    margin-bottom: 2px;
+}
+
+.pc-menu-item.main-nav:hover {
+    background-color: rgba(255,255,255,0.15);
+}
+
+.pc-menu-item.main-nav.active {
+    background-color: var(--primary-color);
 }
 
 /* --------------------------------------------------------------------------
@@ -771,18 +805,61 @@ body {
 /* --------------------------------------------------------------------------
    19. PC端原型导航面板
    -------------------------------------------------------------------------- */
-.pc-page-nav {
+.pc-page-nav-wrapper {
     position: fixed;
     top: 80px;
     right: 20px;
+    z-index: 100;
+}
+
+.pc-page-nav-toggle {
+    position: absolute;
+    left: -28px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 48px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    font-size: 12px;
+    box-shadow: -2px 0 6px var(--shadow-color);
+    transition: all 0.3s ease;
+    z-index: 101;
+}
+
+.pc-page-nav-toggle:hover {
+    color: var(--primary-color);
+    background-color: var(--status-primary-bg);
+}
+
+.pc-page-nav {
     background-color: var(--bg-primary);
     border-radius: 8px;
     padding: 16px;
     box-shadow: 0 2px 8px var(--shadow-md);
-    z-index: 100;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
     width: 200px;
+    transition: all 0.3s ease;
+}
+
+.pc-page-nav.collapsed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+    opacity: 0;
+    box-shadow: none;
+}
+
+.pc-page-nav.collapsed + .pc-page-nav-toggle,
+.pc-page-nav-wrapper.collapsed .pc-page-nav-toggle {
+    border-radius: 8px;
 }
 
 .pc-page-nav-title {

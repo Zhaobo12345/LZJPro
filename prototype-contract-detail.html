@@ -1156,6 +1156,128 @@
             font-weight: 600;
         }
 
+        .pc-open-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 600;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pc-open-modal.show { display: flex; }
+
+        .pc-open-modal .modal-box {
+            width: 300px;
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .pc-open-modal .modal-header {
+            padding: 20px 16px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pc-open-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pc-open-modal .modal-body {
+            padding: 20px 16px;
+        }
+
+        .pc-open-modal .qr-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .pc-open-modal .qr-code {
+            width: 160px;
+            height: 160px;
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .pc-open-modal .qr-code img {
+            width: 140px;
+            height: 140px;
+        }
+
+        .pc-open-modal .qr-tip {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .pc-open-modal .link-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .pc-open-modal .link-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .pc-open-modal .link-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pc-open-modal .link-input {
+            flex: 1;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pc-open-modal .copy-btn {
+            padding: 8px 12px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .pc-open-modal .copy-btn:hover {
+            opacity: 0.9;
+        }
+
+        .pc-open-modal .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pc-open-modal .modal-btn {
+            width: 100%;
+            padding: 14px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+        }
+
         .sign-upload-page {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -1697,15 +1819,16 @@
         }
 
         .stage-edit-item .stage-action-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 14px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .stage-edit-item .stage-action-btn.add {
@@ -1713,9 +1836,21 @@
             color: var(--success-color);
         }
 
+        .stage-edit-item .stage-action-btn.add:hover {
+            background-color: #D9F7BE;
+        }
+
         .stage-edit-item .stage-action-btn.delete {
             background-color: #FFF1F0;
             color: #CF1322;
+        }
+
+        .stage-edit-item .stage-action-btn.delete:hover {
+            background-color: #FFCCC7;
+        }
+
+        .stage-edit-item .stage-action-btn .btn-icon {
+            font-size: 14px;
         }
 
         .task-edit-item {
@@ -2647,6 +2782,10 @@
                     <span class="icon">📄</span>
                     <span>导出合同文件</span>
                 </div>
+                <div class="action-menu-item" onclick="showPcOpenModal(); closeActionMenu();">
+                    <span class="icon">💻</span>
+                    <span>在电脑端打开</span>
+                </div>
                 <div class="action-menu-item" onclick="showCustomToast('分享给朋友'); closeActionMenu();">
                     <span class="icon">📤</span>
                     <span>分享给朋友</span>
@@ -3174,8 +3313,8 @@
                                     <div class="switch"></div>
                                 </div>
                                 <div class="stage-actions">
-                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
-                                    <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
+                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)"><span class="btn-icon">+</span> 添加任务</div>
+                                    <div class="stage-action-btn delete" onclick="deleteStage(this)"><span class="btn-icon">×</span> 删除阶段</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
@@ -3200,25 +3339,25 @@
                         <div class="stage-edit-item" data-stage="2" data-sequential="true">
                             <div class="stage-header-row">
                                 <input type="text" class="stage-name-input" value="布管布线阶段" placeholder="请输入阶段名称">
-                                <div class="stage-sequential" onclick="toggleStageSequential(this)">
+                                <div class="stage-sequential" onclick="toggleStageSequential(this)" style="opacity: 0.5; cursor: not-allowed;" title="当前阶段存在已执行的任务，不支持修改按序执行状态">
                                     <span>按序执行</span>
                                     <div class="switch active"></div>
                                 </div>
                                 <div class="stage-actions">
-                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
-                                    <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
+                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)"><span class="btn-icon">+</span> 添加任务</div>
+                                    <div class="stage-action-btn delete" onclick="deleteStage(this)" style="opacity: 0.3; cursor: not-allowed;" title="当前阶段存在已完成/进行中的任务，不支持删除"><span class="btn-icon">×</span> 删除阶段</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
                                 <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五" data-exec-standard="按照设计图纸进行开槽，深度和宽度符合规范要求" data-confirm-standard="开槽位置准确，深度宽度符合要求" data-liable-standard="开槽位置错误导致返工，由执行人承担责任" data-completed="true">
-                                    <input type="text" class="task-input" value="开槽" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
+                                    <input type="text" class="task-input" value="✓ 开槽" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly style="color: var(--success-color);">
                                     <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情" style="opacity: 0.3; cursor: not-allowed;">✎</div>
-                                    <div class="task-action-btn" onclick="deleteTask(this)" style="opacity: 0.3; cursor: not-allowed;">×</div>
+                                    <div class="task-action-btn" onclick="deleteTask(this)" style="opacity: 0.3; cursor: not-allowed;" title="已完成的任务不支持删除">×</div>
                                 </div>
-                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五" data-exec-standard="按照设计图纸布设线管，固定牢固，走向合理" data-confirm-standard="线管布设符合设计要求，固定牢固" data-liable-standard="线管布设不合格导致返工，由执行人承担责任">
-                                    <input type="text" class="task-input" value="布管" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
-                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
-                                    <div class="task-action-btn" onclick="deleteTask(this)">×</div>
+                                <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五" data-exec-standard="按照设计图纸布设线管，固定牢固，走向合理" data-confirm-standard="线管布设符合设计要求，固定牢固" data-liable-standard="线管布设不合格导致返工，由执行人承担责任" data-status="confirming">
+                                    <input type="text" class="task-input" value="⏳ 布管" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly style="color: var(--warning-color);">
+                                    <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情" style="opacity: 0.3; cursor: not-allowed;">✎</div>
+                                    <div class="task-action-btn" onclick="deleteTask(this)" style="opacity: 0.3; cursor: not-allowed;" title="进行中的任务不支持删除">×</div>
                                 </div>
                                 <div class="task-edit-item" data-executor="李四" data-confirmers="张三,王五,赵六" data-exec-standard="按照规范要求穿设电线，确保绝缘良好" data-confirm-standard="电线穿设规范，绝缘测试合格" data-liable-standard="穿线不合格导致返工，由执行人承担责任">
                                     <input type="text" class="task-input" value="穿线" placeholder="任务名称" onclick="viewTaskDetail(this)" readonly>
@@ -3241,8 +3380,8 @@
                                     <div class="switch"></div>
                                 </div>
                                 <div class="stage-actions">
-                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
-                                    <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
+                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)"><span class="btn-icon">+</span> 添加任务</div>
+                                    <div class="stage-action-btn delete" onclick="deleteStage(this)"><span class="btn-icon">×</span> 删除阶段</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
@@ -3272,8 +3411,8 @@
                                     <div class="switch"></div>
                                 </div>
                                 <div class="stage-actions">
-                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
-                                    <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
+                                    <div class="stage-action-btn add" onclick="addTaskToStage(this)"><span class="btn-icon">+</span> 添加任务</div>
+                                    <div class="stage-action-btn delete" onclick="deleteStage(this)"><span class="btn-icon">×</span> 删除阶段</div>
                                 </div>
                             </div>
                             <div class="task-edit-list">
@@ -3314,7 +3453,7 @@
                         <input type="text" class="form-input" id="newTaskName" placeholder="请输入任务名称">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">执行人 <span class="required">*</span></label>
+                        <label class="form-label">执行人（选填）</label>
                         <div class="confirm-person-tags" id="newTaskExecutorTags" style="margin-bottom: 8px;"></div>
                         <div class="search-select">
                             <div class="search-input-wrap">
@@ -3395,16 +3534,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">执行标准</label>
-                        <textarea class="form-textarea" id="newTaskExecStandard" placeholder="请输入执行标准（选填）"></textarea>
+                        <label class="form-label">执行标准 <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="newTaskExecStandard" placeholder="请输入执行标准"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">确认标准</label>
-                        <textarea class="form-textarea" id="newTaskConfirmStandard" placeholder="请输入确认标准（选填）"></textarea>
+                        <label class="form-label">确认标准 <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="newTaskConfirmStandard" placeholder="请输入确认标准"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">担责标准</label>
-                        <textarea class="form-textarea" id="newTaskLiableStandard" placeholder="请输入担责标准（选填）"></textarea>
+                        <label class="form-label">担责标准 <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="newTaskLiableStandard" placeholder="请输入担责标准"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -3463,7 +3602,7 @@
                         <input type="text" class="form-input" id="editTaskName" placeholder="请输入任务名称">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">执行人 <span class="required">*</span></label>
+                        <label class="form-label">执行人（选填）</label>
                         <div class="confirm-person-tags" id="editTaskExecutorTags" style="margin-bottom: 8px;"></div>
                         <div class="search-select">
                             <div class="search-input-wrap">
@@ -3544,16 +3683,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">执行标准</label>
-                        <textarea class="form-textarea" id="editTaskExecStandard" placeholder="请输入执行标准（选填）"></textarea>
+                        <label class="form-label">执行标准 <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="editTaskExecStandard" placeholder="请输入执行标准"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">确认标准</label>
-                        <textarea class="form-textarea" id="editTaskConfirmStandard" placeholder="请输入确认标准（选填）"></textarea>
+                        <label class="form-label">确认标准 <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="editTaskConfirmStandard" placeholder="请输入确认标准"></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">担责标准</label>
-                        <textarea class="form-textarea" id="editTaskLiableStandard" placeholder="请输入担责标准（选填）"></textarea>
+                        <label class="form-label">担责标准 <span class="required">*</span></label>
+                        <textarea class="form-textarea" id="editTaskLiableStandard" placeholder="请输入担责标准"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -3987,6 +4126,60 @@
                 </div>
                 <div class="modal-footer">
                     <div class="modal-btn" onclick="closeCustomToast()">知道了</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pc-open-modal" id="pcOpenModal">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <div class="modal-title">💻 在电脑端打开</div>
+                </div>
+                <div class="modal-body">
+                    <div class="qr-section">
+                        <div class="qr-code">
+                            <svg viewBox="0 0 100 100" width="140" height="140">
+                                <rect x="10" y="10" width="25" height="25" fill="#333"/>
+                                <rect x="65" y="10" width="25" height="25" fill="#333"/>
+                                <rect x="10" y="65" width="25" height="25" fill="#333"/>
+                                <rect x="15" y="15" width="15" height="15" fill="#fff"/>
+                                <rect x="70" y="15" width="15" height="15" fill="#fff"/>
+                                <rect x="15" y="70" width="15" height="15" fill="#fff"/>
+                                <rect x="18" y="18" width="9" height="9" fill="#333"/>
+                                <rect x="73" y="18" width="9" height="9" fill="#333"/>
+                                <rect x="18" y="73" width="9" height="9" fill="#333"/>
+                                <rect x="40" y="10" width="5" height="5" fill="#333"/>
+                                <rect x="50" y="10" width="5" height="5" fill="#333"/>
+                                <rect x="40" y="20" width="5" height="5" fill="#333"/>
+                                <rect x="45" y="25" width="5" height="5" fill="#333"/>
+                                <rect x="55" y="25" width="5" height="5" fill="#333"/>
+                                <rect x="40" y="40" width="20" height="20" fill="#333"/>
+                                <rect x="45" y="45" width="10" height="10" fill="#fff"/>
+                                <rect x="48" y="48" width="4" height="4" fill="#333"/>
+                                <rect x="10" y="40" width="5" height="5" fill="#333"/>
+                                <rect x="20" y="45" width="5" height="5" fill="#333"/>
+                                <rect x="25" y="50" width="5" height="5" fill="#333"/>
+                                <rect x="65" y="40" width="5" height="5" fill="#333"/>
+                                <rect x="75" y="45" width="5" height="5" fill="#333"/>
+                                <rect x="80" y="50" width="5" height="5" fill="#333"/>
+                                <rect x="65" y="65" width="5" height="5" fill="#333"/>
+                                <rect x="75" y="70" width="5" height="5" fill="#333"/>
+                                <rect x="80" y="75" width="5" height="5" fill="#333"/>
+                                <rect x="85" y="80" width="5" height="5" fill="#333"/>
+                            </svg>
+                        </div>
+                        <div class="qr-tip">使用微信扫一扫，在电脑端打开</div>
+                    </div>
+                    <div class="link-section">
+                        <div class="link-label">或复制链接在浏览器中打开：</div>
+                        <div class="link-box">
+                            <div class="link-input" id="pcLink">https://zhaobo12345.github.io/LZJPro/pc-login.html</div>
+                            <div class="copy-btn" onclick="copyPcLink()">复制链接</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-btn" onclick="closePcOpenModal()">取消</div>
                 </div>
             </div>
         </div>
@@ -4566,14 +4759,27 @@
         function confirmAddTask() {
             const taskName = document.getElementById('newTaskName').value.trim();
             const executor = document.getElementById('newTaskExecutor').value;
+            const execStandard = document.getElementById('newTaskExecStandard').value.trim();
+            const confirmStandard = document.getElementById('newTaskConfirmStandard').value.trim();
+            const liableStandard = document.getElementById('newTaskLiableStandard').value.trim();
             
             if (!taskName) {
                 showCustomToast('请输入任务名称');
                 return;
             }
             
-            if (!executor) {
-                showCustomToast('请选择执行人');
+            if (!execStandard) {
+                showCustomToast('请输入执行标准');
+                return;
+            }
+            
+            if (!confirmStandard) {
+                showCustomToast('请输入确认标准');
+                return;
+            }
+            
+            if (!liableStandard) {
+                showCustomToast('请输入担责标准');
                 return;
             }
             
@@ -4586,11 +4792,11 @@
                     <div class="task-action-btn edit" onclick="editTaskDetail(this)" title="编辑详情">✎</div>
                     <div class="task-action-btn" onclick="deleteTask(this)">×</div>
                 `;
-                newTask.dataset.executor = executor;
+                newTask.dataset.executor = executor || '';
                 newTask.dataset.confirmers = newTaskConfirmPersonList.join(',');
-                newTask.dataset.execStandard = document.getElementById('newTaskExecStandard').value;
-                newTask.dataset.confirmStandard = document.getElementById('newTaskConfirmStandard').value;
-                newTask.dataset.liableStandard = document.getElementById('newTaskLiableStandard').value;
+                newTask.dataset.execStandard = execStandard;
+                newTask.dataset.confirmStandard = confirmStandard;
+                newTask.dataset.liableStandard = liableStandard;
                 taskList.appendChild(newTask);
                 showToast('任务已添加，点击任务名称可查看详情，点击✎可编辑');
             }
@@ -4709,24 +4915,37 @@
         function confirmEditTask() {
             const taskName = document.getElementById('editTaskName').value.trim();
             const executor = document.getElementById('editTaskExecutor').value;
+            const execStandard = document.getElementById('editTaskExecStandard').value.trim();
+            const confirmStandard = document.getElementById('editTaskConfirmStandard').value.trim();
+            const liableStandard = document.getElementById('editTaskLiableStandard').value.trim();
             
             if (!taskName) {
                 showCustomToast('请输入任务名称');
                 return;
             }
             
-            if (!executor) {
-                showCustomToast('请选择执行人');
+            if (!execStandard) {
+                showCustomToast('请输入执行标准');
+                return;
+            }
+            
+            if (!confirmStandard) {
+                showCustomToast('请输入确认标准');
+                return;
+            }
+            
+            if (!liableStandard) {
+                showCustomToast('请输入担责标准');
                 return;
             }
             
             if (currentEditTaskItem) {
                 currentEditTaskItem.querySelector('.task-input').value = taskName;
-                currentEditTaskItem.dataset.executor = executor;
+                currentEditTaskItem.dataset.executor = executor || '';
                 currentEditTaskItem.dataset.confirmers = editTaskConfirmPersonList.join(',');
-                currentEditTaskItem.dataset.execStandard = document.getElementById('editTaskExecStandard').value;
-                currentEditTaskItem.dataset.confirmStandard = document.getElementById('editTaskConfirmStandard').value;
-                currentEditTaskItem.dataset.liableStandard = document.getElementById('editTaskLiableStandard').value;
+                currentEditTaskItem.dataset.execStandard = execStandard;
+                currentEditTaskItem.dataset.confirmStandard = confirmStandard;
+                currentEditTaskItem.dataset.liableStandard = liableStandard;
                 showToast('任务已更新');
             }
             
@@ -4737,6 +4956,14 @@
             const stageItem = element.closest('.stage-edit-item');
             const switchEl = element.querySelector('.switch');
             const isSequential = stageItem.dataset.sequential === 'true';
+            
+            const completedTasks = stageItem.querySelectorAll('.task-edit-item[data-completed="true"]');
+            const inProgressTasks = stageItem.querySelectorAll('.task-edit-item[data-status="in_progress"], .task-edit-item[data-status="confirming"]');
+            
+            if (completedTasks.length > 0 || inProgressTasks.length > 0) {
+                showCustomToast('当前阶段存在已执行的任务，不支持修改按序执行状态');
+                return;
+            }
             
             if (isSequential) {
                 stageItem.dataset.sequential = 'false';
@@ -4777,6 +5004,11 @@
             
             if (taskItem.dataset.completed === 'true') {
                 showCustomToast('已完成的任务不支持删除');
+                return;
+            }
+            
+            if (taskItem.dataset.status === 'in_progress' || taskItem.dataset.status === 'confirming') {
+                showCustomToast('进行中的任务不支持删除');
                 return;
             }
             
@@ -4833,6 +5065,24 @@
             document.getElementById('customToastModal').classList.remove('show');
         }
         
+        function showPcOpenModal() {
+            document.getElementById('pcOpenModal').classList.add('show');
+        }
+        
+        function closePcOpenModal() {
+            document.getElementById('pcOpenModal').classList.remove('show');
+        }
+        
+        function copyPcLink() {
+            const link = document.getElementById('pcLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                showCustomToast('链接已复制到剪贴板');
+                closePcOpenModal();
+            }).catch(() => {
+                showCustomToast('复制失败，请手动复制');
+            });
+        }
+        
         function deleteStage(btn) {
             const stageItem = btn.closest('.stage-edit-item');
             const container = document.getElementById('stageEditContainer');
@@ -4840,6 +5090,12 @@
             const completedTasks = stageItem.querySelectorAll('.task-edit-item[data-completed="true"]');
             if (completedTasks.length > 0) {
                 showCustomToast('当前阶段存在已完成的任务，不支持删除');
+                return;
+            }
+            
+            const inProgressTasks = stageItem.querySelectorAll('.task-edit-item[data-status="in_progress"], .task-edit-item[data-status="confirming"]');
+            if (inProgressTasks.length > 0) {
+                showCustomToast('当前阶段存在进行中的任务，不支持删除');
                 return;
             }
             
@@ -4989,8 +5245,8 @@
                         <div class="switch"></div>
                     </div>
                     <div class="stage-actions">
-                        <div class="stage-action-btn add" onclick="addTaskToStage(this)">+</div>
-                        <div class="stage-action-btn delete" onclick="deleteStage(this)">×</div>
+                        <div class="stage-action-btn add" onclick="addTaskToStage(this)"><span class="btn-icon">+</span> 添加任务</div>
+                        <div class="stage-action-btn delete" onclick="deleteStage(this)"><span class="btn-icon">×</span> 删除阶段</div>
                     </div>
                 </div>
                 <div class="task-edit-list">

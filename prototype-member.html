@@ -1229,6 +1229,36 @@
         .group-option .option-icon {
             font-size: 14px;
         }
+
+        .member-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .exit-btn-header {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.5);
+            background-color: transparent;
+            color: #FFFFFF;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .exit-btn-header:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.8);
+        }
+
+        .exit-btn-header:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
@@ -1250,7 +1280,10 @@
         <div class="page-content">
             <div class="member-header">
                 <div class="project-name">XX小区整体装修</div>
-                <div class="member-count" id="memberCount">共 24 位成员</div>
+                <div class="member-header-row">
+                    <div class="member-count" id="memberCount">共 24 位成员</div>
+                    <button class="exit-btn-header" onclick="showSelfExitConfirm()">退出项目</button>
+                </div>
             </div>
             
             <div class="filter-bar">
@@ -1560,11 +1593,11 @@
         
         <div class="app-modal" id="confirmModal">
             <div class="modal-box">
-                <div class="modal-title">确认移出</div>
+                <div class="modal-title" id="confirmTitle">确认移出</div>
                 <div class="modal-content" id="confirmContent">确定要将该成员移出项目吗？移出后该成员将无法访问项目数据。</div>
                 <div class="modal-actions">
                     <button class="modal-btn cancel" onclick="closeConfirmModal()">取消</button>
-                    <button class="modal-btn danger" onclick="confirmRemove()">确认移出</button>
+                    <button class="modal-btn danger" id="confirmBtn" onclick="handleConfirm()">确认移出</button>
                 </div>
             </div>
         </div>
@@ -1961,13 +1994,24 @@
         }
 
         function showRemoveConfirm() {
+            currentAction = 'remove';
             const member = members[currentMemberId];
+            document.getElementById('confirmTitle').textContent = '确认移出';
             document.getElementById('confirmContent').textContent = `确定要将"${member.name}"移出项目吗？移出后该成员将无法访问项目数据。`;
+            document.getElementById('confirmBtn').textContent = '确认移出';
             document.getElementById('confirmModal').classList.add('show');
         }
 
         function closeConfirmModal() {
             document.getElementById('confirmModal').classList.remove('show');
+        }
+
+        function handleConfirm() {
+            if (currentAction === 'remove') {
+                confirmRemove();
+            } else if (currentAction === 'selfExit') {
+                confirmSelfExit();
+            }
         }
 
         function confirmRemove() {
@@ -2260,6 +2304,30 @@
         document.getElementById('inviteModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeInviteModal();
+            }
+        });
+
+        let currentAction = '';
+
+        function showSelfExitConfirm() {
+            currentAction = 'selfExit';
+            document.getElementById('confirmTitle').textContent = '退出项目';
+            document.getElementById('confirmContent').textContent = '确定要退出当前项目吗？退出后将无法访问项目数据。';
+            document.getElementById('confirmBtn').textContent = '确认退出';
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        function confirmSelfExit() {
+            closeConfirmModal();
+            showToast('已成功退出项目');
+            setTimeout(() => {
+                window.location.href = 'prototype-project-list.html';
+            }, 1500);
+        }
+
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmModal();
             }
         });
 

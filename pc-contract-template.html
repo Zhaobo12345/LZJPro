@@ -216,49 +216,6 @@
             border-bottom: 1px solid var(--border-light);
         }
 
-        .variable-list {
-            background-color: var(--bg-secondary);
-            border-radius: 6px;
-            padding: 12px;
-        }
-
-        .variable-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .variable-item:last-child {
-            border-bottom: none;
-        }
-
-        .variable-item input {
-            flex: 1;
-            height: 32px;
-            padding: 0 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 13px;
-        }
-
-        .variable-item .remove-btn {
-            color: var(--error-color);
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .add-variable-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--primary-color);
-            cursor: pointer;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-
         .preview-panel {
             position: fixed;
             top: 0;
@@ -349,19 +306,15 @@
             <div class="pc-sidebar-header">
                 <div class="pc-sidebar-logo">
                     <span class="icon">🏗️</span>
-                    <span>家装管理平台</span>
+                    <span>良造家平台</span>
                 </div>
             </div>
             <div class="pc-sidebar-menu">
-                <a href="pc-project-list.html" class="pc-menu-item">
-                    <span class="icon">📊</span>
-                    <span class="label">工作台</span>
-                </a>
-                <a href="pc-project-list.html" class="pc-menu-item">
+                <a href="pc-project-list.html" class="pc-menu-item main-nav">
                     <span class="icon">📁</span>
                     <span class="label">项目管理</span>
                 </a>
-                <a href="pc-contract-edit.html" class="pc-menu-item">
+                <a href="pc-contract-list.html" class="pc-menu-item main-nav">
                     <span class="icon">📋</span>
                     <span class="label">合同管理</span>
                 </a>
@@ -374,17 +327,6 @@
                     <a href="pc-stage-template.html" class="pc-menu-item">
                         <span class="icon">📝</span>
                         <span class="label">阶段任务模板</span>
-                    </a>
-                </div>
-                <div class="pc-menu-group">
-                    <div class="pc-menu-group-title">系统设置</div>
-                    <a href="#" class="pc-menu-item">
-                        <span class="icon">👥</span>
-                        <span class="label">成员管理</span>
-                    </a>
-                    <a href="#" class="pc-menu-item">
-                        <span class="icon">⚙️</span>
-                        <span class="label">系统设置</span>
                     </a>
                 </div>
             </div>
@@ -400,10 +342,6 @@
                     </div>
                 </div>
                 <div class="pc-header-right">
-                    <div class="pc-header-icon">
-                        🔔
-                        <span class="badge"></span>
-                    </div>
                     <div class="pc-user-info">
                         <div class="pc-user-avatar">张</div>
                         <span class="pc-user-name">张三</span>
@@ -456,14 +394,19 @@
                         <div class="template-toolbar">
                             <div class="template-search">
                                 <input type="text" placeholder="搜索模板名称...">
-                                <select class="pc-form-select" style="width: 150px;">
+                                <select class="pc-form-select" style="width: 120px;">
+                                    <option>全部城市</option>
+                                    <option>全国</option>
+                                    <option>杭州</option>
+                                    <option>上海</option>
+                                    <option>北京</option>
+                                    <option>深圳</option>
+                                </select>
+                                <select class="pc-form-select" style="width: 120px;">
                                     <option>全部状态</option>
                                     <option>启用</option>
                                     <option>停用</option>
                                 </select>
-                            </div>
-                            <div class="flex gap-8">
-                                <button class="pc-btn pc-btn-default">导出</button>
                             </div>
                         </div>
 
@@ -472,10 +415,9 @@
                                 <thead>
                                     <tr>
                                         <th>模板名称</th>
+                                        <th>城市</th>
                                         <th>分类</th>
                                         <th>版本</th>
-                                        <th>变量数</th>
-                                        <th>引用次数</th>
                                         <th>状态</th>
                                         <th>更新时间</th>
                                         <th>操作</th>
@@ -486,10 +428,9 @@
                                         <td>
                                             <span class="template-name" onclick="previewTemplate(1)">水电分包合同模板</span>
                                         </td>
+                                        <td>杭州</td>
                                         <td><span class="template-category-tag">分包合同</span></td>
                                         <td><span class="template-version">v2.0</span></td>
-                                        <td>6</td>
-                                        <td>128</td>
                                         <td>
                                             <span class="template-status active">
                                                 <span class="dot"></span>启用
@@ -499,7 +440,6 @@
                                         <td>
                                             <div class="pc-table-actions">
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(1)">编辑</button>
-                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(1)">复制</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(1)">版本</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(1)">停用</button>
                                             </div>
@@ -509,10 +449,9 @@
                                         <td>
                                             <span class="template-name" onclick="previewTemplate(2)">泥瓦分包合同模板</span>
                                         </td>
+                                        <td>杭州</td>
                                         <td><span class="template-category-tag">分包合同</span></td>
                                         <td><span class="template-version">v1.5</span></td>
-                                        <td>5</td>
-                                        <td>86</td>
                                         <td>
                                             <span class="template-status active">
                                                 <span class="dot"></span>启用
@@ -522,7 +461,6 @@
                                         <td>
                                             <div class="pc-table-actions">
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(2)">编辑</button>
-                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(2)">复制</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(2)">版本</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(2)">停用</button>
                                             </div>
@@ -532,10 +470,9 @@
                                         <td>
                                             <span class="template-name" onclick="previewTemplate(3)">木工分包合同模板</span>
                                         </td>
+                                        <td>杭州</td>
                                         <td><span class="template-category-tag">分包合同</span></td>
                                         <td><span class="template-version">v1.2</span></td>
-                                        <td>4</td>
-                                        <td>52</td>
                                         <td>
                                             <span class="template-status active">
                                                 <span class="dot"></span>启用
@@ -545,7 +482,6 @@
                                         <td>
                                             <div class="pc-table-actions">
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(3)">编辑</button>
-                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(3)">复制</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(3)">版本</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(3)">停用</button>
                                             </div>
@@ -555,10 +491,9 @@
                                         <td>
                                             <span class="template-name" onclick="previewTemplate(4)">油漆分包合同模板</span>
                                         </td>
+                                        <td>杭州</td>
                                         <td><span class="template-category-tag">分包合同</span></td>
                                         <td><span class="template-version">v1.0</span></td>
-                                        <td>4</td>
-                                        <td>38</td>
                                         <td>
                                             <span class="template-status active">
                                                 <span class="dot"></span>启用
@@ -568,7 +503,6 @@
                                         <td>
                                             <div class="pc-table-actions">
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(4)">编辑</button>
-                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(4)">复制</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(4)">版本</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(4)">停用</button>
                                             </div>
@@ -578,10 +512,9 @@
                                         <td>
                                             <span class="template-name" onclick="previewTemplate(5)">主合同模板（标准版）</span>
                                         </td>
+                                        <td>全国</td>
                                         <td><span class="template-category-tag">主合同</span></td>
                                         <td><span class="template-version">v3.0</span></td>
-                                        <td>12</td>
-                                        <td>256</td>
                                         <td>
                                             <span class="template-status active">
                                                 <span class="dot"></span>启用
@@ -591,7 +524,6 @@
                                         <td>
                                             <div class="pc-table-actions">
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(5)">编辑</button>
-                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(5)">复制</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(5)">版本</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(5)">停用</button>
                                             </div>
@@ -601,10 +533,9 @@
                                         <td>
                                             <span class="template-name" onclick="previewTemplate(6)">旧版水电合同模板</span>
                                         </td>
+                                        <td>杭州</td>
                                         <td><span class="template-category-tag">分包合同</span></td>
                                         <td><span class="template-version">v1.0</span></td>
-                                        <td>4</td>
-                                        <td>0</td>
                                         <td>
                                             <span class="template-status inactive">
                                                 <span class="dot"></span>停用
@@ -614,7 +545,6 @@
                                         <td>
                                             <div class="pc-table-actions">
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTemplate(6)">编辑</button>
-                                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="copyTemplate(6)">复制</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showVersionHistory(6)">版本</button>
                                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="toggleStatus(6)">启用</button>
                                             </div>
@@ -638,27 +568,28 @@
         </div>
     </div>
 
-    <div class="pc-page-nav">
-        <div class="pc-page-nav-title">
-            PC端原型导航
-            <span class="badge">PC</span>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">高优先级</div>
-            <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
-            <a href="pc-contract-template.html" class="pc-page-nav-item active">合同文本模板</a>
-            <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">中优先级</div>
-            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
-            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">小程序原型</div>
-            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
-            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
-            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+    <div class="pc-page-nav-wrapper" id="pageNavWrapper">
+        <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
+        <div class="pc-page-nav" id="pageNav">
+            <div class="pc-page-nav-title">
+                PC端原型导航
+                <span class="badge">PC</span>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">高优先级</div>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
+                <a href="pc-contract-template.html" class="pc-page-nav-item active">合同文本模板</a>
+                <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">中优先级</div>
+                <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+                <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">小程序原型</div>
+                <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            </div>
         </div>
     </div>
 
@@ -688,39 +619,19 @@
                                 </select>
                             </div>
                             <div class="pc-form-group">
+                                <label class="pc-form-label">适用城市<span class="required">*</span></label>
+                                <select class="pc-form-select">
+                                    <option>全国</option>
+                                    <option>杭州</option>
+                                    <option>上海</option>
+                                    <option>北京</option>
+                                    <option>深圳</option>
+                                </select>
+                            </div>
+                            <div class="pc-form-group">
                                 <label class="pc-form-label">模板描述</label>
                                 <input type="text" class="pc-form-input" placeholder="请输入模板描述">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <div class="form-section-title">模板变量</div>
-                        <div class="variable-list">
-                            <div class="variable-item">
-                                <input type="text" value="甲方名称" placeholder="变量名称">
-                                <input type="text" value="{{party_a}}" placeholder="变量标识">
-                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
-                            </div>
-                            <div class="variable-item">
-                                <input type="text" value="乙方名称" placeholder="变量名称">
-                                <input type="text" value="{{party_b}}" placeholder="变量标识">
-                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
-                            </div>
-                            <div class="variable-item">
-                                <input type="text" value="合同金额" placeholder="变量名称">
-                                <input type="text" value="{{amount}}" placeholder="变量标识">
-                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
-                            </div>
-                            <div class="variable-item">
-                                <input type="text" value="工期" placeholder="变量名称">
-                                <input type="text" value="{{duration}}" placeholder="变量标识">
-                                <span class="remove-btn" onclick="removeVariable(this)">×</span>
-                            </div>
-                        </div>
-                        <div class="add-variable-btn" onclick="addVariable()">
-                            <span>+</span>
-                            <span>添加变量</span>
                         </div>
                     </div>
 
@@ -733,8 +644,8 @@
                             <span class="toolbar-divider"></span>
                             <button class="toolbar-btn" title="插入变量">{} 变量</button>
                             <span class="toolbar-divider"></span>
-                            <button class="toolbar-btn" title="插入表格">⊞</button>
-                            <button class="toolbar-btn" title="插入图片">🖼</button>
+                            <button class="toolbar-btn" title="插入表格">表格</button>
+                            <button class="toolbar-btn" title="插入图片">图片</button>
                         </div>
                         <div class="editor-content" contenteditable="true" style="min-height: 300px;">
                             <p>在此输入合同正文内容，使用 {{变量名}} 插入动态变量...</p>
@@ -809,6 +720,19 @@
     </div>
 
     <script>
+        function togglePageNav() {
+            const wrapper = document.getElementById('pageNavWrapper');
+            const nav = document.getElementById('pageNav');
+            const toggle = wrapper.querySelector('.pc-page-nav-toggle');
+            nav.classList.toggle('collapsed');
+            wrapper.classList.toggle('collapsed');
+            if (nav.classList.contains('collapsed')) {
+                toggle.textContent = '▶';
+            } else {
+                toggle.textContent = '◀';
+            }
+        }
+
         function showCreateModal() {
             document.getElementById('createModal').classList.add('show');
         }
@@ -819,10 +743,6 @@
 
         function editTemplate(id) {
             document.getElementById('createModal').classList.add('show');
-        }
-
-        function copyTemplate(id) {
-            alert('已复制模板，请在编辑后保存');
         }
 
         function previewTemplate(id) {
@@ -842,22 +762,6 @@
                 alert('状态已更新');
                 location.reload();
             }
-        }
-
-        function addVariable() {
-            const list = document.querySelector('.variable-list');
-            const item = document.createElement('div');
-            item.className = 'variable-item';
-            item.innerHTML = `
-                <input type="text" placeholder="变量名称">
-                <input type="text" placeholder="变量标识">
-                <span class="remove-btn" onclick="removeVariable(this)">×</span>
-            `;
-            list.appendChild(item);
-        }
-
-        function removeVariable(btn) {
-            btn.parentElement.remove();
         }
 
         function saveTemplate() {

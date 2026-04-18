@@ -96,6 +96,80 @@
             gap: 8px;
         }
 
+        .people-card .person-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .people-card .no-executor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            border: 2px dashed var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .people-card .no-executor:hover {
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .people-card .no-executor .icon {
+            font-size: 24px;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+        }
+
+        .people-card .no-executor .text {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .people-card .no-executor:hover .icon,
+        .people-card .no-executor:hover .text {
+            color: var(--primary-color);
+        }
+
+        .people-card .add-executor-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            background-color: var(--status-primary-bg);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .people-card .add-executor-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .people-card .add-executor-btn:hover .icon,
+        .people-card .add-executor-btn:hover .text {
+            color: #fff;
+        }
+
+        .people-card .add-executor-btn .icon {
+            font-size: 16px;
+            color: var(--primary-color);
+        }
+
+        .people-card .add-executor-btn .text {
+            font-size: 13px;
+            color: var(--primary-color);
+        }
+
         .people-card .person-item {
             display: flex;
             align-items: center;
@@ -105,6 +179,32 @@
             border-radius: 6px;
             flex: 1;
             min-width: 120px;
+        }
+
+        .card-collapsible {
+            cursor: pointer;
+        }
+
+        .card-collapsible .toggle-icon {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            transition: transform 0.3s;
+            margin-left: 8px;
+        }
+
+        .card-collapsible.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .card-content-collapsible {
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        .card-content-collapsible.collapsed {
+            max-height: 0 !important;
+            padding: 0;
+            margin: 0;
         }
 
         .people-card .person-avatar {
@@ -423,6 +523,37 @@
             font-size: 12px;
             color: var(--text-tertiary);
             margin-left: 4px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn.primary {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .btn.primary:hover {
+            background-color: #40a9ff;
+        }
+
+        .btn.secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .btn.secondary:hover {
+            background-color: #E8E8E8;
         }
 
         .action-buttons {
@@ -1114,6 +1245,44 @@
             align-items: center;
             padding: 6px 0;
             border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .confirmer-status-item:last-child {
+            border-bottom: none;
+        }
+
+        .confirmer-status-item .delete-btn {
+            position: absolute;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FF4D4F;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .confirmer-status-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .confirmer-status-item .delete-btn:hover {
+            background-color: #FF7875;
+        }
+        
+        .confirmer-status-item .delete-btn.always-show {
+            opacity: 1;
+        }
+        
+        .confirmer-status-item.configuring-mode {
+            padding-right: 36px;
         }
 
         .confirmer-status-item:last-child {
@@ -1410,6 +1579,137 @@
             max-height: calc(80vh - 60px);
         }
 
+        .person-selector-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .person-selector-modal.show { display: flex; }
+
+        .person-selector-modal .modal-content {
+            width: 100%;
+            max-height: 70%;
+            background-color: var(--bg-primary);
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .person-selector-modal .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .person-selector-modal .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .person-selector-modal .modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .person-selector-modal .search-box {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .person-selector-modal .search-input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .person-selector-modal .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .person-selector-modal .person-list {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding: 8px 0;
+        }
+
+        .person-selector-modal .person-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .person-selector-modal .person-option:hover {
+            background-color: #E6F7FF;
+        }
+
+        .person-selector-modal .person-option.selected {
+            background-color: var(--status-primary-bg);
+        }
+
+        .person-selector-modal .person-option .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 14px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .person-selector-modal .person-option .info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .person-selector-modal .person-option .name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .person-selector-modal .person-option .role {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .person-selector-modal .person-option .check-icon {
+            color: var(--primary-color);
+            font-size: 18px;
+            margin-left: 8px;
+        }
+
+        .person-selector-modal .empty-result {
+            padding: 40px 16px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
         .evaluation-item {
             display: flex;
             padding: 12px 0;
@@ -1513,12 +1813,12 @@
         </div>
         
         <div class="page-content">
-            <div class="task-header-card confirming" id="taskHeader">
+            <div class="task-header-card" id="taskHeader">
                 <div class="task-name" id="taskName">穿线</div>
                 <div class="task-stage">📍 水电分包合同 > 布管布线阶段</div>
                 <div class="task-status-row">
-                    <div class="status-badge" id="taskStatus">确认中</div>
-                    <div class="confirm-progress" id="confirmProgress">确认进度：1/3</div>
+                    <div class="status-badge" id="taskStatus">待配置</div>
+                    <div class="confirm-progress" id="confirmProgress">请配置执行人（<span style="color: #FF4D4F;">必填</span>）和确认人（<span style="color: #8C8C8C;">选填</span>）</div>
                 </div>
             </div>
             
@@ -1545,11 +1845,11 @@
                                 <div class="step-label">已完成</div>
                             </div>
                         </div>
-                        <div class="acceptance-progress" id="acceptanceProgress">
+                        <div class="acceptance-progress" id="acceptanceProgress" style="display: none;">
                             <div class="acceptance-progress-title">
                                 <span>确认进度</span>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span id="flowProgressText">1/3 已确认</span>
+                                    <span id="flowProgressText">任务配置中</span>
                                     <div class="reminder-icon-btn" id="reminderIconBtn" onclick="toggleReminderTooltip(event)" style="display: none;">
                                         <span class="icon">⏰</span>
                                         <div class="reminder-tooltip" id="reminderTooltip">
@@ -1560,23 +1860,31 @@
                                 </div>
                             </div>
                             <div class="acceptance-progress-bar">
-                                <div class="acceptance-progress-fill" id="flowProgressBar" style="width: 33%;"></div>
+                                <div class="acceptance-progress-fill" id="flowProgressBar" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="people-card">
+                    <div class="people-card" id="executorCard">
                         <div class="card-label">
                             <span class="label-icon">👤</span>
                             <span>执行人</span>
                         </div>
-                        <div class="person-list">
-                            <div class="person-item">
+                        <div class="person-list" id="executorList" style="display: none;">
+                            <div class="person-item" id="executorItem">
                                 <div class="person-avatar">李</div>
                                 <div class="person-info">
                                     <div class="person-name">李四 <span class="role-badge foreman">工长</span></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="no-executor" id="noExecutorView" onclick="showExecutorSelector()">
+                            <div class="icon">👤</div>
+                            <div class="text">暂无执行人，点击添加</div>
+                        </div>
+                        <div class="add-executor-btn" id="addExecutorBtn" style="display: none;" onclick="showExecutorSelector()">
+                            <span class="icon">✎</span>
+                            <span class="text">修改执行人</span>
                         </div>
                     </div>
                     
@@ -1584,33 +1892,15 @@
                         <div class="card-label">
                             <span class="label-icon">👥</span>
                             <span>确认人</span>
-                            <span class="label-tag" id="confirmerCount">3人</span>
+                            <span class="label-tag" id="confirmerCount">0人</span>
                         </div>
                         
                         <div class="confirmer-status-list" id="confirmerList">
-                            <div class="confirmer-status-item">
-                                <div class="avatar">张</div>
-                                <div class="info">
-                                    <div class="name">张三 · 项目总</div>
-                                    <div class="time">2024-01-15 14:30 已确认</div>
+                            <div class="no-confirmer-tip" onclick="showConfirmerSelector()" style="display: flex; align-items: center; justify-content: center; padding: 20px; color: var(--text-tertiary); cursor: pointer;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 24px; margin-bottom: 8px;">👥</div>
+                                    <div style="font-size: 14px;">暂无确认人，点击添加</div>
                                 </div>
-                                <div class="status confirmed">已确认</div>
-                            </div>
-                            <div class="confirmer-status-item">
-                                <div class="avatar">王</div>
-                                <div class="info">
-                                    <div class="name">王五 · 业主</div>
-                                    <div class="time">等待确认中...</div>
-                                </div>
-                                <div class="status pending">待确认</div>
-                            </div>
-                            <div class="confirmer-status-item">
-                                <div class="avatar">赵</div>
-                                <div class="info">
-                                    <div class="name">赵六 · 设计师</div>
-                                    <div class="time">等待确认中...</div>
-                                </div>
-                                <div class="status pending">待确认</div>
                             </div>
                         </div>
                         
@@ -1694,11 +1984,12 @@
             </div>
             
             <div class="card" id="executionRecordCard">
-                <div class="card-title">
-                    <span>📸 执行记录</span>
-                    <span class="more" onclick="toggleHistoryRecords()" style="display: none;">查看历史记录</span>
+                <div class="card-title card-collapsible" onclick="toggleCard('execution')">
+                    <span>📸 执行记录 <span class="toggle-icon">▼</span></span>
+                    <span class="more" onclick="event.stopPropagation(); toggleHistoryRecords()" style="display: none;">查看历史记录</span>
                 </div>
                 
+                <div class="card-content-collapsible" id="executionCardContent">
                 <!-- 当前有效执行记录 -->
                 <div class="execution-section" id="currentExecution">
                     <div class="section-title">
@@ -1724,12 +2015,14 @@
                 <!-- 历史执行记录（默认隐藏） -->
                 <div id="historyRecords" style="display: none;">
                 </div>
+                </div>
             </div>
             
             <div class="card" id="confirmRecordCard">
-                <div class="card-title">
-                    <span>✅ 确认记录</span>
+                <div class="card-title card-collapsible" onclick="toggleCard('confirm')">
+                    <span>✅ 确认记录 <span class="toggle-icon">▼</span></span>
                 </div>
+                <div class="card-content-collapsible" id="confirmRecordCardContent">
                 <div class="confirm-list">
                     <div class="confirm-item">
                         <div class="avatar">张</div>
@@ -1774,14 +2067,14 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
             
             <div style="height: 80px;"></div>
         </div>
         
         <div class="action-buttons" id="actionButtons">
-            <div class="btn secondary" onclick="showConfirmModal()">驳回</div>
-            <div class="btn success" onclick="showConfirmModal()">确认通过</div>
+            <div class="btn secondary" style="width: 100%; opacity: 0.5; cursor: not-allowed;">请先选择执行人</div>
         </div>
         
         <div class="confirm-modal" id="confirmModal">
@@ -1950,6 +2243,84 @@
                 </div>
             </div>
         </div>
+        
+        <div class="person-selector-modal" id="executorSelectorModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">选择执行人</div>
+                    <div class="modal-close" onclick="closeExecutorSelector()">✕</div>
+                </div>
+                <div class="search-box">
+                    <input type="text" class="search-input" id="executorSearchInput" placeholder="搜索姓名..." oninput="filterExecutors(this.value)">
+                </div>
+                <div class="person-list" id="executorOptionList">
+                </div>
+            </div>
+        </div>
+        
+        <div class="person-selector-modal" id="confirmerSelectorModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">选择确认人</div>
+                    <div class="modal-close" onclick="closeConfirmerSelector()">✕</div>
+                </div>
+                <div class="search-box">
+                    <input type="text" class="search-input" id="confirmerSearchInput" placeholder="搜索姓名..." oninput="filterConfirmers(this.value)">
+                </div>
+                <div class="person-list" id="confirmerOptionList">
+                </div>
+                <div style="padding: 12px 16px; border-top: 1px solid var(--border-color); flex-shrink: 0;">
+                    <button class="btn primary" style="width: 100%;" onclick="confirmConfirmerSelection()">确定</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="person-selector-modal" id="submitTaskModal">
+            <div class="modal-content" style="max-height: 80%;">
+                <div class="modal-header">
+                    <div class="modal-title">确认提交任务</div>
+                    <div class="modal-close" onclick="closeSubmitTaskModal()">✕</div>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">提交后将发送通知给以下人员：</div>
+                    </div>
+                    <div style="background: #F5F5F5; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px;">执行人</div>
+                        <div id="submitExecutorInfo" style="display: flex; align-items: center;">
+                            <div class="avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; margin-right: 8px;">李</div>
+                            <div style="font-size: 14px; color: var(--text-primary);">李四 · 工长</div>
+                        </div>
+                    </div>
+                    <div style="background: #F5F5F5; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 12px; color: var(--text-tertiary); margin-bottom: 8px;">确认人（<span id="submitConfirmerCount">3</span>人）</div>
+                        <div id="submitConfirmerInfo">
+                            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                                <div class="avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; margin-right: 8px;">张</div>
+                                <div style="font-size: 14px; color: var(--text-primary);">张三 · 项目总</div>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                                <div class="avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; margin-right: 8px;">王</div>
+                                <div style="font-size: 14px; color: var(--text-primary);">王五 · 业主</div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div class="avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; margin-right: 8px;">赵</div>
+                                <div style="font-size: 14px; color: var(--text-primary);">赵六 · 设计师</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: #FFF7E6; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 12px; color: #FA8C16; line-height: 1.5;">
+                            ⚠️ 提交后执行人和确认人将不可修改，请确认信息无误后再提交。
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 12px 16px; border-top: 1px solid var(--border-color); display: flex; gap: 12px;">
+                    <button class="btn secondary" style="flex: 1;" onclick="closeSubmitTaskModal()">取消</button>
+                    <button class="btn primary" style="flex: 1;" onclick="confirmSubmitTask()">确认提交</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="page-nav">
@@ -1965,11 +2336,15 @@
         <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
             <div class="page-nav-title">任务状态切换</div>
             <div class="status-switcher">
+                <div class="status-switch-item active" onclick="updateTaskStatus('configuring')">待配置</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('pending')">待开始</div>
-                <div class="status-switch-item active" onclick="updateTaskStatus('confirming')">确认中（首次）</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('confirming')">确认中</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('completed')">已完成</div>
+            </div>
+            <div class="page-nav-title" style="margin-top: 12px;">更多状态（含驳回流程）</div>
+            <div class="status-switcher">
                 <div class="status-switch-item" onclick="updateTaskStatus('confirming_after_reject')">确认中（被驳回后）</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('rejected_pending')">驳回后待开始</div>
-                <div class="status-switch-item" onclick="updateTaskStatus('completed')">已完成（无驳回）</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('completed_with_reject')">已完成（含驳回）</div>
             </div>
         </div>
@@ -2029,6 +2404,348 @@
             uploadedFiles = [];
             updateUploadedPreview();
         }
+        
+        function showExecutorSelector() {
+            const modal = document.getElementById('executorSelectorModal');
+            const searchInput = document.getElementById('executorSearchInput');
+            searchInput.value = '';
+            renderExecutorOptions();
+            modal.classList.add('show');
+        }
+        
+        function closeExecutorSelector() {
+            document.getElementById('executorSelectorModal').classList.remove('show');
+        }
+        
+        const projectMembers = [
+            { id: 1, name: '张三', role: '项目总', avatar: '张' },
+            { id: 2, name: '李四', role: '工长', avatar: '李' },
+            { id: 3, name: '王五', role: '业主', avatar: '王' },
+            { id: 4, name: '赵六', role: '设计师', avatar: '赵' },
+            { id: 5, name: '钱七', role: '施工员', avatar: '钱' },
+            { id: 6, name: '孙八', role: '施工员', avatar: '孙' },
+            { id: 7, name: '周九', role: '监理', avatar: '周' },
+            { id: 8, name: '吴十', role: '电工', avatar: '吴' }
+        ];
+        
+        function renderExecutorOptions(keyword = '') {
+            const list = document.getElementById('executorOptionList');
+            const filteredMembers = projectMembers.filter(m => 
+                m.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                m.role.toLowerCase().includes(keyword.toLowerCase())
+            );
+            
+            if (filteredMembers.length === 0) {
+                list.innerHTML = '<div class="empty-result">未找到匹配的成员</div>';
+                return;
+            }
+            
+            list.innerHTML = filteredMembers.map(member => `
+                <div class="person-option" onclick="selectExecutor(${member.id})">
+                    <div class="avatar">${member.avatar}</div>
+                    <div class="info">
+                        <div class="name">${member.name}</div>
+                        <div class="role">${member.role}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function filterExecutors(keyword) {
+            renderExecutorOptions(keyword);
+        }
+        
+        function selectExecutor(memberId) {
+            const member = projectMembers.find(m => m.id === memberId);
+            if (!member) return;
+            
+            const executorList = document.getElementById('executorList');
+            const executorItem = document.getElementById('executorItem');
+            const noExecutorView = document.getElementById('noExecutorView');
+            const addExecutorBtn = document.getElementById('addExecutorBtn');
+            const confirmProgress = document.getElementById('confirmProgress');
+            const taskStatus = document.getElementById('taskStatus');
+            
+            executorItem.querySelector('.person-avatar').textContent = member.avatar;
+            executorItem.querySelector('.person-name').innerHTML = `${member.name} <span class="role-badge ${getRoleBadgeClass(member.role)}">${member.role}</span>`;
+            
+            executorList.style.display = 'flex';
+            executorItem.style.display = 'flex';
+            noExecutorView.style.display = 'none';
+            addExecutorBtn.style.display = 'flex';
+            
+            window.currentHasExecutor = true;
+            window.currentExecutorId = memberId;
+            window.currentExecutorName = member.name;
+            
+            if (taskStatus && taskStatus.textContent.trim() === '待配置') {
+                confirmProgress.innerHTML = '请配置执行人（<span style="color: #FF4D4F;">必填</span>）和确认人（<span style="color: #8C8C8C;">选填</span>）';
+                document.getElementById('actionButtons').innerHTML = `
+                    <div class="btn primary" onclick="showSubmitTaskModal()">提交任务</div>
+                `;
+            } else {
+                confirmProgress.textContent = '等待执行人执行';
+                if (currentUserRole === 'executor') {
+                    document.getElementById('actionButtons').innerHTML = `
+                        <div class="btn primary" onclick="showUploadModal()">开始执行</div>
+                    `;
+                } else {
+                    document.getElementById('actionButtons').innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                    `;
+                }
+            }
+            
+            closeExecutorSelector();
+            showToast(`已修改执行人：${member.name}`);
+        }
+        
+        function getRoleBadgeClass(role) {
+            const roleMap = {
+                '项目总': 'manager',
+                '工长': 'foreman',
+                '业主': 'owner',
+                '设计师': 'designer',
+                '施工员': 'worker',
+                '监理': 'foreman',
+                '电工': 'worker'
+            };
+            return roleMap[role] || 'worker';
+        }
+        
+        let selectedConfirmerIds = [];
+        let currentConfirmers = [];
+        
+        function showConfirmerSelector() {
+            const modal = document.getElementById('confirmerSelectorModal');
+            const searchInput = document.getElementById('confirmerSearchInput');
+            searchInput.value = '';
+            selectedConfirmerIds = currentConfirmers.map(c => c.id);
+            renderConfirmerOptions();
+            modal.classList.add('show');
+        }
+        
+        function closeConfirmerSelector() {
+            document.getElementById('confirmerSelectorModal').classList.remove('show');
+        }
+        
+        function removeConfirmer(confirmerId) {
+            const confirmer = currentConfirmers.find(c => c.id === confirmerId);
+            if (!confirmer) return;
+            
+            if (currentConfirmers.length <= 1) {
+                showToast('至少需要保留一位确认人');
+                return;
+            }
+            
+            currentConfirmers = currentConfirmers.filter(c => c.id !== confirmerId);
+            renderConfirmerList();
+            updateConfirmerCount();
+            showToast(`已移除确认人：${confirmer.name}`);
+        }
+        
+        function renderConfirmerList() {
+            const confirmerList = document.getElementById('confirmerList');
+            confirmerList.innerHTML = currentConfirmers.map(confirmer => `
+                <div class="confirmer-status-item" data-confirmer-id="${confirmer.id}">
+                    <div class="avatar">${confirmer.avatar}</div>
+                    <div class="info">
+                        <div class="name">${confirmer.name} · ${confirmer.role}</div>
+                        <div class="time">${confirmer.status === 'confirmed' ? '已确认' : '等待确认中...'}</div>
+                    </div>
+                    <div class="status ${confirmer.status}">${confirmer.status === 'confirmed' ? '已确认' : '待确认'}</div>
+                    <div class="delete-btn" onclick="removeConfirmer(${confirmer.id})">×</div>
+                </div>
+            `).join('');
+        }
+        
+        function renderConfiguringConfirmerList() {
+            const confirmerList = document.getElementById('confirmerList');
+            
+            if (currentConfirmers.length === 0) {
+                confirmerList.innerHTML = `
+                    <div class="no-confirmer-tip" onclick="showConfirmerSelector()" style="display: flex; align-items: center; justify-content: center; padding: 20px; color: var(--text-tertiary); cursor: pointer;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">👥</div>
+                            <div style="font-size: 14px;">暂无确认人，点击添加</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                confirmerList.innerHTML = currentConfirmers.map(confirmer => `
+                    <div class="confirmer-status-item configuring-mode" data-confirmer-id="${confirmer.id}">
+                        <div class="avatar">${confirmer.avatar}</div>
+                        <div class="info">
+                            <div class="name">${confirmer.name} · ${confirmer.role}</div>
+                        </div>
+                        <div class="delete-btn always-show" onclick="removeConfiguringConfirmer(${confirmer.id})">×</div>
+                    </div>
+                `).join('');
+            }
+            
+            updateConfirmerCount();
+        }
+        
+        function removeConfiguringConfirmer(confirmerId) {
+            const confirmer = currentConfirmers.find(c => c.id === confirmerId);
+            if (!confirmer) return;
+            
+            currentConfirmers = currentConfirmers.filter(c => c.id !== confirmerId);
+            renderConfiguringConfirmerList();
+            showToast(`已移除确认人：${confirmer.name}`);
+        }
+        
+        function updateConfirmerCount() {
+            const confirmerCount = document.getElementById('confirmerCount');
+            confirmerCount.textContent = `${currentConfirmers.length}人`;
+        }
+        
+        function renderConfirmerOptions(keyword = '') {
+            const list = document.getElementById('confirmerOptionList');
+            const filteredMembers = projectMembers.filter(m => 
+                m.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                m.role.toLowerCase().includes(keyword.toLowerCase())
+            );
+            
+            if (filteredMembers.length === 0) {
+                list.innerHTML = '<div class="empty-result">未找到匹配的成员</div>';
+                return;
+            }
+            
+            list.innerHTML = filteredMembers.map(member => `
+                <div class="person-option ${selectedConfirmerIds.includes(member.id) ? 'selected' : ''}" onclick="toggleConfirmer(${member.id})">
+                    <div class="avatar">${member.avatar}</div>
+                    <div class="info">
+                        <div class="name">${member.name}</div>
+                        <div class="role">${member.role}</div>
+                    </div>
+                    ${selectedConfirmerIds.includes(member.id) ? '<span class="check-icon">✓</span>' : ''}
+                </div>
+            `).join('');
+        }
+        
+        function filterConfirmers(keyword) {
+            renderConfirmerOptions(keyword);
+        }
+        
+        function toggleConfirmer(memberId) {
+            const index = selectedConfirmerIds.indexOf(memberId);
+            if (index > -1) {
+                selectedConfirmerIds.splice(index, 1);
+            } else {
+                if (selectedConfirmerIds.length >= 5) {
+                    showToast('确认人最多选择5人');
+                    return;
+                }
+                selectedConfirmerIds.push(memberId);
+            }
+            renderConfirmerOptions(document.getElementById('confirmerSearchInput').value);
+        }
+        
+        function confirmConfirmerSelection() {
+            currentConfirmers = selectedConfirmerIds.map(id => {
+                const member = projectMembers.find(m => m.id === id);
+                return {
+                    id: member.id,
+                    name: member.name,
+                    role: member.role,
+                    avatar: member.avatar,
+                    status: 'pending'
+                };
+            });
+            
+            const taskStatus = document.getElementById('taskStatus');
+            if (taskStatus && taskStatus.textContent.trim() === '待配置') {
+                renderConfiguringConfirmerList();
+            } else {
+                renderConfirmerList();
+                updateConfirmerCount();
+            }
+            
+            closeConfirmerSelector();
+            
+            if (currentConfirmers.length > 0) {
+                showToast(`已更新确认人，共 ${currentConfirmers.length} 人`);
+            }
+        }
+        
+        document.getElementById('executorSelectorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExecutorSelector();
+            }
+        });
+        
+        document.getElementById('confirmerSelectorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmerSelector();
+            }
+        });
+        
+        let taskSubmitted = false;
+        
+        function showSubmitTaskModal() {
+            if (!window.currentHasExecutor) {
+                showToast('请先选择执行人');
+                return;
+            }
+            
+            const executorInfo = document.getElementById('submitExecutorInfo');
+            const executor = projectMembers.find(m => m.id === window.currentExecutorId);
+            if (executor) {
+                executorInfo.innerHTML = `
+                    <div class="avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; margin-right: 8px;">${executor.avatar}</div>
+                    <div style="font-size: 14px; color: var(--text-primary);">${executor.name} · ${executor.role}</div>
+                `;
+            }
+            
+            const confirmerInfo = document.getElementById('submitConfirmerInfo');
+            const confirmerCount = document.getElementById('submitConfirmerCount');
+            confirmerCount.textContent = currentConfirmers.length;
+            
+            if (currentConfirmers.length > 0) {
+                confirmerInfo.innerHTML = currentConfirmers.map(confirmer => `
+                    <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                        <div class="avatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 12px; margin-right: 8px;">${confirmer.avatar}</div>
+                        <div style="font-size: 14px; color: var(--text-primary);">${confirmer.name} · ${confirmer.role}</div>
+                    </div>
+                `).join('');
+            } else {
+                confirmerInfo.innerHTML = '<div style="font-size: 14px; color: var(--text-tertiary);">暂无确认人</div>';
+            }
+            
+            document.getElementById('submitTaskModal').classList.add('show');
+        }
+        
+        function closeSubmitTaskModal() {
+            document.getElementById('submitTaskModal').classList.remove('show');
+        }
+        
+        function confirmSubmitTask() {
+            taskSubmitted = true;
+            closeSubmitTaskModal();
+            
+            const addExecutorBtn = document.getElementById('addExecutorBtn');
+            const addConfirmerBtn = document.getElementById('addConfirmerBtn');
+            
+            if (addExecutorBtn) addExecutorBtn.style.display = 'none';
+            if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+            
+            document.querySelectorAll('.confirmer-status-item .delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+            showToast('任务提交成功，已通知相关人员');
+            
+            setTimeout(() => {
+                updateTaskStatus('pending');
+            }, 500);
+        }
+        
+        document.getElementById('submitTaskModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSubmitTaskModal();
+            }
+        });
         
         function setRating(rating) {
             currentRating = rating;
@@ -2121,6 +2838,23 @@
             }
         }
         
+        function toggleCard(type) {
+            let content, title;
+            
+            if (type === 'execution') {
+                content = document.getElementById('executionCardContent');
+                title = document.querySelector('#executionRecordCard .card-title');
+            } else if (type === 'confirm') {
+                content = document.getElementById('confirmRecordCardContent');
+                title = document.querySelector('#confirmRecordCard .card-title');
+            }
+            
+            if (content && title) {
+                content.classList.toggle('collapsed');
+                title.classList.toggle('collapsed');
+            }
+        }
+        
         function triggerUpload(type, context) {
             currentUploadContext = context;
             if (type === 'image') {
@@ -2204,37 +2938,85 @@
             flowLine1.className = 'flow-line';
             flowLine2.className = 'flow-line';
             
-            if (status === 'pending') {
+            if (status === 'configuring') {
                 header.className = 'task-header-card';
-                statusBadge.textContent = '待开始';
-                confirmProgress.textContent = '等待执行人执行';
+                statusBadge.textContent = '待配置';
+                confirmProgress.innerHTML = '请配置执行人（<span style="color: #FF4D4F;">必填</span>）和确认人（<span style="color: #8C8C8C;">选填</span>）';
                 
                 executionRecordCard.style.display = 'none';
                 confirmRecordCard.style.display = 'none';
                 
-                confirmerList.innerHTML = `
-                    <div class="confirmer-status-item">
-                        <div class="avatar">张</div>
-                        <div class="info">
-                            <div class="name">张三 · 项目总</div>
-                        </div>
-                        <div class="status pending">待确认</div>
-                    </div>
-                    <div class="confirmer-status-item">
-                        <div class="avatar">王</div>
-                        <div class="info">
-                            <div class="name">王五 · 业主</div>
-                        </div>
-                        <div class="status pending">待确认</div>
-                    </div>
-                    <div class="confirmer-status-item">
-                        <div class="avatar">赵</div>
-                        <div class="info">
-                            <div class="name">赵六 · 设计师</div>
-                        </div>
-                        <div class="status pending">待确认</div>
-                    </div>
-                `;
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                const hasExecutor = window.currentHasExecutor || false;
+                
+                if (hasExecutor) {
+                    executorList.style.display = 'flex';
+                    executorItem.style.display = 'flex';
+                    noExecutorView.style.display = 'none';
+                    addExecutorBtn.style.display = 'flex';
+                } else {
+                    executorList.style.display = 'none';
+                    noExecutorView.style.display = 'flex';
+                    addExecutorBtn.style.display = 'none';
+                }
+                
+                renderConfiguringConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
+                
+                if (hasExecutor) {
+                    actionButtons.innerHTML = `
+                        <div class="btn primary" onclick="showSubmitTaskModal()">提交任务</div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%; opacity: 0.5; cursor: not-allowed;">请先选择执行人</div>
+                    `;
+                }
+                
+                const roleSwitcher = document.getElementById('roleSwitcher');
+                if (roleSwitcher) roleSwitcher.style.display = 'none';
+                
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step current';
+                flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
+                flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep2.querySelector('.step-label').textContent = '确认中';
+                flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep3.querySelector('.step-label').textContent = '已完成';
+                
+                if (flowProgressText) flowProgressText.textContent = '任务配置中';
+                if (flowProgressBar) flowProgressBar.style.width = '0%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
+            } else if (status === 'pending') {
+                header.className = 'task-header-card';
+                statusBadge.textContent = '待开始';
+                confirmProgress.textContent = '等待执行人执行';
+                
+                const roleSwitcher = document.getElementById('roleSwitcher');
+                if (roleSwitcher) roleSwitcher.style.display = 'block';
+                
+                executionRecordCard.style.display = 'none';
+                confirmRecordCard.style.display = 'none';
+                
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                executorList.style.display = 'flex';
+                executorItem.style.display = 'flex';
+                noExecutorView.style.display = 'none';
+                addExecutorBtn.style.display = 'none';
+                
+                renderConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
                 
                 if (currentUserRole === 'executor') {
                     actionButtons.innerHTML = `
@@ -2245,15 +3027,16 @@
                         <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
                     `;
                 }
-                if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
                 
-                // 待开始状态：不显示确认进度条
                 if (acceptanceProgress) acceptanceProgress.style.display = 'none';
                 
                 flowStep1.className = 'flow-step current';
                 flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep2.querySelector('.step-label').textContent = '确认中';
                 flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep3.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '等待执行';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
@@ -2330,13 +3113,10 @@
                     </div>
                 `;
                 
-                // 确认记录显示完整的确认历史（包括驳回操作记录）
+                // 首次确认中：只显示第1轮确认记录，不显示驳回信息
                 const confirmRecordList = confirmRecordCard.querySelector('.confirm-list');
                 if (confirmRecordList) {
                     confirmRecordList.innerHTML = `
-                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
-                            第2轮确认记录
-                        </div>
                         <div class="confirm-item">
                             <div class="avatar">张</div>
                             <div class="info">
@@ -2344,19 +3124,8 @@
                                     <div class="name">张三 <span class="role-badge manager">项目总</span></div>
                                     <div class="status-tag confirmed">已确认</div>
                                 </div>
-                                <div class="time">2024-01-26 11:00</div>
-                                <div class="content">调整后的线路走向符合设计要求，确认通过。</div>
-                                <div class="media-row">
-                                    <div class="media-thumb">📷</div>
-                                </div>
-                                <div class="rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="text">优秀</span>
-                                </div>
+                                <div class="time">2024-01-25 15:20</div>
+                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
                             </div>
                         </div>
                         <div class="confirm-item">
@@ -2379,31 +3148,6 @@
                                 <div class="time">等待确认中...</div>
                             </div>
                         </div>
-                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin: 16px 0 8px 0;">
-                            第1轮确认记录
-                        </div>
-                        <div class="confirm-item" style="opacity: 0.6;">
-                            <div class="avatar">张</div>
-                            <div class="info">
-                                <div class="name-row">
-                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
-                                    <div class="status-tag confirmed">已确认</div>
-                                </div>
-                                <div class="time">2024-01-25 15:20</div>
-                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
-                            </div>
-                        </div>
-                        <div class="confirm-item" style="opacity: 0.6;">
-                            <div class="avatar">王</div>
-                            <div class="info">
-                                <div class="name-row">
-                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
-                                    <div class="status-tag rejected">已驳回</div>
-                                </div>
-                                <div class="time">2024-01-25 16:00</div>
-                                <div class="content">部分线路走向与设计图纸不符，请调整后重新提交。</div>
-                            </div>
-                        </div>
                     `;
                 }
                 
@@ -2422,16 +3166,32 @@
                 // 确认中状态：显示确认进度条
                 if (acceptanceProgress) acceptanceProgress.style.display = 'block';
                 
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                executorList.style.display = 'flex';
+                executorItem.style.display = 'flex';
+                noExecutorView.style.display = 'none';
+                addExecutorBtn.style.display = 'none';
+                
                 flowStep1.className = 'flow-step completed';
                 flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line completed';
                 flowStep2.className = 'flow-step current';
                 flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep2.querySelector('.step-label').textContent = '确认中';
                 flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep3.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
                 if (flowProgressBar) flowProgressBar.style.width = '33%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
+                
+                const roleSwitcher3 = document.getElementById('roleSwitcher');
+                if (roleSwitcher3) roleSwitcher3.style.display = 'block';
                 
             } else if (status === 'confirming_after_reject') {
                 header.className = 'task-header-card confirming';
@@ -2535,6 +3295,72 @@
                     </div>
                 `;
                 
+                // 被驳回后确认中：显示第2轮和第1轮确认记录，包含驳回信息
+                const confirmRecordList = confirmRecordCard.querySelector('.confirm-list');
+                if (confirmRecordList) {
+                    confirmRecordList.innerHTML = `
+                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
+                            第2轮确认记录
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-26 11:00</div>
+                                <div class="content">调整后的线路走向符合设计要求，确认通过。</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag pending">待确认</div>
+                                </div>
+                                <div class="time">等待确认中...</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item">
+                            <div class="avatar">赵</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">赵六 <span class="role-badge designer">设计师</span></div>
+                                    <div class="status-tag pending">待确认</div>
+                                </div>
+                                <div class="time">等待确认中...</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-tertiary); padding: 8px 0; border-bottom: 1px solid var(--border-color); margin: 16px 0 8px 0;">
+                            第1轮确认记录
+                        </div>
+                        <div class="confirm-item" style="opacity: 0.6;">
+                            <div class="avatar">张</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">张三 <span class="role-badge manager">项目总</span></div>
+                                    <div class="status-tag confirmed">已确认</div>
+                                </div>
+                                <div class="time">2024-01-25 15:20</div>
+                                <div class="content">穿线工作符合标准，绝缘测试数据合格。</div>
+                            </div>
+                        </div>
+                        <div class="confirm-item" style="opacity: 0.6;">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name-row">
+                                    <div class="name">王五 <span class="role-badge owner">业主</span></div>
+                                    <div class="status-tag rejected">已驳回</div>
+                                </div>
+                                <div class="time">2024-01-25 16:00</div>
+                                <div class="content">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
                 if (currentUserRole === 'confirmer') {
                     actionButtons.innerHTML = `
                         <div class="btn secondary" onclick="showRejectModal()">驳回</div>
@@ -2550,16 +3376,32 @@
                 // 确认中（被驳回后）状态：显示确认进度条
                 if (acceptanceProgress) acceptanceProgress.style.display = 'block';
                 
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                executorList.style.display = 'flex';
+                executorItem.style.display = 'flex';
+                noExecutorView.style.display = 'none';
+                addExecutorBtn.style.display = 'none';
+                
                 flowStep1.className = 'flow-step completed';
                 flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line completed';
                 flowStep2.className = 'flow-step current';
                 flowStep2.querySelector('.step-icon').textContent = '⏳';
+                flowStep2.querySelector('.step-label').textContent = '确认中';
                 flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep3.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
                 if (flowProgressBar) flowProgressBar.style.width = '33%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
+                
+                const roleSwitcher4 = document.getElementById('roleSwitcher');
+                if (roleSwitcher4) roleSwitcher4.style.display = 'block';
                 
             } else if (status === 'completed') {
                 header.className = 'task-header-card completed';
@@ -2714,6 +3556,9 @@
                 if (flowProgressText) flowProgressText.textContent = '已完成';
                 if (flowProgressBar) flowProgressBar.style.width = '100%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
+                const roleSwitcher = document.getElementById('roleSwitcher');
+                if (roleSwitcher) roleSwitcher.style.display = 'block';
                 
             } else if (status === 'completed_with_reject') {
                 header.className = 'task-header-card completed';
@@ -2929,6 +3774,9 @@
                 if (flowProgressBar) flowProgressBar.style.width = '100%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
+                const roleSwitcher2 = document.getElementById('roleSwitcher');
+                if (roleSwitcher2) roleSwitcher2.style.display = 'block';
+                
             } else if (status === 'rejected_pending') {
                 header.className = 'task-header-card';
                 statusBadge.textContent = '待开始';
@@ -3054,7 +3902,24 @@
                 }
                 if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
                 
-                // 驳回后待开始状态：不显示确认进度条
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                const hasExecutor = true;
+                
+                if (hasExecutor) {
+                    executorList.style.display = 'flex';
+                    executorItem.style.display = 'flex';
+                    noExecutorView.style.display = 'none';
+                    addExecutorBtn.style.display = 'none';
+                } else {
+                    executorList.style.display = 'none';
+                    noExecutorView.style.display = 'flex';
+                    addExecutorBtn.style.display = 'none';
+                }
+                
                 if (acceptanceProgress) acceptanceProgress.style.display = 'none';
                 
                 flowStep1.className = 'flow-step current';
@@ -3066,15 +3931,19 @@
                 if (flowProgressText) flowProgressText.textContent = '已驳回';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
+                const roleSwitcher5 = document.getElementById('roleSwitcher');
+                if (roleSwitcher5) roleSwitcher5.style.display = 'block';
             }
             
             document.querySelectorAll('.status-switch-item').forEach(item => {
                 const text = item.textContent.trim();
-                if ((status === 'pending' && text === '待开始') ||
-                    (status === 'confirming' && text === '确认中（首次）') ||
+                if ((status === 'configuring' && text === '待配置') ||
+                    (status === 'pending' && text === '待开始') ||
+                    (status === 'confirming' && text === '确认中') ||
                     (status === 'confirming_after_reject' && text === '确认中（被驳回后）') ||
                     (status === 'rejected_pending' && text === '驳回后待开始') ||
-                    (status === 'completed' && text === '已完成（无驳回）') ||
+                    (status === 'completed' && text === '已完成') ||
                     (status === 'completed_with_reject' && text === '已完成（含驳回）')) {
                     item.classList.add('active');
                 }
@@ -3105,10 +3974,6 @@
                 e.target.classList.remove('show');
             }
         });
-
-        function showConfirmerSelector() {
-            showToast('选择确认人\n\n可从以下人员中选择：\n1. 项目成员列表\n2. 推荐确认人\n3. 跨合同确认人\n\n最多可添加5位确认人');
-        }
         
         function showTaskFlowHelp() {
             document.getElementById('taskFlowHelpModal').classList.add('show');
@@ -3147,10 +4012,12 @@
         
         function initFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status') || 'confirming';
+            const status = urlParams.get('status') || 'configuring';
             const role = urlParams.get('role') || 'executor';
             
-            if (status === 'pending' || status === 'rejected_pending') {
+            if (status === 'configuring') {
+                currentUserRole = 'executor';
+            } else if (status === 'pending' || status === 'rejected_pending') {
                 currentUserRole = role === 'nonExecutor' ? 'nonExecutor' : 'executor';
             } else if (status === 'confirming' || status === 'confirming_after_reject') {
                 currentUserRole = role === 'nonConfirmer' ? 'nonConfirmer' : 'confirmer';
@@ -3172,6 +4039,7 @@
             document.querySelectorAll('#evaluationStars .star').forEach(star => {
                 star.classList.remove('active');
             });
+            document.getElementById('evaluationListModal').classList.remove('show');
             document.getElementById('evaluationModal').classList.add('show');
         }
 

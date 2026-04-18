@@ -150,6 +150,163 @@
             border-radius: 8px;
             flex: 1;
             min-width: 140px;
+            position: relative;
+        }
+        
+        .delete-confirmer-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FF4D4F;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .delete-confirmer-btn:hover {
+            background-color: #FF7875;
+        }
+        
+        .add-confirmer-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background-color: var(--bg-primary);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--primary-color);
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        
+        .add-confirmer-btn:hover {
+            background-color: var(--status-primary-bg);
+            border-color: var(--primary-color);
+        }
+        
+        .add-confirmer-btn .icon {
+            font-size: 16px;
+        }
+        
+        .search-input-wrap {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 0 10px;
+            height: 36px;
+        }
+        
+        .search-input-wrap .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .confirmer-options {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        .confirmer-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .confirmer-option:hover {
+            background-color: var(--bg-secondary);
+        }
+        
+        .confirmer-option .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .confirmer-option .info {
+            flex: 1;
+        }
+        
+        .confirmer-option .name {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .confirmer-option .role {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .confirmer-option .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #FFFFFF;
+            flex-shrink: 0;
+        }
+        
+        .confirmer-option.selected .checkbox {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .confirmer-selector-footer {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .confirmer-selector-footer .btn {
+            flex: 1;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .confirmer-selector-footer .btn.cancel {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: none;
+        }
+        
+        .confirmer-selector-footer .btn.confirm {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
         }
 
         .people-card .person-avatar {
@@ -845,23 +1002,29 @@
                         <div class="card-label">
                             <span class="label-icon">👥</span>
                             <span>确认人</span>
-                            <span class="label-tag">2人</span>
+                            <span class="label-tag" id="confirmerCount">2人</span>
                         </div>
                         <div class="person-list" id="confirmPersonList">
-                            <div class="person-item">
+                            <div class="person-item" id="confirmerItem1">
                                 <div class="person-avatar">张</div>
                                 <div class="person-info">
                                     <div class="person-name">张三 <span class="role-badge manager">项目总</span></div>
                                 </div>
                                 <div class="person-tag pending" id="confirm1">待确认</div>
+                                <div class="delete-confirmer-btn" id="deleteConfirmer1" style="display: none;" onclick="removeConfirmer(1)">×</div>
                             </div>
-                            <div class="person-item">
+                            <div class="person-item" id="confirmerItem2">
                                 <div class="person-avatar">王</div>
                                 <div class="person-info">
                                     <div class="person-name">王五 <span class="role-badge owner">业主</span></div>
                                 </div>
                                 <div class="person-tag pending" id="confirm2">待确认</div>
+                                <div class="delete-confirmer-btn" id="deleteConfirmer2" style="display: none;" onclick="removeConfirmer(2)">×</div>
                             </div>
+                        </div>
+                        <div class="add-confirmer-btn" id="addConfirmerBtn" style="display: none;" onclick="showConfirmerSelector()">
+                            <span class="icon">+</span>
+                            <span>添加确认人</span>
                         </div>
                     </div>
                 </div>
@@ -1027,6 +1190,65 @@
                 </div>
             </div>
         </div>
+        
+        <div class="confirm-modal" id="confirmerSelectorModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">添加确认人</div>
+                </div>
+                <div class="modal-body">
+                    <div class="search-input-wrap" style="margin-bottom: 12px;">
+                        <input type="text" class="search-input" id="confirmerSearchInput" placeholder="搜索姓名或角色" oninput="filterConfirmerOptions()">
+                    </div>
+                    <div class="confirmer-options" id="confirmerOptions">
+                        <div class="confirmer-option" data-name="李四" data-role="电工" onclick="toggleConfirmerOption(this)">
+                            <div class="avatar">李</div>
+                            <div class="info">
+                                <div class="name">李四</div>
+                                <div class="role">电工</div>
+                            </div>
+                            <div class="checkbox">✓</div>
+                        </div>
+                        <div class="confirmer-option" data-name="王五" data-role="泥瓦工" onclick="toggleConfirmerOption(this)">
+                            <div class="avatar">王</div>
+                            <div class="info">
+                                <div class="name">王五</div>
+                                <div class="role">泥瓦工</div>
+                            </div>
+                            <div class="checkbox">✓</div>
+                        </div>
+                        <div class="confirmer-option" data-name="赵六" data-role="木工" onclick="toggleConfirmerOption(this)">
+                            <div class="avatar">赵</div>
+                            <div class="info">
+                                <div class="name">赵六</div>
+                                <div class="role">木工</div>
+                            </div>
+                            <div class="checkbox">✓</div>
+                        </div>
+                        <div class="confirmer-option" data-name="钱七" data-role="油漆工" onclick="toggleConfirmerOption(this)">
+                            <div class="avatar">钱</div>
+                            <div class="info">
+                                <div class="name">钱七</div>
+                                <div class="role">油漆工</div>
+                            </div>
+                            <div class="checkbox">✓</div>
+                        </div>
+                        <div class="confirmer-option" data-name="孙八" data-role="监理" onclick="toggleConfirmerOption(this)">
+                            <div class="avatar">孙</div>
+                            <div class="info">
+                                <div class="name">孙八</div>
+                                <div class="role">监理</div>
+                            </div>
+                            <div class="checkbox">✓</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="confirmer-selector-footer">
+                    <div class="btn cancel" onclick="closeConfirmerSelector()">取消</div>
+                    <div class="btn confirm" id="confirmAddConfirmerBtn" onclick="confirmAddConfirmers()">确认添加</div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="page-nav">
@@ -1066,6 +1288,8 @@
         let currentRating = 0;
         let currentTaskStatus = 'pending';
         let currentUserRole = 'executor';
+        let currentConfirmerCount = 2;
+        let maxConfirmers = 5;
         
         function showCustomToast(message) {
             document.getElementById('customToastMessage').innerHTML = message.replace(/\n/g, '<br>');
@@ -1074,6 +1298,176 @@
         
         function closeCustomToast() {
             document.getElementById('customToastModal').classList.remove('show');
+        }
+        
+        function removeConfirmer(id) {
+            const item = document.getElementById('confirmerItem' + id);
+            if (item) {
+                item.remove();
+                currentConfirmerCount--;
+                updateConfirmerCount();
+                showCustomToast('已移除确认人');
+            }
+        }
+        
+        function updateConfirmerCount() {
+            document.getElementById('confirmerCount').textContent = currentConfirmerCount + '人';
+        }
+        
+        function showConfirmerSelector() {
+            if (currentConfirmerCount >= maxConfirmers) {
+                showCustomToast('最多只能添加' + maxConfirmers + '位确认人');
+                return;
+            }
+            document.getElementById('confirmerSearchInput').value = '';
+            filterConfirmerOptions();
+            document.querySelectorAll('#confirmerOptions .confirmer-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            tempSelectedConfirmers = [];
+            document.getElementById('confirmerSelectorModal').classList.add('show');
+        }
+        
+        function closeConfirmerSelector() {
+            document.getElementById('confirmerSelectorModal').classList.remove('show');
+            tempSelectedConfirmers = [];
+        }
+        
+        let tempSelectedConfirmers = [];
+        
+        function toggleConfirmerOption(element) {
+            const name = element.dataset.name;
+            const role = element.dataset.role;
+            
+            if (element.classList.contains('selected')) {
+                element.classList.remove('selected');
+                tempSelectedConfirmers = tempSelectedConfirmers.filter(c => c.name !== name);
+            } else {
+                const totalAfterAdd = currentConfirmerCount + tempSelectedConfirmers.length + 1;
+                if (totalAfterAdd > maxConfirmers) {
+                    showCustomToast('最多只能添加' + maxConfirmers + '位确认人');
+                    return;
+                }
+                element.classList.add('selected');
+                tempSelectedConfirmers.push({ name, role });
+            }
+        }
+        
+        function confirmAddConfirmers() {
+            if (tempSelectedConfirmers.length === 0) {
+                showCustomToast('请选择确认人');
+                return;
+            }
+            
+            const personList = document.getElementById('confirmPersonList');
+            let addedCount = 0;
+            
+            tempSelectedConfirmers.forEach(confirmer => {
+                const existingNames = document.querySelectorAll('#confirmPersonList .person-name');
+                let isDuplicate = false;
+                for (let n of existingNames) {
+                    if (n.textContent.split(' ')[0] === confirmer.name) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+                
+                if (isDuplicate) {
+                    return;
+                }
+                
+                currentConfirmerCount++;
+                addedCount++;
+                const newId = Date.now() + Math.random();
+                const newItem = document.createElement('div');
+                newItem.className = 'person-item';
+                newItem.id = 'confirmerItem' + Math.floor(newId);
+                newItem.innerHTML = `
+                    <div class="person-avatar">${confirmer.name.charAt(0)}</div>
+                    <div class="person-info">
+                        <div class="person-name">${confirmer.name} <span class="role-badge">${confirmer.role}</span></div>
+                    </div>
+                    <div class="person-tag pending">待确认</div>
+                    <div class="delete-confirmer-btn" onclick="removeConfirmer(${Math.floor(newId)})">×</div>
+                `;
+                personList.appendChild(newItem);
+            });
+            
+            updateConfirmerCount();
+            closeConfirmerSelector();
+            
+            if (addedCount > 0) {
+                showCustomToast('已添加' + addedCount + '位确认人');
+            } else {
+                showCustomToast('所选确认人已存在');
+            }
+        }
+        
+        function filterConfirmerOptions() {
+            const keyword = document.getElementById('confirmerSearchInput').value.toLowerCase();
+            const options = document.querySelectorAll('#confirmerOptions .confirmer-option');
+            options.forEach(option => {
+                const name = option.querySelector('.name').textContent.toLowerCase();
+                const role = option.querySelector('.role').textContent.toLowerCase();
+                if (name.includes(keyword) || role.includes(keyword)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+        
+        function selectConfirmer(name, role) {
+            const existingNames = document.querySelectorAll('#confirmPersonList .person-name');
+            for (let n of existingNames) {
+                if (n.textContent.split(' ')[0] === name) {
+                    showCustomToast('该确认人已存在');
+                    return;
+                }
+            }
+            
+            if (currentConfirmerCount >= maxConfirmers) {
+                showCustomToast('最多只能添加' + maxConfirmers + '位确认人');
+                return;
+            }
+            
+            currentConfirmerCount++;
+            const newId = Date.now();
+            const personList = document.getElementById('confirmPersonList');
+            const newItem = document.createElement('div');
+            newItem.className = 'person-item';
+            newItem.id = 'confirmerItem' + newId;
+            newItem.innerHTML = `
+                <div class="person-avatar">${name.charAt(0)}</div>
+                <div class="person-info">
+                    <div class="person-name">${name} <span class="role-badge">${role}</span></div>
+                </div>
+                <div class="person-tag pending">待确认</div>
+                <div class="delete-confirmer-btn" onclick="removeConfirmer(${newId})">×</div>
+            `;
+            personList.appendChild(newItem);
+            updateConfirmerCount();
+            closeConfirmerSelector();
+            showCustomToast('已添加确认人：' + name);
+        }
+        
+        function updateConfirmerButtons(status) {
+            const addBtn = document.getElementById('addConfirmerBtn');
+            const deleteBtns = document.querySelectorAll('.delete-confirmer-btn');
+            
+            const canEdit = status === 'pending' || status === 'accepted' || status === 'rejected_pending';
+            
+            if (canEdit) {
+                addBtn.style.display = 'flex';
+                deleteBtns.forEach(btn => {
+                    btn.style.display = 'flex';
+                });
+            } else {
+                addBtn.style.display = 'none';
+                deleteBtns.forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
         }
         
         function toggleStandard(type) {
@@ -1545,6 +1939,8 @@
                     item.classList.add('active');
                 }
             });
+            
+            updateConfirmerButtons(status);
         }
         
         function switchUserRole(role) {

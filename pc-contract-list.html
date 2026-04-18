@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>良造家平台PC端 - 合同管理</title>
+    <link rel="stylesheet" href="pc-common.css">
+    <style>
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 2px var(--shadow-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 12px var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-card.active {
+            border: 2px solid var(--primary-color);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-card-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .stat-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .stat-card-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-card-change {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .stat-card-change.up { color: var(--success-color); }
+        .stat-card-change.down { color: var(--error-color); }
+        .stat-card-change.warning { color: var(--warning-color); }
+
+        .filter-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-item label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 120px;
+        }
+
+        .contract-table-container {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px var(--shadow-color);
+            overflow: hidden;
+        }
+
+        .contract-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .contract-table th {
+            background-color: var(--bg-secondary);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .contract-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
+        }
+
+        .contract-table tr:hover {
+            background-color: #FAFAFA;
+        }
+
+        .contract-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .contract-name {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .contract-name:hover {
+            text-decoration: underline;
+        }
+
+        .project-link {
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .project-link:hover {
+            color: var(--primary-color);
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-tag.draft { background-color: #F5F5F5; color: #8C8C8C; }
+        .status-tag.pending-review { background-color: #E6FFFB; color: #13C2C2; }
+        .status-tag.review-rejected { background-color: #FFF1F0; color: #FF4D4F; }
+        .status-tag.confirming-sender { background-color: #E6FFFB; color: #13C2C2; }
+        .status-tag.confirming-receiver { background-color: #FFF7E6; color: #FA8C16; }
+        .status-tag.confirmed { background-color: #F6FFED; color: #52C41A; }
+        .status-tag.signing { background-color: #F9F0FF; color: #722ED1; }
+        .status-tag.signing-wait { background-color: #FFFBE6; color: #FAAD14; }
+        .status-tag.signed { background-color: #E6F7FF; color: #1890FF; }
+        .status-tag.changing { background-color: #FFF1F0; color: #FF4D4F; }
+        .status-tag.change-confirming { background-color: #FFF1F0; color: #FF4D4F; }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .action-btn.primary {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .action-btn.primary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .action-btn.default {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .action-btn.default:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .action-btn.danger {
+            background-color: #FFF1F0;
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+
+        .action-btn.danger:hover {
+            background-color: var(--error-color);
+            color: #FFFFFF;
+        }
+
+        .action-btn.success {
+            background-color: var(--success-color);
+            color: #FFFFFF;
+        }
+
+        .action-btn.success:hover {
+            background-color: var(--success-light);
+        }
+
+        .pc-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .pc-modal-overlay.show {
+            display: flex;
+        }
+
+        .pc-modal {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pc-modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pc-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .pc-modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .pc-modal-close:hover {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .pc-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .pc-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .review-info {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .review-info-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .review-info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .review-info-label {
+            width: 80px;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+
+        .review-info-value {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .reject-reason-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            resize: vertical;
+            margin-top: 12px;
+        }
+
+        .reject-reason-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state .text {
+            font-size: 14px;
+        }
+
+        .pc-page-nav-wrapper {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .pc-page-nav-toggle {
+            position: absolute;
+            left: -28px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 48px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px 0 0 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 12px;
+            box-shadow: -2px 0 6px var(--shadow-color);
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .pc-page-nav-toggle:hover {
+            color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .pc-page-nav {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 8px var(--shadow-md);
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .pc-page-nav.collapsed {
+            width: 0;
+            padding: 0;
+            overflow: hidden;
+            opacity: 0;
+            box-shadow: none;
+        }
+
+        .pc-page-nav.collapsed + .pc-page-nav-toggle,
+        .pc-page-nav-wrapper.collapsed .pc-page-nav-toggle {
+            border-radius: 8px;
+        }
+
+        .pc-page-nav-title {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .pc-page-nav-item {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            margin-bottom: 4px;
+            text-decoration: none;
+        }
+
+        .pc-page-nav-item:hover {
+            background-color: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+
+        .pc-page-nav-item.active {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .pc-page-nav-group {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pc-page-nav-group-title {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pc-container">
+        <div class="pc-sidebar">
+            <div class="pc-sidebar-header">
+                <div class="pc-sidebar-logo">
+                    <span class="icon">🏗️</span>
+                    <span>良造家平台</span>
+                </div>
+            </div>
+            <div class="pc-sidebar-menu">
+                <a href="pc-project-list.html" class="pc-menu-item main-nav">
+                    <span class="icon">📁</span>
+                    <span class="label">项目管理</span>
+                </a>
+                <a href="pc-contract-list.html" class="pc-menu-item main-nav active">
+                    <span class="icon">📋</span>
+                    <span class="label">合同管理</span>
+                </a>
+                <div class="pc-menu-group">
+                    <div class="pc-menu-group-title">模板管理</div>
+                    <a href="pc-contract-template.html" class="pc-menu-item">
+                        <span class="icon">📄</span>
+                        <span class="label">合同文本模板</span>
+                    </a>
+                    <a href="pc-stage-template.html" class="pc-menu-item">
+                        <span class="icon">📝</span>
+                        <span class="label">阶段任务模板</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-main">
+            <div class="pc-header">
+                <div class="pc-header-left">
+                    <div class="pc-breadcrumb">
+                        <span class="item">合同管理</span>
+                        <span class="separator">/</span>
+                        <span class="item current">全部合同</span>
+                    </div>
+                </div>
+                <div class="pc-header-right">
+                    <div class="pc-user-info">
+                        <div class="pc-user-avatar">张</div>
+                        <span class="pc-user-name">张三</span>
+                        <span class="pc-user-role" style="font-size: 12px; color: var(--text-tertiary); margin-left: 4px;">（运营）</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pc-content">
+                <div class="stats-row">
+                    <div class="stat-card active" onclick="filterByStatus('all')">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">全部合同</span>
+                            <div class="stat-card-icon" style="background-color: #F5F5F5; color: #595959;">📋</div>
+                        </div>
+                        <div class="stat-card-value">28</div>
+                    </div>
+                    <div class="stat-card" onclick="filterByStatus('pending')">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">待我处理</span>
+                            <div class="stat-card-icon" style="background-color: #FFF7E6; color: #FA8C16;">⏳</div>
+                        </div>
+                        <div class="stat-card-value">5</div>
+                        <div class="stat-card-change down">↓ 1 较昨日</div>
+                    </div>
+                    <div class="stat-card" onclick="filterByStatus('signing')">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">待签约</span>
+                            <div class="stat-card-icon" style="background-color: #F9F0FF; color: #722ED1;">✍️</div>
+                        </div>
+                        <div class="stat-card-value">3</div>
+                        <div class="stat-card-change warning">需及时处理</div>
+                    </div>
+                    <div class="stat-card" onclick="filterByStatus('executing')">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">执行中</span>
+                            <div class="stat-card-icon" style="background-color: #E6F7FF; color: #1890FF;">📊</div>
+                        </div>
+                        <div class="stat-card-value">12</div>
+                        <div class="stat-card-change up">↑ 2 较上月</div>
+                    </div>
+                    <div class="stat-card" onclick="filterByStatus('completed')">
+                        <div class="stat-card-header">
+                            <span class="stat-card-title">已完成</span>
+                            <div class="stat-card-icon" style="background-color: #F6FFED; color: #52C41A;">✅</div>
+                        </div>
+                        <div class="stat-card-value">8</div>
+                        <div class="stat-card-change up">↑ 12% 较上月</div>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-item">
+                        <label>合同状态</label>
+                        <select id="statusFilter" onchange="filterContracts()">
+                            <option value="">全部状态</option>
+                            <option value="draft">拟定中</option>
+                            <option value="pending_review">待审核</option>
+                            <option value="review_rejected">审核驳回</option>
+                            <option value="confirming_sender">待对方确认</option>
+                            <option value="confirming_receiver">待我方确认</option>
+                            <option value="confirmed">已确认</option>
+                            <option value="signing">待确认签约</option>
+                            <option value="signing_wait">待对方确认签约</option>
+                            <option value="signed">已签约</option>
+                            <option value="changing">变更中</option>
+                            <option value="change_confirming">待确认变更</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>合同类型</label>
+                        <select id="typeFilter" onchange="filterContracts()">
+                            <option value="">全部类型</option>
+                            <option value="water">水电工程</option>
+                            <option value="tile">泥瓦工程</option>
+                            <option value="wood">木工工程</option>
+                            <option value="paint">油漆工程</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>搜索</label>
+                        <input type="text" id="searchInput" placeholder="合同名称/项目名称" oninput="filterContracts()">
+                    </div>
+                    <div class="filter-item">
+                        <button class="pc-btn pc-btn-default" onclick="resetFilters()">重置</button>
+                    </div>
+                    <div class="filter-item" style="margin-left: auto;">
+                        <button class="pc-btn pc-btn-primary" onclick="location.href='pc-contract-edit.html'">
+                            + 新建合同
+                        </button>
+                    </div>
+                </div>
+
+                <div class="contract-table-container">
+                    <table class="contract-table">
+                        <thead>
+                            <tr>
+                                <th>合同名称</th>
+                                <th>关联项目</th>
+                                <th>合同类型</th>
+                                <th>合同金额</th>
+                                <th>当前状态</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contractTableBody">
+                            <tr data-status="pending_review" data-type="water">
+                                <td><span class="contract-name" onclick="viewContract(1)">水电分包合同-西湖区别墅</span></td>
+                                <td><span class="project-link" onclick="viewProject(1)">西湖区别墅</span></td>
+                                <td>水电工程</td>
+                                <td>￥50,000</td>
+                                <td><span class="status-tag pending-review">待审核</span></td>
+                                <td>2024-01-26 10:30</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn success" onclick="showReviewModal(1, 'pass')">审核通过</button>
+                                        <button class="action-btn danger" onclick="showReviewModal(1, 'reject')">审核驳回</button>
+                                        <button class="action-btn default" onclick="viewContract(1)">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="pending_review" data-type="tile">
+                                <td><span class="contract-name" onclick="viewContract(2)">泥瓦分包合同-余杭区平层</span></td>
+                                <td><span class="project-link" onclick="viewProject(2)">余杭区平层</span></td>
+                                <td>泥瓦工程</td>
+                                <td>￥35,000</td>
+                                <td><span class="status-tag pending-review">待审核</span></td>
+                                <td>2024-01-26 09:15</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn success" onclick="showReviewModal(2, 'pass')">审核通过</button>
+                                        <button class="action-btn danger" onclick="showReviewModal(2, 'reject')">审核驳回</button>
+                                        <button class="action-btn default" onclick="viewContract(2)">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="confirming_receiver" data-type="wood">
+                                <td><span class="contract-name" onclick="viewContract(3)">木工分包合同-拱墅区公寓</span></td>
+                                <td><span class="project-link" onclick="viewProject(3)">拱墅区公寓</span></td>
+                                <td>木工工程</td>
+                                <td>￥45,000</td>
+                                <td><span class="status-tag confirming-receiver">待我方确认</span></td>
+                                <td>2024-01-25 16:00</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn primary" onclick="confirmContract(3)">确认合同</button>
+                                        <button class="action-btn default" onclick="viewContract(3)">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="signing" data-type="paint">
+                                <td><span class="contract-name" onclick="viewContract(4)">油漆分包合同-滨江区住宅</span></td>
+                                <td><span class="project-link" onclick="viewProject(4)">滨江区住宅</span></td>
+                                <td>油漆工程</td>
+                                <td>￥28,000</td>
+                                <td><span class="status-tag signing">待确认签约</span></td>
+                                <td>2024-01-24 14:30</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn primary" onclick="confirmSign(4)">确认签约</button>
+                                        <button class="action-btn default" onclick="viewContract(4)">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="signed" data-type="water">
+                                <td><span class="contract-name" onclick="viewContract(5)">水电分包合同-萧山区别墅</span></td>
+                                <td><span class="project-link" onclick="viewProject(5)">萧山区别墅</span></td>
+                                <td>水电工程</td>
+                                <td>￥68,000</td>
+                                <td><span class="status-tag signed">已签约</span></td>
+                                <td>2024-01-20 11:00</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn default" onclick="showChangeModal(5)">发起变更</button>
+                                        <button class="action-btn default" onclick="viewContract(5)">查看</button>
+                                        <button class="action-btn default" onclick="exportContract(5)">导出</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="draft" data-type="tile">
+                                <td><span class="contract-name" onclick="viewContract(6)">泥瓦分包合同-上城区商铺</span></td>
+                                <td><span class="project-link" onclick="viewProject(6)">上城区商铺</span></td>
+                                <td>泥瓦工程</td>
+                                <td>￥42,000</td>
+                                <td><span class="status-tag draft">拟定中</span></td>
+                                <td>2024-01-19 15:45</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn primary" onclick="editContract(6)">编辑</button>
+                                        <button class="action-btn success" onclick="submitForReview(6)">提交审核</button>
+                                        <button class="action-btn danger" onclick="deleteContract(6)">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="review_rejected" data-type="wood">
+                                <td><span class="contract-name" onclick="viewContract(7)">木工分包合同-下城区写字楼</span></td>
+                                <td><span class="project-link" onclick="viewProject(7)">下城区写字楼</span></td>
+                                <td>木工工程</td>
+                                <td>￥55,000</td>
+                                <td><span class="status-tag review-rejected">审核驳回</span></td>
+                                <td>2024-01-18 10:20</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn primary" onclick="editContract(7)">修改</button>
+                                        <button class="action-btn default" onclick="viewContract(7)">查看驳回原因</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="changing" data-type="paint">
+                                <td><span class="contract-name" onclick="viewContract(8)">油漆分包合同-江干区住宅</span></td>
+                                <td><span class="project-link" onclick="viewProject(8)">江干区住宅</span></td>
+                                <td>油漆工程</td>
+                                <td>￥32,000</td>
+                                <td><span class="status-tag changing">变更中</span></td>
+                                <td>2024-01-15 09:00</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="action-btn primary" onclick="confirmChange(8)">确认变更</button>
+                                        <button class="action-btn default" onclick="viewContract(8)">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-page-nav-wrapper" id="pageNavWrapper">
+        <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
+        <div class="pc-page-nav" id="pageNav">
+            <div class="pc-page-nav-title">页面导航</div>
+            <a href="pc-contract-list.html" class="pc-page-nav-item active">合同列表</a>
+            <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
+            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">模板管理</div>
+                <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
+                <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">小程序原型</div>
+                <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="reviewModal">
+        <div class="pc-modal" style="width: 600px;">
+            <div class="pc-modal-header">
+                <div class="pc-modal-title" id="reviewModalTitle">审核合同</div>
+                <div class="pc-modal-close" onclick="closeReviewModal()">×</div>
+            </div>
+            <div class="pc-modal-body">
+                <div class="review-info">
+                    <div class="review-info-title">合同基本信息</div>
+                    <div class="review-info-row">
+                        <div class="review-info-label">合同名称</div>
+                        <div class="review-info-value" id="reviewContractName">水电分包合同-西湖区别墅</div>
+                    </div>
+                    <div class="review-info-row">
+                        <div class="review-info-label">关联项目</div>
+                        <div class="review-info-value" id="reviewProjectName">西湖区别墅</div>
+                    </div>
+                    <div class="review-info-row">
+                        <div class="review-info-label">合同类型</div>
+                        <div class="review-info-value" id="reviewContractType">水电工程</div>
+                    </div>
+                    <div class="review-info-row">
+                        <div class="review-info-label">合同金额</div>
+                        <div class="review-info-value" id="reviewContractAmount">￥50,000</div>
+                    </div>
+                    <div class="review-info-row">
+                        <div class="review-info-label">甲方</div>
+                        <div class="review-info-value">良造家装饰公司</div>
+                    </div>
+                    <div class="review-info-row">
+                        <div class="review-info-label">乙方</div>
+                        <div class="review-info-value">XX施工队</div>
+                    </div>
+                </div>
+                <div id="rejectReasonSection" style="display: none;">
+                    <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">驳回原因 <span style="color: var(--error-color);">*</span></div>
+                    <textarea class="reject-reason-input" id="rejectReason" placeholder="请输入驳回原因，将通知合同创建方进行修改"></textarea>
+                </div>
+            </div>
+            <div class="pc-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeReviewModal()">取消</button>
+                <button class="pc-btn pc-btn-primary" id="reviewConfirmBtn" onclick="confirmReview()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="toastModal">
+        <div class="pc-modal" style="width: 360px;">
+            <div class="pc-modal-body" style="text-align: center; padding: 32px;">
+                <div style="font-size: 48px; margin-bottom: 16px;" id="toastIcon">✅</div>
+                <div style="font-size: 16px; font-weight: 500; margin-bottom: 8px;" id="toastTitle">操作成功</div>
+                <div style="font-size: 14px; color: var(--text-secondary);" id="toastMessage">合同审核已通过</div>
+            </div>
+            <div class="pc-modal-footer" style="justify-content: center;">
+                <button class="pc-btn pc-btn-primary" onclick="closeToastModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePageNav() {
+            const wrapper = document.getElementById('pageNavWrapper');
+            const nav = document.getElementById('pageNav');
+            const toggle = wrapper.querySelector('.pc-page-nav-toggle');
+            nav.classList.toggle('collapsed');
+            wrapper.classList.toggle('collapsed');
+            if (nav.classList.contains('collapsed')) {
+                toggle.textContent = '▶';
+            } else {
+                toggle.textContent = '◀';
+            }
+        }
+
+        let currentReviewId = null;
+        let currentReviewType = null;
+
+        function filterContracts() {
+            const status = document.getElementById('statusFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            
+            const rows = document.querySelectorAll('#contractTableBody tr');
+            rows.forEach(row => {
+                const rowStatus = row.dataset.status;
+                const rowType = row.dataset.type;
+                const text = row.textContent.toLowerCase();
+                
+                const statusMatch = !status || rowStatus === status;
+                const typeMatch = !type || rowType === type;
+                const keywordMatch = !keyword || text.includes(keyword);
+                
+                row.style.display = (statusMatch && typeMatch && keywordMatch) ? '' : 'none';
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            filterContracts();
+        }
+
+        function filterByStatus(status) {
+            document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            const statusFilter = document.getElementById('statusFilter');
+            
+            if (status === 'all') {
+                statusFilter.value = '';
+            } else if (status === 'pending') {
+                statusFilter.value = 'pending_review';
+            } else if (status === 'signing') {
+                statusFilter.value = 'confirmed';
+            } else if (status === 'executing') {
+                statusFilter.value = 'signed';
+            } else if (status === 'completed') {
+                statusFilter.value = 'signed';
+            }
+            filterContracts();
+        }
+
+        function showReviewModal(id, type) {
+            currentReviewId = id;
+            currentReviewType = type;
+            
+            document.getElementById('reviewModalTitle').textContent = type === 'pass' ? '审核通过' : '审核驳回';
+            document.getElementById('rejectReasonSection').style.display = type === 'reject' ? 'block' : 'none';
+            document.getElementById('reviewConfirmBtn').textContent = type === 'pass' ? '确认通过' : '确认驳回';
+            document.getElementById('reviewConfirmBtn').className = type === 'pass' ? 'pc-btn pc-btn-primary' : 'pc-btn pc-btn-danger';
+            
+            document.getElementById('reviewModal').classList.add('show');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('show');
+            document.getElementById('rejectReason').value = '';
+            currentReviewId = null;
+            currentReviewType = null;
+        }
+
+        function confirmReview() {
+            if (currentReviewType === 'reject') {
+                const reason = document.getElementById('rejectReason').value.trim();
+                if (!reason) {
+                    alert('请输入驳回原因');
+                    return;
+                }
+            }
+            
+            closeReviewModal();
+            
+            if (currentReviewType === 'pass') {
+                showToast('✅', '审核通过', '合同已通过审核，将通知合同确认方');
+            } else {
+                showToast('⚠️', '审核驳回', '合同已驳回，将通知创建方进行修改');
+            }
+        }
+
+        function showToast(icon, title, message) {
+            document.getElementById('toastIcon').textContent = icon;
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            document.getElementById('toastModal').classList.add('show');
+        }
+
+        function closeToastModal() {
+            document.getElementById('toastModal').classList.remove('show');
+        }
+
+        function viewContract(id) {
+            location.href = 'pc-contract-detail.html?id=' + id;
+        }
+
+        function viewProject(id) {
+            location.href = 'pc-project-list.html?id=' + id;
+        }
+
+        function editContract(id) {
+            location.href = 'pc-contract-edit.html?id=' + id;
+        }
+
+        function submitForReview(id) {
+            if (confirm('确定要提交审核吗？提交后将由运营人员进行审核。')) {
+                showToast('📤', '提交成功', '合同已提交审核，请等待运营人员审核');
+            }
+        }
+
+        function deleteContract(id) {
+            if (confirm('确定要删除此合同吗？')) {
+                showToast('🗑️', '删除成功', '合同已删除');
+            }
+        }
+
+        function confirmContract(id) {
+            location.href = 'pc-contract-detail.html?id=' + id + '&action=confirm';
+        }
+
+        function confirmSign(id) {
+            location.href = 'pc-contract-detail.html?id=' + id + '&action=sign';
+        }
+
+        function showChangeModal(id) {
+            location.href = 'pc-contract-edit.html?id=' + id + '&mode=change';
+        }
+
+        function confirmChange(id) {
+            location.href = 'pc-contract-detail.html?id=' + id + '&action=confirmChange';
+        }
+
+        function exportContract(id) {
+            showToast('📄', '导出成功', '合同PDF已生成，请查看下载目录');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('pc-modal-overlay')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        if (tab === 'pending') {
+            document.querySelectorAll('.stat-card')[1].classList.add('active');
+            document.querySelectorAll('.stat-card')[0].classList.remove('active');
+            document.getElementById('statusFilter').value = 'pending_review';
+            filterContracts();
+        } else if (tab === 'completed') {
+            document.querySelectorAll('.stat-card')[4].classList.add('active');
+            document.querySelectorAll('.stat-card')[0].classList.remove('active');
+            document.getElementById('statusFilter').value = 'signed';
+            filterContracts();
+        }
+    </script>
+</body>
+</html>

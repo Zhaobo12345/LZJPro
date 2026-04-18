@@ -378,19 +378,15 @@
             <div class="pc-sidebar-header">
                 <div class="pc-sidebar-logo">
                     <span class="icon">🏗️</span>
-                    <span>家装管理平台</span>
+                    <span>良造家平台</span>
                 </div>
             </div>
             <div class="pc-sidebar-menu">
-                <a href="pc-project-list.html" class="pc-menu-item">
-                    <span class="icon">📊</span>
-                    <span class="label">工作台</span>
-                </a>
-                <a href="pc-project-list.html" class="pc-menu-item">
+                <a href="pc-project-list.html" class="pc-menu-item main-nav">
                     <span class="icon">📁</span>
                     <span class="label">项目管理</span>
                 </a>
-                <a href="pc-contract-edit.html" class="pc-menu-item active">
+                <a href="pc-contract-list.html" class="pc-menu-item main-nav active">
                     <span class="icon">📋</span>
                     <span class="label">合同管理</span>
                 </a>
@@ -405,17 +401,6 @@
                         <span class="label">阶段任务模板</span>
                     </a>
                 </div>
-                <div class="pc-menu-group">
-                    <div class="pc-menu-group-title">系统设置</div>
-                    <a href="#" class="pc-menu-item">
-                        <span class="icon">👥</span>
-                        <span class="label">成员管理</span>
-                    </a>
-                    <a href="#" class="pc-menu-item">
-                        <span class="icon">⚙️</span>
-                        <span class="label">系统设置</span>
-                    </a>
-                </div>
             </div>
         </div>
 
@@ -423,18 +408,12 @@
             <div class="pc-header">
                 <div class="pc-header-left">
                     <div class="pc-breadcrumb">
-                        <span class="item">项目管理</span>
-                        <span class="separator">/</span>
-                        <span class="item">绿城桃花源项目</span>
+                        <a href="pc-contract-list.html" class="item">合同管理</a>
                         <span class="separator">/</span>
                         <span class="item current">创建合同</span>
                     </div>
                 </div>
                 <div class="pc-header-right">
-                    <div class="pc-header-icon">
-                        🔔
-                        <span class="badge"></span>
-                    </div>
                     <div class="pc-user-info">
                         <div class="pc-user-avatar">张</div>
                         <span class="pc-user-name">张三</span>
@@ -544,16 +523,16 @@
                                 <button class="toolbar-btn" title="斜体"><i>I</i></button>
                                 <button class="toolbar-btn" title="下划线"><u>U</u></button>
                                 <span class="toolbar-divider"></span>
-                                <button class="toolbar-btn" title="左对齐">≡</button>
-                                <button class="toolbar-btn" title="居中">≡</button>
-                                <button class="toolbar-btn" title="右对齐">≡</button>
+                                <button class="toolbar-btn" title="左对齐">左</button>
+                                <button class="toolbar-btn" title="居中">中</button>
+                                <button class="toolbar-btn" title="右对齐">右</button>
                                 <span class="toolbar-divider"></span>
                                 <button class="toolbar-btn" title="有序列表">1.</button>
                                 <button class="toolbar-btn" title="无序列表">•</button>
                                 <span class="toolbar-divider"></span>
-                                <button class="toolbar-btn" title="插入表格">⊞</button>
-                                <button class="toolbar-btn" title="插入图片">🖼</button>
-                                <button class="toolbar-btn" title="插入链接">🔗</button>
+                                <button class="toolbar-btn" title="插入表格">表格</button>
+                                <button class="toolbar-btn" title="插入图片">图片</button>
+                                <button class="toolbar-btn" title="插入链接">链接</button>
                             </div>
                             <div class="editor-content" contenteditable="true">
                                 <h3 style="text-align: center; margin-bottom: 20px;">水电分包合同</h3>
@@ -724,27 +703,28 @@
         </div>
     </div>
 
-    <div class="pc-page-nav">
-        <div class="pc-page-nav-title">
-            PC端原型导航
-            <span class="badge">PC</span>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">高优先级</div>
-            <a href="pc-contract-edit.html" class="pc-page-nav-item active">合同创建/编辑</a>
-            <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
-            <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">中优先级</div>
-            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
-            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
-        </div>
-        <div class="pc-page-nav-group">
-            <div class="pc-page-nav-group-title">小程序原型</div>
-            <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
-            <a href="prototype-project-detail.html" class="pc-page-nav-item">项目详情</a>
-            <a href="prototype-task-detail.html" class="pc-page-nav-item">任务详情</a>
+    <div class="pc-page-nav-wrapper" id="pageNavWrapper">
+        <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
+        <div class="pc-page-nav" id="pageNav">
+            <div class="pc-page-nav-title">
+                PC端原型导航
+                <span class="badge">PC</span>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">高优先级</div>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item active">合同创建/编辑</a>
+                <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
+                <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">中优先级</div>
+                <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+                <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">小程序原型</div>
+                <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+            </div>
         </div>
     </div>
 
@@ -842,6 +822,19 @@
     </div>
 
     <script>
+        function togglePageNav() {
+            const wrapper = document.getElementById('pageNavWrapper');
+            const nav = document.getElementById('pageNav');
+            const toggle = wrapper.querySelector('.pc-page-nav-toggle');
+            nav.classList.toggle('collapsed');
+            wrapper.classList.toggle('collapsed');
+            if (nav.classList.contains('collapsed')) {
+                toggle.textContent = '▶';
+            } else {
+                toggle.textContent = '◀';
+            }
+        }
+
         function toggleStage(header) {
             const body = header.nextElementSibling;
             const arrow = header.querySelector('.stage-actions span:last-child');
