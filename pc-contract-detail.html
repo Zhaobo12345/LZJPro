@@ -54,13 +54,8 @@
             color: #fff;
         }
 
-        .status-banner.confirming-sender {
+        .status-banner.confirming {
             background: linear-gradient(135deg, #13C2C2 0%, #36CFC9 100%);
-            color: #fff;
-        }
-
-        .status-banner.confirming-receiver {
-            background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);
             color: #fff;
         }
 
@@ -71,11 +66,6 @@
 
         .status-banner.signing {
             background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
-            color: #fff;
-        }
-
-        .status-banner.signing-wait {
-            background: linear-gradient(135deg, #FAAD14 0%, #FFC53D 100%);
             color: #fff;
         }
 
@@ -1056,14 +1046,10 @@
                     <span>良造家平台</span>
                 </div>
             </div>
-            <div class="pc-sidebar-menu">
-                <a href="pc-project-list.html" class="pc-menu-item main-nav">
-                    <span class="icon">📁</span>
-                    <span class="label">项目管理</span>
-                </a>
+            <div class="pc-sidebar-menu" id="sidebarMenu">
                 <a href="pc-contract-list.html" class="pc-menu-item main-nav active">
                     <span class="icon">📋</span>
-                    <span class="label">合同管理</span>
+                    <span class="label">合同审核管理</span>
                 </a>
                 <div class="pc-menu-group">
                     <div class="pc-menu-group-title">模板管理</div>
@@ -1079,7 +1065,7 @@
             </div>
         </div>
 
-        <div class="pc-main">
+        <div class="pc-main" id="pcMain">
             <div class="pc-header">
                 <div class="pc-header-left">
                     <div class="pc-breadcrumb">
@@ -1089,6 +1075,10 @@
                     </div>
                 </div>
                 <div class="pc-header-right">
+                    <div class="pc-role-switcher">
+                        <button class="pc-role-btn active" onclick="switchPcRole('operator')">运营</button>
+                        <button class="pc-role-btn" onclick="switchPcRole('initiator')">合同发起方</button>
+                    </div>
                     <div class="pc-user-dropdown">
                         <div class="pc-user-info" onclick="toggleUserDropdown()">
                             <div class="pc-user-avatar" id="userAvatar">运</div>
@@ -1463,7 +1453,7 @@
         <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
         <div class="pc-page-nav" id="pageNav">
             <div class="pc-page-nav-title">
-                原型导航
+                PC端原型导航
                 <span class="badge">PC</span>
             </div>
             <div class="pc-page-nav-group">
@@ -1491,11 +1481,9 @@
                     <option value="platform_reviewing">待平台审核</option>
                     <option value="platform_rejected">平台审核驳回</option>
                     <option value="platform_rejected_modified">平台驳回(已修改)</option>
-                    <option value="confirming_sender">待对方确认</option>
-                    <option value="confirming_receiver">待我方确认</option>
+                    <option value="confirming">确认中</option>
                     <option value="confirmed">已确认</option>
-                    <option value="signing">待确认签约</option>
-                    <option value="signing_wait">待对方确认签约</option>
+                    <option value="signing">签约中</option>
                     <option value="signed">已签约</option>
                     <option value="changing">变更中</option>
                     <option value="change_confirming">待确认变更</option>
@@ -1503,10 +1491,16 @@
             </div>
             <div class="pc-page-nav-group">
                 <div class="pc-page-nav-group-title">页面导航</div>
-                <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
+                <a href="pc-contract-edit-existing.html" class="pc-page-nav-item">编辑合同</a>
+                <a href="pc-contract-list.html" class="pc-page-nav-item">合同审核管理</a>
                 <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
                 <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
-                <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+                <a href="pc-login.html" class="pc-page-nav-item">扫码登录</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">小程序端</div>
+                <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
             </div>
         </div>
     </div>
@@ -1531,6 +1525,46 @@
         let currentRole = 'operator';
         let currentStatus = 'draft';
         let pendingAction = null;
+        let currentPcRole = 'operator';
+
+        function switchPcRole(role) {
+            currentPcRole = role;
+            
+            document.querySelectorAll('.pc-role-switcher .pc-role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const sidebar = document.querySelector('.pc-sidebar');
+            const main = document.getElementById('pcMain');
+            const breadcrumb = document.querySelector('.pc-breadcrumb');
+            
+            if (role === 'initiator') {
+                sidebar.classList.add('hidden');
+                main.classList.add('full-width');
+                breadcrumb.innerHTML = `
+                    <span class="item current">合同详情</span>
+                `;
+                document.getElementById('userAvatar').textContent = '发';
+                document.getElementById('userName').textContent = '合同发起方';
+                
+                if (currentRole === 'operator') {
+                    switchRole('creator');
+                }
+            } else {
+                sidebar.classList.remove('hidden');
+                main.classList.remove('full-width');
+                breadcrumb.innerHTML = `
+                    <a href="pc-contract-list.html" class="item">合同审核管理</a>
+                    <span class="separator">/</span>
+                    <span class="item current">合同详情</span>
+                `;
+                document.getElementById('userAvatar').textContent = '运';
+                document.getElementById('userName').textContent = '运营人员';
+                
+                if (currentRole !== 'operator') {
+                    switchRole('operator');
+                }
+            }
+        }
 
         const statusConfig = {
             draft: {
@@ -1558,15 +1592,12 @@
                 desc: '合同内容已修改，可以重新提交审核 | 合同编号：HT-2024-001',
                 class: 'platform-rejected-modified'
             },
-            confirming_sender: {
-                title: '📤 待对方确认',
-                desc: '平台审核已通过，等待对方确认合同内容 | 合同编号：HT-2024-001',
-                class: 'confirming-sender'
-            },
-            confirming_receiver: {
-                title: '📥 待我方确认',
-                desc: '对方已确认合同内容，请我方进行最终确认或驳回修改 | 合同编号：HT-2024-001',
-                class: 'confirming-receiver'
+            confirming: {
+                getTitle: (role) => role === 'creator' ? '📤 待对方确认' : '📥 待我方确认',
+                getDesc: (role) => role === 'creator' 
+                    ? '已发送确认申请，等待对方确认合同内容 | 合同编号：HT-2024-001'
+                    : '对方已发送确认申请，请确认或驳回修改 | 合同编号：HT-2024-001',
+                class: 'confirming'
             },
             confirmed: {
                 title: '✅ 双方已确认',
@@ -1574,14 +1605,11 @@
                 class: 'confirmed'
             },
             signing: {
-                title: '📝 待确认签约',
-                desc: '对方已上传签约文件，请确认后合同正式生效 | 合同编号：HT-2024-001',
+                getTitle: (role) => role === 'creator' ? '⏳ 待对方确认签约' : '📝 待确认签约',
+                getDesc: (role) => role === 'creator'
+                    ? '签约文件已上传，等待对方确认后合同正式生效 | 合同编号：HT-2024-001'
+                    : '对方已上传签约文件，请确认后合同正式生效 | 合同编号：HT-2024-001',
                 class: 'signing'
-            },
-            signing_wait: {
-                title: '⏳ 待对方确认签约',
-                desc: '签约文件已上传，等待对方确认后合同正式生效 | 合同编号：HT-2024-001',
-                class: 'signing-wait'
             },
             signed: {
                 title: '✅ 合同已签约',
@@ -1624,8 +1652,16 @@
 
         function updateUI() {
             const config = statusConfig[currentStatus];
-            document.getElementById('statusTitle').textContent = config.title;
-            document.getElementById('statusDesc').textContent = config.desc;
+            
+            const title = typeof config.getTitle === 'function' 
+                ? config.getTitle(currentRole) 
+                : config.title;
+            const desc = typeof config.getDesc === 'function' 
+                ? config.getDesc(currentRole) 
+                : config.desc;
+            
+            document.getElementById('statusTitle').textContent = title;
+            document.getElementById('statusDesc').textContent = desc;
             document.getElementById('statusBanner').className = 'status-banner ' + config.class;
             
             updateReviewPanel();
@@ -1669,29 +1705,25 @@
                 logs.push({ time: '01-10 17:00', content: '修改合同内容', user: '张三' });
             }
             
-            if (currentStatus === 'confirming_sender' || currentStatus === 'confirming_receiver' || 
-                currentStatus === 'confirmed' || currentStatus === 'signing' || 
-                currentStatus === 'signing_wait' || currentStatus === 'signed') {
+            if (currentStatus === 'confirming' || currentStatus === 'confirmed' || 
+                currentStatus === 'signing' || currentStatus === 'signed') {
                 logs.push({ time: '01-10 16:30', content: '平台审核通过', user: '运营人员' });
             }
             
-            if (currentStatus === 'confirming_sender' || currentStatus === 'confirming_receiver' || 
-                currentStatus === 'confirmed' || currentStatus === 'signing' || 
-                currentStatus === 'signing_wait' || currentStatus === 'signed') {
+            if (currentStatus === 'confirming' || currentStatus === 'confirmed' || 
+                currentStatus === 'signing' || currentStatus === 'signed') {
                 logs.push({ time: '01-11 10:00', content: '发送确认申请', user: '张三' });
             }
             
-            if (currentStatus === 'confirming_receiver' || currentStatus === 'confirmed' || 
-                currentStatus === 'signing' || currentStatus === 'signing_wait' || currentStatus === 'signed') {
+            if (currentStatus === 'confirmed' || currentStatus === 'signing' || currentStatus === 'signed') {
                 logs.push({ time: '01-11 14:00', content: '确认合同', user: '李四' });
             }
             
-            if (currentStatus === 'confirmed' || currentStatus === 'signing' || 
-                currentStatus === 'signing_wait' || currentStatus === 'signed') {
+            if (currentStatus === 'confirmed' || currentStatus === 'signing' || currentStatus === 'signed') {
                 logs.push({ time: '01-11 14:30', content: '双方确认完成', user: '系统' });
             }
             
-            if (currentStatus === 'signing' || currentStatus === 'signing_wait' || currentStatus === 'signed') {
+            if (currentStatus === 'signing' || currentStatus === 'signed') {
                 logs.push({ time: '01-12 09:00', content: '上传签约文件', user: '张三' });
             }
             
@@ -1775,7 +1807,7 @@
                             <button class="pc-btn btn" onclick="editContract()">编辑合同</button>
                         `;
                         break;
-                    case 'confirming_sender':
+                    case 'confirming':
                         actionsHtml = `
                             <button class="pc-btn btn" onclick="withdrawConfirm()">撤回确认</button>
                             <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
@@ -1787,7 +1819,7 @@
                             <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
                         `;
                         break;
-                    case 'signing_wait':
+                    case 'signing':
                         actionsHtml = `
                             <button class="pc-btn btn" onclick="withdrawSignFile()">撤回签约文件</button>
                             <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
@@ -1814,7 +1846,7 @@
                 }
             } else if (currentRole === 'receiver') {
                 switch (currentStatus) {
-                    case 'confirming_receiver':
+                    case 'confirming':
                         actionsHtml = `
                             <button class="pc-btn btn-primary-action" onclick="confirmContract()">确认合同</button>
                             <button class="pc-btn btn" onclick="rejectContract()">驳回修改</button>
@@ -2136,7 +2168,7 @@
         }
 
         function editContract() {
-            window.location.href = 'pc-contract-edit.html';
+            window.location.href = 'pc-contract-edit-existing.html?contractId=HT-2024-001&role=initiator';
         }
 
         function showConfirmModal(title, content, callback) {
@@ -2225,12 +2257,46 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const status = urlParams.get('status');
+        const role = urlParams.get('role');
+        
         if (status) {
             document.getElementById('statusSelector').value = status;
             currentStatus = status;
         }
+        
+        if (role === 'initiator') {
+            switchPcRoleOnInit('initiator');
+        }
 
         updateUI();
+
+        function switchPcRoleOnInit(role) {
+            currentPcRole = role;
+            
+            document.querySelectorAll('.pc-role-switcher .pc-role-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === '合同发起方') {
+                    btn.classList.add('active');
+                }
+            });
+            
+            const sidebar = document.querySelector('.pc-sidebar');
+            const main = document.getElementById('pcMain');
+            const breadcrumb = document.querySelector('.pc-breadcrumb');
+            
+            if (role === 'initiator') {
+                sidebar.classList.add('hidden');
+                main.classList.add('full-width');
+                breadcrumb.innerHTML = `
+                    <span class="item current">合同详情</span>
+                `;
+                document.getElementById('userAvatar').textContent = '发';
+                document.getElementById('userName').textContent = '合同发起方';
+                
+                currentRole = 'creator';
+                updateUI();
+            }
+        }
     </script>
 </body>
 </html>

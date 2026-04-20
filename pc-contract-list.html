@@ -467,14 +467,10 @@
                     <span>良造家平台</span>
                 </div>
             </div>
-            <div class="pc-sidebar-menu">
-                <a href="pc-project-list.html" class="pc-menu-item main-nav">
-                    <span class="icon">📁</span>
-                    <span class="label">项目管理</span>
-                </a>
+            <div class="pc-sidebar-menu" id="sidebarMenu">
                 <a href="pc-contract-list.html" class="pc-menu-item main-nav active">
                     <span class="icon">📋</span>
-                    <span class="label">合同管理</span>
+                    <span class="label">合同审核管理</span>
                 </a>
                 <div class="pc-menu-group">
                     <div class="pc-menu-group-title">模板管理</div>
@@ -490,7 +486,7 @@
             </div>
         </div>
 
-        <div class="pc-main">
+        <div class="pc-main" id="pcMain">
             <div class="pc-header">
                 <div class="pc-header-left">
                     <div class="pc-breadcrumb">
@@ -500,11 +496,14 @@
                     </div>
                 </div>
                 <div class="pc-header-right">
+                    <div class="pc-role-switcher">
+                        <button class="pc-role-btn active" onclick="switchPcRole('operator')">运营</button>
+                        <button class="pc-role-btn" onclick="switchPcRole('initiator')">合同发起方</button>
+                    </div>
                     <div class="pc-user-dropdown">
                         <div class="pc-user-info" onclick="toggleUserDropdown()">
-                            <div class="pc-user-avatar">张</div>
-                            <span class="pc-user-name">张三</span>
-                            <span class="pc-user-role" style="font-size: 12px; color: var(--text-tertiary); margin-left: 4px;">（运营）</span>
+                            <div class="pc-user-avatar" id="userAvatar">运</div>
+                            <span class="pc-user-name" id="userName">运营人员</span>
                             <span style="font-size: 12px; color: var(--text-tertiary);">▼</span>
                         </div>
                         <div class="pc-user-dropdown-menu" id="userDropdownMenu">
@@ -751,18 +750,28 @@
     <div class="pc-page-nav-wrapper" id="pageNavWrapper">
         <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
         <div class="pc-page-nav" id="pageNav">
-            <div class="pc-page-nav-title">页面导航</div>
-            <a href="pc-contract-list.html" class="pc-page-nav-item active">合同列表</a>
-            <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
-            <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
-            <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+            <div class="pc-page-nav-title">
+                PC端原型导航
+                <span class="badge">PC</span>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">合同操作</div>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
+                <a href="pc-contract-edit-existing.html" class="pc-page-nav-item">编辑合同</a>
+            </div>
             <div class="pc-page-nav-group">
                 <div class="pc-page-nav-group-title">模板管理</div>
                 <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
                 <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
             </div>
             <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">小程序原型</div>
+                <div class="pc-page-nav-group-title">合同管理</div>
+                <a href="pc-contract-list.html" class="pc-page-nav-item active">合同审核管理</a>
+                <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+                <a href="pc-login.html" class="pc-page-nav-item">扫码登录</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">小程序端</div>
                 <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
             </div>
         </div>
@@ -828,6 +837,39 @@
     </div>
 
     <script>
+        let currentPcRole = 'operator';
+
+        function switchPcRole(role) {
+            currentPcRole = role;
+            
+            document.querySelectorAll('.pc-role-switcher .pc-role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const sidebar = document.querySelector('.pc-sidebar');
+            const main = document.getElementById('pcMain');
+            const breadcrumb = document.querySelector('.pc-breadcrumb');
+            
+            if (role === 'initiator') {
+                sidebar.classList.add('hidden');
+                main.classList.add('full-width');
+                breadcrumb.innerHTML = `
+                    <span class="item current">合同列表</span>
+                `;
+                document.getElementById('userAvatar').textContent = '发';
+                document.getElementById('userName').textContent = '合同发起方';
+            } else {
+                sidebar.classList.remove('hidden');
+                main.classList.remove('full-width');
+                breadcrumb.innerHTML = `
+                    <span class="item">合同审核管理</span>
+                    <span class="separator">/</span>
+                    <span class="item current">全部合同</span>
+                `;
+                document.getElementById('userAvatar').textContent = '运';
+                document.getElementById('userName').textContent = '运营人员';
+            }
+        }
+
         function toggleUserDropdown() {
             const menu = document.getElementById('userDropdownMenu');
             menu.classList.toggle('show');
@@ -969,12 +1011,8 @@
             location.href = 'pc-contract-detail.html?id=' + id;
         }
 
-        function viewProject(id) {
-            location.href = 'pc-project-list.html?id=' + id;
-        }
-
         function editContract(id) {
-            location.href = 'pc-contract-edit.html?id=' + id;
+            location.href = 'pc-contract-edit-existing.html?contractId=' + id;
         }
 
         function submitForReview(id) {

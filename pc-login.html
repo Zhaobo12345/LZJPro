@@ -427,6 +427,48 @@
     
     <script>
         let countdownTimer;
+        let redirectUrl = 'pc-contract-edit.html';
+        let redirectParams = {};
+        
+        function getRedirectInfo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const contractId = urlParams.get('contractId');
+            const projectId = urlParams.get('projectId');
+            const action = urlParams.get('action');
+            const source = urlParams.get('source');
+            
+            if (contractId) {
+                redirectParams.contractId = contractId;
+            }
+            if (projectId) {
+                redirectParams.projectId = projectId;
+            }
+            if (action) {
+                redirectParams.action = action;
+            }
+            
+            if (source === 'miniprogram') {
+                redirectParams.role = 'initiator';
+            }
+            
+            if (contractId && action === 'edit') {
+                redirectUrl = 'pc-contract-edit-existing.html';
+            } else if (contractId && action === 'view') {
+                redirectUrl = 'pc-contract-detail.html';
+            } else if (projectId) {
+                redirectUrl = 'pc-contract-edit.html';
+            }
+        }
+        
+        function buildRedirectUrl() {
+            const params = new URLSearchParams(redirectParams);
+            params.set('role', 'initiator');
+            
+            if (params.toString()) {
+                return redirectUrl + '?' + params.toString();
+            }
+            return redirectUrl + '?role=initiator';
+        }
         
         function refreshQrCode() {
             document.getElementById('qrExpired').classList.remove('show');
@@ -457,10 +499,12 @@
                 
                 if (count <= 0) {
                     clearInterval(countdownTimer);
-                    window.location.href = 'pc-contract-detail.html';
+                    window.location.href = buildRedirectUrl();
                 }
             }, 1000);
         }
+        
+        getRedirectInfo();
         
         setTimeout(() => {
             simulateScan();

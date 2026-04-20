@@ -22,6 +22,10 @@
             background: linear-gradient(135deg, var(--warning-color) 0%, #FFA940 100%);
         }
 
+        .task-header-card.in-progress {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #40A9FF 100%);
+        }
+
         .task-header-card.completed {
             background: linear-gradient(135deg, var(--success-color) 0%, #73D13D 100%);
         }
@@ -1146,6 +1150,10 @@
             background-color: var(--success-color);
         }
 
+        .flow-line.active {
+            background-color: var(--primary-color);
+        }
+
         .acceptance-progress {
             background-color: var(--bg-secondary);
             border-radius: 6px;
@@ -1836,11 +1844,16 @@
                             </div>
                             <div class="flow-line" id="flowLine1"></div>
                             <div class="flow-step" id="flowStep2">
-                                <div class="step-icon">⏳</div>
-                                <div class="step-label">确认中</div>
+                                <div class="step-icon">▶</div>
+                                <div class="step-label">执行中</div>
                             </div>
                             <div class="flow-line" id="flowLine2"></div>
                             <div class="flow-step" id="flowStep3">
+                                <div class="step-icon">⏳</div>
+                                <div class="step-label">确认中</div>
+                            </div>
+                            <div class="flow-line" id="flowLine3"></div>
+                            <div class="flow-step" id="flowStep4">
                                 <div class="step-icon">✓</div>
                                 <div class="step-label">已完成</div>
                             </div>
@@ -2172,6 +2185,73 @@
             </div>
         </div>
         
+        <div class="upload-modal" id="uploadRecordModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">上传执行记录</div>
+                    <div class="modal-close" onclick="closeUploadRecordModal()">✕</div>
+                </div>
+                <div class="media-upload" id="uploadRecordMediaGrid">
+                    <div class="upload-item" onclick="triggerUpload('image', 'record')">
+                        <span class="icon">📷</span>
+                        <span class="text">添加图片</span>
+                    </div>
+                    <div class="upload-item" onclick="triggerUpload('video', 'record')">
+                        <span class="icon">🎬</span>
+                        <span class="text">添加视频</span>
+                    </div>
+                    <div class="upload-item" onclick="triggerUpload('audio', 'record')">
+                        <span class="icon">🎵</span>
+                        <span class="text">添加音频</span>
+                    </div>
+                </div>
+                <div id="uploadedRecordPreview" style="display: none; margin-bottom: 12px;">
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">已上传文件：</div>
+                    <div id="uploadedRecordFiles" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                </div>
+                <textarea class="desc-input" id="recordDescInput" placeholder="请输入执行说明（必填）"></textarea>
+                <div class="modal-actions">
+                    <div class="btn secondary" onclick="closeUploadRecordModal()" style="display: flex; align-items: center; justify-content: center;">取消</div>
+                    <div class="btn primary" onclick="confirmUploadRecord()" style="display: flex; align-items: center; justify-content: center;">确认上传</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="confirm-modal" id="submitConfirmModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">提交给确认人</div>
+                    <div class="modal-close" onclick="closeSubmitConfirmModal()">✕</div>
+                </div>
+                <div style="padding: 16px; text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📤</div>
+                    <div style="font-size: 16px; color: var(--text-primary); margin-bottom: 8px;">确定要提交给确认人吗？</div>
+                    <div style="font-size: 13px; color: var(--error-color); margin-bottom: 16px;">⚠️ 提交后不支持修改执行记录</div>
+                    <div style="font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); padding: 12px; border-radius: 8px; text-align: left;">
+                        <div style="margin-bottom: 8px;"><strong>确认人列表：</strong></div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #1890FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">张</div>
+                                <span>张三 · 项目总</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #52C41A; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">王</div>
+                                <span>王五 · 业主</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #722ED1; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px;">赵</div>
+                                <span>赵六 · 设计师</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <div class="btn secondary" onclick="closeSubmitConfirmModal()" style="display: flex; align-items: center; justify-content: center;">取消</div>
+                    <div class="btn primary" onclick="confirmSubmitToConfirmer()" style="display: flex; align-items: center; justify-content: center;">确认提交</div>
+                </div>
+            </div>
+        </div>
+        
         <input type="file" id="fileInput" accept="image/*,video/*,audio/*" style="display: none;" onchange="handleFileSelect(event)">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleFileSelect(event)">
 
@@ -2338,6 +2418,7 @@
             <div class="status-switcher">
                 <div class="status-switch-item active" onclick="updateTaskStatus('configuring')">待配置</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('pending')">待开始</div>
+                <div class="status-switch-item" onclick="updateTaskStatus('in_progress')">执行中</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('confirming')">确认中</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('completed')">已完成</div>
             </div>
@@ -2352,17 +2433,21 @@
             <div class="page-nav-title">用户视角切换</div>
             <div class="status-switcher" id="roleSwitcher">
                 <div class="status-switch-item role-switch-item active" onclick="switchUserRole('executor')">执行人视角</div>
-                <div class="status-switch-item role-switch-item" onclick="switchUserRole('nonExecutor')">非执行人视角</div>
                 <div class="status-switch-item role-switch-item" onclick="switchUserRole('confirmer')">确认人视角</div>
-                <div class="status-switch-item role-switch-item" onclick="switchUserRole('nonConfirmer')">非确认人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('configurer')">配置人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('other')">其他用户视角</div>
+            </div>
+            <div class="status-switcher" id="configuringRoleSwitcher" style="margin-top: 8px; display: none;">
+                <div class="status-switch-item role-switch-item active" onclick="switchUserRole('configurer')">配置人视角</div>
+                <div class="status-switch-item role-switch-item" onclick="switchUserRole('other')">其他用户视角</div>
             </div>
         </div>
     </div>
     
     <script>
         let currentRating = 0;
-        let currentTaskStatus = 'confirming';
-        let currentUserRole = 'executor';
+        let currentTaskStatus = 'configuring';
+        let currentUserRole = 'configurer';
         let uploadedFiles = [];
         let currentUploadContext = 'execution';
         
@@ -2478,26 +2563,12 @@
             window.currentExecutorId = memberId;
             window.currentExecutorName = member.name;
             
-            if (taskStatus && taskStatus.textContent.trim() === '待配置') {
-                confirmProgress.innerHTML = '请配置执行人（<span style="color: #FF4D4F;">必填</span>）和确认人（<span style="color: #8C8C8C;">选填</span>）';
-                document.getElementById('actionButtons').innerHTML = `
-                    <div class="btn primary" onclick="showSubmitTaskModal()">提交任务</div>
-                `;
-            } else {
-                confirmProgress.textContent = '等待执行人执行';
-                if (currentUserRole === 'executor') {
-                    document.getElementById('actionButtons').innerHTML = `
-                        <div class="btn primary" onclick="showUploadModal()">开始执行</div>
-                    `;
-                } else {
-                    document.getElementById('actionButtons').innerHTML = `
-                        <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
-                    `;
-                }
-            }
-            
             closeExecutorSelector();
-            showToast(`已修改执行人：${member.name}`);
+            showToast('设置成功，将消息通知执行人！');
+            
+            setTimeout(() => {
+                updateTaskStatus('pending');
+            }, 500);
         }
         
         function getRoleBadgeClass(role) {
@@ -2546,6 +2617,8 @@
         
         function renderConfirmerList() {
             const confirmerList = document.getElementById('confirmerList');
+            const canModify = currentTaskStatus === 'configuring' || currentTaskStatus === 'pending';
+            
             confirmerList.innerHTML = currentConfirmers.map(confirmer => `
                 <div class="confirmer-status-item" data-confirmer-id="${confirmer.id}">
                     <div class="avatar">${confirmer.avatar}</div>
@@ -2554,7 +2627,7 @@
                         <div class="time">${confirmer.status === 'confirmed' ? '已确认' : '等待确认中...'}</div>
                     </div>
                     <div class="status ${confirmer.status}">${confirmer.status === 'confirmed' ? '已确认' : '待确认'}</div>
-                    <div class="delete-btn" onclick="removeConfirmer(${confirmer.id})">×</div>
+                    ${canModify ? `<div class="delete-btn" onclick="removeConfirmer(${confirmer.id})">×</div>` : ''}
                 </div>
             `).join('');
         }
@@ -2786,6 +2859,109 @@
             }
         }
         
+        let uploadedRecordFiles = [];
+        let savedExecutionRecords = [];
+        
+        function showUploadRecordModal() {
+            if (savedExecutionRecords.length > 0) {
+                uploadedRecordFiles = [...savedExecutionRecords];
+            } else {
+                uploadedRecordFiles = [];
+            }
+            document.getElementById('recordDescInput').value = '';
+            updateUploadedRecordPreview();
+            document.getElementById('uploadRecordModal').classList.add('show');
+        }
+        
+        function closeUploadRecordModal() {
+            document.getElementById('uploadRecordModal').classList.remove('show');
+        }
+        
+        function confirmUploadRecord() {
+            const desc = document.getElementById('recordDescInput').value.trim();
+            if (!desc && uploadedRecordFiles.length === 0) {
+                showToast('请输入执行说明或上传文件');
+                return;
+            }
+            
+            savedExecutionRecords = [...uploadedRecordFiles];
+            
+            closeUploadRecordModal();
+            showToast('执行记录已上传，任务状态变为执行中');
+            updateTaskStatus('in_progress');
+        }
+        
+        function deleteExecutionRecord(index) {
+            savedExecutionRecords.splice(index, 1);
+            updateExecutionRecordDisplay();
+            if (savedExecutionRecords.length === 0 && currentTaskStatus === 'in_progress') {
+                updateTaskStatus('pending');
+            }
+        }
+        
+        function updateExecutionRecordDisplay() {
+            const currentExecution = document.getElementById('currentExecution');
+            if (!currentExecution) return;
+            
+            if (savedExecutionRecords.length > 0) {
+                let mediaHtml = '<div class="media-grid">';
+                savedExecutionRecords.forEach((file, index) => {
+                    if (file.type.startsWith('image')) {
+                        mediaHtml += `
+                            <div class="media-item" style="position: relative;">
+                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%); font-size: 24px;">📷</div>
+                                ${currentUserRole === 'executor' ? `<div onclick="deleteExecutionRecord(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,77,79,0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; z-index: 10;">✕</div>` : ''}
+                            </div>
+                        `;
+                    } else if (file.type.startsWith('video')) {
+                        mediaHtml += `
+                            <div class="media-item" style="position: relative; background: #000;">
+                                <span class="play-icon">▶</span>
+                                <span class="duration">0:15</span>
+                                ${currentUserRole === 'executor' ? `<div onclick="deleteExecutionRecord(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,77,79,0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; z-index: 10;">✕</div>` : ''}
+                            </div>
+                        `;
+                    } else {
+                        mediaHtml += `
+                            <div class="media-item" style="position: relative;">
+                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F6FFED 0%, #B7EB8F 100%); font-size: 24px;">🎵</div>
+                                ${currentUserRole === 'executor' ? `<div onclick="deleteExecutionRecord(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,77,79,0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; z-index: 10;">✕</div>` : ''}
+                            </div>
+                        `;
+                    }
+                });
+                mediaHtml += '</div>';
+                
+                currentExecution.innerHTML = `
+                    <div class="section-title">
+                        <span>📤 执行人上传的内容</span>
+                        ${currentUserRole === 'executor' ? '<span class="edit-btn" onclick="showUploadRecordModal()" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">✎ 继续上传</span>' : ''}
+                    </div>
+                    ${mediaHtml}
+                    <div class="execution-desc">
+                        执行记录已上传，请继续上传或提交给确认人。
+                    </div>
+                    <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                        上传人：李四 · ${new Date().toLocaleString('zh-CN', {month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(/\//g, '-')}
+                    </div>
+                `;
+            }
+        }
+        
+        function showSubmitConfirmModal() {
+            document.getElementById('submitConfirmModal').classList.add('show');
+        }
+        
+        function closeSubmitConfirmModal() {
+            document.getElementById('submitConfirmModal').classList.remove('show');
+        }
+        
+        function confirmSubmitToConfirmer() {
+            closeSubmitConfirmModal();
+            showToast('已提交给确认人，请等待确认');
+            updateTaskStatus('confirming');
+        }
+        
         function showToast(message) {
             const existingToast = document.querySelector('.app-toast');
             if (existingToast) {
@@ -2872,13 +3048,23 @@
         function handleFileSelect(event) {
             const file = event.target.files[0];
             if (file) {
-                uploadedFiles.push({
-                    name: file.name,
-                    type: file.type,
-                    size: file.size
-                });
-                updateUploadedPreview();
-                showToast('文件已选择：' + file.name);
+                if (currentUploadContext === 'record') {
+                    uploadedRecordFiles.push({
+                        name: file.name,
+                        type: file.type,
+                        size: file.size
+                    });
+                    updateUploadedRecordPreview();
+                    showToast('文件已选择：' + file.name);
+                } else {
+                    uploadedFiles.push({
+                        name: file.name,
+                        type: file.type,
+                        size: file.size
+                    });
+                    updateUploadedPreview();
+                    showToast('文件已选择：' + file.name);
+                }
             }
             event.target.value = '';
         }
@@ -2899,6 +3085,33 @@
             } else {
                 preview.style.display = 'none';
             }
+        }
+        
+        function updateUploadedRecordPreview() {
+            const preview = document.getElementById('uploadedRecordPreview');
+            const filesContainer = document.getElementById('uploadedRecordFiles');
+            
+            if (uploadedRecordFiles.length > 0) {
+                preview.style.display = 'block';
+                filesContainer.innerHTML = uploadedRecordFiles.map((file, index) => `
+                    <div style="position: relative; width: 60px; height: 60px; border-radius: 8px; overflow: hidden; background: var(--bg-secondary);">
+                        ${file.type.startsWith('image') ? 
+                            `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%); font-size: 24px;">📷</div>` : 
+                            file.type.startsWith('video') ? 
+                            `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #FFF0F6 0%, #FFD6E7 100%); font-size: 24px;">🎬</div>` :
+                            `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F6FFED 0%, #B7EB8F 100%); font-size: 24px;">🎵</div>`
+                        }
+                        <div onclick="removeRecordFile(${index})" style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.5); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer;">✕</div>
+                    </div>
+                `).join('');
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        
+        function removeRecordFile(index) {
+            uploadedRecordFiles.splice(index, 1);
+            updateUploadedRecordPreview();
         }
         
         function removeFile(index) {
@@ -2929,14 +3142,18 @@
             const flowStep1 = document.getElementById('flowStep1');
             const flowStep2 = document.getElementById('flowStep2');
             const flowStep3 = document.getElementById('flowStep3');
+            const flowStep4 = document.getElementById('flowStep4');
             const flowLine1 = document.getElementById('flowLine1');
             const flowLine2 = document.getElementById('flowLine2');
+            const flowLine3 = document.getElementById('flowLine3');
             
             flowStep1.className = 'flow-step';
             flowStep2.className = 'flow-step';
             flowStep3.className = 'flow-step';
+            flowStep4.className = 'flow-step';
             flowLine1.className = 'flow-line';
             flowLine2.className = 'flow-line';
+            flowLine3.className = 'flow-line';
             
             if (status === 'configuring') {
                 header.className = 'task-header-card';
@@ -2953,42 +3170,57 @@
                 
                 const hasExecutor = window.currentHasExecutor || false;
                 
-                if (hasExecutor) {
+                const roleSwitcher = document.getElementById('roleSwitcher');
+                const configuringRoleSwitcher = document.getElementById('configuringRoleSwitcher');
+                
+                if (currentUserRole === 'configurer') {
+                    if (hasExecutor) {
+                        executorList.style.display = 'flex';
+                        executorItem.style.display = 'flex';
+                        noExecutorView.style.display = 'none';
+                        addExecutorBtn.style.display = 'flex';
+                    } else {
+                        executorList.style.display = 'none';
+                        noExecutorView.style.display = 'flex';
+                        addExecutorBtn.style.display = 'none';
+                    }
+                    
+                    renderConfiguringConfirmerList();
+                    if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
+                    
+                    actionButtons.innerHTML = '';
+                    
+                    if (roleSwitcher) roleSwitcher.style.display = 'none';
+                    if (configuringRoleSwitcher) configuringRoleSwitcher.style.display = 'flex';
+                } else {
                     executorList.style.display = 'flex';
                     executorItem.style.display = 'flex';
                     noExecutorView.style.display = 'none';
-                    addExecutorBtn.style.display = 'flex';
-                } else {
-                    executorList.style.display = 'none';
-                    noExecutorView.style.display = 'flex';
                     addExecutorBtn.style.display = 'none';
-                }
-                
-                renderConfiguringConfirmerList();
-                if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
-                
-                if (hasExecutor) {
+                    
+                    renderConfiguringConfirmerList();
+                    if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                    
+                    confirmProgress.innerHTML = '任务正在配置中，请等待配置完成';
                     actionButtons.innerHTML = `
-                        <div class="btn primary" onclick="showSubmitTaskModal()">提交任务</div>
+                        <div class="btn secondary" style="width: 100%;">任务配置中</div>
                     `;
-                } else {
-                    actionButtons.innerHTML = `
-                        <div class="btn secondary" style="width: 100%; opacity: 0.5; cursor: not-allowed;">请先选择执行人</div>
-                    `;
+                    
+                    if (roleSwitcher) roleSwitcher.style.display = 'none';
+                    if (configuringRoleSwitcher) configuringRoleSwitcher.style.display = 'flex';
                 }
-                
-                const roleSwitcher = document.getElementById('roleSwitcher');
-                if (roleSwitcher) roleSwitcher.style.display = 'none';
                 
                 if (acceptanceProgress) acceptanceProgress.style.display = 'none';
                 
                 flowStep1.className = 'flow-step current';
                 flowStep1.querySelector('.step-icon').textContent = '⏸';
                 flowStep1.querySelector('.step-label').textContent = '待开始';
-                flowStep2.querySelector('.step-icon').textContent = '⏳';
-                flowStep2.querySelector('.step-label').textContent = '确认中';
-                flowStep3.querySelector('.step-icon').textContent = '✓';
-                flowStep3.querySelector('.step-label').textContent = '已完成';
+                flowStep2.querySelector('.step-icon').textContent = '▶';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '任务配置中';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
@@ -3000,10 +3232,109 @@
                 confirmProgress.textContent = '等待执行人执行';
                 
                 const roleSwitcher = document.getElementById('roleSwitcher');
+                const configuringRoleSwitcher = document.getElementById('configuringRoleSwitcher');
                 if (roleSwitcher) roleSwitcher.style.display = 'block';
+                if (configuringRoleSwitcher) configuringRoleSwitcher.style.display = 'none';
                 
                 executionRecordCard.style.display = 'none';
                 confirmRecordCard.style.display = 'none';
+                
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                executorList.style.display = 'flex';
+                executorItem.style.display = 'flex';
+                noExecutorView.style.display = 'none';
+                
+                if (currentUserRole === 'configurer') {
+                    addExecutorBtn.style.display = 'flex';
+                    addExecutorBtn.innerHTML = '<span class="edit-icon">✎</span> 修改执行人';
+                    addExecutorBtn.onclick = function() { showExecutorSelector(true); };
+                    
+                    renderConfiguringConfirmerList();
+                    if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
+                    
+                    actionButtons.innerHTML = '';
+                } else {
+                    addExecutorBtn.style.display = 'none';
+                    
+                    renderConfirmerList();
+                    if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                    
+                    if (currentUserRole === 'executor') {
+                        actionButtons.innerHTML = `
+                            <div class="btn secondary" onclick="showUploadRecordModal()">上传执行记录</div>
+                            <div class="btn primary" onclick="showSubmitConfirmModal()">提交给确认人</div>
+                        `;
+                    } else if (currentUserRole === 'confirmer') {
+                        actionButtons.innerHTML = `
+                            <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                        `;
+                    } else {
+                        actionButtons.innerHTML = `
+                            <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                        `;
+                    }
+                }
+                
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step current';
+                flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
+                flowStep2.querySelector('.step-icon').textContent = '▶';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
+                
+                if (flowProgressText) flowProgressText.textContent = '等待执行';
+                if (flowProgressBar) flowProgressBar.style.width = '0%';
+                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
+                
+            } else if (status === 'in_progress') {
+                header.className = 'task-header-card in-progress';
+                statusBadge.textContent = '执行中';
+                confirmProgress.textContent = '执行人正在执行任务';
+                
+                const roleSwitcher = document.getElementById('roleSwitcher');
+                const configuringRoleSwitcher = document.getElementById('configuringRoleSwitcher');
+                if (roleSwitcher) roleSwitcher.style.display = 'block';
+                if (configuringRoleSwitcher) configuringRoleSwitcher.style.display = 'none';
+                
+                executionRecordCard.style.display = 'block';
+                confirmRecordCard.style.display = 'none';
+                
+                const currentExecution = document.getElementById('currentExecution');
+                const historyRecords = document.getElementById('historyRecords');
+                const moreBtn = document.querySelector('#executionRecordCard .more');
+                
+                if (currentExecution) {
+                    if (savedExecutionRecords.length > 0) {
+                        updateExecutionRecordDisplay();
+                    } else {
+                        currentExecution.innerHTML = `
+                            <div class="section-title">
+                                <span>📤 执行人上传的内容</span>
+                                ${currentUserRole === 'executor' ? '<span class="edit-btn" onclick="showUploadRecordModal()" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">✎ 上传</span>' : ''}
+                            </div>
+                            <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                                暂无执行记录，请点击上传
+                            </div>
+                        `;
+                    }
+                }
+                
+                if (historyRecords) {
+                    historyRecords.style.display = 'none';
+                }
+                
+                if (moreBtn) {
+                    moreBtn.style.display = 'none';
+                }
                 
                 const executorList = document.getElementById('executorList');
                 const executorItem = document.getElementById('executorItem');
@@ -3020,26 +3351,35 @@
                 
                 if (currentUserRole === 'executor') {
                     actionButtons.innerHTML = `
-                        <div class="btn primary" onclick="showUploadModal()">开始执行</div>
+                        <div class="btn secondary" onclick="showUploadRecordModal()">上传执行记录</div>
+                        <div class="btn primary" onclick="showSubmitConfirmModal()">提交给确认人</div>
+                    `;
+                } else if (currentUserRole === 'confirmer') {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">执行人正在执行中...</div>
                     `;
                 } else {
                     actionButtons.innerHTML = `
-                        <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                        <div class="btn secondary" style="width: 100%;">执行人正在执行中...</div>
                     `;
                 }
                 
                 if (acceptanceProgress) acceptanceProgress.style.display = 'none';
                 
-                flowStep1.className = 'flow-step current';
-                flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep1.className = 'flow-step completed';
+                flowStep1.querySelector('.step-icon').textContent = '✓';
                 flowStep1.querySelector('.step-label').textContent = '待开始';
-                flowStep2.querySelector('.step-icon').textContent = '⏳';
-                flowStep2.querySelector('.step-label').textContent = '确认中';
-                flowStep3.querySelector('.step-icon').textContent = '✓';
-                flowStep3.querySelector('.step-label').textContent = '已完成';
+                flowLine1.className = 'flow-line completed';
+                flowStep2.className = 'flow-step current';
+                flowStep2.querySelector('.step-icon').textContent = '▶';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
-                if (flowProgressText) flowProgressText.textContent = '等待执行';
-                if (flowProgressBar) flowProgressBar.style.width = '0%';
+                if (flowProgressText) flowProgressText.textContent = '执行中';
+                if (flowProgressBar) flowProgressBar.style.width = '25%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
             } else if (status === 'confirming') {
@@ -3180,14 +3520,18 @@
                 flowStep1.querySelector('.step-icon').textContent = '✓';
                 flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line completed';
-                flowStep2.className = 'flow-step current';
-                flowStep2.querySelector('.step-icon').textContent = '⏳';
-                flowStep2.querySelector('.step-label').textContent = '确认中';
-                flowStep3.querySelector('.step-icon').textContent = '✓';
-                flowStep3.querySelector('.step-label').textContent = '已完成';
+                flowStep2.className = 'flow-step completed';
+                flowStep2.querySelector('.step-icon').textContent = '✓';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowLine2.className = 'flow-line completed';
+                flowStep3.className = 'flow-step current';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
-                if (flowProgressBar) flowProgressBar.style.width = '33%';
+                if (flowProgressBar) flowProgressBar.style.width = '50%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
                 
                 const roleSwitcher3 = document.getElementById('roleSwitcher');
@@ -3390,14 +3734,18 @@
                 flowStep1.querySelector('.step-icon').textContent = '✓';
                 flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line completed';
-                flowStep2.className = 'flow-step current';
-                flowStep2.querySelector('.step-icon').textContent = '⏳';
-                flowStep2.querySelector('.step-label').textContent = '确认中';
-                flowStep3.querySelector('.step-icon').textContent = '✓';
-                flowStep3.querySelector('.step-label').textContent = '已完成';
+                flowStep2.className = 'flow-step completed';
+                flowStep2.querySelector('.step-icon').textContent = '✓';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowLine2.className = 'flow-line completed';
+                flowStep3.className = 'flow-step current';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
-                if (flowProgressBar) flowProgressBar.style.width = '33%';
+                if (flowProgressBar) flowProgressBar.style.width = '50%';
                 if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
                 
                 const roleSwitcher4 = document.getElementById('roleSwitcher');
@@ -3546,12 +3894,19 @@
                 
                 flowStep1.className = 'flow-step completed';
                 flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line completed';
                 flowStep2.className = 'flow-step completed';
                 flowStep2.querySelector('.step-icon').textContent = '✓';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
                 flowLine2.className = 'flow-line completed';
                 flowStep3.className = 'flow-step completed';
                 flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowLine3.className = 'flow-line completed';
+                flowStep4.className = 'flow-step completed';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '已完成';
                 if (flowProgressBar) flowProgressBar.style.width = '100%';
@@ -3763,12 +4118,19 @@
                 
                 flowStep1.className = 'flow-step completed';
                 flowStep1.querySelector('.step-icon').textContent = '✓';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line completed';
                 flowStep2.className = 'flow-step completed';
                 flowStep2.querySelector('.step-icon').textContent = '✓';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
                 flowLine2.className = 'flow-line completed';
                 flowStep3.className = 'flow-step completed';
                 flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowLine3.className = 'flow-line completed';
+                flowStep4.className = 'flow-step completed';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '已完成';
                 if (flowProgressBar) flowProgressBar.style.width = '100%';
@@ -3924,9 +4286,16 @@
                 
                 flowStep1.className = 'flow-step current';
                 flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
                 flowLine1.className = 'flow-line';
-                flowStep2.querySelector('.step-icon').textContent = '⏳';
-                flowStep3.querySelector('.step-icon').textContent = '✓';
+                flowStep2.querySelector('.step-icon').textContent = '▶';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowLine2.className = 'flow-line';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowLine3.className = 'flow-line';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '已驳回';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
@@ -3940,6 +4309,7 @@
                 const text = item.textContent.trim();
                 if ((status === 'configuring' && text === '待配置') ||
                     (status === 'pending' && text === '待开始') ||
+                    (status === 'in_progress' && text === '执行中') ||
                     (status === 'confirming' && text === '确认中') ||
                     (status === 'confirming_after_reject' && text === '确认中（被驳回后）') ||
                     (status === 'rejected_pending' && text === '驳回后待开始') ||
@@ -3962,7 +4332,9 @@
                 if ((role === 'executor' && text === '执行人视角') ||
                     (role === 'nonExecutor' && text === '非执行人视角') ||
                     (role === 'confirmer' && text === '确认人视角') ||
-                    (role === 'nonConfirmer' && text === '非确认人视角')) {
+                    (role === 'nonConfirmer' && text === '非确认人视角') ||
+                    (role === 'configurer' && text === '配置人视角') ||
+                    (role === 'other' && text === '其他用户视角')) {
                     item.classList.add('active');
                 }
             });
@@ -4013,10 +4385,10 @@
         function initFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const status = urlParams.get('status') || 'configuring';
-            const role = urlParams.get('role') || 'executor';
+            const role = urlParams.get('role') || 'configurer';
             
             if (status === 'configuring') {
-                currentUserRole = 'executor';
+                currentUserRole = role === 'other' ? 'other' : 'configurer';
             } else if (status === 'pending' || status === 'rejected_pending') {
                 currentUserRole = role === 'nonExecutor' ? 'nonExecutor' : 'executor';
             } else if (status === 'confirming' || status === 'confirming_after_reject') {

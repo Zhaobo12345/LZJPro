@@ -1117,14 +1117,10 @@
                     <span>良造家平台</span>
                 </div>
             </div>
-            <div class="pc-sidebar-menu">
-                <a href="pc-project-list.html" class="pc-menu-item main-nav">
-                    <span class="icon">📁</span>
-                    <span class="label">项目管理</span>
-                </a>
-                <a href="pc-contract-list.html" class="pc-menu-item main-nav active">
+            <div class="pc-sidebar-menu" id="sidebarMenu">
+                <a href="pc-contract-list.html" class="pc-menu-item main-nav">
                     <span class="icon">📋</span>
-                    <span class="label">合同管理</span>
+                    <span class="label">合同审核管理</span>
                 </a>
                 <div class="pc-menu-group">
                     <div class="pc-menu-group-title">模板管理</div>
@@ -1140,7 +1136,7 @@
             </div>
         </div>
 
-        <div class="pc-main">
+        <div class="pc-main" id="pcMain">
             <div class="pc-header">
                 <div class="pc-header-left">
                     <div class="pc-breadcrumb">
@@ -1150,10 +1146,14 @@
                     </div>
                 </div>
                 <div class="pc-header-right">
+                    <div class="pc-role-switcher">
+                        <button class="pc-role-btn active" onclick="switchPcRole('operator')">运营</button>
+                        <button class="pc-role-btn" onclick="switchPcRole('initiator')">合同发起方</button>
+                    </div>
                     <div class="pc-user-dropdown">
                         <div class="pc-user-info" onclick="toggleUserDropdown()">
-                            <div class="pc-user-avatar">张</div>
-                            <span class="pc-user-name">张三</span>
+                            <div class="pc-user-avatar" id="userAvatar">张</div>
+                            <span class="pc-user-name" id="userName">张三</span>
                             <span style="font-size: 12px; color: var(--text-tertiary);">▼</span>
                         </div>
                         <div class="pc-user-dropdown-menu" id="userDropdownMenu">
@@ -1492,18 +1492,23 @@
                 <span class="badge">PC</span>
             </div>
             <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">高优先级</div>
-                <a href="pc-contract-edit.html" class="pc-page-nav-item active">合同创建/编辑</a>
+                <div class="pc-page-nav-group-title">合同操作</div>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item active">创建合同</a>
+                <a href="pc-contract-edit-existing.html" class="pc-page-nav-item">编辑合同</a>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">模板管理</div>
                 <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
                 <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
             </div>
             <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">中优先级</div>
-                <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
+                <div class="pc-page-nav-group-title">合同管理</div>
+                <a href="pc-contract-list.html" class="pc-page-nav-item">合同审核管理</a>
                 <a href="pc-contract-detail.html" class="pc-page-nav-item">合同详情</a>
+                <a href="pc-login.html" class="pc-page-nav-item">扫码登录</a>
             </div>
             <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">小程序原型</div>
+                <div class="pc-page-nav-group-title">小程序端</div>
                 <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
             </div>
         </div>
@@ -2064,9 +2069,62 @@
             }
         };
 
+        let currentPcRole = 'operator';
+
+        function switchPcRole(role) {
+            currentPcRole = role;
+            
+            document.querySelectorAll('.pc-role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const sidebar = document.querySelector('.pc-sidebar');
+            const main = document.getElementById('pcMain');
+            const breadcrumb = document.querySelector('.pc-breadcrumb');
+            
+            if (role === 'initiator') {
+                sidebar.classList.add('hidden');
+                main.classList.add('full-width');
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const contractId = urlParams.get('contractId');
+                if (contractId) {
+                    breadcrumb.innerHTML = `
+                        <span class="item current">合同编辑</span>
+                    `;
+                } else {
+                    breadcrumb.innerHTML = `
+                        <span class="item current">创建合同</span>
+                    `;
+                }
+                
+                document.getElementById('userAvatar').textContent = '发';
+                document.getElementById('userName').textContent = '合同发起方';
+            } else {
+                sidebar.classList.remove('hidden');
+                main.classList.remove('full-width');
+                breadcrumb.innerHTML = `
+                    <a href="pc-contract-list.html" class="item">合同审核管理</a>
+                    <span class="separator">/</span>
+                    <span class="item current">创建合同</span>
+                `;
+                document.getElementById('userAvatar').textContent = '运';
+                document.getElementById('userName').textContent = '运营人员';
+            }
+        }
+
         function initPage() {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get('projectId');
+            const contractId = urlParams.get('contractId');
+            const role = urlParams.get('role');
+            
+            if (role === 'initiator') {
+                switchPcRoleOnInit('initiator');
+            }
+            
+            if (contractId) {
+                loadContractData(contractId);
+            }
             
             if (projectId) {
                 document.getElementById('projectSelectGroup').style.display = 'none';
@@ -2079,6 +2137,104 @@
             checkDraftRecovery();
             setupAutoSave();
             startAutoSaveInterval();
+        }
+
+        function switchPcRoleOnInit(role) {
+            currentPcRole = role;
+            
+            document.querySelectorAll('.pc-role-switcher .pc-role-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === '合同发起方') {
+                    btn.classList.add('active');
+                }
+            });
+            
+            const sidebar = document.querySelector('.pc-sidebar');
+            const main = document.getElementById('pcMain');
+            const breadcrumb = document.querySelector('.pc-breadcrumb');
+            
+            if (role === 'initiator') {
+                sidebar.classList.add('hidden');
+                main.classList.add('full-width');
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const contractId = urlParams.get('contractId');
+                if (contractId) {
+                    breadcrumb.innerHTML = `
+                        <span class="item current">合同编辑</span>
+                    `;
+                } else {
+                    breadcrumb.innerHTML = `
+                        <span class="item current">创建合同</span>
+                    `;
+                }
+                
+                document.getElementById('userAvatar').textContent = '发';
+                document.getElementById('userName').textContent = '合同发起方';
+            }
+        }
+
+        function loadContractData(contractId) {
+            const contractData = {
+                'HT-2024-001': {
+                    name: '水电分包合同',
+                    projectId: '1',
+                    workGroupId: 'wg1',
+                    type: 'water',
+                    partyA: { id: 'm1', name: '张三', role: '项目经理' },
+                    partyB: { id: 'm2', name: '李四', role: '电工' },
+                    amount: '150000',
+                    duration: '45',
+                    date: '2024-01-10'
+                }
+            };
+            
+            const data = contractData[contractId];
+            if (data) {
+                document.getElementById('contractName').value = data.name;
+                document.getElementById('contractType').value = data.type;
+                
+                if (data.projectId) {
+                    document.getElementById('projectSelectGroup').style.display = 'none';
+                    document.getElementById('projectDisplayGroup').style.display = 'block';
+                    document.getElementById('projectDisplay').textContent = projectNames[data.projectId] || '未知项目';
+                    loadWorkGroups(data.projectId);
+                }
+                
+                setTimeout(() => {
+                    if (data.workGroupId) {
+                        document.getElementById('workGroupSelect').value = data.workGroupId;
+                        loadWorkGroupMembers(data.workGroupId);
+                    }
+                }, 100);
+                
+                setTimeout(() => {
+                    if (data.partyA) {
+                        selectedPartyA = data.partyA;
+                        document.getElementById('partyASelectedText').innerHTML = `
+                            <div class="selected-person">
+                                <div class="avatar">${data.partyA.name.charAt(0)}</div>
+                                <div class="name">${data.partyA.name}</div>
+                                <div class="clear-btn" onclick="event.stopPropagation(); clearPartySelection('A')">×</div>
+                            </div>
+                        `;
+                    }
+                    if (data.partyB) {
+                        selectedPartyB = data.partyB;
+                        document.getElementById('partyBSelectedText').innerHTML = `
+                            <div class="selected-person">
+                                <div class="avatar">${data.partyB.name.charAt(0)}</div>
+                                <div class="name">${data.partyB.name}</div>
+                                <div class="clear-btn" onclick="event.stopPropagation(); clearPartySelection('B')">×</div>
+                            </div>
+                        `;
+                    }
+                }, 200);
+                
+                document.querySelector('input[placeholder="请输入合同金额"]').value = data.amount;
+                document.querySelector('input[placeholder="请输入工期"]').value = data.duration;
+                document.querySelector('input[type="date"]').value = data.date;
+            }
         }
 
         function checkDraftRecovery() {
@@ -3335,13 +3491,13 @@
                 clearDraftFromStorage();
                 showToast('合同已保存为拟定中');
                 setTimeout(() => {
-                    window.location.href = 'pc-contract-detail.html?status=draft';
+                    window.location.href = 'pc-contract-detail.html?status=draft&role=initiator';
                 }, 1000);
             } else if (selectedSubmitType === 'review') {
                 clearDraftFromStorage();
                 showToast('合同已提交，等待审核');
                 setTimeout(() => {
-                    window.location.href = 'pc-contract-detail.html?status=pending_review';
+                    window.location.href = 'pc-contract-detail.html?status=platform_reviewing&role=initiator';
                 }, 1000);
             }
         }
