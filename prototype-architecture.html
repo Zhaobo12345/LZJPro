@@ -1226,8 +1226,22 @@
                 </div>
                 <div class="modal-body">
                     <div class="invite-target-info">
-                        <span class="label">所属组织：</span>
+                        <span class="label">所属架构层级：</span>
                         <span class="value" id="contractTargetName">水电工作组</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>合同类型</span>
+                        </label>
+                        <select class="form-select" id="contractType">
+                            <option value="">请选择合同类型</option>
+                            <option value="shuidian">水电工程合同</option>
+                            <option value="niwa">泥瓦工程合同</option>
+                            <option value="mugong">木工工程合同</option>
+                            <option value="youqi">油漆工程合同</option>
+                            <option value="other">其他合同</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">
@@ -1235,6 +1249,31 @@
                             <span>合同名称</span>
                         </label>
                         <input type="text" class="form-input" id="contractName" placeholder="请输入合同名称">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>甲方</span>
+                        </label>
+                        <select class="form-select" id="contractPartyA">
+                            <option value="">请选择甲方</option>
+                            <option value="company">良造家装饰公司</option>
+                            <option value="owner">业主</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span class="required">*</span>
+                            <span>乙方</span>
+                        </label>
+                        <select class="form-select" id="contractPartyB">
+                            <option value="">请选择乙方</option>
+                            <option value="team1">水电施工一组</option>
+                            <option value="team2">水电施工二组</option>
+                            <option value="team3">泥瓦施工组</option>
+                            <option value="team4">木工施工组</option>
+                            <option value="team5">油漆施工组</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">
@@ -1249,10 +1288,6 @@
                             <span>工期（天）</span>
                         </label>
                         <input type="number" class="form-input" id="contractDuration" placeholder="请输入工期天数">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">合同备注</label>
-                        <input type="text" class="form-input" id="contractRemark" placeholder="请输入备注（选填）">
                     </div>
                     <div class="create-contract-notice">
                         <div class="notice-icon">💡</div>
@@ -1590,10 +1625,12 @@
             
             currentContractTarget = targetName;
             document.getElementById('contractTargetName').textContent = targetName;
+            document.getElementById('contractType').selectedIndex = 0;
             document.getElementById('contractName').value = '';
+            document.getElementById('contractPartyA').selectedIndex = 0;
+            document.getElementById('contractPartyB').selectedIndex = 0;
             document.getElementById('contractAmount').value = '';
             document.getElementById('contractDuration').value = '';
-            document.getElementById('contractRemark').value = '';
             document.getElementById('createContractModal').classList.add('show');
         }
         
@@ -1602,13 +1639,34 @@
         }
         
         function createContract() {
+            const typeSelect = document.getElementById('contractType');
             const name = document.getElementById('contractName').value;
+            const partyASelect = document.getElementById('contractPartyA');
+            const partyBSelect = document.getElementById('contractPartyB');
             const amount = document.getElementById('contractAmount').value;
             const duration = document.getElementById('contractDuration').value;
-            const remark = document.getElementById('contractRemark').value;
             
+            const type = typeSelect.value;
+            const typeName = typeSelect.options[typeSelect.selectedIndex]?.text || '';
+            const partyA = partyASelect.value;
+            const partyAName = partyASelect.options[partyASelect.selectedIndex]?.text || '';
+            const partyB = partyBSelect.value;
+            const partyBName = partyBSelect.options[partyBSelect.selectedIndex]?.text || '';
+            
+            if (!type) {
+                showAppModal('提示', '请选择合同类型', null, false);
+                return;
+            }
             if (!name.trim()) {
                 showAppModal('提示', '请输入合同名称', null, false);
+                return;
+            }
+            if (!partyA) {
+                showAppModal('提示', '请选择甲方', null, false);
+                return;
+            }
+            if (!partyB) {
+                showAppModal('提示', '请选择乙方', null, false);
                 return;
             }
             if (!amount.trim()) {
@@ -1626,18 +1684,28 @@
                     name: name,
                     status: '拟定中',
                     id: contractId,
+                    type: type,
+                    typeName: typeName,
+                    partyA: partyA,
+                    partyAName: partyAName,
+                    partyB: partyB,
+                    partyBName: partyBName,
                     amount: amount,
                     duration: duration,
-                    remark: remark,
                     group: currentContractTarget
                 };
                 closeCreateContractModal();
                 const params = new URLSearchParams({
                     id: contractId,
                     name: name,
+                    type: type,
+                    typeName: typeName,
+                    partyA: partyA,
+                    partyAName: partyAName,
+                    partyB: partyB,
+                    partyBName: partyBName,
                     amount: amount,
                     duration: duration,
-                    remark: remark,
                     group: currentContractTarget,
                     status: 'draft',
                     new: '1'

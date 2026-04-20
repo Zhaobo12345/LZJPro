@@ -2915,6 +2915,10 @@
                     <div class="value">水电分包合同</div>
                 </div>
                 <div class="info-row">
+                    <div class="label">合同类型</div>
+                    <div class="value">水电工程合同</div>
+                </div>
+                <div class="info-row">
                     <div class="label">合同类别</div>
                     <div class="value"><span class="contract-category-tag">水电服务合同</span></div>
                 </div>
@@ -4222,9 +4226,14 @@
             isNewContract = true;
             newContractData = {
                 name: urlParams.get('name') || '',
+                type: urlParams.get('type') || '',
+                typeName: urlParams.get('typeName') || '',
+                partyA: urlParams.get('partyA') || '',
+                partyAName: urlParams.get('partyAName') || '',
+                partyB: urlParams.get('partyB') || '',
+                partyBName: urlParams.get('partyBName') || '',
                 amount: urlParams.get('amount') || '',
                 duration: urlParams.get('duration') || '',
-                remark: urlParams.get('remark') || '',
                 group: urlParams.get('group') || ''
             };
         }
@@ -4393,30 +4402,33 @@
                 contractTitleEl.textContent = newContractData.name;
             }
             
-            const infoItems = document.querySelectorAll('.info-item');
-            infoItems.forEach(item => {
-                const label = item.querySelector('.info-label');
-                const value = item.querySelector('.info-value');
+            const infoRows = document.querySelectorAll('.info-row');
+            infoRows.forEach(item => {
+                const label = item.querySelector('.label');
+                const value = item.querySelector('.value');
                 if (label && value) {
                     const labelText = label.textContent;
-                    if (labelText.includes('合同金额') && newContractData.amount) {
+                    if (labelText.includes('合同类型') && newContractData.typeName) {
+                        value.textContent = newContractData.typeName;
+                    } else if (labelText.includes('合同金额') && newContractData.amount) {
                         value.textContent = newContractData.amount + ' 元';
                     } else if (labelText.includes('工期') && newContractData.duration) {
                         value.textContent = newContractData.duration + ' 天';
-                    } else if (labelText.includes('所属组织') && newContractData.group) {
+                    } else if (labelText.includes('所属架构层级') && newContractData.group) {
                         value.textContent = newContractData.group;
                     }
                 }
             });
             
-            const basicInfoRows = document.querySelectorAll('.basic-info-row');
-            basicInfoRows.forEach(row => {
-                const label = row.querySelector('.basic-info-label');
-                const value = row.querySelector('.basic-info-value');
-                if (label && value) {
-                    const labelText = label.textContent;
-                    if (labelText.includes('备注') && newContractData.remark) {
-                        value.textContent = newContractData.remark;
+            const partyCards = document.querySelectorAll('.party-card');
+            partyCards.forEach(card => {
+                const roleEl = card.querySelector('.role');
+                const nameEl = card.querySelector('.name');
+                if (roleEl && nameEl) {
+                    if (roleEl.textContent.includes('甲方') && newContractData.partyAName) {
+                        nameEl.textContent = newContractData.partyAName;
+                    } else if (roleEl.textContent.includes('乙方') && newContractData.partyBName) {
+                        nameEl.textContent = newContractData.partyBName;
                     }
                 }
             });

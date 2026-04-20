@@ -29,18 +29,68 @@
             align-items: center;
         }
 
-        .status-banner.signed {
+        .status-banner.draft {
+            background: linear-gradient(135deg, #8C8C8C 0%, #BFBFBF 100%);
+            color: #fff;
+        }
+
+        .status-banner.draft-submittable {
+            background: linear-gradient(135deg, #8C8C8C 0%, #BFBFBF 100%);
+            color: #fff;
+        }
+
+        .status-banner.platform-reviewing {
+            background: linear-gradient(135deg, #13C2C2 0%, #36CFC9 100%);
+            color: #fff;
+        }
+
+        .status-banner.platform-rejected {
+            background: linear-gradient(135deg, #FF4D4F 0%, #FF7875 100%);
+            color: #fff;
+        }
+
+        .status-banner.platform-rejected-modified {
+            background: linear-gradient(135deg, #FF4D4F 0%, #FF7875 100%);
+            color: #fff;
+        }
+
+        .status-banner.confirming-sender {
+            background: linear-gradient(135deg, #13C2C2 0%, #36CFC9 100%);
+            color: #fff;
+        }
+
+        .status-banner.confirming-receiver {
+            background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);
+            color: #fff;
+        }
+
+        .status-banner.confirmed {
             background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);
             color: #fff;
         }
 
-        .status-banner.confirming {
+        .status-banner.signing {
+            background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
+            color: #fff;
+        }
+
+        .status-banner.signing-wait {
+            background: linear-gradient(135deg, #FAAD14 0%, #FFC53D 100%);
+            color: #fff;
+        }
+
+        .status-banner.signed {
             background: linear-gradient(135deg, #1890FF 0%, #40A9FF 100%);
             color: #fff;
         }
 
         .status-banner.changing {
-            background: linear-gradient(135deg, #FAAD14 0%, #FFC53D 100%);
+            background: linear-gradient(135deg, #FF4D4F 0%, #FF7875 100%);
+            color: #fff;
+        }
+
+        .status-banner.change-confirming {
+            background: linear-gradient(135deg, #FF4D4F 0%, #FF7875 100%);
             color: #fff;
         }
 
@@ -67,6 +117,16 @@
 
         .status-actions .btn:hover {
             background-color: rgba(255,255,255,0.3);
+        }
+
+        .status-actions .btn-primary-action {
+            background-color: #fff;
+            color: var(--primary-color);
+            border: none;
+        }
+
+        .status-actions .btn-primary-action:hover {
+            background-color: rgba(255,255,255,0.9);
         }
 
         .detail-tabs {
@@ -378,6 +438,7 @@
             border-radius: 8px;
             padding: 32px;
             min-height: 600px;
+            border: 1px solid var(--border-color);
         }
 
         .contract-preview h3 {
@@ -394,56 +455,595 @@
             margin: 24px 0 12px;
         }
 
-        .change-history {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .change-item {
-            border: 1px solid var(--border-color);
+        .review-panel {
+            background-color: var(--bg-primary);
             border-radius: 8px;
-            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow-md);
+            margin-bottom: 24px;
         }
 
-        .change-header {
+        .review-panel-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 16px;
-            background-color: var(--bg-secondary);
         }
 
-        .change-title {
-            font-weight: 500;
+        .review-panel-title {
+            font-size: 15px;
+            font-weight: 600;
             color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .change-meta {
+        .review-panel-title .badge {
+            background-color: var(--primary-color);
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .review-panel-body {
+            padding: 24px;
+        }
+
+        .review-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .review-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .review-info-label {
             font-size: 12px;
             color: var(--text-tertiary);
         }
 
-        .change-body {
-            padding: 16px;
+        .review-info-value {
+            font-size: 14px;
+            color: var(--text-primary);
         }
 
-        .change-diff {
+        .review-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .reject-reason-input {
+            margin-top: 16px;
+        }
+
+        .reject-reason-input textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            resize: vertical;
+        }
+
+        .reject-reason-input textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .role-switcher {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .role-switcher-label {
             font-size: 13px;
             color: var(--text-secondary);
         }
 
-        .change-diff .added {
-            color: var(--success-color);
-            background-color: var(--status-success-bg);
-            padding: 0 4px;
+        .role-switcher-buttons {
+            display: flex;
+            gap: 8px;
         }
 
-        .change-diff .removed {
-            color: var(--error-color);
+        .role-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-primary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .role-btn.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .status-switcher {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .status-switcher-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .status-switcher select {
+            flex: 1;
+        }
+
+        .pc-page-nav-wrapper {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .pc-page-nav-toggle {
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 4px 0 0 4px;
+            font-size: 12px;
+        }
+
+        .pc-page-nav {
+            width: 280px;
+            background-color: var(--bg-primary);
+            box-shadow: -2px 0 12px var(--shadow-md);
+            border-radius: 8px 0 0 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .pc-page-nav.collapsed {
+            transform: translateX(100%);
+        }
+
+        .pc-page-nav-wrapper.collapsed .pc-page-nav-toggle {
+            left: -24px;
+        }
+
+        .pc-page-nav-title {
+            padding: 16px;
+            background-color: var(--bg-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pc-page-nav-title .badge {
+            background-color: var(--primary-color);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .pc-page-nav-group {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .pc-page-nav-group:last-child {
+            border-bottom: none;
+        }
+
+        .pc-page-nav-group-title {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .pc-page-nav-item {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pc-page-nav-item:hover {
+            background-color: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+
+        .pc-page-nav-item.active {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-role-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-role-item {
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-role-item:hover {
+            background-color: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+
+        .nav-role-item.active {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-role-item .icon {
+            font-size: 14px;
+        }
+
+        .nav-status-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13px;
+            background-color: var(--bg-primary);
+            cursor: pointer;
+        }
+
+        .nav-status-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .reject-reason-banner {
             background-color: var(--status-error-bg);
-            text-decoration: line-through;
-            padding: 0 4px;
+            border: 1px solid var(--error-color);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .reject-reason-banner.show {
+            display: block;
+        }
+
+        .reject-reason-banner .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .reject-reason-banner .banner-icon {
+            font-size: 18px;
+            color: var(--error-color);
+        }
+
+        .reject-reason-banner .banner-title {
+            font-weight: 600;
+            color: var(--error-color);
+            font-size: 14px;
+        }
+
+        .reject-reason-banner .banner-meta {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-left: auto;
+        }
+
+        .reject-reason-banner .banner-content {
+            background-color: var(--bg-primary);
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .change-record-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .change-record-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .change-record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .change-record-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .change-record-icon {
+            font-size: 16px;
+        }
+
+        .change-record-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .change-record-status.completed {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
+
+        .change-record-status.pending {
+            background-color: var(--status-warning-bg);
+            color: var(--warning-color);
+        }
+
+        .change-record-body {
+            padding: 16px;
+        }
+
+        .change-record-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .change-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .change-info-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .change-info-value {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .change-record-detail {
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .change-detail-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .change-detail-content {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .change-detail-content p {
+            margin-bottom: 8px;
+        }
+
+        .change-detail-content ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .change-detail-content li {
+            margin-bottom: 4px;
+        }
+
+        .change-record-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .stage-section {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .stage-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stage-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stage-icon {
+            font-size: 16px;
+        }
+
+        .stage-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stage-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .stage-status.completed {
+            background-color: var(--status-success-bg);
+            color: var(--success-color);
+        }
+
+        .stage-status.in-progress {
+            background-color: var(--status-primary-bg);
+            color: var(--primary-color);
+        }
+
+        .stage-status.pending {
+            background-color: var(--bg-tertiary);
+            color: var(--text-tertiary);
+        }
+
+        .stage-progress {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .stage-tasks {
+            padding: 12px;
+        }
+
+        .task-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .task-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .task-row.completed {
+            background-color: var(--status-success-bg);
+            border-color: rgba(82, 196, 26, 0.2);
+        }
+
+        .task-row.pending {
+            background-color: var(--bg-tertiary);
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-status-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .task-row.completed .task-status-icon {
+            color: var(--success-color);
+        }
+
+        .task-row.pending .task-status-icon {
+            color: var(--text-tertiary);
+        }
+
+        .task-name {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .task-executor {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .task-time {
+            font-size: 12px;
+            color: var(--text-tertiary);
         }
     </style>
 </head>
@@ -489,22 +1089,86 @@
                     </div>
                 </div>
                 <div class="pc-header-right">
-                    <div class="pc-user-info">
-                        <div class="pc-user-avatar">张</div>
-                        <span class="pc-user-name">张三</span>
+                    <div class="pc-user-dropdown">
+                        <div class="pc-user-info" onclick="toggleUserDropdown()">
+                            <div class="pc-user-avatar" id="userAvatar">运</div>
+                            <span class="pc-user-name" id="userName">运营人员</span>
+                            <span style="font-size: 12px; color: var(--text-tertiary);">▼</span>
+                        </div>
+                        <div class="pc-user-dropdown-menu" id="userDropdownMenu">
+                            <div class="pc-dropdown-item" onclick="goToProfile()">
+                                <span class="pc-dropdown-icon">👤</span>
+                                <span>个人中心</span>
+                            </div>
+                            <div class="pc-dropdown-item" onclick="goToAccountSettings()">
+                                <span class="pc-dropdown-icon">⚙️</span>
+                                <span>账号设置</span>
+                            </div>
+                            <div class="pc-dropdown-divider"></div>
+                            <div class="pc-dropdown-item danger" onclick="logout()">
+                                <span class="pc-dropdown-icon">🚪</span>
+                                <span>退出登录</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="pc-content">
-                <div class="status-banner signed">
-                    <div class="status-info">
-                        <h2>✅ 合同已签约</h2>
-                        <p>签约时间：2024-01-15 10:30 | 合同编号：HT-2024-001</p>
+                <div class="review-panel" id="reviewPanel" style="display: none;">
+                    <div class="review-panel-header">
+                        <div class="review-panel-title">
+                            <span>🔍 合同审核</span>
+                            <span class="badge">待处理</span>
+                        </div>
                     </div>
-                    <div class="status-actions">
-                        <button class="pc-btn btn" onclick="initiateChange()">发起变更</button>
-                        <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                    <div class="review-panel-body">
+                        <div class="review-info">
+                            <div class="review-info-item">
+                                <span class="review-info-label">提交人</span>
+                                <span class="review-info-value">张三（项目经理）</span>
+                            </div>
+                            <div class="review-info-item">
+                                <span class="review-info-label">提交时间</span>
+                                <span class="review-info-value">2024-01-10 15:30</span>
+                            </div>
+                            <div class="review-info-item">
+                                <span class="review-info-label">关联项目</span>
+                                <span class="review-info-value">西湖区别墅</span>
+                            </div>
+                            <div class="review-info-item">
+                                <span class="review-info-label">合同类型</span>
+                                <span class="review-info-value">分包合同 - 水电工程</span>
+                            </div>
+                        </div>
+                        <div class="reject-reason-input" id="rejectReasonInput" style="display: none;">
+                            <label style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; display: block;">驳回原因<span style="color: var(--error-color);">*</span></label>
+                            <textarea id="rejectReason" placeholder="请输入驳回原因，将通知提交人进行修改"></textarea>
+                        </div>
+                        <div class="review-actions">
+                            <button class="pc-btn pc-btn-default" id="showRejectBtn" onclick="showRejectInput()">驳回</button>
+                            <button class="pc-btn pc-btn-primary" onclick="approveContract()">审核通过</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-banner pending-review" id="statusBanner">
+                    <div class="status-info">
+                        <h2 id="statusTitle">⏳ 合同待审核</h2>
+                        <p id="statusDesc">提交时间：2024-01-10 15:30 | 合同编号：HT-2024-001</p>
+                    </div>
+                    <div class="status-actions" id="statusActions">
+                    </div>
+                </div>
+
+                <div class="reject-reason-banner" id="rejectReasonBanner">
+                    <div class="banner-header">
+                        <span class="banner-icon">❌</span>
+                        <span class="banner-title">审核驳回</span>
+                        <span class="banner-meta" id="rejectTime">驳回时间：2024-01-10 16:00</span>
+                    </div>
+                    <div class="banner-content" id="rejectReasonContent">
+                        合同金额填写有误，请核实后重新提交。合同条款中关于付款方式的描述需要更加明确，建议增加具体的付款节点和金额比例。
                     </div>
                 </div>
 
@@ -521,7 +1185,7 @@
                             <div class="pc-card">
                                 <div class="pc-card-header">
                                     <div class="pc-card-title">基本信息</div>
-                                    <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editContract()">编辑</button>
+                                    <button class="pc-btn pc-btn-text pc-btn-sm" id="editBtn" onclick="editContract()">编辑</button>
                                 </div>
                                 <div class="pc-card-body">
                                     <div class="info-grid">
@@ -547,94 +1211,11 @@
                                         </div>
                                         <div class="info-item">
                                             <span class="info-label">签约日期</span>
-                                            <span class="info-value">2024-01-15</span>
+                                            <span class="info-value">-</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="pc-card mt-24">
-                                <div class="pc-card-header">
-                                    <div class="pc-card-title">阶段进度</div>
-                                    <span style="font-size: 13px; color: var(--text-tertiary);">总体进度：65%</span>
-                                </div>
-                                <div class="pc-card-body">
-                                    <div class="stage-timeline">
-                                        <div class="timeline-item completed">
-                                            <div class="timeline-dot"></div>
-                                            <div class="timeline-content">
-                                                <div class="timeline-header">
-                                                    <span class="timeline-title">阶段一：材料进场</span>
-                                                    <span class="timeline-progress">✅ 已完成</span>
-                                                </div>
-                                                <div class="task-list-mini">
-                                                    <div class="task-mini-item">
-                                                        <span class="name">材料验收</span>
-                                                        <span class="status completed">✓ 已完成</span>
-                                                    </div>
-                                                    <div class="task-mini-item">
-                                                        <span class="name">材料入库</span>
-                                                        <span class="status completed">✓ 已完成</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="timeline-item current">
-                                            <div class="timeline-dot"></div>
-                                            <div class="timeline-content">
-                                                <div class="timeline-header">
-                                                    <span class="timeline-title">阶段二：布管布线</span>
-                                                    <span class="timeline-progress">进行中 2/4</span>
-                                                </div>
-                                                <div class="task-list-mini">
-                                                    <div class="task-mini-item">
-                                                        <span class="name">强电布管</span>
-                                                        <span class="status completed">✓ 已完成</span>
-                                                    </div>
-                                                    <div class="task-mini-item">
-                                                        <span class="name">弱电布线</span>
-                                                        <span class="status in-progress">⏳ 进行中</span>
-                                                    </div>
-                                                    <div class="task-mini-item">
-                                                        <span class="name">给水管道</span>
-                                                        <span class="status pending">待开始</span>
-                                                    </div>
-                                                    <div class="task-mini-item">
-                                                        <span class="name">排水管道</span>
-                                                        <span class="status pending">待开始</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="timeline-item">
-                                            <div class="timeline-dot"></div>
-                                            <div class="timeline-content">
-                                                <div class="timeline-header">
-                                                    <span class="timeline-title">阶段三：验收调试</span>
-                                                    <span class="timeline-progress">待开始 0/3</span>
-                                                </div>
-                                                <div class="task-list-mini">
-                                                    <div class="task-mini-item">
-                                                        <span class="name">通电测试</span>
-                                                        <span class="status pending">待开始</span>
-                                                    </div>
-                                                    <div class="task-mini-item">
-                                                        <span class="name">通水测试</span>
-                                                        <span class="status pending">待开始</span>
-                                                    </div>
-                                                    <div class="task-mini-item">
-                                                        <span class="name">整体验收</span>
-                                                        <span class="status pending">待开始</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="tab-content" id="contentTab">
                             <div class="contract-preview">
@@ -662,11 +1243,6 @@
                                 <p>3.1 工期总日历天数：45天</p>
                                 <p>3.2 开工日期：以甲方书面通知为准</p>
                                 <p>3.3 竣工日期：开工日期后45日内</p>
-                                <br>
-                                
-                                <h4>第四条 质量标准</h4>
-                                <p>4.1 工程质量应符合国家现行工程施工验收规范的标准</p>
-                                <p>4.2 材料进场需经甲方验收合格后方可使用</p>
                             </div>
                         </div>
 
@@ -674,33 +1250,156 @@
                             <div class="pc-card">
                                 <div class="pc-card-header">
                                     <div class="pc-card-title">阶段任务管理</div>
-                                    <button class="pc-btn pc-btn-primary pc-btn-sm" onclick="editStages()">编辑阶段</button>
+                                    <button class="pc-btn pc-btn-primary pc-btn-sm" onclick="editStages()">编辑阶段任务</button>
                                 </div>
-                                <div class="pc-card-body">
-                                    <p style="color: var(--text-tertiary); text-align: center; padding: 40px;">
-                                        阶段任务管理功能请参考小程序端任务详情页面
-                                    </p>
+                                <div class="pc-card-body" id="stagesContent">
+                                    <div class="stage-section">
+                                        <div class="stage-header">
+                                            <div class="stage-title">
+                                                <span class="stage-icon">📋</span>
+                                                <span class="stage-name">阶段一：材料进场</span>
+                                            </div>
+                                            <div class="stage-meta">
+                                                <span class="stage-status completed">✅ 已完成</span>
+                                                <span class="stage-progress">2/2 任务</span>
+                                            </div>
+                                        </div>
+                                        <div class="stage-tasks">
+                                            <div class="task-row completed">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">✓</span>
+                                                    <span class="task-name">材料验收</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：李四</span>
+                                                    <span class="task-time">2024-01-20 完成</span>
+                                                </div>
+                                            </div>
+                                            <div class="task-row completed">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">✓</span>
+                                                    <span class="task-name">材料入库</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：李四</span>
+                                                    <span class="task-time">2024-01-21 完成</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="stage-section">
+                                        <div class="stage-header">
+                                            <div class="stage-title">
+                                                <span class="stage-icon">📋</span>
+                                                <span class="stage-name">阶段二：布管布线</span>
+                                            </div>
+                                            <div class="stage-meta">
+                                                <span class="stage-status in-progress">⏳ 进行中</span>
+                                                <span class="stage-progress">2/4 任务</span>
+                                            </div>
+                                        </div>
+                                        <div class="stage-tasks">
+                                            <div class="task-row completed">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">✓</span>
+                                                    <span class="task-name">强电布管</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：王五</span>
+                                                    <span class="task-time">2024-01-25 完成</span>
+                                                </div>
+                                            </div>
+                                            <div class="task-row completed">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">✓</span>
+                                                    <span class="task-name">弱电布线</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：王五</span>
+                                                    <span class="task-time">2024-01-27 完成</span>
+                                                </div>
+                                            </div>
+                                            <div class="task-row pending">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">⏸</span>
+                                                    <span class="task-name">给水管道</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：王五</span>
+                                                    <span class="task-time">待开始</span>
+                                                </div>
+                                            </div>
+                                            <div class="task-row pending">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">⏸</span>
+                                                    <span class="task-name">排水管道</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：王五</span>
+                                                    <span class="task-time">待开始</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="stage-section">
+                                        <div class="stage-header">
+                                            <div class="stage-title">
+                                                <span class="stage-icon">📋</span>
+                                                <span class="stage-name">阶段三：验收调试</span>
+                                            </div>
+                                            <div class="stage-meta">
+                                                <span class="stage-status pending">⏸ 待开始</span>
+                                                <span class="stage-progress">0/3 任务</span>
+                                            </div>
+                                        </div>
+                                        <div class="stage-tasks">
+                                            <div class="task-row pending">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">⏸</span>
+                                                    <span class="task-name">通电测试</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：赵六</span>
+                                                    <span class="task-time">待开始</span>
+                                                </div>
+                                            </div>
+                                            <div class="task-row pending">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">⏸</span>
+                                                    <span class="task-name">通水测试</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：赵六</span>
+                                                    <span class="task-time">待开始</span>
+                                                </div>
+                                            </div>
+                                            <div class="task-row pending">
+                                                <div class="task-info">
+                                                    <span class="task-status-icon">⏸</span>
+                                                    <span class="task-name">整体验收</span>
+                                                </div>
+                                                <div class="task-meta">
+                                                    <span class="task-executor">执行人：赵六</span>
+                                                    <span class="task-time">待开始</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="tab-content" id="changesTab">
-                            <div class="change-history">
-                                <div class="change-item">
-                                    <div class="change-header">
-                                        <span class="change-title">变更记录 #1</span>
-                                        <span class="change-meta">2024-02-01 14:30 · 张三发起</span>
-                                    </div>
-                                    <div class="change-body">
-                                        <div class="change-diff">
-                                            <p><strong>变更内容：</strong></p>
-                                            <p>工期由 <span class="removed">40天</span> 变更为 <span class="added">45天</span></p>
-                                            <p>合同金额由 <span class="removed">¥140,000.00</span> 变更为 <span class="added">¥150,000.00</span></p>
-                                        </div>
-                                        <div style="margin-top: 12px; font-size: 12px; color: var(--text-tertiary);">
-                                            变更原因：因客户增加卫生间水电改造需求，工期和费用相应调整
-                                        </div>
-                                    </div>
+                            <div class="pc-card">
+                                <div class="pc-card-header">
+                                    <div class="pc-card-title">变更记录</div>
+                                </div>
+                                <div class="pc-card-body" id="changesContent">
+                                    <p style="color: var(--text-tertiary); text-align: center; padding: 40px;">
+                                        合同签约后可查看变更记录
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -736,32 +1435,12 @@
                         <div class="sidebar-card">
                             <div class="sidebar-card-header">
                                 <span class="sidebar-card-title">附件文件</span>
-                                <span style="font-size: 12px; color: var(--text-tertiary);">3个文件</span>
+                                <span style="font-size: 12px; color: var(--text-tertiary);">0个文件</span>
                             </div>
                             <div class="sidebar-card-body">
-                                <div class="attachment-list">
-                                    <div class="attachment-item">
-                                        <span class="attachment-icon">📄</span>
-                                        <div class="attachment-info">
-                                            <div class="attachment-name">水电分包合同_签约文件.pdf</div>
-                                            <div class="attachment-size">2.5 MB</div>
-                                        </div>
-                                    </div>
-                                    <div class="attachment-item">
-                                        <span class="attachment-icon">📄</span>
-                                        <div class="attachment-info">
-                                            <div class="attachment-name">水电施工图纸.dwg</div>
-                                            <div class="attachment-size">8.2 MB</div>
-                                        </div>
-                                    </div>
-                                    <div class="attachment-item">
-                                        <span class="attachment-icon">🖼</span>
-                                        <div class="attachment-info">
-                                            <div class="attachment-name">现场照片.zip</div>
-                                            <div class="attachment-size">15.6 MB</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <p style="color: var(--text-tertiary); font-size: 13px; text-align: center; padding: 20px 0;">
+                                    暂无附件
+                                </p>
                             </div>
                         </div>
 
@@ -770,32 +1449,7 @@
                                 <span class="sidebar-card-title">操作记录</span>
                             </div>
                             <div class="sidebar-card-body">
-                                <div class="operation-log">
-                                    <div class="log-item">
-                                        <span class="log-time">01-15 10:30</span>
-                                        <span class="log-content">合同签约成功</span>
-                                        <span class="log-user">张三</span>
-                                    </div>
-                                    <div class="log-item">
-                                        <span class="log-time">01-14 16:20</span>
-                                        <span class="log-content">确认签约文件</span>
-                                        <span class="log-user">李四</span>
-                                    </div>
-                                    <div class="log-item">
-                                        <span class="log-time">01-14 14:00</span>
-                                        <span class="log-content">上传签约文件</span>
-                                        <span class="log-user">张三</span>
-                                    </div>
-                                    <div class="log-item">
-                                        <span class="log-time">01-12 09:30</span>
-                                        <span class="log-content">确认合同内容</span>
-                                        <span class="log-user">李四</span>
-                                    </div>
-                                    <div class="log-item">
-                                        <span class="log-time">01-10 15:00</span>
-                                        <span class="log-content">创建合同</span>
-                                        <span class="log-user">张三</span>
-                                    </div>
+                                <div class="operation-log" id="operationLog">
                                 </div>
                             </div>
                         </div>
@@ -809,28 +1463,753 @@
         <div class="pc-page-nav-toggle" onclick="togglePageNav()">◀</div>
         <div class="pc-page-nav" id="pageNav">
             <div class="pc-page-nav-title">
-                PC端原型导航
+                原型导航
                 <span class="badge">PC</span>
             </div>
             <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">高优先级</div>
+                <div class="pc-page-nav-group-title">切换视角</div>
+                <div class="nav-role-group">
+                    <div class="nav-role-item active" onclick="switchRole('operator')">
+                        <span class="icon">👤</span>
+                        <span>运营人员</span>
+                    </div>
+                    <div class="nav-role-item" onclick="switchRole('creator')">
+                        <span class="icon">📝</span>
+                        <span>合同创建方</span>
+                    </div>
+                    <div class="nav-role-item" onclick="switchRole('receiver')">
+                        <span class="icon">📥</span>
+                        <span>合同确认方</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">合同状态</div>
+                <select class="nav-status-select" id="statusSelector" onchange="switchStatus(this.value)">
+                    <option value="draft" selected>拟定中</option>
+                    <option value="draft_submittable">拟定中(可提交)</option>
+                    <option value="platform_reviewing">待平台审核</option>
+                    <option value="platform_rejected">平台审核驳回</option>
+                    <option value="platform_rejected_modified">平台驳回(已修改)</option>
+                    <option value="confirming_sender">待对方确认</option>
+                    <option value="confirming_receiver">待我方确认</option>
+                    <option value="confirmed">已确认</option>
+                    <option value="signing">待确认签约</option>
+                    <option value="signing_wait">待对方确认签约</option>
+                    <option value="signed">已签约</option>
+                    <option value="changing">变更中</option>
+                    <option value="change_confirming">待确认变更</option>
+                </select>
+            </div>
+            <div class="pc-page-nav-group">
+                <div class="pc-page-nav-group-title">页面导航</div>
                 <a href="pc-contract-edit.html" class="pc-page-nav-item">合同创建/编辑</a>
                 <a href="pc-contract-template.html" class="pc-page-nav-item">合同文本模板</a>
                 <a href="pc-stage-template.html" class="pc-page-nav-item">阶段任务模板</a>
-            </div>
-            <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">中优先级</div>
                 <a href="pc-project-list.html" class="pc-page-nav-item">项目列表</a>
-                <a href="pc-contract-detail.html" class="pc-page-nav-item active">合同详情</a>
             </div>
-            <div class="pc-page-nav-group">
-                <div class="pc-page-nav-group-title">小程序原型</div>
-                <a href="prototype-home.html" class="pc-page-nav-item">小程序首页</a>
+        </div>
+    </div>
+
+    <div class="pc-modal-overlay" id="confirmModal">
+        <div class="pc-modal">
+            <div class="pc-modal-header">
+                <div class="pc-modal-title" id="confirmModalTitle">确认操作</div>
+                <div class="pc-modal-close" onclick="closeConfirmModal()">×</div>
+            </div>
+            <div class="pc-modal-body">
+                <p id="confirmModalContent">确定要执行此操作吗？</p>
+            </div>
+            <div class="pc-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeConfirmModal()">取消</button>
+                <button class="pc-btn pc-btn-primary" id="confirmModalBtn" onclick="confirmAction()">确定</button>
             </div>
         </div>
     </div>
 
     <script>
+        let currentRole = 'operator';
+        let currentStatus = 'draft';
+        let pendingAction = null;
+
+        const statusConfig = {
+            draft: {
+                title: '📝 拟定中',
+                desc: '合同正在编辑中，编辑完成后可提交确认 | 合同编号：HT-2024-001',
+                class: 'draft'
+            },
+            draft_submittable: {
+                title: '📝 拟定中',
+                desc: '合同内容已完善，可以提交确认 | 合同编号：HT-2024-001',
+                class: 'draft-submittable'
+            },
+            platform_reviewing: {
+                title: '⏳ 待平台审核',
+                desc: '已提交确认申请，平台运营人员正在审核中 | 合同编号：HT-2024-001',
+                class: 'platform-reviewing'
+            },
+            platform_rejected: {
+                title: '❌ 平台审核驳回',
+                desc: '平台审核未通过，请根据驳回原因修改合同内容后重新提交 | 合同编号：HT-2024-001',
+                class: 'platform-rejected'
+            },
+            platform_rejected_modified: {
+                title: '❌ 平台审核驳回',
+                desc: '合同内容已修改，可以重新提交审核 | 合同编号：HT-2024-001',
+                class: 'platform-rejected-modified'
+            },
+            confirming_sender: {
+                title: '📤 待对方确认',
+                desc: '平台审核已通过，等待对方确认合同内容 | 合同编号：HT-2024-001',
+                class: 'confirming-sender'
+            },
+            confirming_receiver: {
+                title: '📥 待我方确认',
+                desc: '对方已确认合同内容，请我方进行最终确认或驳回修改 | 合同编号：HT-2024-001',
+                class: 'confirming-receiver'
+            },
+            confirmed: {
+                title: '✅ 双方已确认',
+                desc: '双方已确认，请上传签约后的合同附件 | 合同编号：HT-2024-001',
+                class: 'confirmed'
+            },
+            signing: {
+                title: '📝 待确认签约',
+                desc: '对方已上传签约文件，请确认后合同正式生效 | 合同编号：HT-2024-001',
+                class: 'signing'
+            },
+            signing_wait: {
+                title: '⏳ 待对方确认签约',
+                desc: '签约文件已上传，等待对方确认后合同正式生效 | 合同编号：HT-2024-001',
+                class: 'signing-wait'
+            },
+            signed: {
+                title: '✅ 合同已签约',
+                desc: '签约时间：2024-01-15 10:30 | 合同编号：HT-2024-001',
+                class: 'signed'
+            },
+            changing: {
+                title: '🔄 变更中',
+                desc: '变更申请时间：2024-02-01 14:00 | 合同编号：HT-2024-001',
+                class: 'changing'
+            },
+            change_confirming: {
+                title: '📋 待确认变更',
+                desc: '变更申请时间：2024-02-01 14:00 | 合同编号：HT-2024-001',
+                class: 'change-confirming'
+            }
+        };
+
+        function switchRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.nav-role-item').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            const roleNames = {
+                operator: '运营人员',
+                creator: '合同创建方',
+                receiver: '合同确认方'
+            };
+            
+            document.getElementById('userName').textContent = roleNames[role];
+            document.getElementById('userAvatar').textContent = roleNames[role].charAt(0);
+            
+            updateUI();
+        }
+
+        function switchStatus(status) {
+            currentStatus = status;
+            updateUI();
+        }
+
+        function updateUI() {
+            const config = statusConfig[currentStatus];
+            document.getElementById('statusTitle').textContent = config.title;
+            document.getElementById('statusDesc').textContent = config.desc;
+            document.getElementById('statusBanner').className = 'status-banner ' + config.class;
+            
+            updateReviewPanel();
+            updateStatusActions();
+            updateEditButton();
+            updateChangesContent();
+            updateRejectReasonBanner();
+            updateOperationLog();
+        }
+
+        function updateRejectReasonBanner() {
+            const banner = document.getElementById('rejectReasonBanner');
+            const rejectedStatuses = ['platform_rejected', 'platform_rejected_modified'];
+            
+            if (rejectedStatuses.includes(currentStatus)) {
+                banner.classList.add('show');
+            } else {
+                banner.classList.remove('show');
+            }
+        }
+
+        function updateOperationLog() {
+            const logContainer = document.getElementById('operationLog');
+            let logs = [];
+            
+            logs.push({ time: '01-10 15:00', content: '创建合同', user: '张三' });
+            
+            if (currentStatus !== 'draft' && currentStatus !== 'draft_submittable') {
+                logs.push({ time: '01-10 15:30', content: '提交合同审核', user: '张三' });
+            }
+            
+            if (currentStatus === 'platform_reviewing') {
+                logs.push({ time: '01-10 15:30', content: '进入平台审核', user: '系统' });
+            }
+            
+            if (currentStatus === 'platform_rejected' || currentStatus === 'platform_rejected_modified') {
+                logs.push({ time: '01-10 16:00', content: '平台审核驳回', user: '运营人员', detail: '合同金额填写有误，请核实后重新提交' });
+            }
+            
+            if (currentStatus === 'platform_rejected_modified') {
+                logs.push({ time: '01-10 17:00', content: '修改合同内容', user: '张三' });
+            }
+            
+            if (currentStatus === 'confirming_sender' || currentStatus === 'confirming_receiver' || 
+                currentStatus === 'confirmed' || currentStatus === 'signing' || 
+                currentStatus === 'signing_wait' || currentStatus === 'signed') {
+                logs.push({ time: '01-10 16:30', content: '平台审核通过', user: '运营人员' });
+            }
+            
+            if (currentStatus === 'confirming_sender' || currentStatus === 'confirming_receiver' || 
+                currentStatus === 'confirmed' || currentStatus === 'signing' || 
+                currentStatus === 'signing_wait' || currentStatus === 'signed') {
+                logs.push({ time: '01-11 10:00', content: '发送确认申请', user: '张三' });
+            }
+            
+            if (currentStatus === 'confirming_receiver' || currentStatus === 'confirmed' || 
+                currentStatus === 'signing' || currentStatus === 'signing_wait' || currentStatus === 'signed') {
+                logs.push({ time: '01-11 14:00', content: '确认合同', user: '李四' });
+            }
+            
+            if (currentStatus === 'confirmed' || currentStatus === 'signing' || 
+                currentStatus === 'signing_wait' || currentStatus === 'signed') {
+                logs.push({ time: '01-11 14:30', content: '双方确认完成', user: '系统' });
+            }
+            
+            if (currentStatus === 'signing' || currentStatus === 'signing_wait' || currentStatus === 'signed') {
+                logs.push({ time: '01-12 09:00', content: '上传签约文件', user: '张三' });
+            }
+            
+            if (currentStatus === 'signed') {
+                logs.push({ time: '01-15 10:30', content: '确认签约', user: '李四' });
+                logs.push({ time: '01-15 10:30', content: '合同签约完成', user: '系统' });
+            }
+            
+            let html = '';
+            logs.reverse().forEach(log => {
+                html += `
+                    <div class="log-item">
+                        <span class="log-time">${log.time}</span>
+                        <span class="log-content">${log.content}${log.detail ? '<br><span style="color: var(--text-tertiary); font-size: 12px;">' + log.detail + '</span>' : ''}</span>
+                        <span class="log-user">${log.user}</span>
+                    </div>
+                `;
+            });
+            
+            logContainer.innerHTML = html;
+        }
+
+        function updateReviewPanel() {
+            const panel = document.getElementById('reviewPanel');
+            const rejectInput = document.getElementById('rejectReasonInput');
+            
+            if (currentStatus === 'platform_reviewing' && currentRole === 'operator') {
+                panel.style.display = 'block';
+                rejectInput.style.display = 'none';
+                document.getElementById('rejectReason').value = '';
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+
+        function updateStatusActions() {
+            const actionsContainer = document.getElementById('statusActions');
+            let actionsHtml = '';
+            
+            if (currentRole === 'operator') {
+                switch (currentStatus) {
+                    case 'platform_reviewing':
+                        actionsHtml = '';
+                        break;
+                    case 'signed':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="initiateChange()">发起变更</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                }
+            } else if (currentRole === 'creator') {
+                switch (currentStatus) {
+                    case 'draft':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="editContract()">编辑合同</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'draft_submittable':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="submitContract()">提交确认</button>
+                            <button class="pc-btn btn" onclick="editContract()">编辑合同</button>
+                        `;
+                        break;
+                    case 'platform_reviewing':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="withdrawReview()">撤回申请</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'platform_rejected':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="editContract()">修改合同</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'platform_rejected_modified':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="resubmitContract()">重新提交</button>
+                            <button class="pc-btn btn" onclick="editContract()">编辑合同</button>
+                        `;
+                        break;
+                    case 'confirming_sender':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="withdrawConfirm()">撤回确认</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'confirmed':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="uploadSignFile()">上传签约文件</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'signing_wait':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="withdrawSignFile()">撤回签约文件</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'signed':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="initiateChange()">发起变更</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'changing':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="withdrawChange()">撤回变更</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'change_confirming':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="confirmChange()">确认变更</button>
+                            <button class="pc-btn btn" onclick="rejectChange()">驳回变更</button>
+                        `;
+                        break;
+                }
+            } else if (currentRole === 'receiver') {
+                switch (currentStatus) {
+                    case 'confirming_receiver':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="confirmContract()">确认合同</button>
+                            <button class="pc-btn btn" onclick="rejectContract()">驳回修改</button>
+                        `;
+                        break;
+                    case 'signing':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="confirmSign()">确认签约</button>
+                            <button class="pc-btn btn" onclick="rejectSign()">驳回</button>
+                        `;
+                        break;
+                    case 'signed':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="initiateChange()">发起变更</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'changing':
+                        actionsHtml = `
+                            <button class="pc-btn btn" onclick="withdrawChange()">撤回变更</button>
+                            <button class="pc-btn btn" onclick="exportContract()">导出合同</button>
+                        `;
+                        break;
+                    case 'change_confirming':
+                        actionsHtml = `
+                            <button class="pc-btn btn-primary-action" onclick="confirmChange()">确认变更</button>
+                            <button class="pc-btn btn" onclick="rejectChange()">驳回变更</button>
+                        `;
+                        break;
+                }
+            }
+            
+            actionsContainer.innerHTML = actionsHtml;
+        }
+
+        function updateEditButton() {
+            const editBtn = document.getElementById('editBtn');
+            if (currentStatus === 'draft' || currentStatus === 'draft_submittable' || currentStatus === 'platform_rejected' || currentStatus === 'platform_rejected_modified') {
+                if (currentRole === 'creator') {
+                    editBtn.style.display = 'inline-block';
+                } else {
+                    editBtn.style.display = 'none';
+                }
+            } else {
+                editBtn.style.display = 'none';
+            }
+        }
+
+        function updateChangesContent() {
+            const changesContent = document.getElementById('changesContent');
+            
+            if (currentStatus === 'signed') {
+                changesContent.innerHTML = `
+                    <div class="change-record-item">
+                        <div class="change-record-header">
+                            <div class="change-record-title">
+                                <span class="change-record-icon">🔄</span>
+                                <span>变更记录 #1</span>
+                            </div>
+                            <span class="change-record-status completed">已生效</span>
+                        </div>
+                        <div class="change-record-body">
+                            <div class="change-record-info">
+                                <div class="change-info-item">
+                                    <span class="change-info-label">变更类型</span>
+                                    <span class="change-info-value">阶段任务调整</span>
+                                </div>
+                                <div class="change-info-item">
+                                    <span class="change-info-label">发起人</span>
+                                    <span class="change-info-value">张三（项目经理）</span>
+                                </div>
+                                <div class="change-info-item">
+                                    <span class="change-info-label">发起时间</span>
+                                    <span class="change-info-value">2024-02-01 14:00</span>
+                                </div>
+                                <div class="change-info-item">
+                                    <span class="change-info-label">生效时间</span>
+                                    <span class="change-info-value">2024-02-02 10:30</span>
+                                </div>
+                            </div>
+                            <div class="change-record-detail">
+                                <div class="change-detail-title">变更内容</div>
+                                <div class="change-detail-content">
+                                    <p><strong>阶段二：布管布线</strong></p>
+                                    <ul>
+                                        <li>新增任务：弱电箱安装</li>
+                                        <li>任务顺序调整：强电布管 → 弱电布线 → 弱电箱安装 → 给水管道 → 排水管道</li>
+                                    </ul>
+                                    <p><strong>工期调整</strong></p>
+                                    <ul>
+                                        <li>原工期：45天</li>
+                                        <li>新工期：50天（增加5天）</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="change-record-item">
+                        <div class="change-record-header">
+                            <div class="change-record-title">
+                                <span class="change-record-icon">🔄</span>
+                                <span>变更记录 #2</span>
+                            </div>
+                            <span class="change-record-status pending">待确认</span>
+                        </div>
+                        <div class="change-record-body">
+                            <div class="change-record-info">
+                                <div class="change-info-item">
+                                    <span class="change-info-label">变更类型</span>
+                                    <span class="change-info-value">合同金额调整</span>
+                                </div>
+                                <div class="change-info-item">
+                                    <span class="change-info-label">发起人</span>
+                                    <span class="change-info-value">李四（乙方负责人）</span>
+                                </div>
+                                <div class="change-info-item">
+                                    <span class="change-info-label">发起时间</span>
+                                    <span class="change-info-value">2024-03-05 09:00</span>
+                                </div>
+                                <div class="change-info-item">
+                                    <span class="change-info-label">当前状态</span>
+                                    <span class="change-info-value" style="color: var(--warning-color);">等待甲方确认</span>
+                                </div>
+                            </div>
+                            <div class="change-record-detail">
+                                <div class="change-detail-title">变更内容</div>
+                                <div class="change-detail-content">
+                                    <p><strong>合同金额调整</strong></p>
+                                    <ul>
+                                        <li>原金额：¥150,000.00</li>
+                                        <li>新金额：¥165,000.00（增加¥15,000.00）</li>
+                                    </ul>
+                                    <p><strong>调整原因</strong></p>
+                                    <p>因现场实际情况，需增加部分管材和人工费用。</p>
+                                </div>
+                            </div>
+                            <div class="change-record-actions">
+                                <button class="pc-btn pc-btn-primary pc-btn-sm">确认变更</button>
+                                <button class="pc-btn pc-btn-default pc-btn-sm">驳回变更</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                changesContent.innerHTML = `
+                    <p style="color: var(--text-tertiary); text-align: center; padding: 40px;">
+                        合同签约后可查看变更记录
+                    </p>
+                `;
+            }
+        }
+
+        function showRejectInput() {
+            const rejectInput = document.getElementById('rejectReasonInput');
+            const showBtn = document.getElementById('showRejectBtn');
+            
+            if (rejectInput.style.display === 'none') {
+                rejectInput.style.display = 'block';
+                showBtn.textContent = '取消驳回';
+            } else {
+                rejectInput.style.display = 'none';
+                showBtn.textContent = '驳回';
+            }
+        }
+
+        function approveContract() {
+            showToast('审核通过，合同已进入待确认状态');
+            document.getElementById('statusSelector').value = 'confirming_sender';
+            switchStatus('confirming_sender');
+        }
+
+        function rejectContract() {
+            const reason = document.getElementById('rejectReason').value.trim();
+            if (!reason) {
+                showToast('请输入驳回原因');
+                return;
+            }
+            showToast('已驳回，合同退回拟定中状态');
+            document.getElementById('statusSelector').value = 'review_rejected';
+            switchStatus('review_rejected');
+        }
+
+        function confirmContract() {
+            showConfirmModal('确认合同', '确定要确认此合同吗？确认后将进入签约阶段。', () => {
+                showToast('合同已确认');
+                document.getElementById('statusSelector').value = 'confirmed';
+                switchStatus('confirmed');
+            });
+        }
+
+        function rejectContractModify() {
+            showConfirmModal('驳回修改', '确定要驳回此合同吗？合同将退回创建方重新编辑。', () => {
+                showToast('已驳回，合同退回修改');
+                document.getElementById('statusSelector').value = 'review_rejected';
+                switchStatus('review_rejected');
+            });
+        }
+
+        function withdrawConfirm() {
+            showConfirmModal('撤回确认', '确定要撤回确认申请吗？', () => {
+                showToast('已撤回确认');
+                document.getElementById('statusSelector').value = 'pending_review';
+                switchStatus('pending_review');
+            });
+        }
+
+        function uploadSignFile() {
+            showToast('请选择签约文件上传');
+        }
+
+        function confirmSign() {
+            showConfirmModal('确认签约', '确定要确认签约吗？签约后合同正式生效。', () => {
+                showToast('签约成功，合同已生效');
+                document.getElementById('statusSelector').value = 'signed';
+                switchStatus('signed');
+            });
+        }
+
+        function rejectSign() {
+            showConfirmModal('驳回签约', '确定要驳回签约文件吗？', () => {
+                showToast('已驳回签约文件');
+                document.getElementById('statusSelector').value = 'confirmed';
+                switchStatus('confirmed');
+            });
+        }
+
+        function withdrawSignFile() {
+            showConfirmModal('撤回签约文件', '确定要撤回签约文件吗？', () => {
+                showToast('已撤回签约文件');
+                document.getElementById('statusSelector').value = 'confirmed';
+                switchStatus('confirmed');
+            });
+        }
+
+        function initiateChange() {
+            showConfirmModal('发起变更', '确定要发起变更申请吗？发起后阶段任务将暂停流转。', () => {
+                showToast('变更申请已发起');
+                document.getElementById('statusSelector').value = 'changing';
+                switchStatus('changing');
+            });
+        }
+
+        function confirmChange() {
+            showConfirmModal('确认变更', '确定要确认此变更吗？变更生效后将更新合同内容。', () => {
+                showToast('变更已确认');
+                document.getElementById('statusSelector').value = 'signed';
+                switchStatus('signed');
+            });
+        }
+
+        function rejectChange() {
+            showConfirmModal('驳回变更', '确定要驳回此变更申请吗？', () => {
+                showToast('变更已驳回');
+                document.getElementById('statusSelector').value = 'signed';
+                switchStatus('signed');
+            });
+        }
+
+        function withdrawChange() {
+            showConfirmModal('撤回变更', '确定要撤回变更申请吗？', () => {
+                showToast('变更已撤回');
+                document.getElementById('statusSelector').value = 'signed';
+                switchStatus('signed');
+            });
+        }
+
+        function resubmitContract() {
+            showToast('合同已重新提交审核');
+            document.getElementById('statusSelector').value = 'platform_reviewing';
+            switchStatus('platform_reviewing');
+        }
+
+        function submitContract() {
+            showConfirmModal('提交确认', '确定要提交合同进行确认吗？', () => {
+                showToast('合同已提交，等待平台审核');
+                document.getElementById('statusSelector').value = 'platform_reviewing';
+                switchStatus('platform_reviewing');
+            });
+        }
+
+        function withdrawReview() {
+            showConfirmModal('撤回申请', '确定要撤回审核申请吗？', () => {
+                showToast('申请已撤回');
+                document.getElementById('statusSelector').value = 'draft_submittable';
+                switchStatus('draft_submittable');
+            });
+        }
+
+        function approveContract() {
+            showConfirmModal('审核通过', '确定审核通过该合同吗？', () => {
+                showToast('审核已通过');
+                document.getElementById('statusSelector').value = 'confirming_sender';
+                switchStatus('confirming_sender');
+            });
+        }
+
+        function rejectContract() {
+            const panel = document.getElementById('reviewPanel');
+            const rejectInput = document.getElementById('rejectReasonInput');
+            panel.style.display = 'block';
+            rejectInput.style.display = 'block';
+        }
+
+        function confirmReject() {
+            const reason = document.getElementById('rejectReason').value.trim();
+            if (!reason) {
+                showToast('请输入驳回原因');
+                return;
+            }
+            showToast('合同已驳回');
+            document.getElementById('statusSelector').value = 'platform_rejected';
+            switchStatus('platform_rejected');
+            document.getElementById('reviewPanel').style.display = 'none';
+        }
+
+        function exportContract() {
+            showToast('合同导出功能开发中...');
+        }
+
+        function editContract() {
+            window.location.href = 'pc-contract-edit.html';
+        }
+
+        function showConfirmModal(title, content, callback) {
+            document.getElementById('confirmModalTitle').textContent = title;
+            document.getElementById('confirmModalContent').textContent = content;
+            pendingAction = callback;
+            document.getElementById('confirmModal').classList.add('show');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('show');
+            pendingAction = null;
+        }
+
+        function confirmAction() {
+            if (pendingAction) {
+                pendingAction();
+            }
+            closeConfirmModal();
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.75);
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 4px;
+                font-size: 14px;
+                z-index: 10000;
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        function toggleUserDropdown() {
+            document.getElementById('userDropdownMenu').classList.toggle('show');
+        }
+
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                window.location.href = 'pc-login.html';
+            }
+        }
+
+        function goToProfile() {
+            window.location.href = 'pc-profile.html';
+        }
+
+        function goToAccountSettings() {
+            window.location.href = 'pc-account-settings.html';
+        }
+
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.pc-user-dropdown');
+            const menu = document.getElementById('userDropdownMenu');
+            if (dropdown && menu && !dropdown.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.detail-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
         function togglePageNav() {
             const wrapper = document.getElementById('pageNavWrapper');
             const nav = document.getElementById('pageNav');
@@ -844,35 +2223,14 @@
             }
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.detail-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName + 'Tab').classList.add('active');
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        if (status) {
+            document.getElementById('statusSelector').value = status;
+            currentStatus = status;
         }
 
-        function initiateChange() {
-            if (confirm('确定要发起变更申请吗？\n\n发起变更后，阶段任务将暂停流转，需等待对方确认。')) {
-                window.location.href = 'pc-contract-edit.html';
-            }
-        }
-
-        function exportContract() {
-            alert('合同导出功能开发中...');
-        }
-
-        function editContract() {
-            window.location.href = 'pc-contract-edit.html';
-        }
-
-        function editStages() {
-            alert('阶段任务编辑功能开发中...');
-        }
+        updateUI();
     </script>
 </body>
 </html>
