@@ -1183,67 +1183,6 @@
             transition: width 0.5s;
         }
 
-        .reminder-icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: #FFF7E6;
-            color: #FA8C16;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
-        }
-
-        .reminder-icon-btn:hover {
-            background-color: #FFD591;
-        }
-
-        .reminder-icon-btn .icon {
-            font-size: 14px;
-        }
-
-        .reminder-tooltip {
-            position: absolute;
-            bottom: 100%;
-            right: 0;
-            margin-bottom: 8px;
-            background-color: rgba(0, 0, 0, 0.75);
-            color: #FFFFFF;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            white-space: nowrap;
-            display: none;
-            z-index: 100;
-        }
-
-        .reminder-tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            right: 8px;
-            border: 6px solid transparent;
-            border-top-color: rgba(0, 0, 0, 0.75);
-        }
-
-        .reminder-tooltip.show {
-            display: block;
-        }
-
-        .reminder-tooltip .tooltip-action {
-            color: #91D5FF;
-            cursor: pointer;
-            margin-top: 4px;
-            display: block;
-        }
-
-        .reminder-tooltip .tooltip-action:hover {
-            text-decoration: underline;
-        }
-
         .confirmer-status-list {
             margin-top: 8px;
         }
@@ -1861,16 +1800,7 @@
                         <div class="acceptance-progress" id="acceptanceProgress" style="display: none;">
                             <div class="acceptance-progress-title">
                                 <span>确认进度</span>
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span id="flowProgressText">任务配置中</span>
-                                    <div class="reminder-icon-btn" id="reminderIconBtn" onclick="toggleReminderTooltip(event)" style="display: none;">
-                                        <span class="icon">⏰</span>
-                                        <div class="reminder-tooltip" id="reminderTooltip">
-                                            <div>等待王五、赵六确认中，已超过24小时</div>
-                                            <span class="tooltip-action" onclick="sendReminder(event)">点击催办</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <span id="flowProgressText">任务配置中</span>
                             </div>
                             <div class="acceptance-progress-bar">
                                 <div class="acceptance-progress-fill" id="flowProgressBar" style="width: 0%;"></div>
@@ -2188,7 +2118,7 @@
         <div class="upload-modal" id="uploadRecordModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title">上传执行记录</div>
+                    <div class="modal-title">上传记录</div>
                     <div class="modal-close" onclick="closeUploadRecordModal()">✕</div>
                 </div>
                 <div class="media-upload" id="uploadRecordMediaGrid">
@@ -2220,14 +2150,14 @@
         <div class="confirm-modal" id="submitConfirmModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title">提交给确认人</div>
+                    <div class="modal-title" id="submitModalTitle">提交确认</div>
                     <div class="modal-close" onclick="closeSubmitConfirmModal()">✕</div>
                 </div>
-                <div style="padding: 16px; text-align: center;">
+                <div style="padding: 16px; text-align: center;" id="submitModalBody">
                     <div style="font-size: 48px; margin-bottom: 16px;">📤</div>
-                    <div style="font-size: 16px; color: var(--text-primary); margin-bottom: 8px;">确定要提交给确认人吗？</div>
+                    <div style="font-size: 16px; color: var(--text-primary); margin-bottom: 8px;" id="submitModalText">确定要提交确认吗？</div>
                     <div style="font-size: 13px; color: var(--error-color); margin-bottom: 16px;">⚠️ 提交后不支持修改执行记录</div>
-                    <div style="font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); padding: 12px; border-radius: 8px; text-align: left;">
+                    <div style="font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); padding: 12px; border-radius: 8px; text-align: left;" id="submitModalConfirmerList">
                         <div style="margin-bottom: 8px;"><strong>确认人列表：</strong></div>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
@@ -2247,7 +2177,7 @@
                 </div>
                 <div class="modal-actions">
                     <div class="btn secondary" onclick="closeSubmitConfirmModal()" style="display: flex; align-items: center; justify-content: center;">取消</div>
-                    <div class="btn primary" onclick="confirmSubmitToConfirmer()" style="display: flex; align-items: center; justify-content: center;">确认提交</div>
+                    <div class="btn primary" onclick="confirmSubmitToConfirmer()" style="display: flex; align-items: center; justify-content: center;" id="submitModalBtn">确认提交</div>
                 </div>
             </div>
         </div>
@@ -2860,15 +2790,14 @@
         }
         
         let uploadedRecordFiles = [];
-        let savedExecutionRecords = [];
+        let executionRecordsList = [];
+        let currentEditRecordIndex = -1;
         
         function showUploadRecordModal() {
-            if (savedExecutionRecords.length > 0) {
-                uploadedRecordFiles = [...savedExecutionRecords];
-            } else {
-                uploadedRecordFiles = [];
-            }
+            uploadedRecordFiles = [];
+            currentEditRecordIndex = -1;
             document.getElementById('recordDescInput').value = '';
+            document.getElementById('recordDescInput').placeholder = '请输入执行说明（选填）';
             updateUploadedRecordPreview();
             document.getElementById('uploadRecordModal').classList.add('show');
         }
@@ -2879,76 +2808,199 @@
         
         function confirmUploadRecord() {
             const desc = document.getElementById('recordDescInput').value.trim();
-            if (!desc && uploadedRecordFiles.length === 0) {
-                showToast('请输入执行说明或上传文件');
+            
+            if (uploadedRecordFiles.length === 0) {
+                showToast('请至少上传一个文件');
                 return;
             }
             
-            savedExecutionRecords = [...uploadedRecordFiles];
+            const newRecord = {
+                files: [...uploadedRecordFiles],
+                desc: desc,
+                time: new Date().toLocaleString('zh-CN', {month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(/\//g, '-')
+            };
+            
+            if (currentEditRecordIndex >= 0) {
+                executionRecordsList[currentEditRecordIndex] = newRecord;
+                showToast('执行记录已更新');
+            } else {
+                executionRecordsList.push(newRecord);
+                showToast('执行记录已上传');
+            }
             
             closeUploadRecordModal();
-            showToast('执行记录已上传，任务状态变为执行中');
-            updateTaskStatus('in_progress');
+            
+            if (currentTaskStatus !== 'in_progress') {
+                updateTaskStatus('in_progress');
+            } else {
+                updateExecutionRecordDisplay();
+            }
         }
         
         function deleteExecutionRecord(index) {
-            savedExecutionRecords.splice(index, 1);
+            executionRecordsList.splice(index, 1);
             updateExecutionRecordDisplay();
-            if (savedExecutionRecords.length === 0 && currentTaskStatus === 'in_progress') {
+            if (executionRecordsList.length === 0 && currentTaskStatus === 'in_progress') {
                 updateTaskStatus('pending');
             }
+        }
+        
+        function editExecutionRecord(index) {
+            currentEditRecordIndex = index;
+            const record = executionRecordsList[index];
+            uploadedRecordFiles = [...record.files];
+            document.getElementById('recordDescInput').value = record.desc || '';
+            document.getElementById('recordDescInput').placeholder = '请输入执行说明（选填）';
+            updateUploadedRecordPreview();
+            document.getElementById('uploadRecordModal').classList.add('show');
         }
         
         function updateExecutionRecordDisplay() {
             const currentExecution = document.getElementById('currentExecution');
             if (!currentExecution) return;
             
-            if (savedExecutionRecords.length > 0) {
-                let mediaHtml = '<div class="media-grid">';
-                savedExecutionRecords.forEach((file, index) => {
-                    if (file.type.startsWith('image')) {
-                        mediaHtml += `
-                            <div class="media-item" style="position: relative;">
-                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%); font-size: 24px;">📷</div>
-                                ${currentUserRole === 'executor' ? `<div onclick="deleteExecutionRecord(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,77,79,0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; z-index: 10;">✕</div>` : ''}
+            if (executionRecordsList.length > 0) {
+                let recordsHtml = '';
+                
+                executionRecordsList.forEach((record, recordIndex) => {
+                    let mediaHtml = '<div class="media-grid">';
+                    record.files.forEach((file, fileIndex) => {
+                        if (file.type.startsWith('image')) {
+                            mediaHtml += `
+                                <div class="media-item" style="position: relative;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%); font-size: 24px;">📷</div>
+                                </div>
+                            `;
+                        } else if (file.type.startsWith('video')) {
+                            mediaHtml += `
+                                <div class="media-item" style="position: relative; background: #000;">
+                                    <span class="play-icon">▶</span>
+                                    <span class="duration">0:15</span>
+                                </div>
+                            `;
+                        } else {
+                            mediaHtml += `
+                                <div class="media-item" style="position: relative;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F6FFED 0%, #B7EB8F 100%); font-size: 24px;">🎵</div>
+                                </div>
+                            `;
+                        }
+                    });
+                    mediaHtml += '</div>';
+                    
+                    recordsHtml += `
+                        <div class="execution-record-item" style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #E8E8E8;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-size: 12px; color: var(--text-tertiary);">
+                                    📤 执行记录 #${recordIndex + 1} · ${record.time}
+                                </div>
+                                ${currentUserRole === 'executor' && currentTaskStatus !== 'confirming' && currentTaskStatus !== 'completed' && currentTaskStatus !== 'completed_with_reject' && currentTaskStatus !== 'confirming_after_reject' ? `
+                                    <div style="display: flex; gap: 8px;">
+                                        <span onclick="editExecutionRecord(${recordIndex})" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">✎ 编辑</span>
+                                        <span onclick="deleteExecutionRecord(${recordIndex})" style="font-size: 12px; color: var(--error-color); cursor: pointer;">✕ 删除</span>
+                                    </div>
+                                ` : ''}
                             </div>
-                        `;
-                    } else if (file.type.startsWith('video')) {
-                        mediaHtml += `
-                            <div class="media-item" style="position: relative; background: #000;">
-                                <span class="play-icon">▶</span>
-                                <span class="duration">0:15</span>
-                                ${currentUserRole === 'executor' ? `<div onclick="deleteExecutionRecord(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,77,79,0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; z-index: 10;">✕</div>` : ''}
-                            </div>
-                        `;
-                    } else {
-                        mediaHtml += `
-                            <div class="media-item" style="position: relative;">
-                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F6FFED 0%, #B7EB8F 100%); font-size: 24px;">🎵</div>
-                                ${currentUserRole === 'executor' ? `<div onclick="deleteExecutionRecord(${index})" style="position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,77,79,0.9); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; z-index: 10;">✕</div>` : ''}
-                            </div>
-                        `;
-                    }
+                            ${mediaHtml}
+                            ${record.desc ? `<div class="execution-desc" style="margin-top: 8px;">${record.desc}</div>` : ''}
+                        </div>
+                    `;
                 });
-                mediaHtml += '</div>';
                 
                 currentExecution.innerHTML = `
                     <div class="section-title">
                         <span>📤 执行人上传的内容</span>
-                        ${currentUserRole === 'executor' ? '<span class="edit-btn" onclick="showUploadRecordModal()" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">✎ 继续上传</span>' : ''}
+                        ${currentUserRole === 'executor' && currentTaskStatus !== 'confirming' && currentTaskStatus !== 'completed' && currentTaskStatus !== 'completed_with_reject' && currentTaskStatus !== 'confirming_after_reject' ? '<span class="edit-btn" onclick="showUploadRecordModal()" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">+ 继续上传</span>' : ''}
                     </div>
-                    ${mediaHtml}
-                    <div class="execution-desc">
-                        执行记录已上传，请继续上传或提交给确认人。
+                    ${recordsHtml}
+                `;
+            } else {
+                currentExecution.innerHTML = `
+                    <div class="section-title">
+                        <span>📤 执行人上传的内容</span>
+                        ${currentUserRole === 'executor' && currentTaskStatus !== 'confirming' && currentTaskStatus !== 'completed' && currentTaskStatus !== 'completed_with_reject' && currentTaskStatus !== 'confirming_after_reject' ? '<span class="edit-btn" onclick="showUploadRecordModal()" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">✎ 上传</span>' : ''}
                     </div>
-                    <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-                        上传人：李四 · ${new Date().toLocaleString('zh-CN', {month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}).replace(/\//g, '-')}
+                    <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                        暂无执行记录
                     </div>
                 `;
             }
         }
         
+        function renderExecutionRecordsReadOnly(showEditBtn = false) {
+            const currentExecution = document.getElementById('currentExecution');
+            if (!currentExecution) return;
+            
+            if (executionRecordsList.length > 0) {
+                let recordsHtml = '';
+                
+                executionRecordsList.forEach((record, recordIndex) => {
+                    let mediaHtml = '<div class="media-grid">';
+                    record.files.forEach((file, fileIndex) => {
+                        if (file.type.startsWith('image')) {
+                            mediaHtml += `
+                                <div class="media-item" style="position: relative;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%); font-size: 24px;">📷</div>
+                                </div>
+                            `;
+                        } else if (file.type.startsWith('video')) {
+                            mediaHtml += `
+                                <div class="media-item" style="position: relative; background: #000;">
+                                    <span class="play-icon">▶</span>
+                                    <span class="duration">0:15</span>
+                                </div>
+                            `;
+                        } else {
+                            mediaHtml += `
+                                <div class="media-item" style="position: relative;">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #F6FFED 0%, #B7EB8F 100%); font-size: 24px;">🎵</div>
+                                </div>
+                            `;
+                        }
+                    });
+                    mediaHtml += '</div>';
+                    
+                    recordsHtml += `
+                        <div class="execution-record-item" style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #E8E8E8;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-size: 12px; color: var(--text-tertiary);">
+                                    📤 执行记录 #${recordIndex + 1} · ${record.time}
+                                </div>
+                            </div>
+                            ${mediaHtml}
+                            ${record.desc ? `<div class="execution-desc" style="margin-top: 8px;">${record.desc}</div>` : ''}
+                        </div>
+                    `;
+                });
+                
+                currentExecution.innerHTML = `
+                    <div class="section-title">
+                        <span>📤 执行人提交的内容</span>
+                    </div>
+                    ${recordsHtml}
+                `;
+            }
+        }
+        
         function showSubmitConfirmModal() {
+            const hasConfirmers = currentConfirmers.length > 0;
+            const modalTitle = document.getElementById('submitModalTitle');
+            const modalText = document.getElementById('submitModalText');
+            const modalConfirmerList = document.getElementById('submitModalConfirmerList');
+            const modalBtn = document.getElementById('submitModalBtn');
+            
+            if (hasConfirmers) {
+                modalTitle.textContent = '提交确认';
+                modalText.textContent = '确定要提交确认吗？';
+                modalConfirmerList.style.display = 'block';
+                modalBtn.textContent = '确认提交';
+            } else {
+                modalTitle.textContent = '完成任务';
+                modalText.textContent = '确定要完成任务吗？';
+                modalConfirmerList.style.display = 'none';
+                modalBtn.textContent = '确认完成';
+            }
+            
             document.getElementById('submitConfirmModal').classList.add('show');
         }
         
@@ -2958,8 +3010,15 @@
         
         function confirmSubmitToConfirmer() {
             closeSubmitConfirmModal();
-            showToast('已提交给确认人，请等待确认');
-            updateTaskStatus('confirming');
+            const hasConfirmers = currentConfirmers.length > 0;
+            
+            if (hasConfirmers) {
+                showToast('已提交确认，请等待确认');
+                updateTaskStatus('confirming');
+            } else {
+                showToast('任务已完成');
+                updateTaskStatus('completed');
+            }
         }
         
         function showToast(message) {
@@ -3127,7 +3186,6 @@
             const actionButtons = document.getElementById('actionButtons');
             const addConfirmerBtn = document.getElementById('addConfirmerBtn');
             const confirmerCard = document.getElementById('confirmerCard');
-            const reminderIconBtn = document.getElementById('reminderIconBtn');
             const flowProgressText = document.getElementById('flowProgressText');
             const flowProgressBar = document.getElementById('flowProgressBar');
             const executionRecordCard = document.getElementById('executionRecordCard');
@@ -3224,7 +3282,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '任务配置中';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
             } else if (status === 'pending') {
                 header.className = 'task-header-card';
@@ -3264,9 +3321,11 @@
                     if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
                     
                     if (currentUserRole === 'executor') {
+                        const hasConfirmers = currentConfirmers.length > 0;
+                        const submitBtnText = hasConfirmers ? '提交确认' : '完成任务';
                         actionButtons.innerHTML = `
-                            <div class="btn secondary" onclick="showUploadRecordModal()">上传执行记录</div>
-                            <div class="btn primary" onclick="showSubmitConfirmModal()">提交给确认人</div>
+                            <div class="btn secondary" onclick="showUploadRecordModal()">上传记录</div>
+                            <div class="btn primary" onclick="showSubmitConfirmModal()">${submitBtnText}</div>
                         `;
                     } else if (currentUserRole === 'confirmer') {
                         actionButtons.innerHTML = `
@@ -3293,7 +3352,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '等待执行';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
             } else if (status === 'in_progress') {
                 header.className = 'task-header-card in-progress';
@@ -3313,7 +3371,7 @@
                 const moreBtn = document.querySelector('#executionRecordCard .more');
                 
                 if (currentExecution) {
-                    if (savedExecutionRecords.length > 0) {
+                    if (executionRecordsList.length > 0) {
                         updateExecutionRecordDisplay();
                     } else {
                         currentExecution.innerHTML = `
@@ -3350,9 +3408,11 @@
                 if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
                 
                 if (currentUserRole === 'executor') {
+                    const hasConfirmers = currentConfirmers.length > 0;
+                    const submitBtnText = hasConfirmers ? '提交确认' : '完成任务';
                     actionButtons.innerHTML = `
-                        <div class="btn secondary" onclick="showUploadRecordModal()">上传执行记录</div>
-                        <div class="btn primary" onclick="showSubmitConfirmModal()">提交给确认人</div>
+                        <div class="btn secondary" onclick="showUploadRecordModal()">上传记录</div>
+                        <div class="btn primary" onclick="showSubmitConfirmModal()">${submitBtnText}</div>
                     `;
                 } else if (currentUserRole === 'confirmer') {
                     actionButtons.innerHTML = `
@@ -3380,7 +3440,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '执行中';
                 if (flowProgressBar) flowProgressBar.style.width = '25%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
             } else if (status === 'confirming') {
                 header.className = 'task-header-card confirming';
@@ -3390,32 +3449,23 @@
                 executionRecordCard.style.display = 'block';
                 confirmRecordCard.style.display = 'block';
                 
-                // 首次确认中：只显示第1轮次执行记录，不显示驳回信息
                 const currentExecution = document.getElementById('currentExecution');
                 const historyRecords = document.getElementById('historyRecords');
                 const moreBtn = document.querySelector('#executionRecordCard .more');
                 
-                if (currentExecution) {
-                    currentExecution.innerHTML = `
-                        <div class="section-title">
-                            <span>📤 执行人提交的内容</span>
-                        </div>
-                        <div class="media-grid">
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item" style="background-color: #000;">
-                                <span class="play-icon">▶</span>
-                                <span class="duration">0:15</span>
+                if (executionRecordsList.length > 0) {
+                    renderExecutionRecordsReadOnly();
+                } else {
+                    if (currentExecution) {
+                        currentExecution.innerHTML = `
+                            <div class="section-title">
+                                <span>📤 执行人提交的内容</span>
                             </div>
-                        </div>
-                        <div class="execution-desc">
-                            穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-                            提交人：李四 · 2024-01-25 14:30
-                        </div>
-                    `;
+                            <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                                暂无执行记录
+                            </div>
+                        `;
+                    }
                 }
                 
                 if (historyRecords) {
@@ -3532,7 +3582,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
                 if (flowProgressBar) flowProgressBar.style.width = '50%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
                 
                 const roleSwitcher3 = document.getElementById('roleSwitcher');
                 if (roleSwitcher3) roleSwitcher3.style.display = 'block';
@@ -3545,37 +3594,25 @@
                 executionRecordCard.style.display = 'block';
                 confirmRecordCard.style.display = 'block';
                 
-                // 被驳回后确认中：显示历史驳回记录 + 当前执行记录，按时间倒序
                 const currentExecution = document.getElementById('currentExecution');
                 const historyRecords = document.getElementById('historyRecords');
                 const moreBtn = document.querySelector('#executionRecordCard .more');
                 
-                // 第2轮次（最新）- 当前有效
-                if (currentExecution) {
-                    currentExecution.innerHTML = `
-                        <div class="section-title">
-                            <span>📤 第2次执行</span>
-                            <span class="status-tag" style="background-color: var(--status-primary-bg); color: var(--primary-color); margin-left: 8px;">当前有效</span>
-                        </div>
-                        <div class="media-grid">
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item" style="background-color: #000;">
-                                <span class="play-icon">▶</span>
-                                <span class="duration">0:15</span>
+                if (executionRecordsList.length > 0) {
+                    renderExecutionRecordsReadOnly();
+                } else {
+                    if (currentExecution) {
+                        currentExecution.innerHTML = `
+                            <div class="section-title">
+                                <span>📤 执行人提交的内容</span>
                             </div>
-                        </div>
-                        <div class="execution-desc">
-                            已按照要求调整线路走向，重新穿设强电线管12根，弱电线管6根。所有线路走向均符合设计图纸要求，绝缘测试合格。
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-                            提交人：李四 · 2024-01-26 10:30
-                        </div>
-                    `;
+                            <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                                暂无执行记录
+                            </div>
+                        `;
+                    }
                 }
                 
-                // 第1轮次（已驳回）- 历史记录
                 if (historyRecords) {
                     historyRecords.style.display = 'block';
                     historyRecords.innerHTML = `
@@ -3746,7 +3783,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '1/3 已确认';
                 if (flowProgressBar) flowProgressBar.style.width = '50%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'flex';
                 
                 const roleSwitcher4 = document.getElementById('roleSwitcher');
                 if (roleSwitcher4) roleSwitcher4.style.display = 'block';
@@ -3759,32 +3795,23 @@
                 executionRecordCard.style.display = 'block';
                 confirmRecordCard.style.display = 'block';
                 
-                // 已完成（无驳回）：只显示第1轮次执行记录，不显示驳回信息
                 const currentExecution = document.getElementById('currentExecution');
                 const historyRecords = document.getElementById('historyRecords');
                 const moreBtn = document.querySelector('#executionRecordCard .more');
                 
-                if (currentExecution) {
-                    currentExecution.innerHTML = `
-                        <div class="section-title">
-                            <span>📤 执行人提交的内容</span>
-                        </div>
-                        <div class="media-grid">
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item" style="background-color: #000;">
-                                <span class="play-icon">▶</span>
-                                <span class="duration">0:15</span>
+                if (executionRecordsList.length > 0) {
+                    renderExecutionRecordsReadOnly();
+                } else {
+                    if (currentExecution) {
+                        currentExecution.innerHTML = `
+                            <div class="section-title">
+                                <span>📤 执行人提交的内容</span>
                             </div>
-                        </div>
-                        <div class="execution-desc">
-                            穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-                            提交人：李四 · 2024-01-25 14:30
-                        </div>
-                    `;
+                            <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                                暂无执行记录
+                            </div>
+                        `;
+                    }
                 }
                 
                 if (historyRecords) {
@@ -3910,7 +3937,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '已完成';
                 if (flowProgressBar) flowProgressBar.style.width = '100%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
                 const roleSwitcher = document.getElementById('roleSwitcher');
                 if (roleSwitcher) roleSwitcher.style.display = 'block';
@@ -3923,37 +3949,25 @@
                 executionRecordCard.style.display = 'block';
                 confirmRecordCard.style.display = 'block';
                 
-                // 已完成（含驳回）：显示历史驳回记录 + 最终通过的记录
                 const currentExecution = document.getElementById('currentExecution');
                 const historyRecords = document.getElementById('historyRecords');
                 const moreBtn = document.querySelector('#executionRecordCard .more');
                 
-                // 第2轮次（最终通过）
-                if (currentExecution) {
-                    currentExecution.innerHTML = `
-                        <div class="section-title">
-                            <span>📤 第2次执行</span>
-                            <span class="status-tag" style="background-color: var(--status-success-bg); color: var(--success-color); margin-left: 8px;">已通过</span>
-                        </div>
-                        <div class="media-grid">
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item" style="background-color: #000;">
-                                <span class="play-icon">▶</span>
-                                <span class="duration">0:15</span>
+                if (executionRecordsList.length > 0) {
+                    renderExecutionRecordsReadOnly();
+                } else {
+                    if (currentExecution) {
+                        currentExecution.innerHTML = `
+                            <div class="section-title">
+                                <span>📤 执行人提交的内容</span>
                             </div>
-                        </div>
-                        <div class="execution-desc">
-                            已按照要求调整线路走向，重新穿设强电线管12根，弱电线管6根。所有线路走向均符合设计图纸要求，绝缘测试合格。
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-                            提交人：李四 · 2024-01-26 10:30
-                        </div>
-                    `;
+                            <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                                暂无执行记录
+                            </div>
+                        `;
+                    }
                 }
                 
-                // 第1轮次（已驳回）
                 if (historyRecords) {
                     historyRecords.style.display = 'block';
                     historyRecords.innerHTML = `
@@ -4134,7 +4148,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '已完成';
                 if (flowProgressBar) flowProgressBar.style.width = '100%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
                 const roleSwitcher2 = document.getElementById('roleSwitcher');
                 if (roleSwitcher2) roleSwitcher2.style.display = 'block';
@@ -4147,42 +4160,56 @@
                 executionRecordCard.style.display = 'block';
                 confirmRecordCard.style.display = 'block';
                 
-                // 更新执行记录卡片内容，显示被驳回的历史记录
                 const currentExecution = document.getElementById('currentExecution');
                 const historyRecords = document.getElementById('historyRecords');
                 const moreBtn = document.querySelector('#executionRecordCard .more');
                 
-                if (currentExecution) {
-                    currentExecution.innerHTML = `
-                        <div class="section-title">
-                            <span>📤 第1次执行</span>
-                            <span class="status-tag rejected" style="margin-left: 8px;">已驳回</span>
-                        </div>
-                        <div class="media-grid">
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item">📷</div>
-                            <div class="media-item" style="background-color: #000;">
-                                <span class="play-icon">▶</span>
-                                <span class="duration">0:15</span>
+                if (executionRecordsList.length > 0) {
+                    updateExecutionRecordDisplay();
+                } else {
+                    if (currentExecution) {
+                        currentExecution.innerHTML = `
+                            <div class="section-title">
+                                <span>📤 执行人上传的内容</span>
+                                ${currentUserRole === 'executor' ? '<span class="edit-btn" onclick="showUploadRecordModal()" style="font-size: 12px; color: var(--primary-color); cursor: pointer;">✎ 上传</span>' : ''}
                             </div>
-                        </div>
-                        <div class="execution-desc">
-                            穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
-                        </div>
-                        <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
-                            提交人：李四 · 2024-01-25 14:30
-                        </div>
-                        <div style="margin-top: 8px; padding: 8px; background-color: #FFF1F0; border-radius: 6px; border-left: 3px solid var(--error-color);">
-                            <div style="font-size: 12px; color: var(--error-color); font-weight: 600; margin-bottom: 4px;">驳回原因：</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">部分线路走向与设计图纸不符，请调整后重新提交。</div>
-                            <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">驳回人：王五 · 2024-01-25 16:00</div>
-                        </div>
-                    `;
+                            <div style="text-align: center; padding: 20px; color: var(--text-tertiary);">
+                                暂无执行记录，请点击上传
+                            </div>
+                        `;
+                    }
                 }
                 
                 if (historyRecords) {
-                    historyRecords.style.display = 'none';
+                    historyRecords.style.display = 'block';
+                    historyRecords.innerHTML = `
+                        <div class="execution-section" style="opacity: 0.6; background-color: var(--bg-tertiary);">
+                            <div class="section-title">
+                                <span>📤 第1次执行</span>
+                                <span class="status-tag rejected" style="margin-left: 8px;">已驳回</span>
+                            </div>
+                            <div class="media-grid">
+                                <div class="media-item">📷</div>
+                                <div class="media-item">📷</div>
+                                <div class="media-item">📷</div>
+                                <div class="media-item" style="background-color: #000;">
+                                    <span class="play-icon">▶</span>
+                                    <span class="duration">0:15</span>
+                                </div>
+                            </div>
+                            <div class="execution-desc">
+                                穿线工作已完成，共穿设强电线管12根，弱电线管6根。已进行绝缘测试，所有线路绝缘电阻均大于0.5MΩ，符合规范要求。
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-tertiary); margin-top: 8px;">
+                                提交人：李四 · 2024-01-25 14:30
+                            </div>
+                            <div style="margin-top: 8px; padding: 8px; background-color: #FFF1F0; border-radius: 6px; border-left: 3px solid var(--error-color);">
+                                <div style="font-size: 12px; color: var(--error-color); font-weight: 600; margin-bottom: 4px;">驳回原因：</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">部分线路走向与设计图纸不符，请调整后重新提交。</div>
+                                <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">驳回人：王五 · 2024-01-25 16:00</div>
+                            </div>
+                        </div>
+                    `;
                 }
                 
                 if (moreBtn) {
@@ -4254,8 +4281,11 @@
                 }
                 
                 if (currentUserRole === 'executor') {
+                    const hasConfirmers = currentConfirmers.length > 0;
+                    const submitBtnText = hasConfirmers ? '重新提交确认' : '完成任务';
                     actionButtons.innerHTML = `
-                        <div class="btn primary" onclick="showUploadModal()">重新执行</div>
+                        <div class="btn secondary" onclick="showUploadRecordModal()">上传记录</div>
+                        <div class="btn primary" onclick="showSubmitConfirmModal()">${submitBtnText}</div>
                     `;
                 } else {
                     actionButtons.innerHTML = `
@@ -4299,7 +4329,6 @@
                 
                 if (flowProgressText) flowProgressText.textContent = '已驳回';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
-                if (reminderIconBtn) reminderIconBtn.style.display = 'none';
                 
                 const roleSwitcher5 = document.getElementById('roleSwitcher');
                 if (roleSwitcher5) roleSwitcher5.style.display = 'block';
@@ -4358,27 +4387,6 @@
         document.getElementById('taskFlowHelpModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeTaskFlowHelp();
-            }
-        });
-        
-        function toggleReminderTooltip(event) {
-            event.stopPropagation();
-            const tooltip = document.getElementById('reminderTooltip');
-            tooltip.classList.toggle('show');
-        }
-        
-        function sendReminder(event) {
-            event.stopPropagation();
-            document.getElementById('reminderTooltip').classList.remove('show');
-            showToast('已发送催办通知');
-        }
-        
-        document.addEventListener('click', function(e) {
-            const tooltip = document.getElementById('reminderTooltip');
-            if (tooltip && tooltip.classList.contains('show')) {
-                if (!e.target.closest('.reminder-icon-btn')) {
-                    tooltip.classList.remove('show');
-                }
             }
         });
         

@@ -710,10 +710,10 @@
                 PC端原型导航
                 <span class="badge">PC</span>
             </div>
-            <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group" id="contractOperationNav">
                 <div class="pc-page-nav-group-title">合同操作</div>
-                <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
-                <a href="pc-contract-edit-existing.html" class="pc-page-nav-item">编辑合同</a>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item">编辑合同</a>
+                <a href="pc-contract-change.html" class="pc-page-nav-item">变更合同</a>
             </div>
             <div class="pc-page-nav-group">
                 <div class="pc-page-nav-group-title">模板管理</div>
@@ -878,6 +878,7 @@
             const sidebar = document.querySelector('.pc-sidebar');
             const main = document.getElementById('pcMain');
             const breadcrumb = document.querySelector('.pc-breadcrumb');
+            const contractOperationNav = document.getElementById('contractOperationNav');
             
             if (role === 'initiator') {
                 sidebar.classList.add('hidden');
@@ -887,6 +888,7 @@
                 `;
                 document.getElementById('userAvatar').textContent = '发';
                 document.getElementById('userName').textContent = '合同发起方';
+                if (contractOperationNav) contractOperationNav.style.display = 'block';
             } else {
                 sidebar.classList.remove('hidden');
                 main.classList.remove('full-width');
@@ -897,6 +899,7 @@
                 `;
                 document.getElementById('userAvatar').textContent = '运';
                 document.getElementById('userName').textContent = '运营人员';
+                if (contractOperationNav) contractOperationNav.style.display = 'none';
             }
         }
 
@@ -1130,6 +1133,11 @@
                 this.classList.add('active');
             });
         });
+
+        const contractOperationNav = document.getElementById('contractOperationNav');
+        if (contractOperationNav && currentPcRole === 'operator') {
+            contractOperationNav.style.display = 'none';
+        }
     </script>
 </body>
 </html>

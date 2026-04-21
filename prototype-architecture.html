@@ -1282,13 +1282,6 @@
                         </label>
                         <input type="text" class="form-input" id="contractAmount" placeholder="请输入合同金额">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">
-                            <span class="required">*</span>
-                            <span>工期（天）</span>
-                        </label>
-                        <input type="number" class="form-input" id="contractDuration" placeholder="请输入工期天数">
-                    </div>
                     <div class="create-contract-notice">
                         <div class="notice-icon">💡</div>
                         <div class="notice-text">合同创建后需要前往电脑端编辑详细内容并提交确认</div>
@@ -1644,7 +1637,6 @@
             const partyASelect = document.getElementById('contractPartyA');
             const partyBSelect = document.getElementById('contractPartyB');
             const amount = document.getElementById('contractAmount').value;
-            const duration = document.getElementById('contractDuration').value;
             
             const type = typeSelect.value;
             const typeName = typeSelect.options[typeSelect.selectedIndex]?.text || '';
@@ -1673,10 +1665,6 @@
                 showAppModal('提示', '请输入合同金额', null, false);
                 return;
             }
-            if (!duration || parseInt(duration) <= 0) {
-                showAppModal('提示', '请输入有效的工期天数', null, false);
-                return;
-            }
             
             showAppModal('创建确认', `确定要为"${currentContractTarget}"创建合同"${name}"吗？`, function() {
                 const contractId = 'contract-new-' + Date.now();
@@ -1691,7 +1679,6 @@
                     partyB: partyB,
                     partyBName: partyBName,
                     amount: amount,
-                    duration: duration,
                     group: currentContractTarget
                 };
                 closeCreateContractModal();
@@ -1705,7 +1692,6 @@
                     partyB: partyB,
                     partyBName: partyBName,
                     amount: amount,
-                    duration: duration,
                     group: currentContractTarget,
                     status: 'draft',
                     new: '1'

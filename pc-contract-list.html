@@ -526,7 +526,7 @@
             </div>
 
             <div class="pc-content">
-                <div class="stats-row">
+                <div class="stats-row" id="statsRow">
                     <div class="stat-card active" onclick="filterByStatus('all')">
                         <div class="stat-card-header">
                             <span class="stat-card-title">全部合同</span>
@@ -603,11 +603,6 @@
                     <div class="filter-item">
                         <button class="pc-btn pc-btn-default" onclick="resetFilters()">重置</button>
                     </div>
-                    <div class="filter-item" style="margin-left: auto;">
-                        <button class="pc-btn pc-btn-primary" onclick="location.href='pc-contract-edit.html'">
-                            + 新建合同
-                        </button>
-                    </div>
                 </div>
 
                 <div class="contract-table-container">
@@ -624,122 +619,6 @@
                             </tr>
                         </thead>
                         <tbody id="contractTableBody">
-                            <tr data-status="pending_review" data-type="water">
-                                <td><span class="contract-name" onclick="viewContract(1)">水电分包合同-西湖区别墅</span></td>
-                                <td><span class="project-link" onclick="viewProject(1)">西湖区别墅</span></td>
-                                <td>水电工程</td>
-                                <td>￥50,000</td>
-                                <td><span class="status-tag pending-review">待审核</span></td>
-                                <td>2024-01-26 10:30</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn success" onclick="showReviewModal(1, 'pass')">审核通过</button>
-                                        <button class="action-btn danger" onclick="showReviewModal(1, 'reject')">审核驳回</button>
-                                        <button class="action-btn default" onclick="viewContract(1)">查看</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="pending_review" data-type="tile">
-                                <td><span class="contract-name" onclick="viewContract(2)">泥瓦分包合同-余杭区平层</span></td>
-                                <td><span class="project-link" onclick="viewProject(2)">余杭区平层</span></td>
-                                <td>泥瓦工程</td>
-                                <td>￥35,000</td>
-                                <td><span class="status-tag pending-review">待审核</span></td>
-                                <td>2024-01-26 09:15</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn success" onclick="showReviewModal(2, 'pass')">审核通过</button>
-                                        <button class="action-btn danger" onclick="showReviewModal(2, 'reject')">审核驳回</button>
-                                        <button class="action-btn default" onclick="viewContract(2)">查看</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="confirming_receiver" data-type="wood">
-                                <td><span class="contract-name" onclick="viewContract(3)">木工分包合同-拱墅区公寓</span></td>
-                                <td><span class="project-link" onclick="viewProject(3)">拱墅区公寓</span></td>
-                                <td>木工工程</td>
-                                <td>￥45,000</td>
-                                <td><span class="status-tag confirming-receiver">待我方确认</span></td>
-                                <td>2024-01-25 16:00</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn primary" onclick="confirmContract(3)">确认合同</button>
-                                        <button class="action-btn default" onclick="viewContract(3)">查看</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="signing" data-type="paint">
-                                <td><span class="contract-name" onclick="viewContract(4)">油漆分包合同-滨江区住宅</span></td>
-                                <td><span class="project-link" onclick="viewProject(4)">滨江区住宅</span></td>
-                                <td>油漆工程</td>
-                                <td>￥28,000</td>
-                                <td><span class="status-tag signing">待确认签约</span></td>
-                                <td>2024-01-24 14:30</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn primary" onclick="confirmSign(4)">确认签约</button>
-                                        <button class="action-btn default" onclick="viewContract(4)">查看</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="signed" data-type="water">
-                                <td><span class="contract-name" onclick="viewContract(5)">水电分包合同-萧山区别墅</span></td>
-                                <td><span class="project-link" onclick="viewProject(5)">萧山区别墅</span></td>
-                                <td>水电工程</td>
-                                <td>￥68,000</td>
-                                <td><span class="status-tag signed">已签约</span></td>
-                                <td>2024-01-20 11:00</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn default" onclick="showChangeModal(5)">发起变更</button>
-                                        <button class="action-btn default" onclick="viewContract(5)">查看</button>
-                                        <button class="action-btn default" onclick="exportContract(5)">导出</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="draft" data-type="tile">
-                                <td><span class="contract-name" onclick="viewContract(6)">泥瓦分包合同-上城区商铺</span></td>
-                                <td><span class="project-link" onclick="viewProject(6)">上城区商铺</span></td>
-                                <td>泥瓦工程</td>
-                                <td>￥42,000</td>
-                                <td><span class="status-tag draft">拟定中</span></td>
-                                <td>2024-01-19 15:45</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn primary" onclick="editContract(6)">编辑</button>
-                                        <button class="action-btn success" onclick="submitForReview(6)">提交审核</button>
-                                        <button class="action-btn danger" onclick="deleteContract(6)">删除</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="review_rejected" data-type="wood">
-                                <td><span class="contract-name" onclick="viewContract(7)">木工分包合同-下城区写字楼</span></td>
-                                <td><span class="project-link" onclick="viewProject(7)">下城区写字楼</span></td>
-                                <td>木工工程</td>
-                                <td>￥55,000</td>
-                                <td><span class="status-tag review-rejected">审核驳回</span></td>
-                                <td>2024-01-18 10:20</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn primary" onclick="editContract(7)">修改</button>
-                                        <button class="action-btn default" onclick="viewContract(7)">查看驳回原因</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr data-status="changing" data-type="paint">
-                                <td><span class="contract-name" onclick="viewContract(8)">油漆分包合同-江干区住宅</span></td>
-                                <td><span class="project-link" onclick="viewProject(8)">江干区住宅</span></td>
-                                <td>油漆工程</td>
-                                <td>￥32,000</td>
-                                <td><span class="status-tag changing">变更中</span></td>
-                                <td>2024-01-15 09:00</td>
-                                <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn primary" onclick="confirmChange(8)">确认变更</button>
-                                        <button class="action-btn default" onclick="viewContract(8)">查看</button>
-                                    </div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -754,10 +633,10 @@
                 PC端原型导航
                 <span class="badge">PC</span>
             </div>
-            <div class="pc-page-nav-group">
+            <div class="pc-page-nav-group" id="contractOperationNav">
                 <div class="pc-page-nav-group-title">合同操作</div>
-                <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
-                <a href="pc-contract-edit-existing.html" class="pc-page-nav-item">编辑合同</a>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item">编辑合同</a>
+                <a href="pc-contract-change.html" class="pc-page-nav-item">变更合同</a>
             </div>
             <div class="pc-page-nav-group">
                 <div class="pc-page-nav-group-title">模板管理</div>
@@ -848,6 +727,9 @@
             const sidebar = document.querySelector('.pc-sidebar');
             const main = document.getElementById('pcMain');
             const breadcrumb = document.querySelector('.pc-breadcrumb');
+            const contractOperationNav = document.getElementById('contractOperationNav');
+            const statsRow = document.getElementById('statsRow');
+            const statusFilter = document.getElementById('statusFilter');
             
             if (role === 'initiator') {
                 sidebar.classList.add('hidden');
@@ -857,16 +739,46 @@
                 `;
                 document.getElementById('userAvatar').textContent = '发';
                 document.getElementById('userName').textContent = '合同发起方';
+                if (contractOperationNav) contractOperationNav.style.display = 'block';
+                if (statsRow) statsRow.style.display = 'grid';
+                if (statusFilter) {
+                    statusFilter.innerHTML = `
+                        <option value="">全部状态</option>
+                        <option value="draft">拟定中</option>
+                        <option value="pending_review">待审核</option>
+                        <option value="review_rejected">审核驳回</option>
+                        <option value="confirming_sender">待对方确认</option>
+                        <option value="confirming_receiver">待我方确认</option>
+                        <option value="confirmed">已确认</option>
+                        <option value="signing">待确认签约</option>
+                        <option value="signing_wait">待对方确认签约</option>
+                        <option value="signed">已签约</option>
+                        <option value="changing">变更中</option>
+                        <option value="change_confirming">待确认变更</option>
+                    `;
+                }
+                renderContractList('initiator');
             } else {
                 sidebar.classList.remove('hidden');
                 main.classList.remove('full-width');
                 breadcrumb.innerHTML = `
                     <span class="item">合同审核管理</span>
                     <span class="separator">/</span>
-                    <span class="item current">全部合同</span>
+                    <span class="item current">待审核合同</span>
                 `;
                 document.getElementById('userAvatar').textContent = '运';
                 document.getElementById('userName').textContent = '运营人员';
+                if (contractOperationNav) contractOperationNav.style.display = 'none';
+                if (statsRow) statsRow.style.display = 'none';
+                if (statusFilter) {
+                    statusFilter.innerHTML = `
+                        <option value="">全部状态</option>
+                        <option value="pending_review">合同待审核</option>
+                        <option value="change_review">变更待审核</option>
+                        <option value="reviewed">已审核</option>
+                    `;
+                }
+                renderContractList('operator');
             }
         }
 
@@ -913,6 +825,131 @@
         let currentReviewId = null;
         let currentReviewType = null;
 
+        const allContracts = [
+            { id: 1, name: '水电分包合同-西湖区别墅', project: '西湖区别墅', type: 'water', typeName: '水电工程', amount: '￥50,000', status: 'pending_review', statusName: '合同待审核', statusClass: 'pending-review', time: '2024-01-26 10:30', rejectReason: '' },
+            { id: 2, name: '泥瓦分包合同-余杭区平层', project: '余杭区平层', type: 'tile', typeName: '泥瓦工程', amount: '￥35,000', status: 'pending_review', statusName: '合同待审核', statusClass: 'pending-review', time: '2024-01-26 09:15', rejectReason: '' },
+            { id: 3, name: '木工分包合同-拱墅区公寓', project: '拱墅区公寓', type: 'wood', typeName: '木工工程', amount: '￥45,000', status: 'confirming_receiver', statusName: '待我方确认', statusClass: 'confirming-receiver', time: '2024-01-25 16:00', rejectReason: '' },
+            { id: 4, name: '油漆分包合同-滨江区住宅', project: '滨江区住宅', type: 'paint', typeName: '油漆工程', amount: '￥28,000', status: 'signing', statusName: '待确认签约', statusClass: 'signing', time: '2024-01-24 14:30', rejectReason: '' },
+            { id: 5, name: '水电分包合同-萧山区别墅', project: '萧山区别墅', type: 'water', typeName: '水电工程', amount: '￥68,000', status: 'signed', statusName: '已签约', statusClass: 'signed', time: '2024-01-20 11:00', rejectReason: '' },
+            { id: 6, name: '泥瓦分包合同-上城区商铺', project: '上城区商铺', type: 'tile', typeName: '泥瓦工程', amount: '￥42,000', status: 'draft', statusName: '拟定中', statusClass: 'draft', time: '2024-01-19 15:45', rejectReason: '' },
+            { id: 7, name: '木工分包合同-下城区写字楼', project: '下城区写字楼', type: 'wood', typeName: '木工工程', amount: '￥55,000', status: 'review_rejected', statusName: '审核驳回', statusClass: 'review-rejected', time: '2024-01-18 10:20', rejectReason: '' },
+            { id: 8, name: '油漆分包合同-江干区住宅', project: '江干区住宅', type: 'paint', typeName: '油漆工程', amount: '￥32,000', status: 'changing', statusName: '变更待审核', statusClass: 'changing', time: '2024-01-15 09:00', rejectReason: '' },
+            { id: 9, name: '水电分包合同-临平区别墅', project: '临平区别墅', type: 'water', typeName: '水电工程', amount: '￥72,000', status: 'reviewed_pass', statusName: '已通过', statusClass: 'confirmed', time: '2024-01-14 08:30', rejectReason: '' },
+            { id: 10, name: '泥瓦分包合同-钱塘区公寓', project: '钱塘区公寓', type: 'tile', typeName: '泥瓦工程', amount: '￥38,000', status: 'reviewed_reject', statusName: '已驳回', statusClass: 'review-rejected', time: '2024-01-13 16:00', rejectReason: '合同金额与实际工程量不符，请核实后重新提交' },
+            { id: 11, name: '水电分包合同-富阳区别墅', project: '富阳区别墅', type: 'water', typeName: '水电工程', amount: '￥85,000', status: 'change_reviewed_pass', statusName: '变更已通过', statusClass: 'confirmed', time: '2024-01-12 14:00', rejectReason: '' },
+            { id: 12, name: '木工分包合同-桐庐县住宅', project: '桐庐县住宅', type: 'wood', typeName: '木工工程', amount: '￥48,000', status: 'change_reviewed_reject', statusName: '变更已驳回', statusClass: 'review-rejected', time: '2024-01-11 10:30', rejectReason: '变更内容描述不清晰，缺少具体施工范围说明' },
+        ];
+
+        function renderContractList(role) {
+            const tbody = document.getElementById('contractTableBody');
+            let contracts = [];
+            
+            if (role === 'operator') {
+                contracts = allContracts.filter(c => 
+                    c.status === 'pending_review' || 
+                    c.status === 'changing' || 
+                    c.status === 'reviewed_pass' || 
+                    c.status === 'reviewed_reject' ||
+                    c.status === 'change_reviewed_pass' ||
+                    c.status === 'change_reviewed_reject'
+                );
+            } else {
+                contracts = allContracts;
+            }
+            
+            tbody.innerHTML = contracts.map(c => {
+                let actionBtns = '';
+                let rejectReasonHtml = '';
+                
+                if (role === 'operator') {
+                    if (c.status === 'pending_review') {
+                        actionBtns = `<button class="action-btn primary" onclick="goToReview(${c.id}, 'contract')">去审核</button>`;
+                    } else if (c.status === 'changing') {
+                        actionBtns = `<button class="action-btn primary" onclick="goToReview(${c.id}, 'change')">去审核</button>`;
+                    } else if (c.status === 'reviewed_pass') {
+                        actionBtns = `<span style="color: var(--success-color);">✓ 已通过</span>`;
+                    } else if (c.status === 'reviewed_reject') {
+                        actionBtns = `<span style="color: var(--error-color);">✗ 已驳回</span>`;
+                        if (c.rejectReason) {
+                            rejectReasonHtml = `<div style="font-size: 12px; color: var(--error-color); margin-top: 4px;" title="${c.rejectReason}">驳回原因：${c.rejectReason.length > 20 ? c.rejectReason.substring(0, 20) + '...' : c.rejectReason}</div>`;
+                        }
+                    } else if (c.status === 'change_reviewed_pass') {
+                        actionBtns = `<span style="color: var(--success-color);">✓ 变更已通过</span>`;
+                    } else if (c.status === 'change_reviewed_reject') {
+                        actionBtns = `<span style="color: var(--error-color);">✗ 变更已驳回</span>`;
+                        if (c.rejectReason) {
+                            rejectReasonHtml = `<div style="font-size: 12px; color: var(--error-color); margin-top: 4px;" title="${c.rejectReason}">驳回原因：${c.rejectReason.length > 20 ? c.rejectReason.substring(0, 20) + '...' : c.rejectReason}</div>`;
+                        }
+                    }
+                } else {
+                    if (c.status === 'pending_review') {
+                        actionBtns = `
+                            <button class="action-btn success" onclick="showReviewModal(${c.id}, 'pass')">审核通过</button>
+                            <button class="action-btn danger" onclick="showReviewModal(${c.id}, 'reject')">审核驳回</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                        `;
+                    } else if (c.status === 'confirming_receiver') {
+                        actionBtns = `
+                            <button class="action-btn primary" onclick="confirmContract(${c.id})">确认合同</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                        `;
+                    } else if (c.status === 'signing') {
+                        actionBtns = `
+                            <button class="action-btn primary" onclick="confirmSign(${c.id})">确认签约</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                        `;
+                    } else if (c.status === 'signed') {
+                        actionBtns = `
+                            <button class="action-btn default" onclick="showChangeModal(${c.id})">发起变更</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                            <button class="action-btn default" onclick="exportContract(${c.id})">导出</button>
+                        `;
+                    } else if (c.status === 'draft') {
+                        actionBtns = `
+                            <button class="action-btn primary" onclick="editContract(${c.id})">编辑</button>
+                            <button class="action-btn success" onclick="submitForReview(${c.id})">提交审核</button>
+                            <button class="action-btn danger" onclick="deleteContract(${c.id})">删除</button>
+                        `;
+                    } else if (c.status === 'review_rejected') {
+                        actionBtns = `
+                            <button class="action-btn primary" onclick="editContract(${c.id})">修改</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id})">查看驳回原因</button>
+                        `;
+                    } else if (c.status === 'changing') {
+                        actionBtns = `
+                            <button class="action-btn primary" onclick="confirmChange(${c.id})">确认变更</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                        `;
+                    } else {
+                        actionBtns = `<button class="action-btn default" onclick="viewContract(${c.id})">查看</button>`;
+                    }
+                }
+                
+                return `
+                    <tr data-status="${c.status}" data-type="${c.type}">
+                        <td><span class="contract-name" onclick="viewContract(${c.id})">${c.name}</span></td>
+                        <td><span class="project-link" onclick="viewProject(${c.id})">${c.project}</span></td>
+                        <td>${c.typeName}</td>
+                        <td>${c.amount}</td>
+                        <td><span class="status-tag ${c.statusClass}">${c.statusName}</span></td>
+                        <td>${c.time}</td>
+                        <td>
+                            <div class="action-btns">${actionBtns}</div>
+                            ${rejectReasonHtml}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function goToReview(id, type) {
+            if (type === 'contract') {
+                window.location.href = 'pc-contract-detail.html?id=' + id + '&status=platform_reviewing&role=operator';
+            } else if (type === 'change') {
+                window.location.href = 'pc-contract-detail.html?id=' + id + '&status=change_reviewing&role=operator';
+            }
+        }
+
         function filterContracts() {
             const status = document.getElementById('statusFilter').value;
             const type = document.getElementById('typeFilter').value;
@@ -924,7 +961,23 @@
                 const rowType = row.dataset.type;
                 const text = row.textContent.toLowerCase();
                 
-                const statusMatch = !status || rowStatus === status;
+                let statusMatch = true;
+                if (status) {
+                    if (currentPcRole === 'operator') {
+                        if (status === 'pending_review') {
+                            statusMatch = rowStatus === 'pending_review';
+                        } else if (status === 'change_review') {
+                            statusMatch = rowStatus === 'changing';
+                        } else if (status === 'reviewed') {
+                            statusMatch = rowStatus === 'reviewed_pass' || rowStatus === 'reviewed_reject' || rowStatus === 'change_reviewed_pass' || rowStatus === 'change_reviewed_reject';
+                        } else {
+                            statusMatch = rowStatus === status;
+                        }
+                    } else {
+                        statusMatch = rowStatus === status;
+                    }
+                }
+                
                 const typeMatch = !type || rowType === type;
                 const keywordMatch = !keyword || text.includes(keyword);
                 
@@ -1012,7 +1065,7 @@
         }
 
         function editContract(id) {
-            location.href = 'pc-contract-edit-existing.html?contractId=' + id;
+            location.href = 'pc-contract-edit.html?contractId=' + id;
         }
 
         function submitForReview(id) {
@@ -1036,7 +1089,7 @@
         }
 
         function showChangeModal(id) {
-            location.href = 'pc-contract-edit.html?id=' + id + '&mode=change';
+            location.href = 'pc-contract-change.html?contractId=' + id;
         }
 
         function confirmChange(id) {
@@ -1055,12 +1108,34 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const tab = urlParams.get('tab');
-        if (tab === 'pending') {
+        const roleParam = urlParams.get('role');
+        
+        if (roleParam === 'initiator') {
+            switchPcRole('initiator');
+        } else {
+            const contractOperationNav = document.getElementById('contractOperationNav');
+            const statsRow = document.getElementById('statsRow');
+            if (contractOperationNav) contractOperationNav.style.display = 'none';
+            if (statsRow) statsRow.style.display = 'none';
+            renderContractList('operator');
+            
+            const statusFilter = document.getElementById('statusFilter');
+            if (statusFilter) {
+                statusFilter.innerHTML = `
+                    <option value="">全部状态</option>
+                    <option value="pending_review">合同待审核</option>
+                    <option value="change_review">变更待审核</option>
+                    <option value="reviewed">已审核</option>
+                `;
+            }
+        }
+        
+        if (tab === 'pending' && roleParam === 'initiator') {
             document.querySelectorAll('.stat-card')[1].classList.add('active');
             document.querySelectorAll('.stat-card')[0].classList.remove('active');
             document.getElementById('statusFilter').value = 'pending_review';
             filterContracts();
-        } else if (tab === 'completed') {
+        } else if (tab === 'completed' && roleParam === 'initiator') {
             document.querySelectorAll('.stat-card')[4].classList.add('active');
             document.querySelectorAll('.stat-card')[0].classList.remove('active');
             document.getElementById('statusFilter').value = 'signed';

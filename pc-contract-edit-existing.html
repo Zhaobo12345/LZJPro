@@ -389,11 +389,210 @@
             background-color: var(--status-warning-bg);
             border: 1px solid var(--warning-color);
         }
+
+        .submit-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .submit-modal-overlay.show {
+            display: flex;
+        }
+
+        .submit-modal {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .submit-modal-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .submit-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .submit-modal-close {
+            font-size: 20px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+
+        .submit-modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .submit-modal-body {
+            padding: 24px;
+        }
+
+        .submit-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .submit-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-option:hover {
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .submit-option.selected {
+            border-color: var(--primary-color);
+            background-color: var(--status-primary-bg);
+        }
+
+        .submit-option-icon {
+            font-size: 32px;
+        }
+
+        .submit-option-content {
+            flex: 1;
+        }
+
+        .submit-option-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .submit-option-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .submit-option-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .submit-option.selected .submit-option-check {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .submit-option.selected .submit-option-check::after {
+            content: '✓';
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .submit-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .waiting-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-primary);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+        }
+
+        .waiting-page.show {
+            display: flex;
+        }
+
+        .waiting-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .waiting-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .waiting-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .waiting-info {
+            background-color: var(--bg-secondary);
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .waiting-info-row {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 8px;
+        }
+
+        .waiting-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .waiting-info-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .waiting-info-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
     <div class="pc-container">
-        <div class="pc-sidebar">
+        <div class="pc-sidebar hidden">
             <div class="pc-sidebar-header">
                 <div class="pc-sidebar-logo">
                     <span class="icon">🏗️</span>
@@ -419,12 +618,10 @@
             </div>
         </div>
 
-        <div class="pc-main" id="pcMain">
+        <div class="pc-main full-width" id="pcMain">
             <div class="pc-header">
                 <div class="pc-header-left">
                     <div class="pc-breadcrumb">
-                        <a href="pc-contract-list.html" class="item">合同审核管理</a>
-                        <span class="separator">/</span>
                         <span class="item current">编辑合同</span>
                     </div>
                 </div>
@@ -509,10 +706,6 @@
                                     <label class="pc-form-label">合同金额<span class="required">*</span></label>
                                     <input type="text" class="pc-form-input" placeholder="请输入合同金额" value="150000">
                                 </div>
-                                <div class="pc-form-group">
-                                    <label class="pc-form-label">工期（天）<span class="required">*</span></label>
-                                    <input type="number" class="pc-form-input" placeholder="请输入工期" value="45">
-                                </div>
                             </div>
                             <div class="form-grid mt-20">
                                 <div class="pc-form-group">
@@ -522,10 +715,6 @@
                                 <div class="pc-form-group">
                                     <label class="pc-form-label">乙方</label>
                                     <div class="readonly-field">李四（电工组长）</div>
-                                </div>
-                                <div class="pc-form-group">
-                                    <label class="pc-form-label">签约日期</label>
-                                    <input type="date" class="pc-form-input" value="2024-01-15">
                                 </div>
                             </div>
                         </div>
@@ -728,8 +917,8 @@
             </div>
             <div class="pc-page-nav-group">
                 <div class="pc-page-nav-group-title">合同操作</div>
-                <a href="pc-contract-edit.html" class="pc-page-nav-item">创建合同</a>
-                <a href="pc-contract-edit-existing.html" class="pc-page-nav-item active">编辑合同</a>
+                <a href="pc-contract-edit.html" class="pc-page-nav-item active">编辑合同</a>
+                <a href="pc-contract-change.html" class="pc-page-nav-item">变更合同</a>
             </div>
             <div class="pc-page-nav-group">
                 <div class="pc-page-nav-group-title">模板管理</div>
@@ -749,8 +938,110 @@
         </div>
     </div>
 
+    <div class="submit-modal-overlay" id="submitModal">
+        <div class="submit-modal">
+            <div class="submit-modal-header">
+                <div class="submit-modal-title">提交合同</div>
+                <div class="submit-modal-close" onclick="closeSubmitModal()">×</div>
+            </div>
+            <div class="submit-modal-body">
+                <div class="submit-options">
+                    <div class="submit-option" onclick="selectSubmitType('save')">
+                        <div class="submit-option-icon">💾</div>
+                        <div class="submit-option-content">
+                            <div class="submit-option-title">仅保存</div>
+                            <div class="submit-option-desc">保存当前编辑内容，不提交审核</div>
+                        </div>
+                        <div class="submit-option-check" id="saveCheck"></div>
+                    </div>
+                    <div class="submit-option selected" onclick="selectSubmitType('submit')">
+                        <div class="submit-option-icon">📤</div>
+                        <div class="submit-option-content">
+                            <div class="submit-option-title">提交至平台审核</div>
+                            <div class="submit-option-desc">提交合同至平台，等待运营人员审核</div>
+                        </div>
+                        <div class="submit-option-check" id="submitCheck"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-modal-footer">
+                <button class="pc-btn pc-btn-default" onclick="closeSubmitModal()">取消</button>
+                <button class="pc-btn pc-btn-primary" id="confirmSubmitBtn" onclick="confirmSubmit()">确认提交</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="waiting-page" id="waitingPage">
+        <div class="waiting-icon">⏳</div>
+        <div class="waiting-title">合同审核中，请耐心等待</div>
+        <div class="waiting-desc">您的合同已成功提交，正在等待平台运营人员审核</div>
+        <div class="waiting-info">
+            <div class="waiting-info-row">
+                <div>
+                    <div class="waiting-info-label">合同编号</div>
+                    <div class="waiting-info-value">HT-2024-001</div>
+                </div>
+                <div>
+                    <div class="waiting-info-label">提交时间</div>
+                    <div class="waiting-info-value" id="submitTime">2024-01-10 16:30</div>
+                </div>
+            </div>
+        </div>
+        <button class="pc-btn pc-btn-primary" onclick="backToList()">返回合同列表</button>
+    </div>
+
     <script>
         let currentPcRole = 'initiator';
+        let selectedSubmitType = 'submit';
+
+        function selectSubmitType(type) {
+            selectedSubmitType = type;
+            document.querySelectorAll('.submit-option').forEach(opt => opt.classList.remove('selected'));
+            if (type === 'save') {
+                document.querySelector('.submit-option:first-child').classList.add('selected');
+                document.getElementById('confirmSubmitBtn').textContent = '确认保存';
+            } else {
+                document.querySelector('.submit-option:last-child').classList.add('selected');
+                document.getElementById('confirmSubmitBtn').textContent = '确认提交';
+            }
+        }
+
+        function openSubmitModal() {
+            document.getElementById('submitModal').classList.add('show');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('submitModal').classList.remove('show');
+        }
+
+        function confirmSubmit() {
+            if (selectedSubmitType === 'save') {
+                showToast('合同已保存');
+                closeSubmitModal();
+            } else {
+                const name = document.getElementById('contractName').value.trim();
+                if (!name) {
+                    showToast('请填写合同名称');
+                    return;
+                }
+                
+                closeSubmitModal();
+                
+                const now = new Date();
+                const timeStr = now.getFullYear() + '-' + 
+                    String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                    String(now.getDate()).padStart(2, '0') + ' ' + 
+                    String(now.getHours()).padStart(2, '0') + ':' + 
+                    String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('submitTime').textContent = timeStr;
+                
+                document.getElementById('waitingPage').classList.add('show');
+            }
+        }
+
+        function backToList() {
+            window.location.href = 'pc-contract-list.html';
+        }
 
         function switchPcRole(role) {
             currentPcRole = role;
@@ -823,12 +1114,7 @@
         }
 
         function submitContract() {
-            if (confirm('确定要提交合同吗？\n\n提交后将进入待审核状态，需等待运营人员审核。')) {
-                showToast('合同已提交，等待审核');
-                setTimeout(() => {
-                    window.location.href = 'pc-contract-detail.html?status=draft_submittable&role=initiator';
-                }, 1000);
-            }
+            openSubmitModal();
         }
 
         function togglePageNav() {
