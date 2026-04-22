@@ -10,6 +10,7 @@
             height: calc(100% - 44px);
             background-color: var(--bg-secondary);
             overflow-y: auto;
+            padding-bottom: 80px;
         }
 
         .filter-header {
@@ -611,7 +612,6 @@
                     <div class="filter-tag active" onclick="filterByType('all', this)">全部</div>
                     <div class="filter-tag" onclick="filterByType('contract', this)">合同</div>
                     <div class="filter-tag" onclick="filterByType('task', this)">任务</div>
-                    <div class="filter-tag" onclick="filterByType('temp-task', this)">临时任务</div>
                 </div>
             </div>
 
@@ -700,27 +700,6 @@
                 source: '水电工作组'
             },
             {
-                id: 3,
-                date: getDateString(0),
-                dateLabel: '今天',
-                user: '王工长',
-                avatar: '王',
-                avatarColor: 'linear-gradient(135deg, #FA8C16 0%, #FFA940 100%)',
-                time: '08:00',
-                type: 'temp-task',
-                typeLabel: '临时任务',
-                content: '创建了临时任务 紧急修补墙面裂缝',
-                target: {
-                    type: 'temp-task',
-                    name: '紧急修补墙面裂缝',
-                    desc: '泥瓦工作组 · 待接受',
-                    icon: '⚡'
-                },
-                hasMedia: false,
-                hasPermission: true,
-                source: '泥瓦工作组'
-            },
-            {
                 id: 4,
                 date: getDateString(1),
                 dateLabel: '昨天',
@@ -804,27 +783,6 @@
                 },
                 hasMedia: true,
                 mediaCount: 4,
-                hasPermission: true,
-                source: '水电工作组'
-            },
-            {
-                id: 8,
-                date: getDateString(2),
-                dateLabel: '前天',
-                user: '张工长',
-                avatar: '张',
-                avatarColor: 'linear-gradient(135deg, #52C41A 0%, #73D13D 100%)',
-                time: '11:30',
-                type: 'temp-task',
-                typeLabel: '临时任务',
-                content: '接受了临时任务 更换损坏的插座',
-                target: {
-                    type: 'temp-task',
-                    name: '更换损坏的插座',
-                    desc: '水电工作组 · 执行中',
-                    icon: '⚡'
-                },
-                hasMedia: false,
                 hasPermission: true,
                 source: '水电工作组'
             },
@@ -1160,9 +1118,6 @@
                     break;
                 case 'task':
                     location.href = 'prototype-task-detail.html';
-                    break;
-                case 'temp-task':
-                    location.href = 'prototype-temp-task-detail.html';
                     break;
                 case 'system':
                     showToast('查看项目详情');

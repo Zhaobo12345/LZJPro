@@ -2077,20 +2077,12 @@
                 </div>
             </div>
             <div class="pc-page-nav-group" id="statusSelectorGroup">
-                <div class="pc-page-nav-group-title">合同状态</div>
-                <select class="nav-status-select" id="statusSelector" onchange="switchStatus(this.value)">
-                    <option value="draft" selected>拟定中</option>
-                    <option value="draft_submittable">拟定中(可提交)</option>
-                    <option value="platform_reviewing">待平台审核</option>
-                    <option value="platform_rejected">平台审核驳回</option>
-                    <option value="platform_rejected_modified">平台驳回(已修改)</option>
-                    <option value="confirming">确认中</option>
-                    <option value="confirmed">已确认</option>
-                    <option value="signing">签约中</option>
-                    <option value="signed">已签约</option>
-                    <option value="changing">变更中</option>
-                    <option value="change_reviewing">变更待平台审核</option>
-                    <option value="change_confirming">待确认变更</option>
+                <div class="pc-page-nav-group-title" id="statusSelectorTitle">页面导航</div>
+                <select class="nav-status-select" id="statusSelector" onchange="handlePageChange(this.value)">
+                    <option value="edit_contract">编辑合同</option>
+                    <option value="change_contract">变更合同</option>
+                    <option value="qr_login">扫码登录</option>
+                    <option value="mini_program">小程序首页</option>
                 </select>
             </div>
             <div class="pc-page-nav-group" id="contractOperationNav">
@@ -2218,7 +2210,6 @@
                 document.getElementById('userAvatar').textContent = '发';
                 document.getElementById('userName').textContent = '合同发起方';
                 
-                currentStatus = 'platform_reviewing';
                 currentRole = 'creator';
                 updateUI();
             } else {
@@ -2301,6 +2292,26 @@
                 title: '📋 待确认变更',
                 desc: '变更申请时间：2024-02-01 14:00 | 合同编号：HT-2024-001',
                 class: 'change-confirming'
+            },
+            confirming_receiver: {
+                title: '📥 待我方确认',
+                desc: '对方已发送确认申请，请确认或驳回修改 | 合同编号：HT-2024-001',
+                class: 'confirming'
+            },
+            review_rejected: {
+                title: '❌ 审核驳回',
+                desc: '平台审核未通过，请根据驳回原因修改合同内容后重新提交 | 合同编号：HT-2024-001',
+                class: 'platform-rejected'
+            },
+            change_reviewed_pass: {
+                title: '✅ 变更已通过',
+                desc: '变更申请已通过审核 | 合同编号：HT-2024-001',
+                class: 'signed'
+            },
+            change_reviewed_reject: {
+                title: '❌ 变更已驳回',
+                desc: '变更申请未通过审核，请根据驳回原因修改后重新提交 | 合同编号：HT-2024-001',
+                class: 'platform-rejected'
             }
         };
 
@@ -2373,45 +2384,67 @@
                 if (creatorItem) creatorItem.style.display = 'flex';
                 if (receiverItem) receiverItem.style.display = 'flex';
                 if (roleSwitchGroup) roleSwitchGroup.style.display = 'none';
-                if (statusSelectorGroup) statusSelectorGroup.style.display = 'none';
-                if (contractOperationNav) contractOperationNav.style.display = 'block';
+                if (statusSelectorGroup) statusSelectorGroup.style.display = 'block';
+                if (contractOperationNav) contractOperationNav.style.display = 'none';
                 if (pageNavGroup) pageNavGroup.style.display = 'none';
-                if (loginNavGroup) loginNavGroup.style.display = 'block';
-                if (miniProgramNavGroup) miniProgramNavGroup.style.display = 'block';
+                if (loginNavGroup) loginNavGroup.style.display = 'none';
+                if (miniProgramNavGroup) miniProgramNavGroup.style.display = 'none';
             }
         }
 
         function updateStatusSelector() {
             const selector = document.getElementById('statusSelector');
+            const statusSelectorGroup = document.getElementById('statusSelectorGroup');
+            const statusSelectorTitle = document.getElementById('statusSelectorTitle');
             
             if (currentPcRole === 'operator') {
-                const currentValue = selector.value;
+                if (statusSelectorGroup) statusSelectorGroup.style.display = 'block';
+                if (statusSelectorTitle) statusSelectorTitle.textContent = '页面导航';
                 selector.innerHTML = `
-                    <option value="platform_reviewing">待平台审核</option>
-                    <option value="change_reviewing">变更待平台审核</option>
+                    <option value="contract_template">合同文本模板</option>
+                    <option value="stage_template">阶段任务模板</option>
+                    <option value="contract_list">合同审核管理</option>
+                    <option value="contract_detail" selected>合同详情</option>
+                    <option value="qr_login">扫码登录</option>
+                    <option value="mini_program">小程序首页</option>
                 `;
-                if (currentValue === 'platform_reviewing' || currentValue === 'change_reviewing') {
-                    selector.value = currentValue;
-                } else {
-                    selector.value = 'platform_reviewing';
-                    currentStatus = 'platform_reviewing';
-                }
             } else {
+                if (statusSelectorGroup) statusSelectorGroup.style.display = 'block';
+                if (statusSelectorTitle) statusSelectorTitle.textContent = '页面导航';
                 selector.innerHTML = `
-                    <option value="draft">拟定中</option>
-                    <option value="draft_submittable">拟定中(可提交)</option>
-                    <option value="platform_reviewing">待平台审核</option>
-                    <option value="platform_rejected">平台审核驳回</option>
-                    <option value="platform_rejected_modified">平台驳回(已修改)</option>
-                    <option value="confirming">确认中</option>
-                    <option value="confirmed">已确认</option>
-                    <option value="signing">签约中</option>
-                    <option value="signed">已签约</option>
-                    <option value="changing">变更中</option>
-                    <option value="change_reviewing">变更待平台审核</option>
-                    <option value="change_confirming">待确认变更</option>
+                    <option value="edit_contract">编辑合同</option>
+                    <option value="change_contract">变更合同</option>
+                    <option value="qr_login">扫码登录</option>
+                    <option value="mini_program">小程序首页</option>
                 `;
-                selector.value = currentStatus;
+            }
+        }
+
+        function handlePageChange(value) {
+            switch(value) {
+                case 'contract_template':
+                    window.location.href = 'pc-contract-template.html';
+                    break;
+                case 'stage_template':
+                    window.location.href = 'pc-stage-template.html';
+                    break;
+                case 'contract_list':
+                    window.location.href = 'pc-contract-list.html';
+                    break;
+                case 'contract_detail':
+                    break;
+                case 'edit_contract':
+                    window.location.href = 'pc-contract-edit.html';
+                    break;
+                case 'change_contract':
+                    window.location.href = 'pc-contract-change.html';
+                    break;
+                case 'qr_login':
+                    window.location.href = 'pc-login.html';
+                    break;
+                case 'mini_program':
+                    showToast('正在打开小程序首页...');
+                    break;
             }
         }
 

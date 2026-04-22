@@ -886,22 +886,22 @@
                         actionBtns = `
                             <button class="action-btn success" onclick="showReviewModal(${c.id}, 'pass')">审核通过</button>
                             <button class="action-btn danger" onclick="showReviewModal(${c.id}, 'reject')">审核驳回</button>
-                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看</button>
                         `;
                     } else if (c.status === 'confirming_receiver') {
                         actionBtns = `
                             <button class="action-btn primary" onclick="confirmContract(${c.id})">确认合同</button>
-                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看</button>
                         `;
                     } else if (c.status === 'signing') {
                         actionBtns = `
                             <button class="action-btn primary" onclick="confirmSign(${c.id})">确认签约</button>
-                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看</button>
                         `;
                     } else if (c.status === 'signed') {
                         actionBtns = `
                             <button class="action-btn default" onclick="showChangeModal(${c.id})">发起变更</button>
-                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看</button>
                             <button class="action-btn default" onclick="exportContract(${c.id})">导出</button>
                         `;
                     } else if (c.status === 'draft') {
@@ -913,21 +913,21 @@
                     } else if (c.status === 'review_rejected') {
                         actionBtns = `
                             <button class="action-btn primary" onclick="editContract(${c.id})">修改</button>
-                            <button class="action-btn default" onclick="viewContract(${c.id})">查看驳回原因</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看驳回原因</button>
                         `;
                     } else if (c.status === 'changing') {
                         actionBtns = `
                             <button class="action-btn primary" onclick="confirmChange(${c.id})">确认变更</button>
-                            <button class="action-btn default" onclick="viewContract(${c.id})">查看</button>
+                            <button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看</button>
                         `;
                     } else {
-                        actionBtns = `<button class="action-btn default" onclick="viewContract(${c.id})">查看</button>`;
+                        actionBtns = `<button class="action-btn default" onclick="viewContract(${c.id}, '${c.status}')">查看</button>`;
                     }
                 }
                 
                 return `
                     <tr data-status="${c.status}" data-type="${c.type}">
-                        <td><span class="contract-name" onclick="viewContract(${c.id})">${c.name}</span></td>
+                        <td><span class="contract-name" onclick="viewContract(${c.id}, '${c.status}')">${c.name}</span></td>
                         <td><span class="project-link" onclick="viewProject(${c.id})">${c.project}</span></td>
                         <td>${c.typeName}</td>
                         <td>${c.amount}</td>
@@ -1060,8 +1060,16 @@
             document.getElementById('toastModal').classList.remove('show');
         }
 
-        function viewContract(id) {
-            location.href = 'pc-contract-detail.html?id=' + id;
+        function viewContract(id, status) {
+            let targetStatus = status;
+            
+            if (status === 'pending_review') {
+                targetStatus = 'platform_reviewing';
+            } else if (status === 'changing') {
+                targetStatus = 'change_reviewing';
+            }
+            
+            location.href = 'pc-contract-detail.html?id=' + id + '&status=' + targetStatus + '&role=operator';
         }
 
         function editContract(id) {

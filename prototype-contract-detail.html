@@ -540,6 +540,12 @@
             color: var(--text-primary);
         }
 
+        .version-item .version-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
         .version-item .version-date {
             font-size: 11px;
             color: var(--text-tertiary);
@@ -550,6 +556,142 @@
             font-size: 13px;
             color: var(--primary-color);
             cursor: pointer;
+        }
+
+        .version-status-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .version-status-tag.success {
+            background-color: #F6FFED;
+            color: #52C41A;
+        }
+
+        .version-status-tag.failed {
+            background-color: #FFF2F0;
+            color: #FF4D4F;
+        }
+
+        .change-record-modal .modal {
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .change-record-modal .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 50vh;
+        }
+
+        .version-section {
+            margin-bottom: 16px;
+        }
+
+        .version-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-left: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .version-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-flow-section {
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .status-flow-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-left: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .status-flow-timeline {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .status-flow-timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 16px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item .timeline-dot {
+            position: absolute;
+            left: -17px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            border: 2px solid #FFFFFF;
+        }
+
+        .timeline-item .timeline-dot.success {
+            background-color: var(--success-color);
+        }
+
+        .timeline-item .timeline-dot.primary {
+            background-color: var(--primary-color);
+        }
+
+        .timeline-item .timeline-dot.warning {
+            background-color: var(--warning-color);
+        }
+
+        .timeline-item .timeline-dot.error {
+            background-color: var(--error-color);
+        }
+
+        .timeline-item .timeline-content {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .timeline-item .timeline-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .timeline-item .timeline-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .timeline-item .timeline-time {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
         }
 
         .bottom-actions {
@@ -2803,6 +2945,235 @@
         .edit-guide-btn:hover {
             opacity: 0.9;
         }
+
+        .change-reason-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .change-reason-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+        }
+
+        .change-reason-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .change-reason-tip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .change-reason-display {
+            background-color: #FFF7E6;
+            border: 1px solid #FFD591;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .change-reason-display .reason-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #D46B08;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .change-reason-display .reason-content {
+            font-size: 13px;
+            color: #595959;
+            line-height: 1.6;
+        }
+
+        .change-summary-card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .change-summary-card .summary-header {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .change-summary-card .summary-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .change-summary-card .summary-item {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .change-summary-card .summary-item .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .change-summary-card .summary-item .deleted {
+            color: var(--error-color);
+            text-decoration: line-through;
+        }
+
+        .change-summary-card .summary-item .added {
+            color: var(--success-color);
+            font-weight: 500;
+        }
+
+        .change-highlight-banner {
+            background: linear-gradient(135deg, #FFF7E6 0%, #FFE7BA 100%);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-left: 3px solid #FA8C16;
+        }
+
+        .change-highlight-banner .banner-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #D46B08;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .change-highlight-banner .banner-desc {
+            font-size: 12px;
+            color: #595959;
+            line-height: 1.6;
+        }
+
+        .stage-item.stage-added {
+            border: 2px solid #52C41A;
+            background-color: #F6FFED;
+        }
+
+        .stage-item.stage-modified {
+            border: 2px solid #FA8C16;
+            background-color: #FFF7E6;
+        }
+
+        .stage-change-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .stage-change-tag.added {
+            background-color: #52C41A;
+            color: #fff;
+        }
+
+        .stage-change-tag.modified {
+            background-color: #FA8C16;
+            color: #fff;
+        }
+
+        .task-item.task-added {
+            background-color: #F6FFED;
+            border: 1px solid #B7EB8F;
+        }
+
+        .task-item.task-modified {
+            background-color: #FFF7E6;
+            border: 1px solid #FFD591;
+        }
+
+        .task-change-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-left: 6px;
+        }
+
+        .task-change-tag.added {
+            background-color: #52C41A;
+            color: #fff;
+        }
+
+        .task-change-tag.modified {
+            background-color: #FA8C16;
+            color: #fff;
+        }
+
+        .info-row.change-highlight {
+            background-color: #FFF7E6;
+            border-left: 3px solid #FA8C16;
+            padding-left: 12px;
+            margin-left: -12px;
+        }
+
+        .info-row.change-highlight .value .old-value {
+            color: var(--error-color);
+            text-decoration: line-through;
+            margin-right: 8px;
+        }
+
+        .info-row.change-highlight .value .new-value {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .attachment-item.attachment-added {
+            background-color: #F6FFED;
+            border: 1px solid #B7EB8F;
+        }
+
+        .attachment-item.attachment-added::before {
+            content: '新增';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #52C41A;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 0 8px 0 8px;
+        }
+
+        .text-content .change-highlight-text {
+            background-color: #FFF7E6;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body>
@@ -2875,6 +3246,51 @@
                 </div>
             </div>
 
+            <div class="change-reason-display" id="changeReasonDisplay" style="display: none;">
+                <div class="reason-title">
+                    <span>📝</span>
+                    <span>变更原因</span>
+                </div>
+                <div class="reason-content" id="changeReasonText">
+                    因业主需求变更，需要增加部分水电点位，涉及合同金额调整。新增卫生间水电点位5个，厨房水电点位3个，阳台水电点位2个。
+                </div>
+            </div>
+
+            <div class="change-summary-card" id="changeSummaryDisplay" style="display: none;">
+                <div class="summary-header">
+                    <span>📊</span>
+                    <span>变更内容摘要</span>
+                </div>
+                <div class="summary-list" id="changeSummaryList">
+                    <div class="summary-item">
+                        <div class="dot"></div>
+                        <div>合同金额：<span class="deleted">¥80,000.00</span> → <span class="added">¥95,000.00</span></div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="dot"></div>
+                        <div>新增阶段：<span class="added">阶段三 - 新增点位安装</span></div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="dot"></div>
+                        <div>新增任务：<span class="added">新增点位布线、新增点位验收</span></div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="dot"></div>
+                        <div>修改任务：穿线（修改执行标准）</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="change-highlight-banner" id="changeHighlightBanner" style="display: none;">
+                <div class="banner-title">
+                    <span>🔄</span>
+                    <span>变更提示</span>
+                </div>
+                <div class="banner-desc">
+                    以下内容为变更后的最新内容，变更部分已高亮标识。请仔细核对变更内容后确认。
+                </div>
+            </div>
+
             <div class="status-flow-card" id="statusFlowCard">
                 <div class="status-flow-title">
                     <span>合同状态流程</span>
@@ -2898,11 +3314,6 @@
                     <div class="status-flow-step completed">
                         <div class="step-circle">✓</div>
                         <div class="step-label">已确认</div>
-                    </div>
-                    <div class="status-flow-line completed"></div>
-                    <div class="status-flow-step completed">
-                        <div class="step-circle">✓</div>
-                        <div class="step-label">签约中</div>
                     </div>
                     <div class="status-flow-line completed"></div>
                     <div class="status-flow-step current">
@@ -2971,7 +3382,11 @@
                 </div>
                 <div class="info-row">
                     <div class="label">合同金额</div>
-                    <div class="value highlight">¥80,000.00</div>
+                    <div class="value highlight" id="contractAmountRow">¥80,000.00</div>
+                </div>
+                <div class="info-row change-highlight" id="contractAmountChange" style="display: none;">
+                    <div class="label">合同金额</div>
+                    <div class="value"><span class="old-value">¥80,000.00</span><span class="new-value">¥95,000.00</span></div>
                 </div>
             </div>
             
@@ -3014,7 +3429,9 @@
                         一、工程概况<br>
                         工程名称：XX小区整体装修水电工程<br>
                         工程地点：XX市XX区XX路XX号<br>
-                        工程内容：强电、弱电、给排水等水电工程...
+                        工程内容：强电、弱电、给排水等水电工程...<br><br>
+                        <span class="change-highlight-text" id="changeHighlightText" style="display: none;"><strong>第四条 变更条款（新增）</strong><br>
+                        因业主需求变更，新增水电点位安装工程，具体内容详见变更附件。本条款经双方确认后生效。</span>
                     </div>
                 </div>
             </div>
@@ -3109,10 +3526,10 @@
                                     <div class="task-desc">已完成 · 2024-01-22</div>
                                 </div>
                             </div>
-                            <div class="task-item" onclick="location.href='prototype-task-detail.html'">
+                            <div class="task-item task-modified" id="modifiedTaskItem" onclick="location.href='prototype-task-detail.html'">
                                 <div class="task-status in-progress">⋯</div>
                                 <div class="task-info">
-                                    <div class="task-name">穿线</div>
+                                    <div class="task-name">穿线 <span class="task-change-tag modified" id="modifiedTaskTag" style="display: none;">已修改</span></div>
                                     <div class="task-meta-row">
                                         <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
                                         <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、王五、赵六</span>
@@ -3176,6 +3593,45 @@
                                     <div class="task-meta-row">
                                         <span class="task-meta-item"><span class="role-tag executor">执行</span> 王五</span>
                                         <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、李四、赵六</span>
+                                    </div>
+                                    <div class="task-desc">待开始</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stage-item stage-added" id="newStageItem" style="display: none;">
+                        <div class="stage-header" onclick="toggleStage(this)">
+                            <div class="stage-icon" style="background: linear-gradient(135deg, #52C41A 0%, #73D13D 100%);">+</div>
+                            <div class="stage-info">
+                                <div class="stage-name">新增点位安装</div>
+                                <span class="stage-change-tag added">新增</span>
+                                <div class="stage-meta">2个任务 · 待开始</div>
+                            </div>
+                            <div class="stage-progress">
+                                <div class="percent" style="color: #52C41A;">0%</div>
+                            </div>
+                            <div class="arrow expanded">▼</div>
+                        </div>
+                        <div class="stage-tasks show">
+                            <div class="task-item task-added" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-status pending">○</div>
+                                <div class="task-info">
+                                    <div class="task-name">新增点位布线 <span class="task-change-tag added">新增</span></div>
+                                    <div class="task-meta-row">
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 李四</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、业主</span>
+                                    </div>
+                                    <div class="task-desc">待开始</div>
+                                </div>
+                            </div>
+                            <div class="task-item task-added" onclick="location.href='prototype-task-detail.html'">
+                                <div class="task-status pending">○</div>
+                                <div class="task-info">
+                                    <div class="task-name">新增点位验收 <span class="task-change-tag added">新增</span></div>
+                                    <div class="task-meta-row">
+                                        <span class="task-meta-item"><span class="role-tag executor">执行</span> 王五</span>
+                                        <span class="task-meta-item"><span class="role-tag confirmer">确认</span> 张三、业主</span>
                                     </div>
                                     <div class="task-desc">待开始</div>
                                 </div>
@@ -3267,6 +3723,14 @@
                     <div class="card-title">
                         <span>📁 补充文件</span>
                     </div>
+                    <div class="attachment-item attachment-added" id="newAttachmentItem" style="display: none; position: relative;">
+                        <div class="file-icon">📐</div>
+                        <div class="file-info">
+                            <div class="file-name">变更附件-新增点位图纸.dwg</div>
+                            <div class="file-meta">5.2MB · 2024-02-01上传</div>
+                        </div>
+                        <div class="download-btn" onclick="showCustomToast('下载文件')">⬇</div>
+                    </div>
                     <div class="attachment-item">
                         <div class="file-icon">📊</div>
                         <div class="file-info">
@@ -3338,6 +3802,18 @@
                                 <div class="type-desc">包含合同金额、正文或附件变更，需经平台审核、双方确认、重新签约</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                <div class="change-section">
+                    <div class="section-title">
+                        <span class="icon">📝</span>
+                        <span>变更原因 <span style="color: var(--error-color);">*</span></span>
+                    </div>
+                    <textarea class="change-reason-input" id="changeReasonInput" placeholder="请详细说明变更原因，如：因业主需求变更、现场实际情况调整等..." oninput="checkChangeReason()"></textarea>
+                    <div class="change-reason-tip">
+                        <span>变更原因将展示给对方和平台审核人员</span>
+                        <span id="changeReasonCount">0/500</span>
                     </div>
                 </div>
                 
@@ -3930,22 +4406,98 @@
                 <div class="modal-header">
                     <div class="title">合同版本记录</div>
                 </div>
-                <div class="modal-body">
-                    <div class="version-item">
-                        <div class="version-tag current">V1</div>
-                        <div class="version-info">
-                            <div class="version-name">初始版本（当前）</div>
-                            <div class="version-date">2024-01-10 创建</div>
+                <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                    <div class="version-section">
+                        <div class="version-section-title">版本历史</div>
+                        <div class="version-list" id="versionList">
+                            <div class="version-item">
+                                <div class="version-tag current">V2</div>
+                                <div class="version-info">
+                                    <div class="version-name">变更版本（当前）</div>
+                                    <div class="version-desc">变更内容：阶段任务调整</div>
+                                    <div class="version-date">2024-02-15 变更生效</div>
+                                </div>
+                                <div class="view-btn">查看</div>
+                            </div>
+                            <div class="version-item">
+                                <div class="version-tag">V1</div>
+                                <div class="version-info">
+                                    <div class="version-name">初始版本</div>
+                                    <div class="version-desc">首次签约版本</div>
+                                    <div class="version-date">2024-01-10 签约生效</div>
+                                </div>
+                                <div class="view-btn">查看</div>
+                            </div>
                         </div>
-                        <div class="view-btn">查看</div>
                     </div>
-                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
-                        <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">状态流转记录</div>
-                        <div style="font-size: 12px; color: #595959; line-height: 1.8;">
-                            <div>2024-01-05 创建合同（拟定中）</div>
-                            <div>2024-01-06 提交确认（确认中）</div>
-                            <div>2024-01-08 乙方确认（已确认）</div>
-                            <div>2024-01-10 上传签约文件（已签约）</div>
+                    
+                    <div class="status-flow-section">
+                        <div class="status-flow-section-title">状态流转记录</div>
+                        <div class="status-flow-timeline" id="statusFlowTimeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot success"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">创建合同</div>
+                                    <div class="timeline-desc">拟定中</div>
+                                    <div class="timeline-time">2024-01-05 10:00</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot success"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">提交确认</div>
+                                    <div class="timeline-desc">进入平台审核</div>
+                                    <div class="timeline-time">2024-01-06 14:30</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot success"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">平台审核通过</div>
+                                    <div class="timeline-desc">审核人：运营专员李华</div>
+                                    <div class="timeline-time">2024-01-07 09:15</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot success"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">乙方确认合同</div>
+                                    <div class="timeline-desc">确认人：XX装修公司</div>
+                                    <div class="timeline-time">2024-01-08 16:20</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot success"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">上传签约文件</div>
+                                    <div class="timeline-desc">上传人：张三</div>
+                                    <div class="timeline-time">2024-01-10 15:30</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot success"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">确认签约</div>
+                                    <div class="timeline-desc">合同正式生效（V1版本）</div>
+                                    <div class="timeline-time">2024-01-10 17:00</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot primary"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">发起变更</div>
+                                    <div class="timeline-desc">变更类型：仅阶段任务变更</div>
+                                    <div class="timeline-time">2024-02-12 10:00</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot primary"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">变更确认</div>
+                                    <div class="timeline-desc">变更生效（V2版本）</div>
+                                    <div class="timeline-time">2024-02-15 14:30</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4055,47 +4607,92 @@
                     </div>
                     <div class="arrow">›</div>
                 </div>
-                <div class="export-option" onclick="showCustomToast('发送到邮箱'); closeExportModal();">
-                    <div class="icon">📧</div>
-                    <div class="info">
-                        <div class="title">发送到邮箱</div>
-                        <div class="desc">生成PDF文件并发送到指定邮箱</div>
-                    </div>
-                    <div class="arrow">›</div>
-                </div>
             </div>
         </div>
         
         <div class="toast" id="toast"></div>
         
-        <div class="modal-overlay" id="changeRecordModal">
+        <div class="modal-overlay change-record-modal" id="changeRecordModal">
             <div class="modal">
                 <div class="modal-header">
                     <div class="title">变更记录</div>
                 </div>
                 <div class="modal-body">
                     <div class="version-item">
-                        <div class="version-tag current">V1</div>
+                        <div class="version-tag current">V3</div>
                         <div class="version-info">
-                            <div class="version-name">初始版本（当前）</div>
-                            <div class="version-date">2024-01-10 10:30 创建</div>
+                            <div class="version-name">第三次变更（当前）<span class="version-status-tag success">变更成功</span></div>
+                            <div class="version-date">2024-03-15 生效</div>
                         </div>
-                        <div class="view-btn" onclick="showCustomToast('查看详情')">查看</div>
+                        <div class="view-btn" onclick="viewChangeVersion('v3')">查看</div>
                     </div>
-                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
-                        <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 8px;">变更历史</div>
+                    <div class="version-item">
+                        <div class="version-tag">V2</div>
+                        <div class="version-info">
+                            <div class="version-name">第二次变更<span class="version-status-tag success">变更成功</span></div>
+                            <div class="version-date">2024-02-20 生效</div>
+                        </div>
+                        <div class="view-btn" onclick="viewChangeVersion('v2')">查看</div>
+                    </div>
+                    <div class="version-item">
+                        <div class="version-tag">V1</div>
+                        <div class="version-info">
+                            <div class="version-name">初始版本</div>
+                            <div class="version-date">2024-01-15 生效</div>
+                        </div>
+                        <div class="view-btn" onclick="viewChangeVersion('v1')">查看</div>
+                    </div>
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #E8E8E8;">
+                        <div style="font-size: 12px; color: #8C8C8C; margin-bottom: 12px;">变更历史</div>
                         <div style="font-size: 12px; color: #595959; line-height: 1.8;">
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <span style="color: var(--success-color);">●</span>
-                                <span>2024-01-10 合同创建</span>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
+                                <span style="color: var(--success-color); margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-03-15 第三次变更生效</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">变更内容：新增阶段任务，金额调整¥15,000</div>
+                                </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <span style="color: var(--primary-color);">●</span>
-                                <span>2024-01-12 双方确认完成</span>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
+                                <span style="color: var(--primary-color); margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-03-10 变更确认通过</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">双方确认同意变更内容</div>
+                                </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="color: var(--warning-color);">●</span>
-                                <span>2024-01-15 签约完成</span>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
+                                <span style="color: #13C2C2; margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-03-08 平台审核通过</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">运营人员审核通过变更申请</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
+                                <span style="color: var(--warning-color); margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-03-05 发起变更申请</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">发起人：张三（项目经理）</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; padding-top: 12px; border-top: 1px dashed #E8E8E8;">
+                                <span style="color: var(--success-color); margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-02-20 第二次变更生效</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">变更内容：合同金额调整¥10,000</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px;">
+                                <span style="color: var(--error-color); margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-02-10 变更失败</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">对方驳回变更申请</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; padding-top: 12px; border-top: 1px dashed #E8E8E8;">
+                                <span style="color: var(--success-color); margin-top: 3px;">●</span>
+                                <div>
+                                    <div style="color: #262626;">2024-01-15 合同签约完成</div>
+                                    <div style="color: #8C8C8C; font-size: 11px;">初始版本正式生效</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4194,7 +4791,6 @@
         <a href="prototype-project-detail.html" class="page-nav-item">项目详情</a>
         <a href="prototype-contract-detail.html" class="page-nav-item active">合同详情</a>
         <a href="prototype-task-detail.html" class="page-nav-item">任务详情</a>
-        <a href="prototype-task-acceptance.html" class="page-nav-item">临时任务</a>
         <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
             <div class="page-nav-title">合同状态切换</div>
             <div class="status-switcher">
@@ -4208,8 +4804,6 @@
                 <div class="status-switch-item" onclick="updateContractStatus('confirming_receiver')">确认中(待确认方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirmed')">已确认</div>
                 <div class="status-switch-item" onclick="updateContractStatus('confirmed_party_a')">已确认（甲方）</div>
-                <div class="status-switch-item" onclick="updateContractStatus('signing_wait')">待对方确认签约</div>
-                <div class="status-switch-item" onclick="updateContractStatus('signing')">待确认签约</div>
                 <div class="status-switch-item" onclick="updateContractStatus('signed')">已签约</div>
                 <div class="status-switch-item" onclick="updateContractStatus('changing')">变更中(发起方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('change_confirming')">变更中(待确认方)</div>
@@ -4222,8 +4816,7 @@
                 <div class="status-switch-item" onclick="updateContractStatus('change_platform_rejected')">变更审核驳回</div>
                 <div class="status-switch-item" onclick="updateContractStatus('change_confirming_sender')">变更确认中(发起方)</div>
                 <div class="status-switch-item" onclick="updateContractStatus('change_confirming_receiver')">变更确认中(待确认方)</div>
-                <div class="status-switch-item" onclick="updateContractStatus('change_signing_wait')">变更签约中(待上传)</div>
-                <div class="status-switch-item" onclick="updateContractStatus('change_signing')">变更签约确认中</div>
+                <div class="status-switch-item" onclick="updateContractStatus('change_signing_wait')">变更签约中</div>
             </div>
         </div>
     </div>
@@ -4339,7 +4932,7 @@
             },
             confirmed: {
                 text: '已确认',
-                desc: '双方已确认，请上传签约后的合同附件',
+                desc: '双方已确认，请上传签约后的合同附件，上传后合同正式生效',
                 bannerClass: 'confirmed',
                 showPcGuide: false,
                 actions: [
@@ -4351,30 +4944,8 @@
                 desc: '双方已确认，等待乙方上传签约附件',
                 bannerClass: 'confirmed',
                 showPcGuide: false,
-                isPartyA: true,
                 actions: [
                     { text: '待乙方上传签约附件', type: 'primary', action: 'wait', disabled: true }
-                ]
-            },
-            signing: {
-                text: '待确认签约',
-                desc: '对方已上传签约文件，请确认后合同正式生效',
-                bannerClass: 'signing',
-                showPcGuide: false,
-                readonly: true,
-                actions: [
-                    { text: '驳回', type: 'secondary', action: 'reject_sign' },
-                    { text: '确认签约文件', type: 'primary', action: 'confirm_sign' }
-                ]
-            },
-            signing_wait: {
-                text: '待对方确认签约',
-                desc: '签约文件已上传，等待对方确认后合同正式生效',
-                bannerClass: 'signing-wait',
-                showPcGuide: false,
-                readonly: true,
-                actions: [
-                    { text: '撤回签约文件', type: 'secondary', action: 'withdraw_sign' }
                 ]
             },
             signed: {
@@ -4456,25 +5027,13 @@
             },
             change_signing_wait: {
                 text: '变更签约中',
-                desc: '变更已确认，请上传线下已签约的合同变更文件',
+                desc: '变更已确认，请上传线下已签约的合同变更文件，上传后变更正式生效',
                 bannerClass: 'confirmed',
                 readonly: true,
                 showPcGuide: false,
                 isChangeFlow: true,
                 actions: [
                     { text: '上传变更签约文件', type: 'primary', action: 'upload_change_sign' }
-                ]
-            },
-            change_signing: {
-                text: '变更签约确认中',
-                desc: '对方已上传变更签约文件，请确认后变更正式生效',
-                bannerClass: 'signing',
-                readonly: true,
-                showPcGuide: false,
-                isChangeFlow: true,
-                actions: [
-                    { text: '驳回签约文件', type: 'secondary', action: 'reject_change_sign' },
-                    { text: '确认签约文件', type: 'primary', action: 'confirm_change_sign' }
                 ]
             }
         };
@@ -4621,9 +5180,7 @@
                 resubmit_change: { title: '重新发起变更', message: '确定要重新发起变更申请吗？提交后将由平台运营人员进行审核。' },
                 reject_change_flow: { title: '驳回变更', message: '确定要驳回变更申请吗？请说明驳回原因。' },
                 confirm_change_flow: { title: '确认变更', message: '确定要确认变更吗？确认后需上传签约文件。' },
-                upload_change_sign: { title: '上传变更签约文件', message: '请选择要上传的变更签约文件（支持PDF、JPG、PNG格式）。' },
-                reject_change_sign: { title: '驳回签约文件', message: '确定要驳回变更签约文件吗？请说明驳回原因。' },
-                confirm_change_sign: { title: '确认签约文件', message: '确定要确认变更签约文件吗？确认后变更将正式生效。' }
+                upload_change_sign: { title: '上传变更签约文件', message: '请选择要上传的变更签约文件（支持PDF、JPG、PNG格式）。' }
             };
             
             if (action === 'upload') {
@@ -4634,35 +5191,14 @@
             
             if (action === 'upload_change_sign') {
                 closeModal();
-                showCustomToast('变更签约文件已上传，等待对方确认');
-                updateContractStatus('change_signing');
+                showCustomToast('变更签约文件已上传！变更已正式生效，系统已生成新的版本记录。');
+                updateContractStatus('signed');
                 return;
             }
             
             if (action === 'progress') {
                 closeModal();
                 showCustomToast('跳转到合同进度页面');
-                return;
-            }
-            
-            if (action === 'reject_sign') {
-                closeModal();
-                showCustomToast('签约已驳回！系统已通知对方。');
-                updateContractStatus('confirmed');
-                return;
-            }
-            
-            if (action === 'confirm_sign') {
-                closeModal();
-                showCustomToast('签约确认成功！合同已正式生效。');
-                updateContractStatus('signed');
-                return;
-            }
-            
-            if (action === 'withdraw_sign') {
-                closeModal();
-                showCustomToast('已撤回签约文件，可重新上传');
-                updateContractStatus('confirmed');
                 return;
             }
             
@@ -4708,15 +5244,6 @@
             } else if (title === '确认变更') {
                 showCustomToast('变更已确认！变更内容已生效，系统已生成新的版本记录。');
                 updateContractStatus('signed');
-            } else if (title === '撤回签约文件') {
-                showCustomToast('已撤回签约文件，可重新上传');
-                updateContractStatus('confirmed');
-            } else if (title === '驳回签约') {
-                showCustomToast('签约已驳回！系统已通知对方。');
-                updateContractStatus('confirmed');
-            } else if (title === '确认签约') {
-                showCustomToast('签约确认成功！合同已正式生效。');
-                updateContractStatus('signed');
             } else if (title === '撤回变更申请') {
                 showCustomToast('已撤回变更申请，可重新编辑变更内容');
                 updateContractStatus('signed');
@@ -4730,13 +5257,7 @@
                 showCustomToast('变更已确认！请上传变更签约文件');
                 updateContractStatus('change_signing_wait');
             } else if (title === '上传变更签约文件') {
-                showCustomToast('变更签约文件已上传，等待对方确认');
-                updateContractStatus('change_signing');
-            } else if (title === '驳回签约文件') {
-                showCustomToast('签约文件已驳回！系统已通知对方。');
-                updateContractStatus('change_signing_wait');
-            } else if (title === '确认签约文件') {
-                showCustomToast('变更签约确认成功！变更已正式生效，系统已生成新的版本记录。');
+                showCustomToast('变更签约文件已上传！变更已正式生效，系统已生成新的版本记录。');
                 updateContractStatus('signed');
             } else {
                 showCustomToast('操作成功！');
@@ -4744,7 +5265,233 @@
         }
         
         function showVersionModal() {
+            updateVersionContent();
             document.getElementById('versionModal').classList.add('show');
+        }
+        
+        function updateVersionContent() {
+            const versionList = document.getElementById('versionList');
+            const statusFlowTimeline = document.getElementById('statusFlowTimeline');
+            
+            const versionData = {
+                'draft': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本（草稿）', desc: '合同创建中', date: '2024-01-05 创建', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'primary' }
+                    ]
+                },
+                'platform_reviewing': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本（待审核）', desc: '已提交平台审核', date: '2024-01-05 创建', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'primary' }
+                    ]
+                },
+                'platform_rejected': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本（已驳回）', desc: '审核未通过', date: '2024-01-05 创建', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核驳回', desc: '驳回原因：合同条款不完整', time: '2024-01-07 09:15', type: 'error' }
+                    ]
+                },
+                'confirming_sender': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本', desc: '等待对方确认', date: '2024-01-05 创建', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' }
+                    ]
+                },
+                'confirming_receiver': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本', desc: '待我方确认', date: '2024-01-05 创建', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' }
+                    ]
+                },
+                'confirmed': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本', desc: '双方已确认，待签约', date: '2024-01-05 创建', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' }
+                    ]
+                },
+                'signed': {
+                    versions: [
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: true }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' }
+                    ]
+                },
+                'changing': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（变更中）', desc: '等待对方确认', date: '2024-02-12 发起变更', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：仅阶段任务变更', time: '2024-02-12 10:00', type: 'primary' }
+                    ]
+                },
+                'change_confirming': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（待确认）', desc: '请确认或驳回', date: '2024-02-12 发起变更', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：仅阶段任务变更', time: '2024-02-12 10:00', type: 'primary' }
+                    ]
+                },
+                'change_platform_reviewing': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（审核中）', desc: '平台审核中', date: '2024-02-12 发起变更', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：含其他内容变更', time: '2024-02-12 10:00', type: 'warning' },
+                        { title: '提交平台审核', desc: '等待平台审核', time: '2024-02-12 10:05', type: 'primary' }
+                    ]
+                },
+                'change_platform_rejected': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（已驳回）', desc: '审核未通过', date: '2024-02-12 发起变更', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：含其他内容变更', time: '2024-02-12 10:00', type: 'warning' },
+                        { title: '提交平台审核', desc: '等待平台审核', time: '2024-02-12 10:05', type: 'success' },
+                        { title: '平台审核驳回', desc: '驳回原因：变更内容不符合规范', time: '2024-02-13 09:00', type: 'error' }
+                    ]
+                },
+                'change_confirming_sender': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（确认中）', desc: '等待对方确认', date: '2024-02-12 发起变更', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：含其他内容变更', time: '2024-02-12 10:00', type: 'warning' },
+                        { title: '提交平台审核', desc: '等待平台审核', time: '2024-02-12 10:05', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员王芳', time: '2024-02-13 14:00', type: 'success' }
+                    ]
+                },
+                'change_confirming_receiver': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（待确认）', desc: '请确认或驳回', date: '2024-02-12 发起变更', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：含其他内容变更', time: '2024-02-12 10:00', type: 'warning' },
+                        { title: '提交平台审核', desc: '等待平台审核', time: '2024-02-12 10:05', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员王芳', time: '2024-02-13 14:00', type: 'success' }
+                    ]
+                },
+                'change_signing_wait': {
+                    versions: [
+                        { tag: 'V2', name: '变更版本（待签约）', desc: '请上传签约文件', date: '2024-02-15 变更确认', current: true },
+                        { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: false }
+                    ],
+                    timeline: [
+                        { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                        { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                        { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                        { title: '上传签约文件', desc: '上传人：张三，合同正式生效（V1版本）', time: '2024-01-10 15:30', type: 'success' },
+                        { title: '发起变更', desc: '变更类型：含其他内容变更', time: '2024-02-12 10:00', type: 'warning' },
+                        { title: '提交平台审核', desc: '等待平台审核', time: '2024-02-12 10:05', type: 'success' },
+                        { title: '平台审核通过', desc: '审核人：运营专员王芳', time: '2024-02-13 14:00', type: 'success' },
+                        { title: '变更确认', desc: '确认人：XX装修公司', time: '2024-02-15 10:00', type: 'success' }
+                    ]
+                }
+            };
+            
+            const defaultData = {
+                versions: [
+                    { tag: 'V1', name: '初始版本', desc: '首次签约版本', date: '2024-01-10 签约生效', current: true }
+                ],
+                timeline: [
+                    { title: '创建合同', desc: '拟定中', time: '2024-01-05 10:00', type: 'success' },
+                    { title: '提交确认', desc: '进入平台审核', time: '2024-01-06 14:30', type: 'success' },
+                    { title: '平台审核通过', desc: '审核人：运营专员李华', time: '2024-01-07 09:15', type: 'success' },
+                    { title: '乙方确认合同', desc: '确认人：XX装修公司', time: '2024-01-08 16:20', type: 'success' },
+                    { title: '上传签约文件', desc: '上传人：张三', time: '2024-01-10 15:30', type: 'success' },
+                    { title: '确认签约', desc: '合同正式生效（V1版本）', time: '2024-01-10 17:00', type: 'success' }
+                ]
+            };
+            
+            const data = versionData[currentStatus] || defaultData;
+            
+            versionList.innerHTML = data.versions.map(v => `
+                <div class="version-item">
+                    <div class="version-tag ${v.current ? 'current' : ''}">${v.tag}</div>
+                    <div class="version-info">
+                        <div class="version-name">${v.name}</div>
+                        <div class="version-desc">${v.desc}</div>
+                        <div class="version-date">${v.date}</div>
+                    </div>
+                    <div class="view-btn">查看</div>
+                </div>
+            `).join('');
+            
+            statusFlowTimeline.innerHTML = data.timeline.map(t => `
+                <div class="timeline-item">
+                    <div class="timeline-dot ${t.type}"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">${t.title}</div>
+                        <div class="timeline-desc">${t.desc}</div>
+                        <div class="timeline-time">${t.time}</div>
+                    </div>
+                </div>
+            `).join('');
         }
         
         function closeVersionModal() {
@@ -4781,6 +5528,16 @@
             document.getElementById('changeRecordModal').classList.remove('show');
         }
         
+        function viewChangeVersion(version) {
+            closeChangeRecordModal();
+            const versionNames = {
+                'v1': '初始版本',
+                'v2': '第二次变更',
+                'v3': '第三次变更（当前）'
+            };
+            showCustomToast('正在加载' + versionNames[version] + '合同详情...\n\n将展示该版本下的合同基本信息、合同正文、阶段任务、附件等内容');
+        }
+        
         function exportToPDF() {
             closeExportModal();
             showToast('正在生成PDF文件...');
@@ -4808,6 +5565,23 @@
         
         let hasChangeContent = false;
         let changeType = 'stage_only';
+        let changeReason = '';
+
+        function checkChangeReason() {
+            const input = document.getElementById('changeReasonInput');
+            const countEl = document.getElementById('changeReasonCount');
+            const value = input.value.trim();
+            changeReason = value;
+            countEl.textContent = value.length + '/500';
+            
+            if (value.length > 500) {
+                input.value = value.substring(0, 500);
+                changeReason = input.value;
+                countEl.textContent = '500/500';
+            }
+            
+            checkChangeContent();
+        }
         
         function selectChangeType(element, type) {
             changeType = type;
@@ -4840,10 +5614,10 @@
                 });
             });
             
-            hasChangeContent = hasContent;
+            hasChangeContent = hasContent && changeReason.length > 0;
             
             const submitBtn = document.getElementById('submitChangeBtn');
-            if (hasContent) {
+            if (hasContent && changeReason.length > 0) {
                 submitBtn.classList.remove('disabled');
             } else {
                 submitBtn.classList.add('disabled');
@@ -5429,6 +6203,11 @@
         }
         
         function submitChange() {
+            if (!changeReason || changeReason.length === 0) {
+                showCustomToast('请填写变更原因');
+                return;
+            }
+            
             if (!hasChangeContent) {
                 showCustomToast('请添加变更内容后再提交');
                 return;
@@ -5501,6 +6280,49 @@
                 pcGuide.style.display = 'none';
             }
             
+            const changeReasonDisplay = document.getElementById('changeReasonDisplay');
+            const changeSummaryDisplay = document.getElementById('changeSummaryDisplay');
+            const changeHighlightBanner = document.getElementById('changeHighlightBanner');
+            const changeStates = ['changing', 'change_confirming', 'change_platform_reviewing', 'change_confirming_sender', 'change_confirming_receiver', 'change_signing_wait', 'change_signing'];
+            
+            if (changeStates.includes(status)) {
+                if (changeReasonDisplay) changeReasonDisplay.style.display = 'block';
+                if (changeSummaryDisplay) changeSummaryDisplay.style.display = 'block';
+                if (changeHighlightBanner) changeHighlightBanner.style.display = 'block';
+                
+                const newStageItem = document.getElementById('newStageItem');
+                const modifiedTaskTag = document.getElementById('modifiedTaskTag');
+                const contractAmountRow = document.getElementById('contractAmountRow');
+                const contractAmountChange = document.getElementById('contractAmountChange');
+                const newAttachmentItem = document.getElementById('newAttachmentItem');
+                const changeHighlightText = document.getElementById('changeHighlightText');
+                
+                if (newStageItem) newStageItem.style.display = 'block';
+                if (modifiedTaskTag) modifiedTaskTag.style.display = 'inline';
+                if (contractAmountRow) contractAmountRow.style.display = 'none';
+                if (contractAmountChange) contractAmountChange.style.display = 'flex';
+                if (newAttachmentItem) newAttachmentItem.style.display = 'flex';
+                if (changeHighlightText) changeHighlightText.style.display = 'inline';
+            } else {
+                if (changeReasonDisplay) changeReasonDisplay.style.display = 'none';
+                if (changeSummaryDisplay) changeSummaryDisplay.style.display = 'none';
+                if (changeHighlightBanner) changeHighlightBanner.style.display = 'none';
+                
+                const newStageItem = document.getElementById('newStageItem');
+                const modifiedTaskTag = document.getElementById('modifiedTaskTag');
+                const contractAmountRow = document.getElementById('contractAmountRow');
+                const contractAmountChange = document.getElementById('contractAmountChange');
+                const newAttachmentItem = document.getElementById('newAttachmentItem');
+                const changeHighlightText = document.getElementById('changeHighlightText');
+                
+                if (newStageItem) newStageItem.style.display = 'none';
+                if (modifiedTaskTag) modifiedTaskTag.style.display = 'none';
+                if (contractAmountRow) contractAmountRow.style.display = 'flex';
+                if (contractAmountChange) contractAmountChange.style.display = 'none';
+                if (newAttachmentItem) newAttachmentItem.style.display = 'none';
+                if (changeHighlightText) changeHighlightText.style.display = 'none';
+            }
+            
             const sectionTabs = document.querySelector('.section-tabs');
             const contentSection = document.getElementById('contentSection');
             const stagesSection = document.getElementById('stagesSection');
@@ -5555,8 +6377,6 @@
                 'confirming_receiver': '确认中(待确认方)',
                 'confirmed': '已确认',
                 'confirmed_party_a': '已确认（甲方）',
-                'signing_wait': '待对方确认签约',
-                'signing': '待确认签约',
                 'signed': '已签约',
                 'changing': '变更中(发起方)',
                 'change_confirming': '变更中(待确认方)',
@@ -5564,8 +6384,7 @@
                 'change_platform_rejected': '变更审核驳回',
                 'change_confirming_sender': '变更确认中(发起方)',
                 'change_confirming_receiver': '变更确认中(待确认方)',
-                'change_signing_wait': '变更签约中(待上传)',
-                'change_signing': '变更签约确认中'
+                'change_signing_wait': '变更签约中'
             };
             document.querySelectorAll('.status-switch-item').forEach(item => {
                 if (item.textContent === statusTextMap[status]) {
@@ -5577,7 +6396,7 @@
             
             const signFileCard = document.getElementById('signFileCard');
             const signFileUploadBtn = document.getElementById('signFileUploadBtn');
-            const showSignFileStates = ['confirmed', 'signing_wait', 'signing', 'signed', 'changing', 'change_confirming'];
+            const showSignFileStates = ['confirmed', 'signed', 'changing', 'change_confirming'];
             const canUploadSignFileStates = ['confirmed'];
             
             if (showSignFileStates.includes(status)) {
@@ -5608,7 +6427,6 @@
                 'platform_reviewing', 
                 'confirming_sender', 
                 'confirmed', 
-                'signing_wait', 
                 'signed'
             ];
             
@@ -5665,14 +6483,6 @@
                     desc: '双方已确认，请上传签约文件',
                     show: true
                 },
-                'signing_wait': {
-                    desc: '已上传签约文件，等待对方确认',
-                    show: true
-                },
-                'signing': {
-                    desc: '请确认签约文件是否与线下签署一致',
-                    show: true
-                },
                 'signed': {
                     desc: '合同已签约生效，可发起变更申请',
                     show: true
@@ -5705,8 +6515,6 @@
                 'confirming_sender': { a: '已确认', b: '确认中' },
                 'confirming_receiver': { a: '已确认', b: '确认中' },
                 'confirmed': { a: '已确认', b: '已确认' },
-                'signing_wait': { a: '已上传签约', b: '待确认签约' },
-                'signing': { a: '待确认签约', b: '已上传签约' },
                 'signed': { a: '已签约', b: '已签约' },
                 'changing': { a: '变更中', b: '待确认' },
                 'change_confirming': { a: '已确认', b: '变更中' }
@@ -5773,9 +6581,9 @@
                 showCustomToast('请上传签约文件');
                 return;
             }
-            showCustomToast('签约文件已提交！等待对方确认后合同将正式生效。');
+            showCustomToast('签约文件已上传！合同已正式生效。');
             closeSignUploadPage();
-            updateContractStatus('signing_wait');
+            updateContractStatus('signed');
         }
         
         function showSignConfirmModal() {

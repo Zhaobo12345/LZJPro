@@ -60,6 +60,105 @@
             opacity: 0.9;
         }
 
+        .pre-task-block-card {
+            background: linear-gradient(135deg, #FFF7E6 0%, #FFE7BA 100%);
+            border: 1px solid #FFD591;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .pre-task-block-card .block-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .pre-task-block-card .block-icon {
+            font-size: 20px;
+        }
+
+        .pre-task-block-card .block-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #D46B08;
+        }
+
+        .pre-task-block-card .block-desc {
+            font-size: 12px;
+            color: #8C8C8C;
+            margin-bottom: 12px;
+        }
+
+        .pre-task-block-card .pre-task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .pre-task-block-card .pre-task-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 10px 12px;
+            gap: 10px;
+        }
+
+        .pre-task-block-card .pre-task-status {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .pre-task-block-card .pre-task-status.pending {
+            background-color: #FFF7E6;
+            color: #FA8C16;
+        }
+
+        .pre-task-block-card .pre-task-status.in-progress {
+            background-color: #E6F7FF;
+            color: #1890FF;
+        }
+
+        .pre-task-block-card .pre-task-status.completed {
+            background-color: #F6FFED;
+            color: #52C41A;
+        }
+
+        .pre-task-block-card .pre-task-info {
+            flex: 1;
+        }
+
+        .pre-task-block-card .pre-task-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #262626;
+        }
+
+        .pre-task-block-card .pre-task-meta {
+            font-size: 11px;
+            color: #8C8C8C;
+            margin-top: 2px;
+        }
+
+        .pre-task-block-card .pre-task-arrow {
+            font-size: 16px;
+            color: #8C8C8C;
+        }
+
+        .pre-task-block-card .block-tip {
+            font-size: 11px;
+            color: #8C8C8C;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         .people-section {
             display: flex;
             flex-direction: column;
@@ -1281,107 +1380,6 @@
             color: var(--warning-color);
         }
 
-        .help-link {
-            font-size: 12px;
-            color: var(--primary-color);
-            cursor: pointer;
-        }
-
-        .help-modal {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 300;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .help-modal.show {
-            display: flex;
-        }
-
-        .help-modal-content {
-            width: 85%;
-            max-width: 300px;
-            max-height: 80%;
-            background-color: var(--bg-primary);
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .help-modal-header {
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .help-modal-header .title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .help-modal-header .close-btn {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .help-modal-body {
-            padding: 16px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .help-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .help-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .help-item .help-num {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: #FFFFFF;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            flex-shrink: 0;
-        }
-
-        .help-item .help-text {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .help-tip {
-            margin-top: 16px;
-            padding: 10px;
-            background-color: var(--bg-secondary);
-            border-radius: 6px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
         .evaluation-modal {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -1769,12 +1767,30 @@
                 </div>
             </div>
             
+            <div class="pre-task-block-card" id="preTaskBlockCard" style="display: none;">
+                <div class="block-header">
+                    <div class="block-icon">🔒</div>
+                    <div class="block-title">前置任务未完成</div>
+                </div>
+                <div class="block-desc">当前任务设置了按序执行，需等待前置任务完成后才能开始执行</div>
+                <div class="pre-task-list" id="preTaskList">
+                    <div class="pre-task-item">
+                        <div class="pre-task-status in-progress">进行中</div>
+                        <div class="pre-task-info">
+                            <div class="pre-task-name">开槽布管</div>
+                            <div class="pre-task-meta">执行人：张工 | 预计完成：01-18</div>
+                        </div>
+                        <div class="pre-task-arrow">→</div>
+                    </div>
+                </div>
+                <div class="block-tip">💡 前置任务完成后将自动通知您</div>
+            </div>
+            
             <div class="card">
                 <div class="people-section">
                     <div class="acceptance-flow-card">
                         <div class="acceptance-flow-title">
                             <span>任务流程</span>
-                            <span class="help-link" onclick="showTaskFlowHelp()">说明</span>
                         </div>
                         <div class="acceptance-flow-diagram">
                             <div class="flow-step current" id="flowStep1">
@@ -2185,43 +2201,6 @@
         <input type="file" id="fileInput" accept="image/*,video/*,audio/*" style="display: none;" onchange="handleFileSelect(event)">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleFileSelect(event)">
 
-        <div class="help-modal" id="taskFlowHelpModal">
-            <div class="help-modal-content">
-                <div class="help-modal-header">
-                    <div class="title">任务流程说明</div>
-                    <div class="close-btn" onclick="closeTaskFlowHelp()">✕</div>
-                </div>
-                <div class="help-modal-body">
-                    <div class="help-item">
-                        <div class="help-num">1</div>
-                        <div class="help-text"><strong>待开始：</strong>任务已分配给执行人，等待执行人开始执行</div>
-                    </div>
-                    <div class="help-item">
-                        <div class="help-num">2</div>
-                        <div class="help-text"><strong>确认中（首次）：</strong>执行人首次提交执行记录，等待确认人确认</div>
-                    </div>
-                    <div class="help-item">
-                        <div class="help-num">3</div>
-                        <div class="help-text"><strong>驳回：</strong>确认人驳回任务，任务退回执行人，执行人需重新执行</div>
-                    </div>
-                    <div class="help-item">
-                        <div class="help-num">4</div>
-                        <div class="help-text"><strong>驳回后待开始：</strong>任务已被驳回，执行人需根据驳回原因重新执行</div>
-                    </div>
-                    <div class="help-item">
-                        <div class="help-num">5</div>
-                        <div class="help-text"><strong>确认中（被驳回后）：</strong>执行人重新提交执行记录，等待确认人确认</div>
-                    </div>
-                    <div class="help-item">
-                        <div class="help-num">6</div>
-                        <div class="help-text"><strong>已完成：</strong>所有确认人已确认，任务完成</div>
-                    </div>
-                    <div class="help-tip">💡 若未配置确认人，执行人提交后任务直接完成</div>
-                    <div class="help-tip" style="margin-top: 8px; background-color: #FFF1F0; border-left-color: var(--error-color);">⚠️ 驳回说明：任务被驳回后，历史执行记录和驳回原因会被保留，执行人可根据驳回原因调整后重新提交</div>
-                </div>
-            </div>
-        </div>
-
         <div class="evaluation-modal" id="evaluationModal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -2341,8 +2320,6 @@
         <a href="prototype-task-list.html" class="page-nav-item">任务列表</a>
         <a href="prototype-contract-detail.html" class="page-nav-item">合同详情</a>
         <a href="prototype-task-detail.html" class="page-nav-item active">任务详情</a>
-        <a href="prototype-temp-task-detail.html" class="page-nav-item">临时任务详情</a>
-        <a href="prototype-task-acceptance.html" class="page-nav-item">临时任务</a>
         <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
             <div class="page-nav-title">任务状态切换</div>
             <div class="status-switcher">
@@ -2357,6 +2334,10 @@
                 <div class="status-switch-item" onclick="updateTaskStatus('confirming_after_reject')">确认中（被驳回后）</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('rejected_pending')">驳回后待开始</div>
                 <div class="status-switch-item" onclick="updateTaskStatus('completed_with_reject')">已完成（含驳回）</div>
+            </div>
+            <div class="page-nav-title" style="margin-top: 12px;">前置任务阻塞效果</div>
+            <div class="status-switcher">
+                <div class="status-switch-item" onclick="updateTaskStatus('pending_blocked')">待开始（前置阻塞）</div>
             </div>
         </div>
         <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #E8E8E8;">
@@ -3192,9 +3173,30 @@
             const confirmRecordCard = document.getElementById('confirmRecordCard');
             const confirmerList = document.getElementById('confirmerList');
             const acceptanceProgress = document.getElementById('acceptanceProgress');
+            const preTaskBlockCard = document.getElementById('preTaskBlockCard');
+            
+            if (preTaskBlockCard) preTaskBlockCard.style.display = 'none';
             
             document.querySelectorAll('.status-switch-item').forEach(item => {
                 item.classList.remove('active');
+            });
+            
+            const statusTextMap = {
+                'configuring': '待配置',
+                'pending': '待开始',
+                'in_progress': '执行中',
+                'confirming': '确认中',
+                'completed': '已完成',
+                'confirming_after_reject': '确认中（被驳回后）',
+                'rejected_pending': '驳回后待开始',
+                'completed_with_reject': '已完成（含驳回）',
+                'pending_blocked': '待开始（前置阻塞）'
+            };
+            
+            document.querySelectorAll('.status-switch-item').forEach(item => {
+                if (item.textContent === statusTextMap[status]) {
+                    item.classList.add('active');
+                }
             });
             
             const flowStep1 = document.getElementById('flowStep1');
@@ -3351,6 +3353,57 @@
                 flowStep4.querySelector('.step-label').textContent = '已完成';
                 
                 if (flowProgressText) flowProgressText.textContent = '等待执行';
+                if (flowProgressBar) flowProgressBar.style.width = '0%';
+                
+            } else if (status === 'pending_blocked') {
+                header.className = 'task-header-card';
+                statusBadge.textContent = '待开始';
+                confirmProgress.textContent = '等待前置任务完成';
+                
+                const preTaskBlockCard = document.getElementById('preTaskBlockCard');
+                if (preTaskBlockCard) preTaskBlockCard.style.display = 'block';
+                
+                executionRecordCard.style.display = 'none';
+                confirmRecordCard.style.display = 'none';
+                
+                const executorList = document.getElementById('executorList');
+                const executorItem = document.getElementById('executorItem');
+                const noExecutorView = document.getElementById('noExecutorView');
+                const addExecutorBtn = document.getElementById('addExecutorBtn');
+                
+                executorList.style.display = 'flex';
+                executorItem.style.display = 'flex';
+                noExecutorView.style.display = 'none';
+                addExecutorBtn.style.display = 'none';
+                
+                renderConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                if (currentUserRole === 'executor') {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary disabled" style="width: 100%; opacity: 0.6; cursor: not-allowed;">
+                            <span style="margin-right: 6px;">🔒</span> 前置任务未完成
+                        </div>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
+                    `;
+                }
+                
+                if (acceptanceProgress) acceptanceProgress.style.display = 'none';
+                
+                flowStep1.className = 'flow-step current';
+                flowStep1.querySelector('.step-icon').textContent = '⏸';
+                flowStep1.querySelector('.step-label').textContent = '待开始';
+                flowStep2.querySelector('.step-icon').textContent = '▶';
+                flowStep2.querySelector('.step-label').textContent = '执行中';
+                flowStep3.querySelector('.step-icon').textContent = '⏳';
+                flowStep3.querySelector('.step-label').textContent = '确认中';
+                flowStep4.querySelector('.step-icon').textContent = '✓';
+                flowStep4.querySelector('.step-label').textContent = '已完成';
+                
+                if (flowProgressText) flowProgressText.textContent = '前置任务阻塞中';
                 if (flowProgressBar) flowProgressBar.style.width = '0%';
                 
             } else if (status === 'in_progress') {
@@ -4373,20 +4426,6 @@
             if (e.target.classList.contains('confirm-modal') || 
                 e.target.classList.contains('upload-modal')) {
                 e.target.classList.remove('show');
-            }
-        });
-        
-        function showTaskFlowHelp() {
-            document.getElementById('taskFlowHelpModal').classList.add('show');
-        }
-        
-        function closeTaskFlowHelp() {
-            document.getElementById('taskFlowHelpModal').classList.remove('show');
-        }
-        
-        document.getElementById('taskFlowHelpModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeTaskFlowHelp();
             }
         });
         
