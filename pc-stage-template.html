@@ -869,25 +869,25 @@
     <div class="pc-modal-overlay" id="taskEditModal">
         <div class="pc-modal" style="width: 700px; max-width: 90%;">
             <div class="pc-modal-header">
-                <div class="pc-modal-title">编辑任务</div>
+                <div class="pc-modal-title" id="taskModalTitle">添加任务</div>
                 <div class="pc-modal-close" onclick="closeTaskEditModal()">×</div>
             </div>
             <div class="pc-modal-body">
                 <div class="pc-form-group">
                     <label class="pc-form-label">任务名称<span class="required">*</span></label>
-                    <input type="text" class="pc-form-input" value="材料验收">
+                    <input type="text" class="pc-form-input" id="taskName" placeholder="请输入任务名称">
                 </div>
                 <div class="pc-form-group">
                     <label class="pc-form-label">执行标准<span class="required">*</span></label>
-                    <textarea class="pc-form-textarea" placeholder="请输入执行标准">核对材料清单，检查材料数量、规格、品牌是否与采购单一致</textarea>
+                    <textarea class="pc-form-textarea" id="taskExecStandard" placeholder="请输入执行标准"></textarea>
                 </div>
                 <div class="pc-form-group">
                     <label class="pc-form-label">确认标准<span class="required">*</span></label>
-                    <textarea class="pc-form-textarea" placeholder="请输入确认标准">确认材料质量合格，数量无误后签字确认</textarea>
+                    <textarea class="pc-form-textarea" id="taskConfirmStandard" placeholder="请输入确认标准"></textarea>
                 </div>
                 <div class="pc-form-group">
                     <label class="pc-form-label">担责标准<span class="required">*</span></label>
-                    <textarea class="pc-form-textarea" placeholder="请输入担责标准">材料验收不合格导致的返工由材料员负责</textarea>
+                    <textarea class="pc-form-textarea" id="taskRespStandard" placeholder="请输入担责标准"></textarea>
                 </div>
             </div>
             <div class="pc-modal-footer">
@@ -1072,27 +1072,27 @@
                 name: '材料进场',
                 order: true,
                 tasks: [
-                    { name: '材料验收' },
-                    { name: '材料入库' }
+                    { name: '材料验收', execStandard: '核对材料清单，检查材料数量、规格、品牌是否与采购单一致', confirmStandard: '确认材料质量合格，数量无误后签字确认', respStandard: '材料验收不合格导致的返工由材料员负责' },
+                    { name: '材料入库', execStandard: '按照材料分类进行入库登记，建立材料台账', confirmStandard: '核对入库数量与采购数量一致，签字确认入库单', respStandard: '入库登记错误导致的材料管理混乱由库管员负责' }
                 ]
             },
             2: {
                 name: '布管布线',
                 order: false,
                 tasks: [
-                    { name: '强电布管' },
-                    { name: '弱电布线' },
-                    { name: '给水管道' },
-                    { name: '排水管道' }
+                    { name: '强电布管', execStandard: '按照图纸要求进行强电线路布管，确保管路横平竖直', confirmStandard: '检查布管是否符合规范，管路固定是否牢固', respStandard: '布管不规范导致的返工由施工人员负责' },
+                    { name: '弱电布线', execStandard: '按照图纸要求进行弱电线路布线，做好标签标识', confirmStandard: '检查布线是否规范，标签是否清晰完整', respStandard: '布线混乱导致的维修困难由施工人员负责' },
+                    { name: '给水管道', execStandard: '按照图纸要求安装给水管道，确保坡度正确', confirmStandard: '进行压力测试，检查无渗漏', respStandard: '管道渗漏导致的损失由施工人员负责' },
+                    { name: '排水管道', execStandard: '按照图纸要求安装排水管道，确保排水通畅', confirmStandard: '进行通水测试，检查排水是否通畅', respStandard: '排水堵塞导致的返工由施工人员负责' }
                 ]
             },
             3: {
                 name: '验收调试',
                 order: true,
                 tasks: [
-                    { name: '通电测试' },
-                    { name: '通水测试' },
-                    { name: '整体验收' }
+                    { name: '通电测试', execStandard: '对强电线路进行通电测试，检查各回路是否正常', confirmStandard: '确认各回路通电正常，无短路跳闸现象', respStandard: '通电测试不彻底导致的安全事故由测试人员负责' },
+                    { name: '通水测试', execStandard: '对给排水系统进行通水测试，检查各出水点是否正常', confirmStandard: '确认各出水点水压正常，排水通畅', respStandard: '通水测试不彻底导致的问题由测试人员负责' },
+                    { name: '整体验收', execStandard: '按照验收标准进行整体验收，填写验收单', confirmStandard: '确认各项指标达标，签署验收合格单', respStandard: '验收不合格项由相关责任人整改' }
                 ]
             }
         };
@@ -1109,13 +1109,13 @@
                 let taskHtml = '';
                 stage.tasks.forEach(task => {
                     taskHtml += `
-                        <div class="task-item">
+                        <div class="task-item" data-name="${task.name}" data-exec-standard="${task.execStandard || ''}" data-confirm-standard="${task.confirmStandard || ''}" data-resp-standard="${task.respStandard || ''}">
                             <div class="task-item-info">
                                 <span style="color: var(--text-tertiary); cursor: grab;">☰</span>
                                 <span class="task-item-name">${task.name}</span>
                             </div>
                             <div class="flex gap-8">
-                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="showTaskEditModal()">编辑</button>
+                                <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTaskItem(this)">编辑</button>
                                 <button class="pc-btn pc-btn-text pc-btn-sm" onclick="deleteTask(this)">删除</button>
                             </div>
                         </div>
@@ -1173,8 +1173,31 @@
             }
         }
 
-        function showTaskEditModal() {
-            document.getElementById('taskEditModal').classList.add('show');
+        function showTaskEditModal(taskItem, isEdit = false) {
+            const modal = document.getElementById('taskEditModal');
+            const title = document.getElementById('taskModalTitle');
+            const nameInput = document.getElementById('taskName');
+            const execInput = document.getElementById('taskExecStandard');
+            const confirmInput = document.getElementById('taskConfirmStandard');
+            const respInput = document.getElementById('taskRespStandard');
+            
+            if (isEdit && taskItem) {
+                title.textContent = '编辑任务';
+                nameInput.value = taskItem.dataset.name || taskItem.querySelector('.task-item-name').textContent;
+                execInput.value = taskItem.dataset.execStandard || '';
+                confirmInput.value = taskItem.dataset.confirmStandard || '';
+                respInput.value = taskItem.dataset.respStandard || '';
+                modal.dataset.editingTask = 'true';
+            } else {
+                title.textContent = '添加任务';
+                nameInput.value = '';
+                execInput.value = '';
+                confirmInput.value = '';
+                respInput.value = '';
+                modal.dataset.editingTask = 'false';
+            }
+            
+            modal.classList.add('show');
         }
 
         function closeTaskEditModal() {
@@ -1182,8 +1205,79 @@
         }
 
         function saveTask() {
-            alert('任务已保存');
+            const nameInput = document.getElementById('taskName');
+            const execInput = document.getElementById('taskExecStandard');
+            const confirmInput = document.getElementById('taskConfirmStandard');
+            const respInput = document.getElementById('taskRespStandard');
+            const modal = document.getElementById('taskEditModal');
+            
+            const name = nameInput.value.trim();
+            const execStandard = execInput.value.trim();
+            const confirmStandard = confirmInput.value.trim();
+            const respStandard = respInput.value.trim();
+            
+            if (!name) {
+                alert('请输入任务名称');
+                nameInput.focus();
+                return;
+            }
+            if (!execStandard) {
+                alert('请输入执行标准');
+                execInput.focus();
+                return;
+            }
+            if (!confirmStandard) {
+                alert('请输入确认标准');
+                confirmInput.focus();
+                return;
+            }
+            if (!respStandard) {
+                alert('请输入担责标准');
+                respInput.focus();
+                return;
+            }
+            
+            const taskListContent = document.getElementById('taskListContent');
+            
+            if (modal.dataset.editingTask === 'true') {
+                const activeTask = document.querySelector('.task-item.editing');
+                if (activeTask) {
+                    activeTask.querySelector('.task-item-name').textContent = name;
+                    activeTask.dataset.name = name;
+                    activeTask.dataset.execStandard = execStandard;
+                    activeTask.dataset.confirmStandard = confirmStandard;
+                    activeTask.dataset.respStandard = respStandard;
+                    activeTask.classList.remove('editing');
+                }
+                alert('任务已更新');
+            } else {
+                const newTask = document.createElement('div');
+                newTask.className = 'task-item';
+                newTask.dataset.name = name;
+                newTask.dataset.execStandard = execStandard;
+                newTask.dataset.confirmStandard = confirmStandard;
+                newTask.dataset.respStandard = respStandard;
+                newTask.innerHTML = `
+                    <div class="task-item-info">
+                        <span style="color: var(--text-tertiary); cursor: grab;">☰</span>
+                        <span class="task-item-name">${name}</span>
+                    </div>
+                    <div class="flex gap-8">
+                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="editTaskItem(this)">编辑</button>
+                        <button class="pc-btn pc-btn-text pc-btn-sm" onclick="deleteTask(this)">删除</button>
+                    </div>
+                `;
+                taskListContent.appendChild(newTask);
+                alert('任务已添加');
+            }
+            
             closeTaskEditModal();
+        }
+
+        function editTaskItem(btn) {
+            const taskItem = btn.closest('.task-item');
+            taskItem.classList.add('editing');
+            showTaskEditModal(taskItem, true);
         }
 
         function deleteTask(btn) {

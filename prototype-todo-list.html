@@ -222,10 +222,10 @@
         <div class="page-content">
             <div class="todo-filter-bar">
                 <div class="todo-filter-btn active" onclick="filterTodo('all', this)">
-                    全部 <span class="badge">10</span>
+                    全部 <span class="badge">15</span>
                 </div>
                 <div class="todo-filter-btn" onclick="filterTodo('pending', this)">
-                    待处理 <span class="badge">7</span>
+                    待处理 <span class="badge">12</span>
                 </div>
                 <div class="todo-filter-btn" onclick="filterTodo('completed', this)">
                     已处理 <span class="badge">3</span>
@@ -344,6 +344,61 @@
                         </div>
                         <div class="item-status" style="background-color: var(--status-success-bg); color: var(--success-color);">已完成</div>
                     </div>
+                    <div class="todo-item" data-status="pending" onclick="location.href='prototype-contract-detail.html?status=changing'">
+                        <div class="item-icon" style="background: linear-gradient(135deg, #FA8C16 0%, #FFA940 100%);">📝</div>
+                        <div class="item-content">
+                            <div class="item-title">
+                                水电合同变更确认
+                                <span class="task-tag" style="background-color: #FFF7E6; color: #FA8C16;">变更</span>
+                            </div>
+                            <div class="item-meta">水电工作组 · 待确认变更内容</div>
+                        </div>
+                        <div class="item-status" style="background-color: #FFF7E6; color: #FA8C16;">待确认</div>
+                    </div>
+                    <div class="todo-item" data-status="confirming" onclick="location.href='prototype-task-detail.html'">
+                        <div class="item-icon contract">🔵</div>
+                        <div class="item-content">
+                            <div class="item-title">
+                                水管打压测试确认
+                                <span class="task-tag contract">合约</span>
+                            </div>
+                            <div class="item-meta">水电工作组 · 确认人：张监理</div>
+                        </div>
+                        <div class="item-status confirming">待确认</div>
+                    </div>
+                    <div class="todo-item" data-status="pending" onclick="location.href='prototype-contract-detail.html?status=platform_reviewing'">
+                        <div class="item-icon" style="background: linear-gradient(135deg, #13C2C2 0%, #36CFC9 100%);">📋</div>
+                        <div class="item-content">
+                            <div class="item-title">
+                                油漆分包合同审核
+                                <span class="task-tag" style="background-color: #E6FFFB; color: #13C2C2;">审核</span>
+                            </div>
+                            <div class="item-meta">油漆工作组 · 平台审核中</div>
+                        </div>
+                        <div class="item-status" style="background-color: #E6FFFB; color: #13C2C2;">待审核</div>
+                    </div>
+                    <div class="todo-item" data-status="pending" onclick="location.href='prototype-task-detail.html'">
+                        <div class="item-icon temp">🟣</div>
+                        <div class="item-content">
+                            <div class="item-title">
+                                临时修补墙面裂缝
+                                <span class="task-tag temp">临时</span>
+                            </div>
+                            <div class="item-meta">泥瓦工作组 · 待接受任务</div>
+                        </div>
+                        <div class="item-status pending">待接受</div>
+                    </div>
+                    <div class="todo-item" data-status="confirming" onclick="location.href='prototype-task-detail.html'">
+                        <div class="item-icon contract">🟡</div>
+                        <div class="item-content">
+                            <div class="item-title">
+                                木门安装验收
+                                <span class="task-tag contract">合约</span>
+                            </div>
+                            <div class="item-meta">木工工作组 · 执行人：赵六</div>
+                        </div>
+                        <div class="item-status confirming">待确认</div>
+                    </div>
                 </div>
             </div>
 
@@ -407,7 +462,7 @@
             }
         }
 
-        filterTodo('contract', document.querySelector('.todo-filter-btn.active'));
+        filterTodo('all', document.querySelector('.todo-filter-btn.active'));
     </script>
 </body>
 </html>

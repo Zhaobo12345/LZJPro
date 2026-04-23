@@ -754,7 +754,7 @@ body {
 }
 
 .pc-modal-overlay.show {
-    display: flex;
+    display: flex !important;
 }
 
 .pc-modal {
@@ -765,6 +765,8 @@ body {
     max-height: 90%;
     display: flex;
     flex-direction: column;
+    position: relative;
+    margin: auto;
 }
 
 .pc-modal-header {
@@ -1057,4 +1059,521 @@ body {
 .pc-page-nav-item.active {
     background-color: var(--primary-color);
     color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   20. 附件列表样式（公共）
+   -------------------------------------------------------------------------- */
+.attachment-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.attachment-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 6px;
+    font-size: 13px;
+    max-width: 250px;
+}
+
+.attachment-item .icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.attachment-item .name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-primary);
+}
+
+.attachment-item .size {
+    color: var(--text-tertiary);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.attachment-item .actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.attachment-item .action-btn {
+    color: var(--text-tertiary);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.attachment-item .action-btn:hover {
+    color: var(--primary-color);
+}
+
+.attachment-item .action-btn.delete:hover {
+    color: var(--error-color);
+}
+
+/* --------------------------------------------------------------------------
+   21. 任务卡片样式（公共）
+   -------------------------------------------------------------------------- */
+.task-card {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.2s;
+}
+
+.task-card:hover {
+    box-shadow: 0 2px 8px var(--shadow-md);
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.task-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.task-status-icon {
+    font-size: 16px;
+    margin-left: 8px;
+}
+
+.task-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.task-info-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.task-info-item .label {
+    color: var(--text-tertiary);
+}
+
+.task-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   22. 阶段相关样式（公共）
+   -------------------------------------------------------------------------- */
+.stage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.stage-header:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.stage-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stage-name .icon {
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.stage-header.collapsed .stage-name .icon {
+    transform: rotate(-90deg);
+}
+
+.stage-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.stage-content {
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.stage-content.collapsed {
+    display: none;
+}
+
+.stage-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.stage-progress-bar {
+    flex: 1;
+    height: 4px;
+    background-color: var(--bg-tertiary);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stage-progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+    transition: width 0.3s;
+}
+
+/* --------------------------------------------------------------------------
+   23. 状态标签样式（公共）
+   -------------------------------------------------------------------------- */
+.status-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-tag.draft {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.status-tag.pending {
+    background-color: rgba(19, 194, 194, 0.1);
+    color: #13C2C2;
+}
+
+.status-tag.in-progress {
+    background-color: var(--status-primary-bg);
+    color: var(--primary-color);
+}
+
+.status-tag.confirming {
+    background-color: rgba(114, 46, 209, 0.1);
+    color: var(--purple-color);
+}
+
+.status-tag.completed,
+.status-tag.confirmed {
+    background-color: #F6FFED;
+    color: var(--success-color);
+}
+
+.status-tag.rejected {
+    background-color: #FFF1F0;
+    color: var(--error-color);
+}
+
+.status-tag.signed {
+    background-color: var(--status-primary-bg);
+    color: var(--primary-color);
+}
+
+.status-tag.changing,
+.status-tag.change-confirming {
+    background-color: #FFF7E6;
+    color: var(--warning-color);
+}
+
+/* 状态徽章 */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.status-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-badge.draft .dot { background-color: var(--text-tertiary); }
+.status-badge.pending .dot { background-color: #13C2C2; }
+.status-badge.in-progress .dot { background-color: var(--primary-color); }
+.status-badge.confirming .dot { background-color: var(--purple-color); }
+.status-badge.completed .dot,
+.status-badge.confirmed .dot { background-color: var(--success-color); }
+.status-badge.rejected .dot { background-color: var(--error-color); }
+
+/* --------------------------------------------------------------------------
+   24. 时间线样式（公共）
+   -------------------------------------------------------------------------- */
+.timeline {
+    position: relative;
+    padding-left: 24px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -20px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+}
+
+.timeline-dot.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.timeline-dot.completed {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.timeline-dot.pending {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+.timeline-dot.rejected {
+    background-color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+.timeline-content {
+    background-color: var(--bg-primary);
+    border-radius: 6px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+}
+
+.timeline-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.timeline-time {
+    font-size: 12px;
+    color: var(--text-tertiary);
+}
+
+.timeline-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   25. 变更标记样式（公共）
+   -------------------------------------------------------------------------- */
+.highlight {
+    background-color: #FFF7E6;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+.highlight.added {
+    background-color: #F6FFED;
+    color: var(--success-color);
+}
+
+.highlight.deleted {
+    background-color: #FFF1F0;
+    color: var(--error-color);
+    text-decoration: line-through;
+}
+
+.highlight.modified {
+    background-color: var(--status-primary-bg);
+    color: var(--primary-color);
+}
+
+/* --------------------------------------------------------------------------
+   26. 按钮样式扩展（公共）
+   -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn.primary:hover {
+    background-color: var(--primary-light);
+}
+
+.btn.secondary {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn.secondary:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn.success {
+    background-color: var(--success-color);
+    color: #fff;
+}
+
+.btn.success:hover {
+    background-color: var(--success-light);
+}
+
+.btn.danger {
+    background-color: var(--error-color);
+    color: #fff;
+}
+
+.btn.danger:hover {
+    background-color: var(--error-light);
+}
+
+.btn.warning {
+    background-color: var(--warning-color);
+    color: #fff;
+}
+
+.btn.warning:hover {
+    background-color: var(--warning-light);
+}
+
+.btn.text {
+    background: transparent;
+    color: var(--primary-color);
+    padding: 4px 8px;
+}
+
+.btn.text:hover {
+    background-color: var(--status-primary-bg);
+}
+
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-sm {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   27. 图标样式（公共）
+   -------------------------------------------------------------------------- */
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-sm { font-size: 14px; }
+.icon-md { font-size: 18px; }
+.icon-lg { font-size: 24px; }
+
+/* --------------------------------------------------------------------------
+   28. 显示/隐藏工具类
+   -------------------------------------------------------------------------- */
+.show { display: block !important; }
+.hide { display: none !important; }
+.hidden { display: none !important; }
+.active { 
+    /* 通用激活状态，具体样式由各组件定义 */
+}
+
+/* --------------------------------------------------------------------------
+   29. PC端Toast样式
+   -------------------------------------------------------------------------- */
+.pc-toast {
+    animation: pcToastFadeIn 0.3s ease;
+}
+
+@keyframes pcToastFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }
