@@ -2,6 +2,10 @@
         let currentPcRole = 'operator';
 
         function switchPcRole(role) {
+            window.location.href = role === 'initiator' ? 'pc-contract-edit.html' : 'pc-contract-list.html';
+        }
+
+        function switchPcRoleWithoutRedirect(role) {
             currentPcRole = role;
             
             document.querySelectorAll('.pc-role-switcher .pc-role-btn').forEach(btn => btn.classList.remove('active'));
