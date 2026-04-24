@@ -442,9 +442,7 @@
         </div>
 
         <div class="mini-header-menu" id="miniHeaderMenu">
-            <div class="menu-item" onclick="closeMiniMenu()">保存到相册</div>
-            <div class="menu-item" onclick="closeMiniMenu()">转发</div>
-            <div class="menu-item" onclick="closeMiniMenu()">收藏</div>
+            <div class="menu-item" onclick="shareToFriend(); closeMiniMenu();">分享给朋友</div>
         </div>
 
         <div class="page-content">
@@ -965,6 +963,11 @@
         document.querySelector('.search-bar input').addEventListener('input', function(e) {
             searchFiles(e.target.value);
         });
+        
+        function shareToFriend() {
+            showToast('分享给朋友');
+            closeMiniMenu();
+        }
     </script>
 </body>
 </html>

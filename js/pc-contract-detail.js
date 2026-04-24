@@ -190,6 +190,15 @@
             updateRejectReasonBanner();
             updateOperationLog();
             updateStagesContent();
+            updateChangesTabVisibility();
+        }
+        
+        function updateChangesTabVisibility() {
+            const changesTabBtn = document.getElementById('changesTabBtn');
+            if (changesTabBtn) {
+                const showChangesTab = ['signed', 'changing', 'change_confirming', 'change_platform_reviewing', 'change_platform_rejected', 'change_confirming_sender', 'change_confirming_receiver', 'change_signing_wait', 'change_reviewing', 'change_reviewed_pass', 'change_reviewed_reject'];
+                changesTabBtn.style.display = showChangesTab.includes(currentStatus) ? 'block' : 'none';
+            }
         }
 
         function updateRoleSwitcher() {
@@ -585,22 +594,26 @@
             const changeRecord2 = document.getElementById('changeRecord2');
             const changeRecord3 = document.getElementById('changeRecord3');
             const noChangeRecord = document.getElementById('noChangeRecord');
+            const changeRecordActions = document.getElementById('changeRecordActions');
             
             if (currentStatus === 'change_reviewing') {
                 if (changeRecord1) changeRecord1.style.display = 'block';
                 if (changeRecord2) changeRecord2.style.display = 'none';
                 if (changeRecord3) changeRecord3.style.display = 'none';
                 if (noChangeRecord) noChangeRecord.style.display = 'none';
-            } else if (currentStatus === 'signed') {
+                if (changeRecordActions) changeRecordActions.style.display = 'flex';
+            } else if (currentStatus === 'signed' || currentStatus === 'change_reviewed_pass' || currentStatus === 'change_reviewed_reject') {
                 if (changeRecord1) changeRecord1.style.display = 'none';
                 if (changeRecord2) changeRecord2.style.display = 'block';
                 if (changeRecord3) changeRecord3.style.display = 'block';
                 if (noChangeRecord) noChangeRecord.style.display = 'none';
+                if (changeRecordActions) changeRecordActions.style.display = 'none';
             } else {
                 if (changeRecord1) changeRecord1.style.display = 'none';
                 if (changeRecord2) changeRecord2.style.display = 'none';
                 if (changeRecord3) changeRecord3.style.display = 'none';
                 if (noChangeRecord) noChangeRecord.style.display = 'block';
+                if (changeRecordActions) changeRecordActions.style.display = 'none';
             }
         }
 

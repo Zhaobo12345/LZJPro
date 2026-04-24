@@ -266,6 +266,16 @@
             font-size: 14px;
             margin-right: 12px;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .activity-avatar:hover {
+            opacity: 0.8;
+        }
+        
+        .activity-avatar:active {
+            opacity: 0.6;
         }
 
         .activity-info {
@@ -276,6 +286,16 @@
             font-size: 14px;
             font-weight: 500;
             color: var(--text-primary);
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .activity-user:hover {
+            opacity: 0.8;
+        }
+        
+        .activity-user:active {
+            opacity: 0.6;
         }
 
         .activity-meta {
@@ -571,7 +591,14 @@
             <div class="back" onclick="history.back()">← 返回</div>
             <div class="title centered">项目动态</div>
             <div class="actions">
+                <div class="action-btn" onclick="toggleActionMenu()">⋯</div>
                 <div class="action-btn" onclick="closeMiniProgram()">✕</div>
+            </div>
+            <div class="action-menu" id="actionMenu">
+                <div class="action-menu-item" onclick="shareToFriend(); closeActionMenu();">
+                    <span class="icon">📤</span>
+                    <span>分享给朋友</span>
+                </div>
             </div>
         </div>
         
@@ -1024,9 +1051,9 @@
                 <div class="activity-card ${!activity.hasPermission ? 'no-permission' : ''}" 
                      onclick="handleActivityClick(${activity.id}, '${activity.type}', ${activity.hasPermission})">
                     <div class="activity-header">
-                        <div class="activity-avatar" style="background: ${activity.avatarColor};">${activity.avatar}</div>
+                        <div class="activity-avatar" style="background: ${activity.avatarColor};" onclick="event.stopPropagation(); goToProfile(getMemberIdByAvatar('${activity.avatar}'), '${activity.user}', '${activity.role || ''}')">${activity.avatar}</div>
                         <div class="activity-info">
-                            <div class="activity-user">${activity.user}</div>
+                            <div class="activity-user" onclick="event.stopPropagation(); goToProfile(getMemberIdByAvatar('${activity.avatar}'), '${activity.user}', '${activity.role || ''}')">${activity.user}</div>
                             <div class="activity-meta">
                                 <span class="activity-time">${activity.time}</span>
                                 <span class="activity-source">${activity.source}</span>
@@ -1163,6 +1190,36 @@
         document.getElementById('currentLevel').textContent = level;
 
         renderActivities();
+        
+        function toggleActionMenu() {
+            const actionMenu = document.getElementById('actionMenu');
+            if (actionMenu) {
+                actionMenu.classList.toggle('show');
+            }
+        }
+        
+        function closeActionMenu() {
+            const actionMenu = document.getElementById('actionMenu');
+            if (actionMenu) {
+                actionMenu.classList.remove('show');
+            }
+        }
+        
+        function shareToFriend() {
+            // 模拟分享功能，显示分享选项
+            showToast('分享功能已触发，请选择分享方式');
+            // 实际项目中这里会调用微信分享API
+            closeActionMenu();
+        }
+        
+        function goToProfile(id, name, role) {
+            location.href = 'prototype-member-profile.html?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name) + '&role=' + encodeURIComponent(role);
+        }
+        
+        function getMemberIdByAvatar(avatarText) {
+            const avatarToId = { '张': '1', '李': '2', '王': '3', '赵': '4', '孙': '5', '钱': '6', '周': '7', '吴': '8', '郑': '9', '项': '1' };
+            return avatarToId[avatarText] || '1';
+        }
     </script>
 </body>
 </html>

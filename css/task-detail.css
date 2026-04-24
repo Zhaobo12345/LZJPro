@@ -202,7 +202,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: 8px;
     background-color: var(--bg-primary);
     border-radius: 8px;
     border: 2px dashed var(--border-color);
@@ -315,6 +315,16 @@
     color: #FFFFFF;
     font-size: 13px;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.people-card .person-avatar:hover {
+    opacity: 0.8;
+}
+
+.people-card .person-avatar:active {
+    opacity: 0.6;
 }
 
 .people-card .person-info {
@@ -326,6 +336,16 @@
     font-size: 14px;
     color: var(--text-primary);
     font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.people-card .person-name:hover {
+    opacity: 0.8;
+}
+
+.people-card .person-name:active {
+    opacity: 0.6;
 }
 
 .people-card .person-role {
@@ -536,6 +556,16 @@
     font-size: 14px;
     margin-right: 12px;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.confirm-item .avatar:hover {
+    opacity: 0.8;
+}
+
+.confirm-item .avatar:active {
+    opacity: 0.6;
 }
 
 .confirm-item .info {
@@ -553,6 +583,16 @@
     font-size: 14px;
     font-weight: 600;
     color: var(--text-primary);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.confirm-item .name:hover {
+    opacity: 0.8;
+}
+
+.confirm-item .name:active {
+    opacity: 0.6;
 }
 
 .confirm-item .status-tag {
@@ -806,6 +846,34 @@
     cursor: pointer;
 }
 
+.upload-modal .modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.upload-modal .modal-actions .btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-modal .modal-actions .btn.secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: none;
+}
+
+.upload-modal .modal-actions .btn.primary {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+}
+
 /* 确认弹窗 */
 .confirm-modal {
     position: absolute;
@@ -851,6 +919,51 @@
     margin-bottom: 16px;
 }
 
+.confirm-modal .rating-section-multi {
+    margin-bottom: 16px;
+}
+
+.confirm-modal .rating-header {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.confirm-modal .rating-dimension {
+    padding: 12px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.confirm-modal .rating-dimension:last-child {
+    margin-bottom: 0;
+}
+
+.confirm-modal .dimension-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    gap: 6px;
+}
+
+.confirm-modal .dimension-icon {
+    font-size: 16px;
+}
+
+.confirm-modal .dimension-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.confirm-modal .dimension-desc {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-left: auto;
+}
+
 .confirm-modal .rating-label {
     font-size: 13px;
     color: var(--text-secondary);
@@ -871,6 +984,10 @@
 
 .confirm-modal .rating-stars .star.active {
     color: #FFD700;
+}
+
+.confirm-modal .rating-stars .star:hover {
+    transform: scale(1.1);
 }
 
 .confirm-modal .media-upload {
@@ -1335,11 +1452,20 @@
 }
 
 .confirmer-status-item .delete-btn.always-show {
-    opacity: 1;
+    opacity: 1 !important;
+    display: flex !important;
 }
 
 .confirmer-status-item.configuring-mode {
     padding-right: 36px;
+}
+
+.confirmer-status-item.configuring-mode.with-status {
+    padding-right: 80px;
+}
+
+.confirmer-status-item.configuring-mode.with-status .delete-btn {
+    right: 52px;
 }
 
 .confirmer-status-item:last-child {
@@ -1358,6 +1484,16 @@
     font-size: 11px;
     margin-right: 8px;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.confirmer-status-item .avatar:hover {
+    opacity: 0.8;
+}
+
+.confirmer-status-item .avatar:active {
+    opacity: 0.6;
 }
 
 .confirmer-status-item .info {
@@ -1367,6 +1503,16 @@
 .confirmer-status-item .name {
     font-size: 12px;
     color: var(--text-primary);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.confirmer-status-item .name:hover {
+    opacity: 0.8;
+}
+
+.confirmer-status-item .name:active {
+    opacity: 0.6;
 }
 
 .confirmer-status-item .time {

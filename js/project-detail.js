@@ -167,6 +167,7 @@ const ProjectDetailPage = (function() {
      * 缓存 DOM 元素
      */
     function cacheElements() {
+        console.log('开始缓存 DOM 元素');
         elements.pageContent = document.getElementById('pageContent');
         elements.stickyHeader = document.getElementById('stickyHeader');
         elements.quickNav = document.getElementById('quickNav');
@@ -186,8 +187,10 @@ const ProjectDetailPage = (function() {
         elements.toggleArrow = document.getElementById('toggleArrow');
         elements.pinBtn = document.getElementById('pinBtn');
         elements.actionMenu = document.getElementById('actionMenu');
+        console.log('actionMenu 元素:', elements.actionMenu);
         elements.customToastModal = document.getElementById('customToastModal');
         elements.customToastMessage = document.getElementById('customToastMessage');
+        console.log('DOM 元素缓存完成');
     }
     
     /**
@@ -545,9 +548,68 @@ const ProjectDetailPage = (function() {
      * 切换操作菜单
      */
     function toggleActionMenu() {
-        if (elements.actionMenu) {
-            elements.actionMenu.classList.toggle('show');
+        console.log('toggleActionMenu 被调用');
+        var actionMenu = document.getElementById('actionMenu');
+        console.log('actionMenu 元素:', actionMenu);
+        if (actionMenu) {
+            console.log('当前状态:', actionMenu.classList.contains('show'));
+            actionMenu.classList.toggle('show');
+            console.log('新状态:', actionMenu.classList.contains('show'));
+        } else {
+            console.log('未找到 actionMenu 元素');
         }
+    }
+    
+    /**
+     * 关闭操作菜单
+     */
+    function closeActionMenu() {
+        var actionMenu = document.getElementById('actionMenu');
+        if (actionMenu) {
+            actionMenu.classList.remove('show');
+        }
+    }
+    
+    /**
+     * 分享给朋友
+     */
+    function shareToFriend() {
+        // 模拟分享功能，显示分享选项
+        showCustomToast('分享功能已触发，请选择分享方式');
+        // 实际项目中这里会调用微信分享API
+    }
+    
+    // 立即绑定到window对象
+    window.toggleActionMenu = toggleActionMenu;
+    window.closeActionMenu = closeActionMenu;
+    window.shareToFriend = shareToFriend;
+    
+    /**
+     * 跳转到人员档案页面
+     */
+    function goToProfile(id, name, role) {
+        location.href = 'prototype-member-profile.html?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name) + '&role=' + encodeURIComponent(role);
+    }
+    
+    function getMemberIdByAvatar(avatarText) {
+        const avatarToId = { '张': '1', '李': '2', '王': '3', '赵': '4', '孙': '5', '钱': '6', '周': '7', '吴': '8', '郑': '9', '项': '1' };
+        return avatarToId[avatarText] || '1';
+    }
+    
+    function initProfileClickEvents() {
+        document.querySelectorAll('.activity-avatar, .activity-user').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                const activityItem = this.closest('.activity-item');
+                const avatarEl = activityItem.querySelector('.activity-avatar');
+                const userEl = activityItem.querySelector('.activity-user');
+                const avatarText = avatarEl ? avatarEl.textContent : '';
+                const userText = userEl ? userEl.textContent : '';
+                const memberId = getMemberIdByAvatar(avatarText);
+                goToProfile(memberId, userText || avatarText, '');
+            });
+        });
     }
     
     /**
@@ -654,11 +716,16 @@ const ProjectDetailPage = (function() {
         
         // 导航栏操作按钮
         const actionBtns = document.querySelectorAll('.nav-bar .action-btn');
+        console.log('找到的操作按钮数量:', actionBtns.length);
         actionBtns.forEach((btn, index) => {
+            console.log('绑定操作按钮点击事件:', index);
             btn.addEventListener('click', function() {
+                console.log('操作按钮被点击:', index);
                 if (index === 0) {
+                    console.log('调用 toggleActionMenu');
                     toggleActionMenu();
                 } else if (index === 1) {
+                    console.log('调用 showCustomToast');
                     showCustomToast('关闭小程序');
                 }
             });
@@ -735,7 +802,7 @@ const ProjectDetailPage = (function() {
         }
         
         // 关闭操作菜单
-        if (elements.actionMenu && !e.target.closest('.actions')) {
+        if (elements.actionMenu && !e.target.closest('.actions') && !e.target.closest('.action-menu')) {
             elements.actionMenu.classList.remove('show');
         }
     }
@@ -893,6 +960,7 @@ const ProjectDetailPage = (function() {
         bindEvents();
         initQuickNavPinState();
         initLevelDisplay();
+        initProfileClickEvents();
     }
     
     // 自动初始化
@@ -902,6 +970,13 @@ const ProjectDetailPage = (function() {
         init();
     }
     
+    window.showCustomToast = showCustomToast;
+    window.closeCustomToast = closeCustomToast;
+    window.toggleActionMenu = toggleActionMenu;
+    window.closeActionMenu = closeActionMenu;
+    window.shareToFriend = shareToFriend;
+    window.goToProfile = goToProfile;
+    
     // 公开 API
     return {
         showCustomToast: showCustomToast,
@@ -910,6 +985,10 @@ const ProjectDetailPage = (function() {
         getCurrentLevel: () => state.currentLevel,
         toggleQuickNav: toggleQuickNav,
         toggleActivityList: toggleActivityList,
-        toggleContractList: toggleContractList
+        toggleContractList: toggleContractList,
+        toggleActionMenu: toggleActionMenu,
+        closeActionMenu: closeActionMenu,
+        shareToFriend: shareToFriend,
+        goToProfile: goToProfile
     };
 })();

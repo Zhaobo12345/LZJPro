@@ -148,7 +148,7 @@
                             <div class="detail-tab active" onclick="switchTab('overview', event)">概览</div>
                             <div class="detail-tab" onclick="switchTab('content', event)">合同正文</div>
                             <div class="detail-tab" onclick="switchTab('stages', event)">阶段任务</div>
-                            <div class="detail-tab" onclick="switchTab('changes', event)">变更记录</div>
+                            <div class="detail-tab" id="changesTabBtn" onclick="switchTab('changes', event)">变更记录</div>
                         </div>
 
                         <div class="tab-content active" id="overviewTab">
@@ -577,7 +577,7 @@
                                                     <p>因现场实际情况，需增加部分管材和人工费用。</p>
                                                 </div>
                                             </div>
-                                            <div class="change-record-actions">
+                                            <div class="change-record-actions" id="changeRecordActions">
                                                 <button class="pc-btn pc-btn-primary pc-btn-sm">确认变更</button>
                                                 <button class="pc-btn pc-btn-default pc-btn-sm">驳回变更</button>
                                             </div>

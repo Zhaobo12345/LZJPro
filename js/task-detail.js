@@ -49,6 +49,11 @@ const TaskDetailPage = (function() {
     };
 
     let currentRating = 0;
+    let dimensionRatings = {
+        quality: 0,
+        efficiency: 0,
+        attitude: 0
+    };
     let currentTaskStatus = TaskStatus.CONFIGURING;
     let currentUserRole = UserRoles.CONFIGURER;
     let uploadedFiles = [];
@@ -187,6 +192,7 @@ const TaskDetailPage = (function() {
     }
     
     function showConfirmModal() {
+        resetDimensionRatings();
         document.getElementById('confirmModal').classList.add('show');
     }
     
@@ -312,41 +318,51 @@ const TaskDetailPage = (function() {
     
     function renderConfirmerList() {
         const confirmerList = document.getElementById('confirmerList');
-        const canModify = currentTaskStatus === TaskStatus.CONFIGURING || currentTaskStatus === TaskStatus.PENDING;
+        const canModify = (currentTaskStatus === TaskStatus.CONFIGURING || 
+                          currentTaskStatus === TaskStatus.PENDING || 
+                          currentTaskStatus === TaskStatus.IN_PROGRESS) &&
+                          currentUserRole === UserRoles.CONFIGURER;
         
         confirmerList.innerHTML = currentConfirmers.map(confirmer => `
-            <div class="confirmer-status-item" data-confirmer-id="${confirmer.id}">
+            <div class="confirmer-status-item ${canModify ? 'configuring-mode' : ''}" data-confirmer-id="${confirmer.id}">
                 <div class="avatar">${confirmer.avatar}</div>
                 <div class="info">
                     <div class="name">${confirmer.name} · ${confirmer.role}</div>
-                    <div class="time">${confirmer.status === 'confirmed' ? '已确认' : '等待确认中...'}</div>
                 </div>
-                <div class="status ${confirmer.status}">${confirmer.status === 'confirmed' ? '已确认' : '待确认'}</div>
-                ${canModify ? `<div class="delete-btn" onclick="removeConfirmer(${confirmer.id})">×</div>` : ''}
+                ${canModify ? `<div class="delete-btn always-show" onclick="removeConfirmer(${confirmer.id})">×</div>` : ''}
             </div>
         `).join('');
     }
     
     function renderConfiguringConfirmerList() {
         const confirmerList = document.getElementById('confirmerList');
+        const isConfigurer = currentUserRole === UserRoles.CONFIGURER;
         
         if (currentConfirmers.length === 0) {
-            confirmerList.innerHTML = `
-                <div class="no-confirmer-tip" onclick="showConfirmerSelector()" style="display: flex; align-items: center; justify-content: center; padding: 20px; color: var(--text-tertiary); cursor: pointer;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 24px; margin-bottom: 8px;">👥</div>
-                        <div style="font-size: 14px;">暂无确认人，点击添加</div>
+            if (isConfigurer) {
+                confirmerList.innerHTML = `
+                    <div class="no-confirmer-tip" onclick="showConfirmerSelector()" style="display: flex; align-items: center; justify-content: center; padding: 10px; color: var(--text-tertiary); cursor: pointer;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 20px; margin-bottom: 4px;">👥</div>
+                            <div style="font-size: 13px;">暂无确认人，点击添加</div>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            } else {
+                confirmerList.innerHTML = `
+                    <div style="text-align: center; padding: 16px; color: var(--text-tertiary);">
+                        <div style="font-size: 13px;">暂无确认人</div>
+                    </div>
+                `;
+            }
         } else {
             confirmerList.innerHTML = currentConfirmers.map(confirmer => `
-                <div class="confirmer-status-item configuring-mode" data-confirmer-id="${confirmer.id}">
+                <div class="confirmer-status-item ${isConfigurer ? 'configuring-mode' : ''}" data-confirmer-id="${confirmer.id}">
                     <div class="avatar">${confirmer.avatar}</div>
                     <div class="info">
                         <div class="name">${confirmer.name} · ${confirmer.role}</div>
                     </div>
-                    <div class="delete-btn always-show" onclick="removeConfiguringConfirmer(${confirmer.id})">×</div>
+                    ${isConfigurer ? `<div class="delete-btn always-show" onclick="removeConfiguringConfirmer(${confirmer.id})">×</div>` : ''}
                 </div>
             `).join('');
         }
@@ -507,7 +523,29 @@ const TaskDetailPage = (function() {
         });
     }
     
+    function setDimensionRating(dimension, rating) {
+        dimensionRatings[dimension] = rating;
+        const containerId = 'ratingStars' + dimension.charAt(0).toUpperCase() + dimension.slice(1);
+        const stars = document.querySelectorAll('#' + containerId + ' .star');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+    
+    function resetDimensionRatings() {
+        dimensionRatings = { quality: 0, efficiency: 0, attitude: 0 };
+        ['Quality', 'Efficiency', 'Attitude'].forEach(dim => {
+            const stars = document.querySelectorAll('#ratingStars' + dim + ' .star');
+            stars.forEach(star => star.classList.remove('active'));
+        });
+    }
+    
     function confirmTask() {
+        const avgRating = Math.round((dimensionRatings.quality + dimensionRatings.efficiency + dimensionRatings.attitude) / 3 * 10) / 10;
         closeConfirmModal();
         showToast('确认成功！您的确认已记录。');
     }
@@ -1139,6 +1177,11 @@ const TaskDetailPage = (function() {
             if (statusBadge) statusBadge.textContent = '待开始';
             if (confirmProgress) confirmProgress.textContent = '等待前置任务完成';
             
+            const roleSwitcher = document.getElementById('roleSwitcher');
+            const configuringRoleSwitcher = document.getElementById('configuringRoleSwitcher');
+            if (roleSwitcher) roleSwitcher.style.display = 'block';
+            if (configuringRoleSwitcher) configuringRoleSwitcher.style.display = 'none';
+            
             const preTaskBlockCard = document.getElementById('preTaskBlockCard');
             if (preTaskBlockCard) preTaskBlockCard.style.display = 'block';
             
@@ -1155,14 +1198,23 @@ const TaskDetailPage = (function() {
             noExecutorView.style.display = 'none';
             addExecutorBtn.style.display = 'none';
             
-            renderConfirmerList();
-            if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+            if (currentUserRole === 'configurer') {
+                renderConfiguringConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
+            } else {
+                renderConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+            }
             
             if (currentUserRole === 'executor') {
                 if (actionButtons) actionButtons.innerHTML = `
                     <div class="btn secondary disabled" style="width: 100%; opacity: 0.6; cursor: not-allowed;">
                         <span style="margin-right: 6px;">🔒</span> 前置任务未完成
                     </div>
+                `;
+            } else if (currentUserRole === 'configurer') {
+                if (actionButtons) actionButtons.innerHTML = `
+                    <div class="btn secondary" style="width: 100%;">等待执行人执行</div>
                 `;
             } else {
                 if (actionButtons) actionButtons.innerHTML = `
@@ -1252,8 +1304,17 @@ const TaskDetailPage = (function() {
             noExecutorView.style.display = 'none';
             addExecutorBtn.style.display = 'none';
             
-            renderConfirmerList();
-            if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+            if (currentUserRole === 'configurer') {
+                renderConfiguringConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'flex';
+            } else {
+                renderConfirmerList();
+                if (addConfirmerBtn) addConfirmerBtn.style.display = 'none';
+                
+                document.querySelectorAll('.confirmer-status-item .delete-btn').forEach(btn => {
+                    btn.style.display = 'none';
+                });
+            }
             
             if (currentUserRole === 'executor') {
                 const hasConfirmers = currentConfirmers.length > 0;
@@ -1263,6 +1324,10 @@ const TaskDetailPage = (function() {
                     <div class="btn primary" onclick="showSubmitConfirmModal()">${submitBtnText}</div>
                 `;
             } else if (currentUserRole === 'confirmer') {
+                if (actionButtons) actionButtons.innerHTML = `
+                    <div class="btn secondary" style="width: 100%;">执行人正在执行中...</div>
+                `;
+            } else if (currentUserRole === 'configurer') {
                 if (actionButtons) actionButtons.innerHTML = `
                     <div class="btn secondary" style="width: 100%;">执行人正在执行中...</div>
                 `;
@@ -2236,6 +2301,8 @@ const TaskDetailPage = (function() {
                 item.classList.add('active');
             }
         });
+        
+        initProfileClickEvents();
     }
     
     function switchUserRole(role) {
@@ -2267,10 +2334,44 @@ const TaskDetailPage = (function() {
             currentUserRole = role === 'other' ? 'other' : 'configurer';
         } else if (status === TaskStatus.PENDING || status === TaskStatus.REJECTED_PENDING) {
             currentUserRole = role === 'nonExecutor' ? 'nonExecutor' : 'executor';
+        } else if (status === TaskStatus.PENDING_BLOCKED) {
+            if (role === 'confirmer') {
+                currentUserRole = 'confirmer';
+            } else if (role === 'configurer') {
+                currentUserRole = 'configurer';
+            } else if (role === 'other') {
+                currentUserRole = 'other';
+            } else {
+                currentUserRole = 'executor';
+            }
+        } else if (status === TaskStatus.IN_PROGRESS) {
+            if (role === 'confirmer') {
+                currentUserRole = 'confirmer';
+            } else if (role === 'configurer') {
+                currentUserRole = 'configurer';
+            } else if (role === 'other') {
+                currentUserRole = 'other';
+            } else {
+                currentUserRole = 'executor';
+            }
         } else if (status === TaskStatus.CONFIRMING || status === TaskStatus.CONFIRMING_AFTER_REJECT) {
             currentUserRole = role === 'nonConfirmer' ? 'nonConfirmer' : 'confirmer';
         } else if (status === TaskStatus.COMPLETED || status === TaskStatus.COMPLETED_WITH_REJECT) {
             currentUserRole = role === 'confirmer' ? 'confirmer' : 'nonConfirmer';
+        }
+        
+        if (status === TaskStatus.IN_PROGRESS || status === TaskStatus.PENDING || 
+            status === TaskStatus.CONFIRMING || status === TaskStatus.CONFIRMING_AFTER_REJECT ||
+            status === TaskStatus.COMPLETED || status === TaskStatus.COMPLETED_WITH_REJECT ||
+            status === TaskStatus.REJECTED_PENDING || status === TaskStatus.PENDING_BLOCKED) {
+            currentConfirmers = [
+                { id: 1, name: '张三', role: '项目总', avatar: '张', status: 'pending' },
+                { id: 3, name: '王五', role: '业主', avatar: '王', status: 'pending' },
+                { id: 4, name: '赵六', role: '设计师', avatar: '赵', status: 'pending' }
+            ];
+            window.currentHasExecutor = true;
+            window.currentExecutorId = 2;
+            window.currentExecutorName = '李四';
         }
         
         updateTaskStatus(status);
@@ -2278,15 +2379,17 @@ const TaskDetailPage = (function() {
     }
 
     let currentEvaluationRating = 0;
+    let evaluationDimensionRatings = {
+        quality: 0,
+        efficiency: 0,
+        attitude: 0
+    };
     let currentEvaluatingConfirmer = null;
 
     function showEvaluationModal(confirmerName) {
         currentEvaluatingConfirmer = confirmerName;
-        currentEvaluationRating = 0;
+        resetEvaluationDimensionRatings();
         document.getElementById('evaluationDescInput').value = '';
-        document.querySelectorAll('#evaluationStars .star').forEach(star => {
-            star.classList.remove('active');
-        });
         document.getElementById('evaluationListModal').classList.remove('show');
         document.getElementById('evaluationModal').classList.add('show');
     }
@@ -2306,18 +2409,35 @@ const TaskDetailPage = (function() {
             }
         });
     }
+    
+    function setEvaluationDimensionRating(dimension, rating) {
+        evaluationDimensionRatings[dimension] = rating;
+        const containerId = 'evaluationStars' + dimension.charAt(0).toUpperCase() + dimension.slice(1);
+        const stars = document.querySelectorAll('#' + containerId + ' .star');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+    
+    function resetEvaluationDimensionRatings() {
+        evaluationDimensionRatings = { quality: 0, efficiency: 0, attitude: 0 };
+        ['Quality', 'Efficiency', 'Attitude'].forEach(dim => {
+            const stars = document.querySelectorAll('#evaluationStars' + dim + ' .star');
+            stars.forEach(star => star.classList.remove('active'));
+        });
+    }
 
     function submitEvaluation() {
-        if (currentEvaluationRating === 0) {
-            showToast('请选择评分');
-            return;
-        }
-        
+        const avgRating = Math.round((evaluationDimensionRatings.quality + evaluationDimensionRatings.efficiency + evaluationDimensionRatings.attitude) / 3 * 10) / 10;
         const comment = document.getElementById('evaluationDescInput').value;
         closeEvaluationModal();
         showToast('评价提交成功！');
         
-        updateConfirmerEvaluation(currentEvaluatingConfirmer, currentEvaluationRating, comment);
+        updateConfirmerEvaluation(currentEvaluatingConfirmer, avgRating, comment);
     }
 
     function updateConfirmerEvaluation(confirmerName, rating, comment) {
@@ -2426,7 +2546,23 @@ const TaskDetailPage = (function() {
     }
 
     function toggleActionMenu() {
-        showToast('操作菜单');
+        const actionMenu = document.getElementById('actionMenu');
+        if (actionMenu) {
+            actionMenu.classList.toggle('show');
+        }
+    }
+    
+    function closeActionMenu() {
+        const actionMenu = document.getElementById('actionMenu');
+        if (actionMenu) {
+            actionMenu.classList.remove('show');
+        }
+    }
+    
+    function shareToFriend() {
+        // 模拟分享功能，显示分享选项
+        showToast('分享功能已触发，请选择分享方式');
+        // 实际项目中这里会调用微信分享API
     }
     
     function toggleConfirmerSelection(memberId) {
@@ -2487,46 +2623,135 @@ const TaskDetailPage = (function() {
     initEventListeners();
     initFromUrl();
     
+    window.updateTaskStatus = updateTaskStatus;
+    window.switchUserRole = switchUserRole;
+    window.showToast = showToast;
+    window.toggleActionMenu = toggleActionMenu;
+    window.closeActionMenu = closeActionMenu;
+    window.shareToFriend = shareToFriend;
+    window.goToProfile = goToProfile;
+    
+    function getMemberIdByAvatar(avatarText) {
+        const avatarToId = { '张': '1', '李': '2', '王': '3', '赵': '4', '孙': '5', '钱': '6', '周': '7', '吴': '8', '郑': '9', '项': '1' };
+        return avatarToId[avatarText] || '1';
+    }
+    
+    function goToProfile(id, name, role) {
+        location.href = 'prototype-member-profile.html?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name) + '&role=' + encodeURIComponent(role);
+    }
+    
+    function initProfileClickEvents() {
+        document.querySelectorAll('.confirm-item .avatar, .confirm-item .name').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const confirmItem = this.closest('.confirm-item');
+                const avatarEl = confirmItem.querySelector('.avatar');
+                const nameEl = confirmItem.querySelector('.name');
+                const avatarText = avatarEl ? avatarEl.textContent : '';
+                let nameText = nameEl ? nameEl.textContent : '';
+                let role = '';
+                if (nameText.includes(' ')) {
+                    const parts = nameText.split(' ');
+                    nameText = parts[0];
+                }
+                const memberId = getMemberIdByAvatar(avatarText);
+                goToProfile(memberId, nameText || avatarText, role);
+            });
+        });
+        
+        document.querySelectorAll('.people-card .person-avatar, .people-card .person-name').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const personItem = this.closest('.person-item');
+                if (personItem) {
+                    const avatarEl = personItem.querySelector('.person-avatar');
+                    const nameEl = personItem.querySelector('.person-name');
+                    const roleEl = personItem.querySelector('.person-role');
+                    const avatarText = avatarEl ? avatarEl.textContent : '';
+                    const nameText = nameEl ? nameEl.textContent : '';
+                    const roleText = roleEl ? roleEl.textContent : '';
+                    const memberId = getMemberIdByAvatar(avatarText);
+                    goToProfile(memberId, nameText || avatarText, roleText);
+                }
+            });
+        });
+        
+        document.querySelectorAll('.confirmer-status-item .avatar, .confirmer-status-item .name').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const item = this.closest('.confirmer-status-item');
+                const avatarEl = item.querySelector('.avatar');
+                const nameEl = item.querySelector('.name');
+                const avatarText = avatarEl ? avatarEl.textContent : '';
+                let nameText = nameEl ? nameEl.textContent : '';
+                let role = '';
+                if (nameText.includes(' · ')) {
+                    const parts = nameText.split(' · ');
+                    nameText = parts[0];
+                    role = parts[1] || '';
+                }
+                const memberId = getMemberIdByAvatar(avatarText);
+                goToProfile(memberId, nameText || avatarText, role);
+            });
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        initProfileClickEvents();
+    });
+    window.showExecutorSelector = showExecutorSelector;
+    window.closeExecutorSelector = closeExecutorSelector;
+    window.selectExecutor = selectExecutor;
+    window.filterExecutors = filterExecutors;
+    window.showConfirmerSelector = showConfirmerSelector;
+    window.closeConfirmerSelector = closeConfirmerSelector;
+    window.toggleConfirmerSelection = toggleConfirmerSelection;
+    window.toggleConfirmer = toggleConfirmer;
+    window.filterConfirmers = filterConfirmers;
+    window.removeConfirmer = removeConfirmer;
+    window.removeConfiguringConfirmer = removeConfiguringConfirmer;
+    window.confirmConfirmerSelection = confirmConfirmerSelection;
+    window.showSubmitTaskModal = showSubmitTaskModal;
+    window.closeSubmitTaskModal = closeSubmitTaskModal;
+    window.submitTask = submitTask;
+    window.confirmSubmitTask = confirmSubmitTask;
+    window.showUploadRecordModal = showUploadRecordModal;
+    window.closeUploadRecordModal = closeUploadRecordModal;
+    window.uploadExecutionRecord = uploadExecutionRecord;
+    window.confirmUploadRecord = confirmUploadRecord;
+    window.deleteExecutionRecord = deleteExecutionRecord;
+    window.editExecutionRecord = editExecutionRecord;
+    window.saveEditedRecord = saveEditedRecord;
+    window.showSubmitConfirmModal = showSubmitConfirmModal;
+    window.closeSubmitConfirmModal = closeSubmitConfirmModal;
+    window.confirmSubmitToConfirmer = confirmSubmitToConfirmer;
+    window.submitExecution = submitExecution;
+    window.showRejectModal = showRejectModal;
+    window.closeRejectModal = closeRejectModal;
+    window.rejectTask = rejectTask;
+    window.showConfirmModal = showConfirmModal;
+    window.closeConfirmModal = closeConfirmModal;
+    window.confirmTask = confirmTask;
+    window.setRating = setRating;
+    window.setDimensionRating = setDimensionRating;
+    window.showEvaluationModal = showEvaluationModal;
+    window.closeEvaluationModal = closeEvaluationModal;
+    window.setEvaluationRating = setEvaluationRating;
+    window.setEvaluationDimensionRating = setEvaluationDimensionRating;
+    window.submitEvaluation = submitEvaluation;
+    window.showEvaluationListModal = showEvaluationListModal;
+    window.closeEvaluationListModal = closeEvaluationListModal;
+    window.toggleCard = toggleCard;
+    window.toggleStandard = toggleStandard;
+    window.toggleHistoryRecords = toggleHistoryRecords;
+    window.triggerUpload = triggerUpload;
+    window.handleFileSelect = handleFileSelect;
+    window.closeUploadModal = closeUploadModal;
+    window.removeRecordFile = removeRecordFile;
+    
     return {
         init: initFromUrl,
         updateTaskStatus: updateTaskStatus,
         switchUserRole: switchUserRole
     };
 })();
-
-window.updateTaskStatus = function(status) { TaskDetailPage.updateTaskStatus(status); };
-window.switchUserRole = function(role) { TaskDetailPage.switchUserRole(role); };
-window.showToast = showToast;
-window.toggleActionMenu = toggleActionMenu;
-window.showExecutorSelector = showExecutorSelector;
-window.closeExecutorSelector = closeExecutorSelector;
-window.selectExecutor = selectExecutor;
-window.showConfirmerSelector = showConfirmerSelector;
-window.closeConfirmerSelector = closeConfirmerSelector;
-window.toggleConfirmerSelection = toggleConfirmerSelection;
-window.removeConfiguringConfirmer = removeConfiguringConfirmer;
-window.showSubmitTaskModal = showSubmitTaskModal;
-window.closeSubmitTaskModal = closeSubmitTaskModal;
-window.submitTask = submitTask;
-window.showUploadRecordModal = showUploadRecordModal;
-window.closeUploadRecordModal = closeUploadRecordModal;
-window.uploadExecutionRecord = uploadExecutionRecord;
-window.deleteExecutionRecord = deleteExecutionRecord;
-window.editExecutionRecord = editExecutionRecord;
-window.saveEditedRecord = saveEditedRecord;
-window.showSubmitConfirmModal = showSubmitConfirmModal;
-window.closeSubmitConfirmModal = closeSubmitConfirmModal;
-window.submitExecution = submitExecution;
-window.showRejectModal = showRejectModal;
-window.closeRejectModal = closeRejectModal;
-window.rejectTask = rejectTask;
-window.showConfirmModal = showConfirmModal;
-window.closeConfirmModal = closeConfirmModal;
-window.confirmTask = confirmTask;
-window.setRating = setRating;
-window.showEvaluationModal = showEvaluationModal;
-window.closeEvaluationModal = closeEvaluationModal;
-window.submitEvaluation = submitEvaluation;
-window.showEvaluationListModal = showEvaluationListModal;
-window.closeEvaluationListModal = closeEvaluationListModal;
-window.toggleCard = toggleCard;

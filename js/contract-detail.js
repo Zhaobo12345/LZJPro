@@ -68,6 +68,28 @@ const ContractDetailPage = (function() {
                 { text: '撤回申请', type: 'secondary', action: 'withdraw_review' }
             ]
         },
+        reviewed_pass: {
+            text: '已通过',
+            desc: '平台审核已通过，合同已进入确认流程',
+            bannerClass: 'confirmed',
+            readonly: true,
+            showPcGuide: false,
+            actions: [
+                { text: '查看详情', type: 'primary', action: 'view' }
+            ]
+        },
+        reviewed_reject: {
+            text: '已驳回',
+            desc: '平台审核未通过，请查看驳回原因',
+            bannerClass: 'rejected',
+            readonly: true,
+            showPcGuide: false,
+            showRejectReason: true,
+            rejectReason: '合同条款不符合平台规范，请补充完善施工范围说明及验收标准',
+            actions: [
+                { text: '查看详情', type: 'primary', action: 'view' }
+            ]
+        },
         platform_rejected: {
             text: '平台审核驳回',
             desc: '平台审核未通过，请根据驳回原因修改合同内容后重新提交',
@@ -475,6 +497,13 @@ const ContractDetailPage = (function() {
         
         // 操作引导
         updateActionGuide(status);
+        
+        // 变更记录tab显示控制
+        const changesTabBtn = document.getElementById('changesTabBtn');
+        if (changesTabBtn) {
+            const showChangesTab = ['signed', 'changing', 'change_confirming', 'change_platform_reviewing', 'change_platform_rejected', 'change_confirming_sender', 'change_confirming_receiver', 'change_signing_wait'];
+            changesTabBtn.style.display = showChangesTab.includes(status) ? 'block' : 'none';
+        }
     }
     
     /**
@@ -488,10 +517,10 @@ const ContractDetailPage = (function() {
         const changeHighlightBanner = document.getElementById('changeHighlightBanner');
         const changeStates = ['changing', 'change_confirming', 'change_platform_reviewing', 'change_confirming_sender', 'change_confirming_receiver', 'change_signing_wait', 'change_signing'];
         
+        const stageOnlyChangeStates = ['changing', 'change_confirming'];
+        
         if (changeStates.includes(status)) {
             if (changeReasonDisplay) changeReasonDisplay.style.display = 'block';
-            if (changeSummaryDisplay) changeSummaryDisplay.style.display = 'block';
-            if (changeHighlightBanner) changeHighlightBanner.style.display = 'block';
             
             const newStageItem = document.getElementById('newStageItem');
             const modifiedTaskTag = document.getElementById('modifiedTaskTag');
@@ -502,10 +531,22 @@ const ContractDetailPage = (function() {
             
             if (newStageItem) newStageItem.style.display = 'block';
             if (modifiedTaskTag) modifiedTaskTag.style.display = 'inline';
-            if (contractAmountRow) contractAmountRow.style.display = 'none';
-            if (contractAmountChange) contractAmountChange.style.display = 'flex';
-            if (newAttachmentItem) newAttachmentItem.style.display = 'flex';
-            if (changeHighlightText) changeHighlightText.style.display = 'inline';
+            
+            if (stageOnlyChangeStates.includes(status)) {
+                if (changeSummaryDisplay) changeSummaryDisplay.style.display = 'none';
+                if (changeHighlightBanner) changeHighlightBanner.style.display = 'none';
+                if (contractAmountRow) contractAmountRow.style.display = 'flex';
+                if (contractAmountChange) contractAmountChange.style.display = 'none';
+                if (newAttachmentItem) newAttachmentItem.style.display = 'none';
+                if (changeHighlightText) changeHighlightText.style.display = 'none';
+            } else {
+                if (changeSummaryDisplay) changeSummaryDisplay.style.display = 'block';
+                if (changeHighlightBanner) changeHighlightBanner.style.display = 'block';
+                if (contractAmountRow) contractAmountRow.style.display = 'none';
+                if (contractAmountChange) contractAmountChange.style.display = 'flex';
+                if (newAttachmentItem) newAttachmentItem.style.display = 'flex';
+                if (changeHighlightText) changeHighlightText.style.display = 'inline';
+            }
         } else {
             if (changeReasonDisplay) changeReasonDisplay.style.display = 'none';
             if (changeSummaryDisplay) changeSummaryDisplay.style.display = 'none';
@@ -613,6 +654,8 @@ const ContractDetailPage = (function() {
             'draft': '拟定中',
             'draft_party_a': '拟定中（甲方）',
             'platform_reviewing': '待平台审核',
+            'reviewed_pass': '已通过',
+            'reviewed_reject': '已驳回',
             'platform_rejected': '平台审核驳回',
             'confirming_sender': '确认中(发起方)',
             'confirming_receiver': '确认中(待确认方)',
@@ -1299,6 +1342,15 @@ const ContractDetailPage = (function() {
         setTimeout(() => {
             showToast('PDF文件已生成，正在打开微信分享...\n\n文件包含：合同基本信息、签约双方信息、合同正文、附件');
         }, 2000);
+    }
+    
+    /**
+     * 分享给朋友
+     */
+    function shareToFriend() {
+        // 模拟分享功能，显示分享选项
+        showCustomToast('分享功能已触发，请选择分享方式');
+        // 实际项目中这里会调用微信分享API
     }
     
     // ==================== 变更记录函数 ====================
@@ -2526,6 +2578,7 @@ window.showExportModal = ContractDetailPage.showExportModal;
 window.closeExportModal = ContractDetailPage.closeExportModal;
 window.exportToPDF = ContractDetailPage.exportToPDF;
 window.shareToWechat = ContractDetailPage.shareToWechat;
+window.shareToFriend = ContractDetailPage.shareToFriend;
 window.showChangeRecordModal = ContractDetailPage.showChangeRecordModal;
 window.closeChangeRecordModal = ContractDetailPage.closeChangeRecordModal;
 window.viewChangeVersion = ContractDetailPage.viewChangeVersion;

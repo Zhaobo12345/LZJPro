@@ -183,6 +183,41 @@ body {
     font-size: 16px;
 }
 
+.nav-bar .action-menu {
+    position: absolute;
+    top: 44px;
+    right: 16px;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px 0;
+    min-width: 140px;
+    display: none;
+    z-index: 1000;
+}
+
+.nav-bar .action-menu.show {
+    display: block;
+}
+
+.nav-bar .action-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.nav-bar .action-menu-item:hover {
+    background-color: var(--bg-secondary);
+}
+
+.nav-bar .action-menu-item .icon {
+    font-size: 16px;
+}
+
 /* --------------------------------------------------------------------------
    7. 页面内容区（可滚动区域）
    -------------------------------------------------------------------------- */
