@@ -385,6 +385,7 @@
             padding: 16px;
             max-height: 80%;
             overflow-y: auto;
+            box-sizing: border-box;
         }
 
         .permission-modal .modal-header {
@@ -1848,7 +1849,7 @@
             }
 
             return `
-                <div class="member-card">
+                <div class="member-card" onclick="showPermissionModal('${member.id}')">
                     <div class="avatar clickable" onclick="event.stopPropagation(); goToProfile('${member.id}', '${member.name}', '${member.role}')">${member.avatar}</div>
                     <div class="info">
                         <div class="name-row">
@@ -1857,7 +1858,7 @@
                         </div>
                         <div class="meta">${member.role}</div>
                     </div>
-                    <div class="permission-badge">
+                    <div class="permission-badge" onclick="event.stopPropagation(); showPermissionModal('${member.id}')">
                         ${dataPermTag}
                         ${managePermTag}
                     </div>
